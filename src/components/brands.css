@@ -1,0 +1,144 @@
+.brands-section {
+    background: #000000 !important;
+    min-height: 100vh;
+    padding: 120px 60px;
+    position: relative;
+    overflow: hidden;
+}
+
+.brands-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+
+.section-header {
+    margin-bottom: 80px;
+    opacity: 0;
+    transform: translateY(50px);
+}
+
+.section-header h2 {
+    font-family: var(--font-heading);
+    font-size: clamp(3rem, 6vw, 6rem);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.05em;
+    text-transform: uppercase;
+}
+
+.section-header h2 .word {
+    opacity: 0;
+    transform: translateY(100px) rotateX(-90deg);
+}
+
+.logo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    opacity: 0;
+}
+
+.logo-item {
+    background: #000000;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.logo-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.05);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.logo-item:hover {
+    background: #111111;
+}
+
+.logo-item:hover::before {
+    opacity: 1;
+}
+
+.logo-item:hover .logo-content {
+    transform: scale(1.05);
+}
+
+.logo-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+    opacity: 0;
+    transform: scale(0.8);
+}
+
+.brand-image {
+    width: 60%;
+    height: 60%;
+    object-fit: contain;
+    /* Bulletproof method to turn any logo (JPG with white bg, or transparent PNG) into a pure white logo on a black background */
+    mix-blend-mode: screen;
+    filter: grayscale(100%) invert(1) contrast(1000%);
+    transition: filter 0.3s ease;
+}
+
+/* Decorative elements */
+.deco-circle {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.deco-circle-1 {
+    width: 400px;
+    height: 400px;
+    top: -200px;
+    right: -200px;
+}
+
+.deco-circle-2 {
+    width: 300px;
+    height: 300px;
+    bottom: -150px;
+    left: -150px;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .logo-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .brands-section {
+        padding: 80px 20px;
+    }
+
+    .logo-grid {
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    .logo-item {
+        aspect-ratio: 1;
+        padding: 15px;
+    }
+}

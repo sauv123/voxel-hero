@@ -1,0 +1,375 @@
+/* ─── 1. LENS REVEAL (Pentagram Style) ─── */
+.lens-reveal {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 800px;
+  overflow: hidden;
+  cursor: none;
+}
+.lr-layer {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10%;
+  pointer-events: none;
+}
+.lr-heading {
+  font-family: var(--font-heading);
+  font-size: clamp(80px, 12vw, 200px);
+  font-weight: 900;
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+  margin: 0 0 24px 0;
+  z-index: 2;
+  position: relative;
+}
+.lr-sub {
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  z-index: 2;
+  position: relative;
+}
+.lr-base { z-index: 1; }
+.lr-masked {
+  z-index: 2;
+  clip-path: circle(0px at 50% 50%);
+}
+.lr-media-bg {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-image: url('/works/media__1777587480636.webp');
+  background-size: cover;
+  background-position: center;
+  z-index: 1;
+  opacity: 0.3;
+  filter: saturate(1.5) contrast(1.2);
+}
+
+/* ─── 2. SENSORY TRAIL (Fluid Editorial) ─── */
+.sensory-trail {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: 10%;
+}
+.st-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  max-width: 1200px;
+  width: 100%;
+  pointer-events: none;
+}
+.st-heading {
+  font-family: var(--font-heading);
+  font-size: clamp(60px, 10vw, 150px);
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+.st-body { max-width: 500px; align-self: flex-end; }
+.st-body p {
+  font-family: var(--font-heading);
+  font-size: clamp(20px, 3vw, 32px);
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+}
+.st-trail-image {
+  position: absolute;
+  width: 300px;
+  aspect-ratio: 4/5;
+  background-size: cover;
+  background-position: center;
+  transform: translate(-50%, -50%);
+  border-radius: 16px;
+  pointer-events: none;
+  box-shadow: 0 24px 48px rgba(0,0,0,0.2);
+}
+
+/* ─── 3. TIME SCRUBBER (Cinematic Idea → Product) ─── */
+.ts-cinematic {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Slim progress bar at the very top */
+.ts-cin-progress-track {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 3px;
+  background: rgba(255,255,255,0.08);
+  z-index: 20;
+}
+.ts-cin-progress-fill {
+  height: 100%;
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.ts-cin-inner {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+/* ── Left: Thought stream ── */
+.ts-cin-left {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 64px 60px 64px 72px;
+  border-right: 1px solid rgba(255,255,255,0.06);
+  overflow: hidden;
+}
+.ts-cin-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 80px;
+}
+.ts-cin-label-text {
+  font-family: var(--font-body);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.ts-thought-stream {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 48px;
+}
+
+/* Each thought block */
+.ts-thought {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.ts-thought-label {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  display: block;
+  margin-bottom: 4px;
+}
+.ts-thought-text {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: clamp(13px, 1.2vw, 16px);
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+
+/* Raw thoughts: dimmer, slightly italic feel */
+.ts-thought--raw .ts-thought-text {
+  color: rgba(255,255,255,0.45);
+  font-style: italic;
+}
+/* Insight: bright, accented */
+.ts-thought--insight .ts-thought-text {
+  color: #FCFAF2;
+  font-size: clamp(18px, 2vw, 28px);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  font-style: normal;
+}
+.ts-thought--insight .ts-thought-label {
+  color: #A7F3D0;
+}
+/* Code: terminal green */
+.ts-thought--code .ts-thought-text {
+  color: #27c93f;
+  background: rgba(39,201,63,0.06);
+  padding: 16px 20px;
+  border-radius: 8px;
+  border-left: 2px solid rgba(39,201,63,0.4);
+}
+/* Shipped: gold, victorious */
+.ts-thought--shipped .ts-thought-text {
+  color: #FDE68A;
+}
+.ts-thought--shipped .ts-thought-label {
+  color: #FDE68A;
+}
+
+/* ── Right: UI Assembly Stage ── */
+.ts-cin-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 64px 72px 64px 60px;
+  background: rgba(255,255,255,0.015);
+}
+.ts-product-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 560px;
+}
+.ts-stage-label {
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* The UI browser frame */
+.ts-ui-frame {
+  width: 100%;
+  border: 1px solid;
+  border-radius: 16px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.03);
+  position: relative;
+}
+
+/* Browser chrome strip */
+.ts-ui-chrome {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 8px;
+  border-bottom: 1px solid;
+}
+.ts-chrome-dot {
+  width: 11px; height: 11px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.ts-chrome-address {
+  flex: 1;
+  height: 26px;
+  border-radius: 6px;
+  border: 1px solid;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  margin-left: 8px;
+}
+
+/* UI body */
+.ts-ui-body {
+  padding: 20px 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Hero block — the big banner */
+.ts-ui-hero {
+  width: 100%;
+  height: 110px;
+  border-radius: 10px;
+  border: 1px solid;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 20px;
+  gap: 10px;
+}
+.ts-ui-hero-line {
+  height: 12px;
+  border-radius: 4px;
+  width: 65%;
+}
+.ts-ui-hero-line.short {
+  width: 45%;
+}
+
+/* Skeleton text lines */
+.ts-ui-content-area {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ts-ui-line {
+  height: 8px;
+  border-radius: 4px;
+}
+
+/* Polished card */
+.ts-ui-card {
+  width: 100%;
+  border-radius: 12px;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid transparent;
+}
+.ts-ui-card-label {
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin: 0 0 4px 0;
+  opacity: 0.6;
+}
+.ts-ui-card-stat {
+  font-family: var(--font-heading);
+  font-size: 22px;
+  font-weight: 900;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+/* CTA Button */
+.ts-ui-btn {
+  align-self: flex-start;
+  padding: 13px 28px;
+  border-radius: 100px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+/* Glow overlay */
+.ts-ui-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: 16px;
+}
+
+@media (max-width: 900px) {
+  .ts-cin-inner { grid-template-columns: 1fr; }
+  .ts-cin-right { display: none; }
+  .ts-cin-left { padding: 48px 32px; }
+}
+
+
+
+
