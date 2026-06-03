@@ -148,16 +148,18 @@ function Timeline({ theme }) {
     cancelAnimationFrame(raf.current);
     vel.current = 0;
     dragging.current = true;
-    dragData.current = { sx: e.clientX, ss: scroll, lx: e.clientX, lt: Date.now() };
+    const clientX = e.touches && e.touches.length > 0 ? e.touches[0].clientX : e.clientX;
+    dragData.current = { sx: clientX, ss: scroll, lx: clientX, lt: Date.now() };
   };
 
   useEffect(() => {
     const move = (e) => {
       if (!dragging.current || !dragData.current) return;
-      const dx = dragData.current.sx - e.clientX;
+      const clientX = e.touches && e.touches.length > 0 ? e.touches[0].clientX : e.clientX;
+      const dx = dragData.current.sx - clientX;
       const dt = Date.now() - dragData.current.lt || 1;
-      vel.current = (e.clientX - dragData.current.lx) / dt * -16;
-      dragData.current.lx = e.clientX;
+      vel.current = (clientX - dragData.current.lx) / dt * -16;
+      dragData.current.lx = clientX;
       dragData.current.lt = Date.now();
       setScroll(clamp(dragData.current.ss + dx));
     };
@@ -167,7 +169,14 @@ function Timeline({ theme }) {
     };
     window.addEventListener("mousemove", move);
     window.addEventListener("mouseup", up);
-    return () => { window.removeEventListener("mousemove", move); window.removeEventListener("mouseup", up); };
+    window.addEventListener("touchmove", move, { passive: true });
+    window.addEventListener("touchend", up);
+    return () => { 
+      window.removeEventListener("mousemove", move); 
+      window.removeEventListener("mouseup", up); 
+      window.removeEventListener("touchmove", move);
+      window.removeEventListener("touchend", up);
+    };
   }, [inertia, clamp]);
 
   return (
@@ -175,6 +184,7 @@ function Timeline({ theme }) {
       <div
         ref={containerRef}
         onMouseDown={onMouseDown}
+        onTouchStart={onMouseDown}
         style={{
           position: "relative", height: 720, borderRadius: 4,
           background: `#000`,

@@ -566,14 +566,21 @@ body {
 }
 
 @media (max-width: 768px) { 
-    .word-row { gap: 2vw; }
-    .word-char { font-size: clamp(3.5rem, 12vw, 8rem); }
-    .voxel-folder { width: clamp(4.5rem, 13vw, 9rem); height: clamp(3.5rem, 10vw, 7rem); }
-    .folder-ss { font-size: 0.7rem; bottom: 8px; right: 10px; }
-    .file-card-header { height: 35px; }
-    .file-card-header svg { width: 18px; height: 18px; }
-    .file-card-title { font-size: 0.55rem; }
-    .curious-text { font-size: 0.9rem; margin-bottom: 2rem; }
+    .word-row { gap: 1rem; flex-wrap: wrap; justify-content: center; }
+    .word-char { font-size: clamp(3rem, 15vw, 6rem); }
+    .voxel-folder { width: clamp(160px, 45vw, 280px); height: clamp(120px, 35vw, 210px); margin: 0 10px; }
+    .folder-ss { font-size: 0.6rem; bottom: 8px; right: 10px; }
+    .file-card-header { height: 30px; }
+    .file-card-header svg { width: 14px; height: 14px; }
+    .file-card-title { font-size: 0.45rem; }
+    .curious-text { font-size: 1rem; margin-bottom: 1.5rem; text-align: center; width: 100%; }
+    
+    .macos-dock { padding: 8px 16px; gap: 8px; height: 60px; margin-top: 16px; }
+    .dock-item { width: 40px; height: 40px; }
+    .dock-icon-box svg { width: 20px; height: 20px; }
+    .dock-label { display: none; } /* Hide dock labels on mobile to save space */
+    
+    .hero-text { font-size: clamp(2rem, 10vw, 4rem) !important; line-height: 1.1 !important; text-align: center; }
 }
 
 /* ─── Work Gallery (Horizontal) ─── */
