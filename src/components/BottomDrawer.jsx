@@ -130,22 +130,6 @@ export default function BottomDrawer({ theme, activePage, navigateWithTransition
             {activePage === 'home' && <span className="drawer-item-active-dot" style={{ background: theme.brand, width: 8, height: 8, borderRadius: '50%', marginLeft: 'auto', marginRight: 16 }} />}
           </div>
 
-          {/* HOBBIES */}
-          <div className={`drawer-item ${activePage === 'playground' ? 'active-page' : ''}`} onClick={(e) => handleItemClick(e, 'playground')}>
-            <div className="drawer-item-icon" style={{ background: activePage === 'playground' ? theme.brand : '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)' }}>
-              <svg viewBox="0 0 24 24" fill={activePage === 'playground' ? '#0d0d0d' : '#FCFAF2'} className="di-icon-svg">
-                <path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm3-3c-.83 0-1.5-.67-1.5-1.5S17.67 9 18.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
-              </svg>
-            </div>
-            <div className="drawer-item-text">
-              <div className="drawer-item-text-inner">
-                <span className="label-original" style={{ color: activePage === 'playground' ? theme.brand : '#FCFAF2' }}>Playground</span>
-                <span className="label-copy" style={{ color: theme.brand }}>Playground</span>
-              </div>
-            </div>
-            {activePage === 'playground' && <span className="drawer-item-active-dot" style={{ background: theme.brand, width: 8, height: 8, borderRadius: '50%', marginLeft: 'auto', marginRight: 16 }} />}
-          </div>
-
           {/* WORK */}
           <div className={`drawer-item ${activePage === 'work' ? 'active-page' : ''}`} onClick={(e) => handleItemClick(e, 'work')}>
             <div className="drawer-item-icon" style={{ background: activePage === 'work' ? theme.brand : '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)' }}>
@@ -176,6 +160,22 @@ export default function BottomDrawer({ theme, activePage, navigateWithTransition
               </div>
             </div>
             {activePage === 'about' && <span className="drawer-item-active-dot" style={{ background: theme.brand, width: 8, height: 8, borderRadius: '50%', marginLeft: 'auto', marginRight: 16 }} />}
+          </div>
+
+          {/* HOBBIES */}
+          <div className={`drawer-item ${activePage === 'playground' ? 'active-page' : ''}`} onClick={(e) => handleItemClick(e, 'playground')}>
+            <div className="drawer-item-icon" style={{ background: activePage === 'playground' ? theme.brand : '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)' }}>
+              <svg viewBox="0 0 24 24" fill={activePage === 'playground' ? '#0d0d0d' : '#FCFAF2'} className="di-icon-svg">
+                <path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm3-3c-.83 0-1.5-.67-1.5-1.5S17.67 9 18.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
+              </svg>
+            </div>
+            <div className="drawer-item-text">
+              <div className="drawer-item-text-inner">
+                <span className="label-original" style={{ color: activePage === 'playground' ? theme.brand : '#FCFAF2' }}>Playground</span>
+                <span className="label-copy" style={{ color: theme.brand }}>Playground</span>
+              </div>
+            </div>
+            {activePage === 'playground' && <span className="drawer-item-active-dot" style={{ background: theme.brand, width: 8, height: 8, borderRadius: '50%', marginLeft: 'auto', marginRight: 16 }} />}
           </div>
 
         </div>

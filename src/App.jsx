@@ -19,6 +19,8 @@ import BrandsSection from './components/BrandsSection';
 import Footer from './components/Footer';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { PROJECTS } from './cms/projects';
+import CaseStudyViewer from './components/CaseStudyViewer';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -118,11 +120,14 @@ function SplitChars({ text }) {
 
 // ─── Main App ────────────────────────────────────────────────────────────────
 export default function App() {
-  const initialPath = window.location.pathname;
-  const initialPage = (initialPath === '/' || initialPath === '') ? 'home' : 
-                      initialPath.slice(1) === 'work' ? 'work' :
-                      initialPath.slice(1) === 'about' ? 'about' :
-                      initialPath.slice(1) === 'playground' ? 'playground' : '404';
+  const initialPath = window.location.pathname.slice(1);
+  const matchedProjectIndex = PROJECTS.findIndex(p => p.slug === initialPath);
+  
+  const initialPage = (initialPath === '') ? 'home' : 
+                      initialPath === 'work' ? 'work' :
+                      initialPath === 'about' ? 'about' :
+                      initialPath === 'playground' ? 'playground' : 
+                      (matchedProjectIndex !== -1) ? initialPath : '404';
 
   const [activeChar, setActiveChar] = useState('deer');
   const [ctaHover, setCtaHover]     = useState(false);
@@ -130,6 +135,7 @@ export default function App() {
   const [isAboutOpen, setIsAboutOpen] = useState(initialPage === 'about');
   const [isPlaygroundOpen, setIsPlaygroundOpen] = useState(initialPage === 'playground');
   const [is404Open, setIs404Open] = useState(initialPage === '404');
+  const [activeCaseStudyIndex, setActiveCaseStudyIndex] = useState(matchedProjectIndex !== -1 ? matchedProjectIndex : null);
   const [activePage, setActivePage] = useState(initialPage);
   const transitionRef = useRef(null);
   const [isPreloaderDone, setIsPreloaderDone] = useState(false);
@@ -240,25 +246,39 @@ export default function App() {
         setIsGalleryOpen(true);
         setIsAboutOpen(false);
         setIsPlaygroundOpen(false);
+        setActiveCaseStudyIndex(null);
       } else if (targetPage === 'about') {
         setIsAboutOpen(true);
         setIsGalleryOpen(false);
         setIsPlaygroundOpen(false);
+        setActiveCaseStudyIndex(null);
       } else if (targetPage === 'playground') {
         setIsPlaygroundOpen(true);
         setIsGalleryOpen(false);
         setIsAboutOpen(false);
+        setActiveCaseStudyIndex(null);
       } else if (targetPage === '404') {
         setIs404Open(true);
         setIsGalleryOpen(false);
         setIsAboutOpen(false);
         setIsPlaygroundOpen(false);
+        setActiveCaseStudyIndex(null);
       } else {
-        setIsGalleryOpen(false);
-        setIsAboutOpen(false);
-        setIsPlaygroundOpen(false);
-        setIs404Open(false);
-        window.scrollTo({ top: 0, behavior: 'auto' });
+        const matchIdx = PROJECTS.findIndex(p => p.slug === targetPage);
+        if (matchIdx !== -1) {
+          setActiveCaseStudyIndex(matchIdx);
+          setIsGalleryOpen(false);
+          setIsAboutOpen(false);
+          setIsPlaygroundOpen(false);
+          setIs404Open(false);
+        } else {
+          setActiveCaseStudyIndex(null);
+          setIsGalleryOpen(false);
+          setIsAboutOpen(false);
+          setIsPlaygroundOpen(false);
+          setIs404Open(false);
+          window.scrollTo({ top: 0, behavior: 'auto' });
+        }
       }
       
       // Update browser history URL without reloading
@@ -270,8 +290,7 @@ export default function App() {
     .to(transitionRef.current, {
       y: "-100%", 
       duration: 0.5, 
-      ease: "power3.inOut",
-      delay: 0.1
+      ease: "power3.inOut"
     })
     .set(transitionRef.current, { y: "100%" });
   }, [activePage]);
@@ -279,11 +298,13 @@ export default function App() {
   // Handle browser back/forward buttons
   useEffect(() => {
     const handlePopState = (e) => {
-      const path = window.location.pathname;
-      const targetPage = (path === '/' || path === '') ? 'home' : 
-                         path.slice(1) === 'work' ? 'work' :
-                         path.slice(1) === 'about' ? 'about' :
-                         path.slice(1) === 'playground' ? 'playground' : '404';
+      const path = window.location.pathname.slice(1);
+      const matchedProjectIndex = PROJECTS.findIndex(p => p.slug === path);
+      const targetPage = (path === '') ? 'home' : 
+                         path === 'work' ? 'work' :
+                         path === 'about' ? 'about' :
+                         path === 'playground' ? 'playground' : 
+                         (matchedProjectIndex !== -1) ? path : '404';
                          
       if (targetPage !== activePage) {
         navigateWithTransition(targetPage);
@@ -396,7 +417,7 @@ export default function App() {
       <BrandsSection theme={theme} />
 
       {/* ── Work Gallery Overlay ── */}
-      {isGalleryOpen && <WorkGallery theme={theme} onClose={() => navigateWithTransition('home')} />}
+      {isGalleryOpen && <WorkGallery theme={theme} onClose={() => navigateWithTransition('home')} navigate={navigateWithTransition} />}
 
       {/* ── About Me Overlay ── */}
       {isAboutOpen && <AboutMe theme={theme} onClose={() => navigateWithTransition('home')} />}
@@ -406,6 +427,15 @@ export default function App() {
 
       {/* ── 404 Error Overlay ── */}
       {is404Open && <NotFound theme={theme} activeChar={activeChar} navigateWithTransition={navigateWithTransition} />}
+
+      {/* ── Case Study Viewer Overlay ── */}
+      {activeCaseStudyIndex !== null && (
+        <CaseStudyViewer 
+          startIndex={activeCaseStudyIndex} 
+          onClose={() => navigateWithTransition('work')} 
+          theme={theme} 
+        />
+      )}
 
       {/* ── Bottom Drawer ── */}
       {isPreloaderDone && activePage !== '404' && (

@@ -1,14 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
-import { PROJECTS } from './InteractiveProjects';
-import CaseStudyViewer from './CaseStudyViewer';
+import { PROJECTS } from '../cms/projects';
 
-export default function WorkGallery({ theme, onClose }) {
+export default function WorkGallery({ theme, onClose, navigate }) {
   const containerRef = useRef(null);
   const trackRef = useRef(null);
   const cardsRef = useRef([]);
-  const [activeIframeUrl, setActiveIframeUrl] = useState(null);
-  const [activeStartIndex, setActiveStartIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [isHoveringCard, setIsHoveringCard] = useState(false);
   const [hoveredProjectTitle, setHoveredProjectTitle] = useState("Project");
@@ -166,9 +163,8 @@ export default function WorkGallery({ theme, onClose }) {
   };
 
   const openCaseStudy = (proj, index) => {
-    if (proj.link) {
-      setActiveStartIndex(index);
-      setActiveIframeUrl(proj.link);
+    if (proj.link && navigate) {
+      navigate(proj.slug);
     }
   };
 
@@ -321,13 +317,6 @@ export default function WorkGallery({ theme, onClose }) {
         </div>
       </div>
 
-      {activeIframeUrl && (
-        <CaseStudyViewer 
-          startIndex={activeStartIndex} 
-          onClose={() => setActiveIframeUrl(null)} 
-          theme={theme} 
-        />
-      )}
     </>
   );
 }

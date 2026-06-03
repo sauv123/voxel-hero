@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import gsap from 'gsap';
-import { PROJECTS } from './InteractiveProjects';
+import { PROJECTS } from '../cms/projects';
 import useIdle from '../hooks/useIdle';
 
 export default function CaseStudyViewer({ startIndex, onClose, theme }) {

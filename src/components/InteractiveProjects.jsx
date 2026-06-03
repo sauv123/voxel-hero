@@ -6,62 +6,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 import Footer from './Footer';
 
-export const PROJECTS = [
-  {
-    id: "01",
-    name: "OLO",
-    title: "Olo",
-    tags: ["EMOTIONAL DESIGN", "UX", "UI"],
-    bgColor: "#000000",
-    textColor: "#FFFFFF",
-    img: "/olo.webp",
-    cta: "Turning small hellos into meaningful growth through introverted design.",
-    link: "https://olocasestudy.netlify.app"
-  },
-  {
-    id: "02",
-    name: "ELI5",
-    title: "ELI5",
-    tags: ["UX DESIGN", "INTERACTION & UX SYSTEMS"],
-    bgColor: "#000000",
-    textColor: "#FFFFFF",
-    img: "/works/media__1777587436505.webp",
-    cta: "Transforms complexity into visual clarity instantly.",
-    link: "https://eli5casestudy.netlify.app"
-  },
-  {
-    id: "03",
-    name: "IKEAXPEANUTS",
-    title: "IkeaxPeanuts",
-    tags: ["EMOTIONAL EXPERIENCE DESIGN", "NARRATIVE SERVICE DESIGN"],
-    bgColor: "#000000",
-    textColor: "#FFFFFF",
-    img: "/ikeapeanuts.webp",
-    cta: "Transforming retail spaces into emotional storytelling experiences.",
-    link: "https://ikeapeanutscasestudy.netlify.app/"
-  },
-  {
-    id: "04",
-    name: "KRIZIA",
-    title: "Krizia",
-    tags: ["Web Design", "Branding"],
-    bgColor: "#000000",
-    textColor: "#FFFFFF",
-    img: "/krizia.mp4",
-    cta: "Transforming sound into a global visual experience.",
-    link: "https://kriziacasestudy.netlify.app/"
-  },
-  {
-    id: "05",
-    name: "MICA",
-    title: "MICA",
-    tags: ["UX DESIGN", "CO-LIVING DESIGN"],
-    bgColor: "#000000",
-    textColor: "#FFFFFF",
-    img: "/mica.webp", 
-    cta: "Designing belonging through emotionally intelligent housing experiences."
-  }
-];
+import { PROJECTS } from '../cms/projects';
 
 export default function InteractiveProjects({ theme, onProjectSelect }) {
   const containerRef = useRef();
