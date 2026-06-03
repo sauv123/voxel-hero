@@ -196,7 +196,7 @@ export default function WorkFolder({ theme, onOpen }) {
 
                   {/* Files inside */}
                   <div className="files-container">
-                    {PROJECTS.slice(0, 3).map((proj, idx) => (
+                    {[PROJECTS[1], PROJECTS[0], PROJECTS[2]].map((proj, idx) => (
                       <div key={proj.id} className={`file-card proj-preview-${idx}`} style={{ 
                         position: "absolute", bottom: "10%", left: "10%", width: "80%", height: "120%",
                         padding: 0, overflow: 'hidden', transformOrigin: "bottom center",

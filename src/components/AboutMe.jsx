@@ -969,6 +969,23 @@ export default function AboutMe({ theme, onClose }) {
     >
       <div className="about-grain-overlay" />
 
+      {/* Close Button */}
+      <div 
+        onClick={handleClose}
+        style={{
+          position: 'fixed', top: 32, right: 32, width: 48, height: 48,
+          borderRadius: '50%', backgroundColor: theme.text, color: theme.bg,
+          display: 'flex', justifyContent: 'center', alignItems: 'center',
+          cursor: 'pointer', zIndex: 10000,
+          boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+        }}
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </div>
+
       {/* Large Background Decorative Text */}
       <div className="about-bg-text" style={{
         position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%) rotate(-15deg)",
