@@ -90,7 +90,7 @@ function TimelinePhoto({ photo, index, total, theme }) {
         {photo.videoSrc ? (
           <video src={photo.videoSrc} autoPlay loop muted playsInline style={{width: "100%", height: "100%", objectFit: "cover", position: "absolute", inset: 0}} />
         ) : photo.src ? (
-          <img src={photo.src} alt={`About me photo ${i + 1}`} loading="lazy" style={{width: "100%", height: "100%", objectFit: "cover", position: "absolute", inset: 0}} />
+          <img src={photo.src} alt={`About me photo ${index + 1}`} loading="lazy" style={{width: "100%", height: "100%", objectFit: "cover", position: "absolute", inset: 0}} />
         ) : (
           photo.e
         )}
