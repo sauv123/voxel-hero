@@ -60,58 +60,29 @@ function spawnEmoji(emoji, originEl, count = 8) {
 }
 
 // ─── Magnetic CTA ────────────────────────────────────────────────────────────
-function CTAButton({ theme, onHoverChange, charRef }) {
-  const btnRef   = useRef();
-  const arrowRef = useRef();
-  const yayFired = useRef(false);
-
-  const handleEnter = useCallback(() => {
-    onHoverChange(true);
-    if (!yayFired.current) {
-      yayFired.current = true;
-      charRef.current?.yay?.();
-      setTimeout(() => { yayFired.current = false; }, 3000);
-    }
-    spawnEmoji('🎉', btnRef.current, 7);
-    gsap.to(btnRef.current, { scale: 1.1, duration: 0.4, ease: 'elastic.out(1, 0.5)' });
-    gsap.to(arrowRef.current, { x: 8, opacity: 1, duration: 0.3, ease: 'power2.out' });
-  }, [onHoverChange, charRef]);
-
-  const handleLeave = useCallback(() => {
-    onHoverChange(false);
-    gsap.to(btnRef.current, { scale: 1, x: 0, y: 0, duration: 0.7, ease: 'elastic.out(1, 0.4)' });
-    gsap.to(arrowRef.current, { x: 0, opacity: 0.5, duration: 0.3 });
-  }, [onHoverChange]);
-
-  const handleMouseMove = useCallback((e) => {
-    const rect = btnRef.current.getBoundingClientRect();
-    const cx = rect.left + rect.width / 2;
-    const cy = rect.top + rect.height / 2;
-    gsap.to(btnRef.current, {
-      x: (e.clientX - cx) * 0.3,
-      y: (e.clientY - cy) * 0.3,
-      duration: 0.45, ease: 'power2.out',
-    });
-  }, []);
+function ExplorePill({ theme }) {
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    if (btnRef.current) {
-      gsap.set(btnRef.current, { backgroundColor: theme.ctaBg, color: theme.ctaText, borderColor: theme.ctaBg });
-    }
-  }, [theme]);
+    const handleScroll = () => {
+      setVisible(window.scrollY > window.innerHeight * 0.4);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const handleClick = () => {
+    document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   return (
-    <button
-      ref={btnRef}
-      className="cta-btn"
-      style={{ backgroundColor: theme.ctaBg, color: theme.ctaText, borderColor: theme.ctaBg }}
-      onMouseEnter={handleEnter}
-      onMouseLeave={handleLeave}
-      onMouseMove={handleMouseMove}
+    <div 
+      className={`explore-pill ${visible ? 'visible' : ''}`} 
+      onClick={handleClick}
+      style={{ background: `${theme.text}10`, color: theme.text, borderColor: `${theme.text}20` }}
     >
-      <span>EXPLORE WORK</span>
-      <span ref={arrowRef} className="cta-arrow" style={{ opacity: 0.5 }}>→</span>
-    </button>
+      <span>Explore Work ↓</span>
+    </div>
   );
 }
 
@@ -174,7 +145,7 @@ export default function App() {
       gsap.set('.char', { y: '110%', opacity: 0 });
       gsap.set('.eyebrow-text', { opacity: 0, y: 18 });
       gsap.set('.subtitle', { opacity: 0, y: 20 });
-      gsap.set('.cta-wrap', { opacity: 0, y: 28 });
+      gsap.set('.subtitle', { opacity: 0, y: 20 });
       gsap.set(rootRef.current, { scale: 1.03, opacity: 0 });
       return;
     }
@@ -193,8 +164,7 @@ export default function App() {
       stagger: 0.022
     }, "-=0.2")
     .to('.eyebrow-text', { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }, "-=1.0")
-    .to('.subtitle', { opacity: 1, y: 0, duration: 0.9, ease: 'power2.out' }, "-=0.8")
-    .to('.cta-wrap', { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }, "-=0.6");
+    .to('.subtitle', { opacity: 1, y: 0, duration: 0.9, ease: 'power2.out' }, "-=0.8");
     
   }, [isHeroActive]);
 
@@ -376,9 +346,7 @@ export default function App() {
         </div>
 
         {/* ── CTA ── */}
-        <div className="cta-wrap">
-          <CTAButton theme={theme} onHoverChange={setCtaHover} charRef={charRef} />
-        </div>
+        <ExplorePill theme={theme} />
         
         {/* ── Character Switcher Lever ── */}
         <div 

@@ -61,14 +61,14 @@ body {
 .hero-title {
   font-family: var(--font-heading);
   font-weight: 700;
-  /* Large enough to overlap the character visually */
-  font-size: clamp(3.2rem, 11vw, 13.5rem);
+  /* Slightly smaller to show 'HUMAN' clearly but overlap slightly */
+  font-size: clamp(2.8rem, 10vw, 11rem);
   line-height: 0.86;
   text-transform: uppercase;
   letter-spacing: -0.01em;
   display: flex;
   flex-direction: column;
-  max-width: 70vw;        /* lets right side show character */
+  max-width: 100vw;        /* lets text overlap with character */
 }
 
 .line-wrap {
@@ -441,9 +441,9 @@ body {
     opacity: 1;
 }
 
-.voxel-folder:hover .file-card.proj-preview-0, .voxel-folder.is-open .file-card.proj-preview-0 { transform: translate(-30px, -20px) rotate(-8deg) scale(1.05); z-index: 10; }
-.voxel-folder:hover .file-card.proj-preview-1, .voxel-folder.is-open .file-card.proj-preview-1 { transform: translate(0px, -35px) rotate(0deg) scale(1.1); z-index: 15; }
-.voxel-folder:hover .file-card.proj-preview-2, .voxel-folder.is-open .file-card.proj-preview-2 { transform: translate(30px, -20px) rotate(8deg) scale(1.05); z-index: 10; }
+.voxel-folder:hover .file-card.proj-preview-0, .voxel-folder.is-open .file-card.proj-preview-0 { transform: translate(-60px, -50px) rotate(-15deg) scale(1.1); z-index: 10; }
+.voxel-folder:hover .file-card.proj-preview-1, .voxel-folder.is-open .file-card.proj-preview-1 { transform: translate(0px, -80px) rotate(0deg) scale(1.15); z-index: 15; }
+.voxel-folder:hover .file-card.proj-preview-2, .voxel-folder.is-open .file-card.proj-preview-2 { transform: translate(60px, -50px) rotate(15deg) scale(1.1); z-index: 10; }
 
 .voxel-folder:hover .file-card:nth-child(1), .voxel-folder.is-open .file-card:nth-child(1) { transition-delay: 0.04s; }
 .voxel-folder:hover .file-card:nth-child(2), .voxel-folder.is-open .file-card:nth-child(2) { transition-delay: 0.08s; }
@@ -2217,4 +2217,51 @@ body {
 }
 .modern-brutal-card:hover {
   transform: translateY(-4px);
+}
+
+/* ── Minimalist Explore Pill ── */
+.explore-pill {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  padding: 12px 24px;
+  border-radius: 40px;
+  cursor: pointer;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.4s ease, background 0.3s ease;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.explore-pill.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+.explore-pill:hover {
+  transform: translateX(-50%) translateY(-3px) scale(1.05);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+
+.explore-pill span {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.explore-pill:hover span {
+  transform: translateY(3px);
 }
