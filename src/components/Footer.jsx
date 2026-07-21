@@ -1,129 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import InteractiveBlocks from './InteractiveBlocks';
-
-gsap.registerPlugin(ScrollTrigger);
-
-// ─── DRAGGABLE PIXEL BLOCK COMPONENT ─────────────────────────────────
-function DraggableBlock({ id, targetX, targetY, currentX, currentY, brandColor, isDinoTheme, shade, onBlockMove }) {
-  const blockRef = useRef(null);
-  const cellSize = 50; 
-  const [position, setPosition] = useState({ x: currentX * cellSize, y: currentY * cellSize });
-  const [isDragging, setIsDragging] = useState(false);
-  
-  const dragStart = useRef({ x: 0, y: 0 });
-  const blockStart = useRef({ x: 0, y: 0 });
-
-  // Synced movement when solved/reset is triggered from parent controls
-  useEffect(() => {
-    if (!isDragging) {
-      gsap.to(blockRef.current, {
-        x: currentX * cellSize,
-        y: currentY * cellSize,
-        duration: 0.5,
-        ease: "back.out(1.2)",
-        onComplete: () => {
-          setPosition({ x: currentX * cellSize, y: currentY * cellSize });
-        }
-      });
-    }
-  }, [currentX, currentY, isDragging]);
-
-  const handlePointerDown = (e) => {
-    e.preventDefault();
-    e.currentTarget.setPointerCapture(e.pointerId);
-    setIsDragging(true);
-    dragStart.current = { x: e.clientX, y: e.clientY };
-    blockStart.current = { x: position.x, y: position.y };
-  };
-
-  const handlePointerMove = (e) => {
-    if (!isDragging) return;
-    const dx = e.clientX - dragStart.current.x;
-    const dy = e.clientY - dragStart.current.y;
-    
-    // Grid boundary clamping (4x5 grid: max X is 150, max Y is 200)
-    const clampedDragX = Math.max(-4, Math.min(154, blockStart.current.x + dx));
-    const clampedDragY = Math.max(-4, Math.min(204, blockStart.current.y + dy));
-
-    setPosition({ x: clampedDragX, y: clampedDragY });
-  };
-
-  const handlePointerUp = (e) => {
-    if (!isDragging) return;
-    setIsDragging(false);
-    e.currentTarget.releasePointerCapture(e.pointerId);
-    
-    const snappedX = Math.round(position.x / cellSize);
-    const snappedY = Math.round(position.y / cellSize);
-    
-    const clampedGridX = Math.max(0, Math.min(3, snappedX));
-    const clampedGridY = Math.max(0, Math.min(4, snappedY));
-
-    // Notify parent to update coordinates
-    onBlockMove(id, clampedGridX, clampedGridY);
-  };
-
-  const handlePointerCancel = (e) => {
-    if (!isDragging) return;
-    setIsDragging(false);
-    e.currentTarget.releasePointerCapture(e.pointerId);
-  };
-
-  // Puzzle feedback: block glows solid brand color when aligned correctly
-  const isAligned = currentX === targetX && currentY === targetY;
-
-  const getShadedColor = () => {
-    if (isAligned) return brandColor; // Solid glow when correct
-    // Translucent shading when misplaced
-    return brandColor.startsWith('#')
-      ? `${brandColor}${shade === 1 ? 'aa' : '77'}`
-      : brandColor;
-  };
-
-  return (
-    <div
-      ref={blockRef}
-      onPointerDown={handlePointerDown}
-      onPointerMove={handlePointerMove}
-      onPointerUp={handlePointerUp}
-      onPointerCancel={handlePointerCancel}
-      style={{
-        position: "absolute",
-        width: `${cellSize - 4}px`,
-        height: `${cellSize - 4}px`,
-        left: 0,
-        top: 0,
-        transform: `translate3d(${position.x}px, ${position.y}px, 0)`,
-        backgroundColor: getShadedColor(),
-        borderRadius: "4px",
-        cursor: isDragging ? "grabbing" : "grab",
-        zIndex: isDragging ? 100 : 10,
-        boxShadow: isDragging 
-          ? `0 12px 24px ${brandColor}50` 
-          : (isAligned ? `0 2px 8px ${brandColor}30` : "0 4px 8px rgba(0, 0, 0, 0.4)"),
-        transition: isDragging ? "none" : "transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        border: isAligned ? `1px solid #ffffff` : "1px solid rgba(255, 255, 255, 0.15)",
-        touchAction: "none"
-      }}
-    >
-      <div style={{
-        width: "4px",
-        height: "4px",
-        borderRadius: "50%",
-        backgroundColor: isDinoTheme ? "#fff" : "#000",
-        opacity: isAligned ? 0.6 : 0.25
-      }} />
-    </div>
-  );
-}
-
 // ─── STYLISH TEXT LINK COMPONENT ──────────────────────────────────────
-function FooterTextLink({ href, text, brandColor }) {
+function FooterTextLink({ href, text, brandColor, ariaLabel }) {
   const [isHovered, setIsHovered] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
 
@@ -135,6 +14,7 @@ function FooterTextLink({ href, text, brandColor }) {
   return (
     <a
       href={href}
+      aria-label={ariaLabel}
       target="_blank"
       rel="noopener noreferrer"
       onMouseEnter={() => setIsHovered(true)}
@@ -143,6 +23,10 @@ function FooterTextLink({ href, text, brandColor }) {
       style={{
         display: "inline-flex",
         alignItems: "center",
+        justifyContent: "center",
+        minHeight: "44px",
+        minWidth: "44px",
+        padding: "10px",
         color: isHovered ? brandColor : "#ffffff",
         textDecoration: "none",
         fontFamily: "Space Mono, monospace",
@@ -192,11 +76,9 @@ export default function Footer({ theme, activeChar = 'deer' }) {
     { id: 12, targetX: 0, targetY: 4, currentX: 0, currentY: 4, shade: 2 }
   ];
 
-  const [blocks, setBlocks] = useState(initialBlocks);
-
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 960);
+      setIsMobile(window.innerWidth <= 768);
     };
     handleResize();
     window.addEventListener('resize', handleResize);
@@ -228,37 +110,6 @@ export default function Footer({ theme, activeChar = 'deer' }) {
     return () => trigger.kill();
   }, []);
 
-  // Update specific block position on drag snapping
-  const handleBlockMove = (id, newX, newY) => {
-    setBlocks(prev => prev.map(b => b.id === id ? { ...b, currentX: newX, currentY: newY } : b));
-  };
-
-  // Scramble block locations
-  const handleScramble = () => {
-    setBlocks(prev => prev.map(b => {
-      const rx = Math.floor(Math.random() * 4);
-      const ry = Math.floor(Math.random() * 5);
-      return { ...b, currentX: rx, currentY: ry };
-    }));
-  };
-
-  // Solve block locations instantly
-  const handleSolve = () => {
-    setBlocks(prev => prev.map(b => ({ ...b, currentX: b.targetX, currentY: b.targetY })));
-  };
-
-  // Detect if the puzzle grid monogram layout matches the solved target coordinates
-  const isSolved = blocks.every(b => b.currentX === b.targetX && b.currentY === b.targetY);
-
-  // Playful success stagger loop when puzzle is solved
-  useEffect(() => {
-    if (isSolved) {
-      gsap.fromTo('.puzzle-success-glow', 
-        { scale: 0.95, opacity: 0.5 }, 
-        { scale: 1.05, opacity: 1, duration: 0.4, repeat: 3, yoyo: true, ease: "power2.inOut" }
-      );
-    }
-  }, [isSolved]);
 
   return (
     <footer 
@@ -376,42 +227,23 @@ export default function Footer({ theme, activeChar = 'deer' }) {
               Say Hi
             </div>
 
-            {/* Spaced horizontal row of links placed directly under Say Hi */}
+            {/* Spaced grid of links */}
             <div 
               style={{
-                display: "flex",
-                flexDirection: isMobile ? "column" : "row",
-                alignItems: "center",
+                display: "grid",
+                gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(4, auto)",
                 gap: isMobile ? "16px" : "24px",
+                width: "100%",
                 boxSizing: "border-box"
               }}
             >
-              <FooterTextLink href="mailto:hello@example.com" text="Gmail" brandColor={brandColor} />
-              <FooterTextLink href="/resume.pdf" text="Résumé" brandColor={brandColor} />
-              <FooterTextLink href="https://www.linkedin.com/in/sauveer-sinha-684409215/" text="LinkedIn" brandColor={brandColor} />
-              <FooterTextLink href="https://wa.me/39324567890" text="WhatsApp" brandColor={brandColor} />
+              <FooterTextLink href="mailto:sauveersinha@gmail.com" text="Gmail" brandColor={brandColor} ariaLabel="Email Sauveer via Gmail" />
+              <FooterTextLink href="https://sauveer.com/resume.pdf" text="Résumé" brandColor={brandColor} ariaLabel="View Sauveer's Resume" />
+              <FooterTextLink href="https://www.linkedin.com/in/sauveer-sinha-684409215/" text="LinkedIn" brandColor={brandColor} ariaLabel="Visit Sauveer's LinkedIn profile" />
+              <FooterTextLink href="https://wa.me/393508124320" text="WhatsApp" brandColor={brandColor} ariaLabel="Message Sauveer on WhatsApp" />
             </div>
           </div>
         </div>
-
-        {/* Right Column: Interactive Blocks */}
-        <div 
-          className="footer-fade"
-          style={{
-            position: "relative",
-            width: "260px",
-            height: "290px",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            flexShrink: 0,
-            boxSizing: "border-box"
-          }}
-        >
-          <InteractiveBlocks />
-        </div>
-
       </div>
 
       {/* Footer Bottom Line */}

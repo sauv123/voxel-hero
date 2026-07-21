@@ -1,0 +1,20 @@
+# Sauveer Sinha
+UX • AI • Currently based in Milan.
+
+I help people understand & trust AI through thoughtful design.
+
+## About Me
+I'm Sauveer Sinha. I have an academic background in Architecture and Interaction Design (Politecnico di Milano). I love building things at the intersection of AI, spatial computing, and digital products.
+
+## Contact
+Email: hello@example.com
+LinkedIn: https://www.linkedin.com/in/sauveer-sinha-684409215/
+WhatsApp: https://wa.me/39324567890
+
+## Projects
+I have worked on various case studies, such as:
+- Fluid Unjumble: AI Agent visualization interface.
+- Case studies focusing on brutalist aesthetics and seamless user interactions.
+
+## Website Technologies
+This portfolio uses React, Three.js, GSAP, and Vite.

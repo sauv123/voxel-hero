@@ -377,3 +377,20 @@ video.bento-media-asset {
 }
 
 
+
+@media (max-width: 767px) {
+  .bento-card-info {
+    opacity: 1 !important;
+    transform: none !important;
+    bottom: 0 !important;
+    pointer-events: auto !important;
+  }
+  .bento-card-tag {
+    padding: 12px 16px !important;
+    font-size: 13px !important;
+    border-color: #ffffff !important;
+    color: #000000 !important;
+    background: #ffffff !important;
+  }
+}
+

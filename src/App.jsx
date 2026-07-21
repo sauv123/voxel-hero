@@ -1,25 +1,27 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState, useCallback, Suspense } from 'react';
 import './App.css';
 import { Canvas } from '@react-three/fiber';
 import Scene from './components/Scene';
 import WorkFolder from './components/WorkFolder';
-import WorkGallery from './components/WorkGallery';
 import { AdaptiveDpr, Environment, PerformanceMonitor } from '@react-three/drei';
 import HeaderCTA from './components/HeaderCTA';
 import InteractiveProjects from './components/InteractiveProjects';
 import Preloader from './components/Preloader';
-import AboutMe from './components/AboutMe';
 import BrutalistCube from './components/BrutalistCube';
 import BottomDrawer from './components/BottomDrawer';
-import PlaygroundGallery from './components/Playground';
-import NotFound from './components/NotFound';
 import BrandsSection from './components/BrandsSection';
 import Footer from './components/Footer';
 import ExperimentsGrid from './components/ExperimentsGrid';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { PROJECTS } from './cms/projects';
-import CaseStudyViewer from './components/CaseStudyViewer';
+
+// Lazy loaded heavy components
+const WorkGallery = React.lazy(() => import('./components/WorkGallery'));
+const AboutMe = React.lazy(() => import('./components/AboutMe'));
+const PlaygroundGallery = React.lazy(() => import('./components/Playground'));
+const NotFound = React.lazy(() => import('./components/NotFound'));
+const CaseStudyViewer = React.lazy(() => import('./components/CaseStudyViewer'));
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -390,6 +392,8 @@ export default function App() {
       >
       </div>
 
+      <main>
+
       {!isPreloaderDone && (
         <Preloader 
           onStartReveal={() => setIsHeroActive(true)}
@@ -506,26 +510,28 @@ export default function App() {
       {/* ── Brands Collaboration Section ── */}
       <BrandsSection theme={theme} />
 
-      {/* ── Work Gallery Overlay ── */}
-      {isGalleryOpen && <WorkGallery theme={theme} onClose={() => navigateWithTransition('home')} navigate={navigateWithTransition} />}
+      <Suspense fallback={null}>
+        {/* ── Work Gallery Overlay ── */}
+        {isGalleryOpen && <WorkGallery theme={theme} onClose={() => navigateWithTransition('home')} navigate={navigateWithTransition} />}
 
-      {/* ── About Me Overlay ── */}
-      {isAboutOpen && <AboutMe theme={theme} onClose={() => navigateWithTransition('home')} />}
+        {/* ── About Me Overlay ── */}
+        {isAboutOpen && <AboutMe theme={theme} onClose={() => navigateWithTransition('home')} />}
 
-      {/* ── Playground Gallery Overlay ── */}
-      {isPlaygroundOpen && <PlaygroundGallery theme={theme} activeChar={activeChar} onSwitchChar={switchTo} onClose={() => navigateWithTransition('home')} />}
+        {/* ── Playground Gallery Overlay ── */}
+        {isPlaygroundOpen && <PlaygroundGallery theme={theme} activeChar={activeChar} onSwitchChar={switchTo} onClose={() => navigateWithTransition('home')} />}
 
-      {/* ── 404 Error Overlay ── */}
-      {is404Open && <NotFound theme={theme} activeChar={activeChar} navigateWithTransition={navigateWithTransition} />}
+        {/* ── 404 Error Overlay ── */}
+        {is404Open && <NotFound theme={theme} activeChar={activeChar} navigateWithTransition={navigateWithTransition} />}
 
-      {/* ── Case Study Viewer Overlay ── */}
-      {activeCaseStudyIndex !== null && (
-        <CaseStudyViewer 
-          startIndex={activeCaseStudyIndex} 
-          onClose={() => navigateWithTransition('work')} 
-          theme={theme} 
-        />
-      )}
+        {/* ── Case Study Viewer Overlay ── */}
+        {activeCaseStudyIndex !== null && (
+          <CaseStudyViewer 
+            startIndex={activeCaseStudyIndex} 
+            onClose={() => navigateWithTransition('work')} 
+            theme={theme} 
+          />
+        )}
+      </Suspense>
 
       {/* ── Bottom Drawer ── */}
       {isPreloaderDone && activePage !== '404' && (
@@ -538,6 +544,7 @@ export default function App() {
 
       {/* ── Footer ── */}
       {activePage !== '404' && <Footer theme={theme} activeChar={activeChar} />}
+      </main>
     </>
   );
 }

@@ -1,212 +1,39 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import gsap from 'gsap';
+import React, { useState, useEffect } from 'react';
 
-export default function BottomDrawer({ theme, activePage, navigateWithTransition }) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [animating, setAnimating] = useState(false);
-
-  const drawerRef = useRef(null);
-  const overlayRef = useRef(null);
-
-  const toggleDrawer = () => {
-    if (animating) return;
-    const nextState = !isOpen;
-    setIsOpen(nextState);
-    
-    const heroContainer = document.querySelector('.hero-container');
-    const workSection = document.querySelector('.work-section');
-    setAnimating(true);
-
-    if (nextState) {
-      const tl = gsap.timeline({ onComplete: () => setAnimating(false) });
-      tl.to(overlayRef.current, { autoAlpha: 1, duration: 0.4, ease: "power2.out" }, 0);
-      tl.to([heroContainer, workSection], { 
-        filter: 'blur(8px) saturate(0.8) brightness(0.7)',
-        scale: 1.02,
-        duration: 0.5,
-        ease: "power3.out"
-      }, 0);
-      tl.to(drawerRef.current, {
-        y: "0%",
-        duration: 0.7,
-        ease: "expo.out"
-      }, 0);
-      tl.fromTo('.drawer-item', 
-        { y: 20, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.5, stagger: 0.05, ease: "back.out(1.2)" },
-        0.2
-      );
-    } else {
-      const tl = gsap.timeline({ onComplete: () => setAnimating(false) });
-      tl.to(drawerRef.current, {
-        y: "100%",
-        duration: 0.5,
-        ease: "power3.in"
-      }, 0);
-      tl.to(overlayRef.current, { autoAlpha: 0, duration: 0.4, ease: "power2.in" }, 0.1);
-      tl.to([heroContainer, workSection], { 
-        filter: 'blur(0px) saturate(1) brightness(1)',
-        scale: 1,
-        duration: 0.5,
-        ease: "power2.inOut"
-      }, 0.1);
-    }
-  };
-
-  const closeDrawer = useCallback(() => {
-    if (animating || !isOpen) return;
-    setIsOpen(false);
-    
-    const heroContainer = document.querySelector('.hero-container');
-    const workSection = document.querySelector('.work-section');
-    setAnimating(true);
-
-    const tl = gsap.timeline({ onComplete: () => setAnimating(false) });
-    tl.to(drawerRef.current, {
-      y: "100%",
-      duration: 0.5,
-      ease: "power3.in"
-    }, 0);
-    tl.to(overlayRef.current, { autoAlpha: 0, duration: 0.4, ease: "power2.in" }, 0.1);
-    tl.to([heroContainer, workSection], { 
-      filter: 'blur(0px) saturate(1) brightness(1)',
-      scale: 1,
-      duration: 0.5,
-      ease: "power2.inOut"
-    }, 0.1);
-  }, [isOpen, animating]);
+export default function BottomDrawer({ theme }) {
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape' && isOpen) closeDrawer();
+    const handleScroll = () => {
+      if (window.scrollY > window.innerHeight * 0.5) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
     };
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, closeDrawer]);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
-  const handleItemClick = (e, target) => {
-    // Add ripple effect
-    const rect = e.currentTarget.getBoundingClientRect();
-    const ripple = document.createElement('span');
-    ripple.classList.add('ripple');
-    const size = Math.max(rect.width, rect.height);
-    ripple.style.width = ripple.style.height = size + 'px';
-    ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
-    ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
-    ripple.style.background = `${theme.text}30`;
-    e.currentTarget.appendChild(ripple);
-    
-    setTimeout(() => ripple.remove(), 600);
-    closeDrawer();
-    if (navigateWithTransition) {
-      navigateWithTransition(target);
-    }
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
     <>
-      {/* DRAWER OVERLAY */}
+      {/* BOTTOM BAR / SCROLL TO TOP */}
       <div 
-        ref={overlayRef}
-        className={`drawer-overlay ${isOpen ? 'active' : ''}`} 
-        onClick={closeDrawer}
-      ></div>
-
-      {/* DRAWER */}
-      <div ref={drawerRef} className={`drawer ${isOpen ? 'open' : ''}`}>
-        
-        {/* Header label */}
-        <div className="drawer-header-label">
-          <span>NAVIGATION</span>
-          <span style={{ opacity: 0.3 }}>ESC to close</span>
-        </div>
-
-        <div className="drawer-items">
-
-          {/* HOME */}
-          <button className={`drawer-item ${activePage === 'home' ? 'active-page' : ''}`} onClick={(e) => handleItemClick(e, 'home')}>
-            <div className="drawer-item-icon" style={{ background: activePage === 'home' ? theme.brand : '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)' }}>
-              <svg viewBox="0 0 24 24" fill={activePage === 'home' ? '#0d0d0d' : '#FCFAF2'} className="di-icon-svg">
-                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-              </svg>
-            </div>
-            <div className="drawer-item-text">
-              <div className="drawer-item-text-inner">
-                <span className="label-original" style={{ color: activePage === 'home' ? theme.brand : '#FCFAF2' }}>Home</span>
-                <span className="label-copy" style={{ color: theme.brand }}>Home</span>
-              </div>
-            </div>
-            {activePage === 'home' && <span className="drawer-item-active-dot" style={{ background: theme.brand, width: 8, height: 8, borderRadius: '50%', marginLeft: 'auto', marginRight: 16 }} />}
-          </button>
-
-          {/* WORK */}
-          <button className={`drawer-item ${activePage === 'work' ? 'active-page' : ''}`} onClick={(e) => handleItemClick(e, 'work')}>
-            <div className="drawer-item-icon" style={{ background: activePage === 'work' ? theme.brand : '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)' }}>
-              <svg viewBox="0 0 24 24" fill={activePage === 'work' ? '#0d0d0d' : '#FCFAF2'} className="di-icon-svg">
-                <path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z" />
-              </svg>
-            </div>
-            <div className="drawer-item-text">
-              <div className="drawer-item-text-inner">
-                <span className="label-original" style={{ color: activePage === 'work' ? theme.brand : '#FCFAF2' }}>Work</span>
-                <span className="label-copy" style={{ color: theme.brand }}>Work</span>
-              </div>
-            </div>
-            {activePage === 'work' && <span className="drawer-item-active-dot" style={{ background: theme.brand, width: 8, height: 8, borderRadius: '50%', marginLeft: 'auto', marginRight: 16 }} />}
-          </button>
-
-          {/* ABOUT */}
-          <button className={`drawer-item ${activePage === 'about' ? 'active-page' : ''}`} onClick={(e) => handleItemClick(e, 'about')}>
-            <div className="drawer-item-icon" style={{ background: activePage === 'about' ? theme.brand : '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)' }}>
-              <svg viewBox="0 0 24 24" fill={activePage === 'about' ? '#0d0d0d' : '#FCFAF2'} className="di-icon-svg">
-                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-              </svg>
-            </div>
-            <div className="drawer-item-text">
-              <div className="drawer-item-text-inner">
-                <span className="label-original" style={{ color: activePage === 'about' ? theme.brand : '#FCFAF2' }}>About</span>
-                <span className="label-copy" style={{ color: theme.brand }}>About</span>
-              </div>
-            </div>
-            {activePage === 'about' && <span className="drawer-item-active-dot" style={{ background: theme.brand, width: 8, height: 8, borderRadius: '50%', marginLeft: 'auto', marginRight: 16 }} />}
-          </button>
-
-          {/* PLAYGROUND */}
-          <button className={`drawer-item ${activePage === 'playground' ? 'active-page' : ''}`} onClick={(e) => handleItemClick(e, 'playground')}>
-            <div className="drawer-item-icon" style={{ background: activePage === 'playground' ? theme.brand : '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)' }}>
-              <svg viewBox="0 0 24 24" fill={activePage === 'playground' ? '#0d0d0d' : '#FCFAF2'} className="di-icon-svg">
-                <path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm3-3c-.83 0-1.5-.67-1.5-1.5S17.67 9 18.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
-              </svg>
-            </div>
-            <div className="drawer-item-text">
-              <div className="drawer-item-text-inner">
-                <span className="label-original" style={{ color: activePage === 'playground' ? theme.brand : '#FCFAF2' }}>Playground</span>
-                <span className="label-copy" style={{ color: theme.brand }}>Playground</span>
-              </div>
-            </div>
-            {activePage === 'playground' && <span className="drawer-item-active-dot" style={{ background: theme.brand, width: 8, height: 8, borderRadius: '50%', marginLeft: 'auto', marginRight: 16 }} />}
-          </button>
-
-        </div>
-
-
-      </div>
-
-
-
-
-      {/* BOTTOM BAR */}
-      <div 
-        className={`glass-island-menu ${isOpen ? 'drawer-open' : ''}`}
+        className="glass-island-menu"
         style={{
-          opacity: 1,
-          pointerEvents: 'auto',
-          transition: 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+          opacity: isVisible ? 1 : 0,
+          pointerEvents: isVisible ? 'auto' : 'none',
+          transform: isVisible ? 'translateX(-50%) translateY(0)' : 'translateX(-50%) translateY(100px)',
+          transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
         }}
       >
         <div 
           className="glass-island-inner" 
-          onClick={toggleDrawer}
+          onClick={scrollToTop}
           style={{
             background: '#121212',
             border: `1px solid rgba(255, 255, 255, 0.1)`,
@@ -220,10 +47,10 @@ export default function BottomDrawer({ theme, activePage, navigateWithTransition
             transition: 'all 0.3s ease'
           }}
         >
-          {/* Left Side: White Avatar Square Box (Fills completely, no gaps, enlarged to 56px) */}
+          {/* Left Side: White Avatar Square Box */}
           <div style={{
-            width: '56px',
-            height: '56px',
+            width: '40px',
+            height: '40px',
             borderRadius: '10px',
             backgroundColor: '#ffffff',
             display: 'flex',
@@ -243,7 +70,7 @@ export default function BottomDrawer({ theme, activePage, navigateWithTransition
             />
           </div>
 
-          {/* Middle Section: Text Titles (strictly using var(--font-heading) and var(--font-body)) */}
+          {/* Middle Section: Text Title */}
           <div style={{
             display: 'flex',
             flexDirection: 'column',
@@ -259,56 +86,36 @@ export default function BottomDrawer({ theme, activePage, navigateWithTransition
               color: '#ffffff',
               lineHeight: 1.2
             }}>
-              {isOpen ? 'CLOSE MENU' : 'SAUVEER SINHA'}
+              SAUVEER SINHA
             </span>
-            {isOpen && (
-              <span style={{
-                fontSize: '9px',
-                fontWeight: 500,
-                fontFamily: 'var(--font-body)',
-                color: 'rgba(255, 255, 255, 0.4)',
-                letterSpacing: '0.02em',
-                marginTop: '1px',
-                textTransform: 'uppercase'
-              }}>
-                Return to site
-              </span>
-            )}
+            <span style={{
+              fontSize: '9px',
+              fontWeight: 500,
+              fontFamily: 'var(--font-body)',
+              color: 'rgba(255, 255, 255, 0.4)',
+              letterSpacing: '0.02em',
+              marginTop: '1px',
+              textTransform: 'uppercase'
+            }}>
+              Scroll to top
+            </span>
           </div>
 
-          {/* Right Side: Animated 3-line sandwich button (all bars same size: 20px) */}
+          {/* Right Side: Up Arrow Icon */}
           <div style={{
-            width: '20px',
-            height: '14px',
+            width: '24px',
+            height: '24px',
             display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
+            alignItems: 'center',
+            justifyContent: 'center',
             marginLeft: '8px',
-            position: 'relative',
-            cursor: 'pointer',
+            color: theme.brand,
             flexShrink: 0
           }}>
-            <span style={{ 
-              width: '20px', 
-              height: '2px', 
-              backgroundColor: isOpen ? '#ffffff' : theme.brand, 
-              transition: 'all 0.3s ease',
-              transform: isOpen ? 'rotate(45deg) translate(4px, 4.5px)' : 'none'
-            }} />
-            <span style={{ 
-              width: '20px', 
-              height: '2px', 
-              backgroundColor: isOpen ? '#ffffff' : theme.brand, 
-              transition: 'all 0.2s ease',
-              opacity: isOpen ? 0 : 1
-            }} />
-            <span style={{ 
-              width: '20px', 
-              height: '2px', 
-              backgroundColor: isOpen ? '#ffffff' : theme.brand, 
-              transition: 'all 0.3s ease',
-              transform: isOpen ? 'rotate(-45deg) translate(4px, -4.5px)' : 'none'
-            }} />
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '18px', height: '18px' }}>
+              <line x1="12" y1="19" x2="12" y2="5"></line>
+              <polyline points="5 12 12 5 19 12"></polyline>
+            </svg>
           </div>
         </div>
       </div>

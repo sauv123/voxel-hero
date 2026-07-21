@@ -121,8 +121,8 @@ export default function BrutalistCube() {
               <div className="bc-face bc-face--front">
                 <div className="bc-content">
                   <div className="bc-face-body">
-                    <span className="bc-highlight">Hi im Sauveer</span><br/>
-                    equivalent to a hundred men In Sanskrit
+                    <span className="bc-highlight">Hi, I'm Sauveer &mdash;</span><br/>
+                    equivalent to a hundred men in Sanskrit.
                   </div>
                 </div>
               </div>

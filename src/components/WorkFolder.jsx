@@ -176,7 +176,6 @@ export default function WorkFolder({ theme, onOpen }) {
     // Zoom out the whole row a bit
     tl.to(wordRow.current, { scale: 0.8, opacity: 0, duration: 0.6, ease: "power3.in" }, 0);
     tl.to(curiousText.current, { opacity: 0, y: -20, duration: 0.4 }, 0);
-    tl.to('.mobile-work-cta', { opacity: 0, y: 10, duration: 0.4 }, 0);
   };
 
   // Handle individual file card hover
@@ -237,12 +236,7 @@ export default function WorkFolder({ theme, onOpen }) {
                       </div>
                       <div className="folder-ss">SS</div>
                   </div>
-                  {/* Mobile Call To Action */}
-                  <div className="mobile-work-cta" style={{
-                    display: "none", position: "absolute", bottom: -50, width: "100%", 
-                    textAlign: "center", fontSize: 13, fontWeight: 700, 
-                    color: theme.text, fontFamily: "var(--font-heading)", letterSpacing: 1
-                  }}>TAP FOLDER TO OPEN</div>
+                  {/* Removed Mobile Call To Action */}
               </div>
               
               <span className="word-char desktop-char" ref={addToRefs} style={{ color: `${theme.text}20` }}>r</span>
@@ -250,14 +244,8 @@ export default function WorkFolder({ theme, onOpen }) {
           </div>
       </section>
       
-      <style>{`
-        @media (max-width: 768px) {
-          .mobile-work-cta {
-            display: block !important;
-            cursor: pointer;
-          }
-        }
-      `}</style>
+      
+
     </>
   );
 }
