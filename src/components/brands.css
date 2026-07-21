@@ -1,7 +1,6 @@
 .brands-section {
     background: #000000 !important;
-    min-height: 100vh;
-    padding: 120px 60px;
+    padding: 80px 40px;
     position: relative;
     overflow: hidden;
 }
@@ -21,7 +20,7 @@
 
 .section-header h2 {
     font-family: var(--font-heading);
-    font-size: clamp(3rem, 6vw, 6rem);
+    font-size: clamp(2rem, 4vw, 4rem);
     font-weight: 900;
     line-height: 1;
     letter-spacing: -0.05em;
@@ -35,7 +34,7 @@
 
 .logo-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     gap: 1px;
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -44,7 +43,7 @@
 
 .logo-item {
     background: #000000;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 16 / 9;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -124,21 +123,25 @@
 /* Responsive */
 @media (max-width: 1200px) {
     .logo-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
     }
 }
 
 @media (max-width: 768px) {
     .brands-section {
-        padding: 80px 20px;
+        padding: 60px 20px;
+    }
+
+    .section-header {
+        margin-bottom: 40px;
     }
 
     .logo-grid {
-        grid-template-columns: repeat(1, 1fr);
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .logo-item {
-        aspect-ratio: 1;
+        aspect-ratio: 3 / 2;
         padding: 15px;
     }
 }

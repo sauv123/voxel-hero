@@ -8,7 +8,7 @@ import * as THREE from 'three';
 
 const CHARACTERS = ['deer', 'duck', 'dino'];
 
-const CharacterSwitch = forwardRef(({ activeChar, ctaHover, onClick }, ref) => {
+const CharacterSwitch = forwardRef(({ activeChar, ctaHover }, ref) => {
   const deerRef = useRef();
   const duckRef = useRef();
   const dinoRef = useRef();
@@ -30,7 +30,12 @@ const CharacterSwitch = forwardRef(({ activeChar, ctaHover, onClick }, ref) => {
   );
 });
 
-const Scene = ({ activeChar, ctaHover, onCharacterClick, charRef, minimal = false }) => {
+const Scene = ({ activeChar, ctaHover, onCharacterClick, onCharacterHover, charRef, minimal = false }) => {
+  const isMobile = typeof window !== 'undefined' ? window.innerWidth < 768 : false;
+  
+  const charPos = minimal ? [0, -1, 0] : (isMobile ? [0, -1.0, 0] : [2.2, -0.5, 0]);
+  const charRot = minimal ? [0, -0.5, 0] : (isMobile ? [0, -0.2, 0] : [0, -Math.PI / 2 + 0.3, 0]);
+  const shadowPos = isMobile ? [0, -2.5, 0] : [2.2, -2.2, 0];
 
   return (
     <>
@@ -52,8 +57,20 @@ const Scene = ({ activeChar, ctaHover, onCharacterClick, charRef, minimal = fals
       <Environment preset="city" />
 
       <group 
-        position={minimal ? [0, -1, 0] : [1.8, -0.5, 0]} 
-        rotation={minimal ? [0, -0.5, 0] : [0, -Math.PI / 2 + 0.3, 0]}
+        position={charPos} 
+        rotation={charRot}
+        scale={isMobile ? 0.95 : 0.93} // Reduced size by 5-8%
+        onPointerOver={(e) => {
+          e.stopPropagation();
+          if (onCharacterHover) onCharacterHover(true);
+        }}
+        onPointerOut={() => {
+          if (onCharacterHover) onCharacterHover(false);
+        }}
+        onClick={(e) => {
+          e.stopPropagation();
+          if (onCharacterClick) onCharacterClick();
+        }}
       >
         <CharacterSwitch
           ref={charRef}
@@ -64,7 +81,7 @@ const Scene = ({ activeChar, ctaHover, onCharacterClick, charRef, minimal = fals
       </group>
 
       <ContactShadows
-        position={[1.8, -2.2, 0]}
+        position={shadowPos}
         opacity={0.5}
         scale={12}
         blur={2}

@@ -20,7 +20,7 @@ export default function InteractiveProjects({ theme, onProjectSelect }) {
       gsap.to(wrappers, { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out', stagger: 0.1, delay: 0.2 });
 
       // 2. PARALLAX AND ENTRANCE
-      wrappers.forEach((wrapper, i) => {
+      wrappers.forEach((wrapper) => {
         const shoeImg = wrapper.querySelector('.ps-shoe img');
         const aside = wrapper.querySelector('.ps-aside');
 
@@ -74,7 +74,6 @@ export default function InteractiveProjects({ theme, onProjectSelect }) {
         content.addEventListener('mouseenter', (e) => {
           const bg = e.currentTarget.dataset.txt;
           const txt = e.currentTarget.dataset.bg;
-          const title = e.currentTarget.dataset.title;
           const cta = e.currentTarget.dataset.cta;
           
           cursorText.innerText = cta;

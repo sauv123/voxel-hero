@@ -9,6 +9,7 @@ export const PROJECTS = [
     textColor: "#FFFFFF",
     img: "/olo.webp",
     cta: "Turning small hellos into meaningful growth through introverted design.",
+    cursorCta: "Discover introverted design",
     link: "https://olocasestudy.netlify.app"
   },
   {
@@ -21,6 +22,7 @@ export const PROJECTS = [
     textColor: "#FFFFFF",
     img: "/works/media__1777587436505.webp",
     cta: "Transforms complexity into visual clarity instantly.",
+    cursorCta: "See the visual clarity process",
     link: "https://eli5casestudy.netlify.app"
   },
   {
@@ -33,6 +35,7 @@ export const PROJECTS = [
     textColor: "#FFFFFF",
     img: "/ikeapeanuts.webp",
     cta: "Transforming retail spaces into emotional storytelling experiences.",
+    cursorCta: "Explore narrative retail",
     link: "https://ikeapeanutscasestudy.netlify.app/"
   },
   {
@@ -45,6 +48,7 @@ export const PROJECTS = [
     textColor: "#FFFFFF",
     img: "/krizia.mp4",
     cta: "Transforming sound into a global visual experience.",
+    cursorCta: "See how I visualized sound",
     link: "https://kriziacasestudy.netlify.app/"
   },
   {
@@ -57,6 +61,7 @@ export const PROJECTS = [
     textColor: "#FFFFFF",
     img: "/mica.webp", 
     cta: "Designing belonging through emotionally intelligent housing experiences.",
+    cursorCta: "See how I designed belonging",
     link: "" // Can be added later
   }
 ];

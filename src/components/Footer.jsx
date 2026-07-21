@@ -1,263 +1,439 @@
 import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import './footer.css';
+import InteractiveBlocks from './InteractiveBlocks';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function Footer({ theme }) {
-  const safeTheme = theme || { bg: '#39FF14', text: '#000' };
-  const accentColor = (safeTheme.bg === '#0e0e0e' || safeTheme.bg === '#000' || safeTheme.bg === '#111') ? safeTheme.text : safeTheme.bg;
+// ─── DRAGGABLE PIXEL BLOCK COMPONENT ─────────────────────────────────
+function DraggableBlock({ id, targetX, targetY, currentX, currentY, brandColor, isDinoTheme, shade, onBlockMove }) {
+  const blockRef = useRef(null);
+  const cellSize = 50; 
+  const [position, setPosition] = useState({ x: currentX * cellSize, y: currentY * cellSize });
+  const [isDragging, setIsDragging] = useState(false);
+  
+  const dragStart = useRef({ x: 0, y: 0 });
+  const blockStart = useRef({ x: 0, y: 0 });
 
-  const footerRef = useRef();
-  const flameContainerRef = useRef();
-  const [audioReady, setAudioReady] = useState(false);
-
-  // Audio State Context 
-  const audioCtxRef = useRef(null);
-  const mainGainRef = useRef(null);
-  const throttleFilterRef = useRef(null);
-  const osc1Ref = useRef(null);
-  const osc2Ref = useRef(null);
-  const subOscRef = useRef(null);
-  const stopTimeoutRef = useRef(null);
-
-  // High performance guitar strum synth
-  const initGuitarStrum = () => {
-    if (audioCtxRef.current) return;
-
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    audioCtxRef.current = ctx;
-
-    const mainGain = ctx.createGain();
-    mainGain.gain.setValueAtTime(0.5, ctx.currentTime);
-    mainGain.connect(ctx.destination);
-    mainGainRef.current = mainGain;
-
-    setAudioReady(true);
-  };
-
-  const playStrum = async () => {
-    if (!audioCtxRef.current) {
-      initGuitarStrum();
-    }
-    
-    const ctx = audioCtxRef.current;
-    if (ctx.state === 'suspended') {
-      await ctx.resume();
-    }
-    
-    const now = ctx.currentTime;
-    
-    // Sweet Cmaj9 open chord: C3, G3, B3, D4, E4
-    const freqs = [130.81, 196.00, 246.94, 293.66, 329.63];
-    const strumDuration = 0.05; // Time between each string pluck
-
-    freqs.forEach((freq, index) => {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      const filter = ctx.createBiquadFilter();
-
-      // Plucked string approximation (Karplus-Strong-ish envelope)
-      osc.type = 'triangle'; // Sweeter sounding
-      osc.frequency.setValueAtTime(freq, now);
-
-      filter.type = 'lowpass';
-      filter.frequency.setValueAtTime(2500, now);
-      filter.frequency.exponentialRampToValueAtTime(200, now + 2.0);
-
-      gain.gain.setValueAtTime(0, now);
-      const pluckTime = now + (index * strumDuration);
-      
-      gain.gain.setValueAtTime(0, pluckTime);
-      gain.gain.linearRampToValueAtTime(0.4, pluckTime + 0.05);
-      gain.gain.exponentialRampToValueAtTime(0.001, pluckTime + 3.0);
-
-      osc.connect(filter);
-      filter.connect(gain);
-      gain.connect(mainGainRef.current);
-
-      osc.start(pluckTime);
-      osc.stop(pluckTime + 3.0);
-    });
-  };
-
+  // Synced movement when solved/reset is triggered from parent controls
   useEffect(() => {
-    const handleInteraction = () => {
-      if (!audioCtxRef.current) {
-        initGuitarStrum();
-      } else if (audioCtxRef.current.state === 'suspended') {
-        audioCtxRef.current.resume();
-      }
-    };
-
-    const events = ['click', 'touchstart', 'scroll', 'pointerdown', 'keydown', 'mousemove'];
-    events.forEach(e => window.addEventListener(e, handleInteraction, { once: true }));
-    return () => events.forEach(e => window.removeEventListener(e, handleInteraction));
-  }, []);
-
-  useEffect(() => {
-    const footer = footerRef.current;
-    const flameContainer = flameContainerRef.current;
-
-    gsap.set(flameContainer, { yPercent: 65, scaleY: 0.3 });
-
-    let played = false;
-    let st = ScrollTrigger.create({
-      trigger: footer,
-      start: "top 70%", 
-      end: "bottom bottom", 
-      scrub: 1.2,
-      onUpdate: (self) => {
-        const progress = self.progress;
-        
-        gsap.set(flameContainer, {
-          yPercent: (1 - progress) * 65,
-          scaleY: 0.3 + (progress * 0.7)
-        });
-
-        if (progress >= 0.98 && !played) {
-          played = true;
-          playStrum();
-        } else if (progress < 0.9) {
-          played = false; // Reset so it can play again when scrolling back up and down
+    if (!isDragging) {
+      gsap.to(blockRef.current, {
+        x: currentX * cellSize,
+        y: currentY * cellSize,
+        duration: 0.5,
+        ease: "back.out(1.2)",
+        onComplete: () => {
+          setPosition({ x: currentX * cellSize, y: currentY * cellSize });
         }
-      }
-    });
+      });
+    }
+  }, [currentX, currentY, isDragging]);
 
-    return () => {
-      st.kill();
-    };
-  }, [audioReady]);
-
-  const handleLinkEnter = (e) => {
-    const primary = e.currentTarget.querySelector('.primary-text') || e.currentTarget.querySelector('.social-primary-text');
-    const clone = e.currentTarget.querySelector('.clone-text') || e.currentTarget.querySelector('.social-clone-text');
-    if (primary && clone) gsap.to([primary, clone], { yPercent: -100, duration: 0.3, ease: "power3.inOut" });
+  const handlePointerDown = (e) => {
+    e.preventDefault();
+    e.currentTarget.setPointerCapture(e.pointerId);
+    setIsDragging(true);
+    dragStart.current = { x: e.clientX, y: e.clientY };
+    blockStart.current = { x: position.x, y: position.y };
   };
 
-  const handleLinkLeave = (e) => {
-    const primary = e.currentTarget.querySelector('.primary-text') || e.currentTarget.querySelector('.social-primary-text');
-    const clone = e.currentTarget.querySelector('.clone-text') || e.currentTarget.querySelector('.social-clone-text');
-    if (primary && clone) gsap.to([primary, clone], { yPercent: 0, duration: 0.3, ease: "power3.inOut" });
+  const handlePointerMove = (e) => {
+    if (!isDragging) return;
+    const dx = e.clientX - dragStart.current.x;
+    const dy = e.clientY - dragStart.current.y;
+    
+    // Grid boundary clamping (4x5 grid: max X is 150, max Y is 200)
+    const clampedDragX = Math.max(-4, Math.min(154, blockStart.current.x + dx));
+    const clampedDragY = Math.max(-4, Math.min(204, blockStart.current.y + dy));
+
+    setPosition({ x: clampedDragX, y: clampedDragY });
   };
 
-  const sayHiRef = useRef();
+  const handlePointerUp = (e) => {
+    if (!isDragging) return;
+    setIsDragging(false);
+    e.currentTarget.releasePointerCapture(e.pointerId);
+    
+    const snappedX = Math.round(position.x / cellSize);
+    const snappedY = Math.round(position.y / cellSize);
+    
+    const clampedGridX = Math.max(0, Math.min(3, snappedX));
+    const clampedGridY = Math.max(0, Math.min(4, snappedY));
 
-  const handleSayHiMove = (e) => {
-    const rect = sayHiRef.current.getBoundingClientRect();
-    const cx = rect.left + rect.width / 2;
-    const cy = rect.top + rect.height / 2;
-    gsap.to(sayHiRef.current, { x: (e.clientX - cx) * 0.6, y: (e.clientY - cy) * 0.6, duration: 0.4, ease: 'power2.out' });
+    // Notify parent to update coordinates
+    onBlockMove(id, clampedGridX, clampedGridY);
   };
 
-  const handleSayHiLeave = () => {
-    gsap.to(sayHiRef.current, { x: 0, y: 0, duration: 0.7, ease: 'elastic.out(1, 0.4)' });
+  const handlePointerCancel = (e) => {
+    if (!isDragging) return;
+    setIsDragging(false);
+    e.currentTarget.releasePointerCapture(e.pointerId);
+  };
+
+  // Puzzle feedback: block glows solid brand color when aligned correctly
+  const isAligned = currentX === targetX && currentY === targetY;
+
+  const getShadedColor = () => {
+    if (isAligned) return brandColor; // Solid glow when correct
+    // Translucent shading when misplaced
+    return brandColor.startsWith('#')
+      ? `${brandColor}${shade === 1 ? 'aa' : '77'}`
+      : brandColor;
   };
 
   return (
-    <div className="footer-wrapper">
-      <footer id="brutalist-footer" className="brutalist-footer" ref={footerRef}>
-        <div className="flame-bg-container">
-          <div id="flame-container" className="flame-wrapper" ref={flameContainerRef}>
-            <svg className="flame-svg" viewBox="0 0 1440 400" preserveAspectRatio="xMidYBottom slice" xmlns="http://www.w3.org/2000/svg">
-              <path fill={accentColor} d="
-                M 0,400 
-                L 0,100 
-                Q 40,20 90,160 
-                T 220,180 
-                Q 260,80 320,240 
-                T 460,250 
-                Q 520,110 580,260
-                L 1440,400 Z" 
-              />
-              <path fill={accentColor} d="
-                M 1440,400 
-                L 1440,100 
-                Q 1400,20 1350,160 
-                T 1220,180 
-                Q 1180,80 1120,240 
-                T 980,250 
-                Q 920,110 860,260
-                L 0,400 Z" 
-              />
-
-              <g stroke="#0d0d0d" strokeWidth="14" fill="none" strokeLinejoin="round" strokeLinecap="round">
-                <path id="char-body" fill={accentColor} d="M 600,400 C 580,240 640,120 720,100 C 780,85 840,160 830,260 C 880,240 910,320 880,400" />
-                <path d="M 870,160 L 910,60" />
-                <circle cx="858" cy="195" r="10" fill="#0d0d0d" />
-                <path d="M 680,285 Q 700,270 720,285" />
-                <path d="M 740,285 Q 760,270 780,285" />
-                <path d="M 710,320 L 710,360 M 740,320 L 740,360" fill="none" />
-                <path d="M 570,360 L 620,350 L 630,390 L 580,400 Z" fill="#0d0d0d" />
-                <path d="M 860,350 L 910,360 L 900,400 L 850,390 Z" fill="#0d0d0d" />
-              </g>
-            </svg>
-            <div className="solid-floor" style={{ backgroundColor: accentColor }}></div>
-          </div>
-        </div>
-
-        <div className="footer-content">
-          <div className="footer-col-1">
-            {['Home', 'Work', 'Playground', 'About'].map((text, idx) => (
-              <a 
-                href="#" 
-                key={idx}
-                className="brutal-nav-link"
-                onMouseEnter={handleLinkEnter}
-                onMouseLeave={handleLinkLeave}
-              >
-                <span className="primary-text text-[#0d0d0d]">{text}</span>
-                <span className="clone-text text-white">{text}</span>
-              </a>
-            ))}
-          </div>
-
-          <div className="footer-col-2">
-            <h2 
-              className="say-hi" 
-              ref={sayHiRef}
-              style={{ color: '#0d0d0d', cursor: 'pointer', display: 'inline-block' }}
-              onMouseMove={handleSayHiMove}
-              onMouseLeave={handleSayHiLeave}
-              onClick={() => window.dispatchEvent(new CustomEvent('openContactModal'))}
-            >
-              Say Hi!
-            </h2>
-          </div>
-
-          <div className="footer-col-3">
-            <div className="social-links" style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
-              {[
-                { name: 'LINKEDIN', url: 'https://www.linkedin.com/in/sauveer-sinha-684409215/' },
-                { name: 'GMAIL', url: 'mailto:hello@example.com' },
-                { name: 'INSTAGRAM', url: '#' }
-              ].map((social, idx) => (
-                <a 
-                  href={social.url}
-                  key={idx}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="brutal-nav-link"
-                  onMouseEnter={handleLinkEnter}
-                  onMouseLeave={handleLinkLeave}
-                  style={{ marginBottom: '1rem', justifyContent: 'flex-end' }}
-                >
-                  <span className="primary-text text-[#0d0d0d]">{social.name} ↗</span>
-                  <span className="clone-text text-white">{social.name} ↗</span>
-                </a>
-              ))}
-            </div>
-
-            <div className="footer-meta" style={{ marginTop: '24px' }}>
-              <span className="copyright" style={{ color: '#0d0d0d', fontWeight: 700 }}>© 2026 Sauveer Sinha</span>
-              <p className="meta-text" style={{ color: '#0d0d0d', fontSize: '1.25rem', fontWeight: 600, lineHeight: 1.4, maxWidth: '280px', marginTop: '16px' }}>
-                I hope you had as much fun exploring this site as I had building it.
-              </p>
-            </div>
-          </div>
-        </div>
-      </footer>
+    <div
+      ref={blockRef}
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerUp}
+      onPointerCancel={handlePointerCancel}
+      style={{
+        position: "absolute",
+        width: `${cellSize - 4}px`,
+        height: `${cellSize - 4}px`,
+        left: 0,
+        top: 0,
+        transform: `translate3d(${position.x}px, ${position.y}px, 0)`,
+        backgroundColor: getShadedColor(),
+        borderRadius: "4px",
+        cursor: isDragging ? "grabbing" : "grab",
+        zIndex: isDragging ? 100 : 10,
+        boxShadow: isDragging 
+          ? `0 12px 24px ${brandColor}50` 
+          : (isAligned ? `0 2px 8px ${brandColor}30` : "0 4px 8px rgba(0, 0, 0, 0.4)"),
+        transition: isDragging ? "none" : "transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        border: isAligned ? `1px solid #ffffff` : "1px solid rgba(255, 255, 255, 0.15)",
+        touchAction: "none"
+      }}
+    >
+      <div style={{
+        width: "4px",
+        height: "4px",
+        borderRadius: "50%",
+        backgroundColor: isDinoTheme ? "#fff" : "#000",
+        opacity: isAligned ? 0.6 : 0.25
+      }} />
     </div>
+  );
+}
+
+// ─── STYLISH TEXT LINK COMPONENT ──────────────────────────────────────
+function FooterTextLink({ href, text, brandColor }) {
+  const [isHovered, setIsHovered] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
+
+  const handleClick = () => {
+    setIsClicked(true);
+    setTimeout(() => setIsClicked(false), 150);
+  };
+
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onMouseDown={handleClick}
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        color: isHovered ? brandColor : "#ffffff",
+        textDecoration: "none",
+        fontFamily: "Space Mono, monospace",
+        fontSize: "14px",
+        fontWeight: 700,
+        letterSpacing: "0.05em",
+        textTransform: "uppercase",
+        transition: "all 0.25s cubic-bezier(0.16, 1, 0.3, 1)",
+        transform: isClicked ? "scale(0.93) translateX(2px)" : isHovered ? "translateX(4px)" : "none",
+        opacity: isHovered ? 1.0 : 0.65
+      }}
+    >
+      {text}
+      <span style={{
+        marginLeft: "4px",
+        display: "inline-block",
+        transform: isHovered ? "translate(3px, -3px)" : "none",
+        transition: "transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)"
+      }}>
+        ↗
+      </span>
+    </a>
+  );
+}
+
+// ─── MAIN FOOTER COMPONENT ──────────────────────────────────────────
+export default function Footer({ theme, activeChar = 'deer' }) {
+  const footerRef = useRef();
+  const [isMobile, setIsMobile] = useState(false);
+
+  const brandColor = theme?.brand || '#2ECC40';
+  const isDinoTheme = theme?.bg === '#0e0e0e';
+
+  // Core Puzzle positions forming a pixel monogram
+  const initialBlocks = [
+    { id: 1, targetX: 0, targetY: 0, currentX: 0, currentY: 0, shade: 0 },
+    { id: 2, targetX: 1, targetY: 0, currentX: 1, currentY: 0, shade: 1 },
+    { id: 3, targetX: 2, targetY: 0, currentX: 2, currentY: 0, shade: 2 },
+    { id: 4, targetX: 3, targetY: 0, currentX: 3, currentY: 0, shade: 0 },
+    { id: 5, targetX: 0, targetY: 1, currentX: 0, currentY: 1, shade: 1 },
+    { id: 6, targetX: 0, targetY: 2, currentX: 0, currentY: 2, shade: 2 },
+    { id: 7, targetX: 1, targetY: 2, currentX: 1, currentY: 2, shade: 0 },
+    { id: 8, targetX: 2, targetY: 2, currentX: 2, currentY: 2, shade: 1 },
+    { id: 9, targetX: 2, targetY: 3, currentX: 2, currentY: 3, shade: 2 },
+    { id: 10, targetX: 2, targetY: 4, currentX: 2, currentY: 4, shade: 0 },
+    { id: 11, targetX: 1, targetY: 4, currentX: 1, currentY: 4, shade: 1 },
+    { id: 12, targetX: 0, targetY: 4, currentX: 0, currentY: 4, shade: 2 }
+  ];
+
+  const [blocks, setBlocks] = useState(initialBlocks);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 960);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // GSAP Entrance reveals
+  useEffect(() => {
+    const el = footerRef.current;
+    gsap.set('.footer-fade', { opacity: 0, y: 35 });
+
+    const trigger = ScrollTrigger.create({
+      trigger: el,
+      start: "top 85%",
+      onEnter: () => {
+        gsap.to('.footer-fade', { 
+          opacity: 1, 
+          y: 0, 
+          duration: 0.8, 
+          stagger: 0.1, 
+          ease: "power3.out" 
+        });
+      },
+      onLeaveBack: () => {
+        gsap.set('.footer-fade', { opacity: 0, y: 35 });
+      }
+    });
+
+    return () => trigger.kill();
+  }, []);
+
+  // Update specific block position on drag snapping
+  const handleBlockMove = (id, newX, newY) => {
+    setBlocks(prev => prev.map(b => b.id === id ? { ...b, currentX: newX, currentY: newY } : b));
+  };
+
+  // Scramble block locations
+  const handleScramble = () => {
+    setBlocks(prev => prev.map(b => {
+      const rx = Math.floor(Math.random() * 4);
+      const ry = Math.floor(Math.random() * 5);
+      return { ...b, currentX: rx, currentY: ry };
+    }));
+  };
+
+  // Solve block locations instantly
+  const handleSolve = () => {
+    setBlocks(prev => prev.map(b => ({ ...b, currentX: b.targetX, currentY: b.targetY })));
+  };
+
+  // Detect if the puzzle grid monogram layout matches the solved target coordinates
+  const isSolved = blocks.every(b => b.currentX === b.targetX && b.currentY === b.targetY);
+
+  // Playful success stagger loop when puzzle is solved
+  useEffect(() => {
+    if (isSolved) {
+      gsap.fromTo('.puzzle-success-glow', 
+        { scale: 0.95, opacity: 0.5 }, 
+        { scale: 1.05, opacity: 1, duration: 0.4, repeat: 3, yoyo: true, ease: "power2.inOut" }
+      );
+    }
+  }, [isSolved]);
+
+  return (
+    <footer 
+      ref={footerRef} 
+      style={{
+        width: "100%",
+        backgroundColor: "#0d0d0d",
+        color: "#ffffff",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        position: "relative",
+        boxSizing: "border-box",
+        overflow: "hidden", 
+        borderTop: "1px solid rgba(255, 255, 255, 0.05)",
+        padding: isMobile ? "48px 24px 40px 24px" : "80px 6vw 48px 6vw",
+        zIndex: 20
+      }}
+    >
+      
+      {/* Editorial Dot Grid Texture */}
+      <div style={{
+        position: "absolute",
+        inset: 0,
+        opacity: 0.03,
+        pointerEvents: "none",
+        backgroundImage: `radial-gradient(rgba(255, 255, 255, 0.4) 1px, transparent 1px)`,
+        backgroundSize: "24px 24px"
+      }} />
+
+      {/* Merged Continuous Stack Layout */}
+      <div 
+        style={{
+          display: "flex",
+          flexDirection: isMobile ? "column" : "row",
+          width: "100%",
+          maxWidth: "1320px",
+          alignItems: "center", 
+          justifyContent: "space-between",
+          marginBottom: "48px",
+          position: "relative",
+          boxSizing: "border-box",
+          gap: isMobile ? "48px" : "80px"
+        }}
+      >
+        
+        {/* Left Column: Typography & Connect details */}
+        <div 
+          style={{
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: isMobile ? "center" : "flex-start",
+            textAlign: isMobile ? "center" : "left",
+            zIndex: 10,
+            boxSizing: "border-box"
+          }}
+        >
+          {/* Main Headline */}
+          <h2 
+            className="footer-fade"
+            style={{
+              fontFamily: "var(--font-heading)",
+              fontSize: isMobile ? "34px" : "48px",
+              fontWeight: 900,
+              lineHeight: 1.1,
+              color: "#ffffff",
+              marginBottom: "8px",
+              letterSpacing: "-0.03em"
+            }}
+          >
+            Design is better when you have fun.
+          </h2>
+
+          {/* Subtext directly under the headline */}
+          <p 
+            className="footer-fade"
+            style={{
+              fontSize: isMobile ? "13px" : "15px",
+              color: "rgba(255, 255, 255, 0.6)",
+              fontFamily: "var(--font-body)",
+              lineHeight: 1.5,
+              maxWidth: "520px",
+              margin: "0 0 32px 0"
+            }}
+          >
+            I hope you had as much fun exploring the site as much as I had building it.
+          </p>
+
+          {/* Static, low opacity labels & Stacked Link items underneath */}
+          <div 
+            className="footer-fade"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: isMobile ? "center" : "flex-start",
+              width: "100%",
+              boxSizing: "border-box"
+            }}
+          >
+            {/* Say Hi Label (Static text, no link action, lower opacity) */}
+            <div 
+              style={{
+                fontFamily: "var(--font-heading)",
+                fontSize: "20px",
+                fontWeight: 900,
+                textTransform: "uppercase",
+                letterSpacing: "0.05em",
+                opacity: 0.4, // Reduced opacity as requested
+                color: "#ffffff",
+                marginBottom: "16px",
+                userSelect: "none"
+              }}
+            >
+              Say Hi
+            </div>
+
+            {/* Spaced horizontal row of links placed directly under Say Hi */}
+            <div 
+              style={{
+                display: "flex",
+                flexDirection: isMobile ? "column" : "row",
+                alignItems: "center",
+                gap: isMobile ? "16px" : "24px",
+                boxSizing: "border-box"
+              }}
+            >
+              <FooterTextLink href="mailto:hello@example.com" text="Gmail" brandColor={brandColor} />
+              <FooterTextLink href="/resume.pdf" text="Résumé" brandColor={brandColor} />
+              <FooterTextLink href="https://www.linkedin.com/in/sauveer-sinha-684409215/" text="LinkedIn" brandColor={brandColor} />
+              <FooterTextLink href="https://wa.me/39324567890" text="WhatsApp" brandColor={brandColor} />
+            </div>
+          </div>
+        </div>
+
+        {/* Right Column: Interactive Blocks */}
+        <div 
+          className="footer-fade"
+          style={{
+            position: "relative",
+            width: "260px",
+            height: "290px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            flexShrink: 0,
+            boxSizing: "border-box"
+          }}
+        >
+          <InteractiveBlocks />
+        </div>
+
+      </div>
+
+      {/* Footer Bottom Line */}
+      <div 
+        style={{
+          width: "100%",
+          maxWidth: "1320px",
+          borderTop: "1px solid rgba(255, 255, 255, 0.08)",
+          paddingTop: "24px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          fontFamily: "Space Mono, monospace",
+          fontSize: "10px",
+          color: "rgba(255, 255, 255, 0.4)",
+          textTransform: "uppercase",
+          letterSpacing: "0.05em"
+        }}
+      >
+        <span>© 2026 Sauveer Sinha, Milan</span>
+      </div>
+
+    </footer>
   );
 }

@@ -142,7 +142,7 @@ const VoxelDino = forwardRef(({ ctaHover = false }, ref) => {
         groupRef.current.rotation.y += (0.0 - groupRef.current.rotation.y) * 0.1;
       } else {
         groupRef.current.rotation.z = 0;
-        groupRef.current.rotation.y += (-mouse.x * 0.2 - groupRef.current.rotation.y) * 0.08;
+        groupRef.current.rotation.y += (mouse.x * 0.2 - groupRef.current.rotation.y) * 0.08;
       }
     }
 
@@ -153,15 +153,17 @@ const VoxelDino = forwardRef(({ ctaHover = false }, ref) => {
 
     if (headRef.current) {
       // correct mouse direction
-      const targetY = ctaHover ? 0.0 : -mouse.x * 1.2;
-      const targetZ = ctaHover ? -0.5 : -mouse.y * 1.2;
+      const isAndroidMobile = typeof window !== 'undefined' && (/Android/i.test(window.navigator.userAgent) || window.innerWidth < 768);
+      const targetY = ctaHover ? 0.0 : (isAndroidMobile ? 0.0 : mouse.x * 1.2);
+      const targetZ = ctaHover ? -0.5 : (isAndroidMobile ? -0.8 : mouse.y * 1.2);
       headRef.current.rotation.y += (targetY - headRef.current.rotation.y) * 0.1;
       headRef.current.rotation.z += (targetZ - headRef.current.rotation.z) * 0.1;
     }
 
     if (pupilRef.current) {
-      pupilRef.current.position.x = mouse.x * 0.05;
-      pupilRef.current.position.y = mouse.y * 0.05;
+      const isAndroidMobile = typeof window !== 'undefined' && (/Android/i.test(window.navigator.userAgent) || window.innerWidth < 768);
+      pupilRef.current.position.x = isAndroidMobile ? 0.0 : mouse.x * 0.05;
+      pupilRef.current.position.y = isAndroidMobile ? -0.08 : mouse.y * 0.05;
     }
   });
 

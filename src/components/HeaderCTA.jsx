@@ -223,8 +223,22 @@ export default function HeaderCTA({ theme }) {
                     onMouseLeave={handleMouseLeave}
                     onClick={() => setIsOpen(true)}
                 >
-                    <div className="emoji-circle" ref={emojiCircle} style={{ background: '#111', color: '#fff' }}>
-                        🤙
+                    <div 
+                        className="emoji-circle" 
+                        ref={emojiCircle} 
+                        style={{ 
+                            backgroundColor: accentColor, 
+                            border: '2px solid #ffffff',
+                            color: '#0d0d0d',
+                            fontSize: '18px',
+                            fontWeight: 'bold',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            lineHeight: 1
+                        }}
+                    >
+                        👋
                     </div>
                     {/* Keep menu black, progress fill uses accent color */}
                     <div className="get-in-touch-btn" ref={progressBtn} style={{ background: '#111', color: '#fff' }}>
@@ -241,11 +255,7 @@ export default function HeaderCTA({ theme }) {
                     onClick={(e) => e.stopPropagation()}
                     style={{ background: '#0a0a0a', borderColor: '#222' }}
                 >
-                    <button className="close-btn" onClick={() => setIsOpen(false)} style={{ color: '#fff', background: '#222' }}>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                    </button>
-
-                    <img src={`/pp.webp`} alt="Sauveer Sinha avatar profile" className="card-avatar" loading="lazy" style={{ borderColor: '#333', borderRadius: '32px' }} />
+                    <img src={`/sauveerpp.png`} alt="Sauveer Sinha avatar profile" className="card-avatar" loading="lazy" style={{ borderColor: '#333', borderRadius: '32px' }} />
                     
                     <div className="card-header">
                         <div className="card-name" style={{ color: '#fff' }}>Sauveer Sinha</div>

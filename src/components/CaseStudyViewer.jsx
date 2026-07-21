@@ -1,30 +1,26 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import gsap from 'gsap';
 import { PROJECTS } from '../cms/projects';
-import useIdle from '../hooks/useIdle';
 
-export default function CaseStudyViewer({ startIndex, onClose, theme }) {
+export default function CaseStudyViewer({ startIndex, onClose }) {
   const containerRef = useRef(null);
-  
-  // Use the useIdle hook to hide the close button when idle
-  const isIdle = useIdle(2000); // 2 seconds of inactivity
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  // Duplicate the array 3 times to allow for smooth looping backward and forward
-  // Only include projects that actually have links for the Case Study Viewer
+  // Duplicate the array to allow for smooth scrolling/looping
   const caseStudies = PROJECTS.filter(p => p.link);
   const duplicatedProjects = [...caseStudies, ...caseStudies, ...caseStudies];
   const itemsCount = caseStudies.length;
-  
-  // Find where the clicked project sits in the middle block
-  // If the user clicked project index 3 in PROJECTS, we need to map that to the caseStudies array
+
   const clickedProj = PROJECTS[startIndex];
-  const caseStudyIndex = caseStudies.findIndex(p => p.id === clickedProj?.id) || 0;
+  const matchedIdx = caseStudies.findIndex(p => p.id === clickedProj?.id);
+  const caseStudyIndex = matchedIdx !== -1 ? matchedIdx : 0;
   const initialScrollIndex = itemsCount + caseStudyIndex;
 
   useEffect(() => {
     if (containerRef.current) {
       const vh = window.innerHeight;
       containerRef.current.scrollTop = initialScrollIndex * vh;
+      setActiveIndex(caseStudyIndex);
     }
 
     // Entrance animation
@@ -36,7 +32,7 @@ export default function CaseStudyViewer({ startIndex, onClose, theme }) {
     // Prevent body scroll behind overlay
     document.body.style.overflow = 'hidden';
     return () => { document.body.style.overflow = 'auto'; };
-  }, [initialScrollIndex]);
+  }, [initialScrollIndex, caseStudyIndex]);
 
   const handleScroll = () => {
     if (!containerRef.current) return;
@@ -45,12 +41,15 @@ export default function CaseStudyViewer({ startIndex, onClose, theme }) {
     const vh = window.innerHeight;
     const blockHeight = itemsCount * vh;
 
-    // If scrolled into the first block, jump to the middle block
+    // Track active page index
+    const relativeScroll = scrollTop % blockHeight;
+    const computedActive = Math.round(relativeScroll / vh) % itemsCount;
+    setActiveIndex(computedActive);
+
+    // Loop logic
     if (scrollTop < vh) {
       containerRef.current.scrollTop = scrollTop + blockHeight;
-    }
-    // If scrolled into the third block, jump back to the middle block
-    else if (scrollTop > blockHeight * 2 - vh) {
+    } else if (scrollTop > blockHeight * 2 - vh) {
       containerRef.current.scrollTop = scrollTop - blockHeight;
     }
   };
@@ -62,6 +61,8 @@ export default function CaseStudyViewer({ startIndex, onClose, theme }) {
     });
   };
 
+  const currentProject = caseStudies[activeIndex] || clickedProj || caseStudies[0];
+
   return (
     <div 
       ref={containerRef}
@@ -69,37 +70,92 @@ export default function CaseStudyViewer({ startIndex, onClose, theme }) {
       style={{
         position: 'fixed',
         top: 0, left: 0, right: 0, bottom: 0,
-        backgroundColor: theme.bg,
-        zIndex: 9999,
+        backgroundColor: '#0a0a0a',
+        zIndex: 200,
         overflowY: 'scroll',
         overflowX: 'hidden',
         scrollSnapType: 'y mandatory',
         scrollBehavior: 'auto',
       }}
     >
-      <button 
-        onClick={handleClose}
-        style={{
-          position: 'fixed',
-          top: 40, right: 40,
-          zIndex: 10000,
-          background: theme.text,
-          color: theme.bg,
-          border: 'none',
-          borderRadius: '50%',
-          width: 48, height: 48,
-          fontSize: 20, cursor: 'pointer',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          boxShadow: `0 4px 12px ${theme.text}40`,
-          transition: 'transform 0.3s, opacity 0.4s',
-          opacity: isIdle ? 0 : 1,
-          pointerEvents: isIdle ? 'none' : 'auto'
-        }}
-        onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.1)'}
-        onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
-      >
-        ✕
-      </button>
+      {/* Minimal Top-Right Floating Control Cluster (Replacing visual header) */}
+      <div style={{
+        position: 'fixed',
+        top: '24px',
+        right: '24px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '12px',
+        zIndex: 250,
+      }}>
+        {currentProject?.link && (
+          <a 
+            href={currentProject.link} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            style={{
+              fontSize: '10px',
+              fontFamily: 'var(--font-heading)',
+              fontWeight: 900,
+              color: '#ffffff',
+              backgroundColor: 'rgba(10, 10, 10, 0.85)',
+              backdropFilter: 'blur(12px)',
+              border: '1.5px solid rgba(255,255,255,0.15)',
+              padding: '10px 18px',
+              borderRadius: '8px',
+              textDecoration: 'none',
+              textTransform: 'uppercase',
+              letterSpacing: '0.08em',
+              transition: 'all 0.2s',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.transform = 'scale(1.05)';
+              e.currentTarget.style.borderColor = '#ffffff';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)';
+            }}
+          >
+            Open ↗
+          </a>
+        )}
+        
+        <button 
+          onClick={handleClose}
+          style={{
+            background: 'rgba(10, 10, 10, 0.85)',
+            backdropFilter: 'blur(12px)',
+            border: '1.5px solid rgba(255,255,255,0.15)',
+            color: '#ffffff',
+            width: '40px',
+            height: '40px',
+            borderRadius: '50%',
+            cursor: 'pointer',
+            fontSize: '16px',
+            fontWeight: 900,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            transition: 'all 0.2s',
+            boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+          }}
+          onMouseEnter={e => {
+            e.currentTarget.style.transform = 'scale(1.1)';
+            e.currentTarget.style.borderColor = '#ffffff';
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.transform = 'scale(1)';
+            e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)';
+          }}
+        >
+          ✕
+        </button>
+      </div>
 
       {duplicatedProjects.map((proj, i) => (
         <div 
@@ -112,13 +168,25 @@ export default function CaseStudyViewer({ startIndex, onClose, theme }) {
             display: 'flex',
             flexDirection: 'column',
             backgroundColor: proj.bgColor,
+            position: 'relative'
           }}
         >
-          <iframe 
-            src={proj.link} 
-            title={proj.title}
-            style={{ width: '100%', height: '100%', border: 'none' }}
-          />
+          {proj.link ? (
+            <iframe 
+              src={proj.link} 
+              title={proj.title}
+              style={{ width: '100%', height: '100%', border: 'none' }}
+            />
+          ) : (
+            <div style={{
+              flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+              color: '#fff', padding: '40px', textAlign: 'center'
+            }}>
+              <span style={{ fontSize: '48px', marginBottom: '16px' }}>📐</span>
+              <h3>No Preview Available</h3>
+              <p style={{ opacity: 0.6 }}>This case study has no active URL link mapped yet.</p>
+            </div>
+          )}
         </div>
       ))}
     </div>

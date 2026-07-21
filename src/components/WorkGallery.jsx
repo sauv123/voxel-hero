@@ -2,10 +2,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { PROJECTS } from '../cms/projects';
 
-export default function WorkGallery({ theme, onClose, navigate }) {
+export default function WorkGallery({ onClose, navigate }) {
   const containerRef = useRef(null);
   const trackRef = useRef(null);
   const cardsRef = useRef([]);
+  const dragDistance = useRef(0);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [isHoveringCard, setIsHoveringCard] = useState(false);
   const [hoveredProjectTitle, setHoveredProjectTitle] = useState("Project");
@@ -16,7 +17,17 @@ export default function WorkGallery({ theme, onClose, navigate }) {
   const currentX = useRef(0);
   const isDragging = useRef(false);
   const startX = useRef(0);
-  const startTargetX = useRef(0);
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  const handleClose = () => {
+    gsap.to(containerRef.current, {
+      opacity: 0,
+      y: '100vh',
+      duration: 0.6,
+      ease: 'power3.in',
+      onComplete: onClose
+    });
+  };
 
   useEffect(() => {
     // Entrance animation
@@ -38,6 +49,7 @@ export default function WorkGallery({ theme, onClose, navigate }) {
           xPercent: -50,
           yPercent: -50,
           duration: 0.15,
+          overwrite: "auto",
           ease: "power2.out"
         });
       }
@@ -54,36 +66,38 @@ export default function WorkGallery({ theme, onClose, navigate }) {
   // GSAP buttery smooth scroll logic
   useEffect(() => {
     const handleWheel = (e) => {
-      targetX.current -= (e.deltaY + e.deltaX) * 1.5;
-      clampTarget();
+      if (window.innerWidth < 768) return; // Let native touch scroll handle on mobile
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+        targetX.current -= e.deltaX * 1.5;
+      } else {
+        targetX.current -= e.deltaY * 1.5;
+      }
     };
-
     const handlePointerDown = (e) => {
       isDragging.current = true;
-      startX.current = e.clientX || e.touches?.[0].clientX;
-      startTargetX.current = targetX.current;
+      startX.current = e.clientX || (e.touches && e.touches[0].clientX);
+      dragDistance.current = 0;
     };
 
     const handlePointerMove = (e) => {
       if (!isDragging.current) return;
-      const x = e.clientX || e.touches?.[0].clientX;
-      targetX.current = startTargetX.current + (x - startX.current) * 2;
-      clampTarget();
+      const x = e.clientX || (e.touches && e.touches[0].clientX);
+      const diff = Math.abs(x - startX.current);
+      dragDistance.current = diff;
     };
 
     const handlePointerUp = () => {
       isDragging.current = false;
     };
 
-    const clampTarget = () => {
-      const isMob = window.innerWidth < 768;
-      const padding = isMob ? window.innerWidth * 0.075 : window.innerWidth * 0.2;
-      const cardWidth = isMob ? window.innerWidth * 0.85 : window.innerWidth * 0.6;
-      const gap = isMob ? window.innerWidth * 0.05 : window.innerWidth * 0.1;
-      const totalWidth = PROJECTS.length * cardWidth + (PROJECTS.length - 1) * gap;
-      const maxScroll = -(totalWidth - window.innerWidth + padding * 2);
-      
-      targetX.current = Math.max(maxScroll, Math.min(0, targetX.current));
+    const handleGalleryKeys = (e) => {
+      if (e.key === 'Escape') {
+        handleClose();
+        return;
+      }
+      if (window.innerWidth < 768) return;
+      if (e.key === 'ArrowRight') targetX.current -= window.innerWidth * 0.4;
+      if (e.key === 'ArrowLeft') targetX.current += window.innerWidth * 0.4;
     };
 
     window.addEventListener('wheel', handleWheel, { passive: true });
@@ -93,17 +107,31 @@ export default function WorkGallery({ theme, onClose, navigate }) {
     window.addEventListener('touchstart', handlePointerDown, { passive: true });
     window.addEventListener('touchmove', handlePointerMove, { passive: true });
     window.addEventListener('touchend', handlePointerUp);
-
-    // Keyboard ESC listener
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') handleClose();
-    };
-    window.addEventListener('keydown', handleKeyDown);
-
-    // Initial clamp in case of resize
-    clampTarget();
+    window.addEventListener('keydown', handleGalleryKeys);
 
     const ticker = gsap.ticker.add(() => {
+      const isMob = window.innerWidth < 768;
+      
+      // If mobile, read native scroll position to sync progress bar
+      if (isMob) {
+        if (containerRef.current) {
+          const sLeft = containerRef.current.scrollLeft;
+          const sWidth = containerRef.current.scrollWidth - containerRef.current.clientWidth;
+          setScrollProgress(sWidth > 0 ? sLeft / sWidth : 0);
+        }
+        return;
+      }
+
+      const center = window.innerWidth / 2;
+      const padding = window.innerWidth * 0.2;
+      const cardWidth = window.innerWidth * 0.6;
+      const gap = window.innerWidth * 0.1;
+
+      // Clamp targetX
+      const totalWidth = PROJECTS.length * (cardWidth + gap);
+      const minScroll = -(totalWidth - window.innerWidth + padding * 2);
+      targetX.current = Math.max(Math.min(targetX.current, 0), minScroll);
+
       // Lerp for smooth momentum
       currentX.current += (targetX.current - currentX.current) * 0.08;
       
@@ -111,11 +139,9 @@ export default function WorkGallery({ theme, onClose, navigate }) {
         gsap.set(trackRef.current, { x: currentX.current });
       }
 
-      const isMob = window.innerWidth < 768;
-      const center = window.innerWidth / 2;
-      const padding = isMob ? window.innerWidth * 0.075 : window.innerWidth * 0.2;
-      const cardWidth = isMob ? window.innerWidth * 0.85 : window.innerWidth * 0.6;
-      const gap = isMob ? window.innerWidth * 0.05 : window.innerWidth * 0.1;
+      // Sync progress
+      const progress = minScroll !== 0 ? currentX.current / minScroll : 0;
+      setScrollProgress(Math.min(1, Math.max(0, progress)));
 
       cardsRef.current.forEach((card, i) => {
         if (!card) return;
@@ -124,7 +150,6 @@ export default function WorkGallery({ theme, onClose, navigate }) {
         const maxDist = window.innerWidth;
         const progress = Math.min(dist / maxDist, 1);
         
-        // Dynamic scale & subtle 3D rotate
         const scale = 1 - progress * 0.15;
         const opacity = 1 - progress * 0.5;
         const rotateY = (cardCenter - center) * 0.015;
@@ -147,23 +172,13 @@ export default function WorkGallery({ theme, onClose, navigate }) {
       window.removeEventListener('touchstart', handlePointerDown);
       window.removeEventListener('touchmove', handlePointerMove);
       window.removeEventListener('touchend', handlePointerUp);
-      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keydown', handleGalleryKeys);
       gsap.ticker.remove(ticker);
     };
   }, []);
 
-  const handleClose = () => {
-    gsap.to(containerRef.current, {
-      opacity: 0,
-      y: '100vh',
-      duration: 0.6,
-      ease: 'power3.in',
-      onComplete: onClose
-    });
-  };
-
-  const openCaseStudy = (proj, index) => {
-    if (proj.link && navigate) {
+  const openCaseStudy = (proj) => {
+    if (navigate) {
       navigate(proj.slug);
     }
   };
@@ -176,57 +191,139 @@ export default function WorkGallery({ theme, onClose, navigate }) {
           backgroundColor: '#0a0a0a', 
           position: 'fixed',
           top: 0, left: 0, right: 0, bottom: 0,
-          zIndex: 9998,
+          zIndex: 180,
           display: 'flex',
           alignItems: 'center',
-          overflow: 'hidden'
+          overflowX: isMobile ? 'auto' : 'hidden', // Allow native swipe scroll on mobile
+          overflowY: 'hidden',
+          scrollSnapType: isMobile ? 'x mandatory' : 'none',
+          WebkitOverflowScrolling: 'touch'
         }}
       >
+        {/* Floating Top Back/Exit Header */}
+        <div style={{
+          position: 'absolute',
+          top: '30px',
+          left: '30px',
+          right: '30px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'flex-start',
+          zIndex: 200,
+          pointerEvents: 'none'
+        }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <span style={{ 
+              fontSize: '10px', 
+              fontFamily: 'Space Mono, monospace', 
+              color: 'rgba(255,255,255,0.4)', 
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase'
+            }}>
+              CASE STUDIES / {PROJECTS.length} PROJECTS
+            </span>
+            
+            {/* Relocated Scroll Progress & Navigation Cue */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <div style={{ width: '80px', height: '2px', background: 'rgba(255,255,255,0.15)', borderRadius: '2px', overflow: 'hidden' }}>
+                <div style={{ width: `${scrollProgress * 100}%`, height: '100%', background: '#ffffff', transition: 'width 0.1s ease-out' }}></div>
+              </div>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                color: 'rgba(255, 255, 255, 0.4)',
+                fontFamily: 'var(--font-heading)',
+                fontSize: '9px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.08em'
+              }}>
+                <span>{isMobile ? 'Swipe' : 'Drag / Scroll'}</span>
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ animation: 'bobX 1.6s infinite ease-in-out' }}>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </div>
+            </div>
+          </div>
+          
+          <button 
+            onClick={handleClose}
+            style={{
+              background: '#ffffff',
+              border: 'none',
+              color: '#0d0d0d',
+              width: '40px',
+              height: '40px',
+              borderRadius: '50%',
+              cursor: 'pointer',
+              fontSize: '16px',
+              fontWeight: 900,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
+              pointerEvents: 'auto',
+              transition: 'transform 0.2s'
+            }}
+            onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.1)'}
+            onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+          >
+            ✕
+          </button>
+        </div>
+
         <div 
           ref={trackRef}
+          className="work-gallery-track"
           style={{ 
             display: 'flex', 
-            height: '100vh',
+            height: '100%',
             alignItems: 'center',
-            gap: isMobile ? '5vw' : '10vw',
-            padding: isMobile ? '0 7.5vw' : '0 20vw',
-            cursor: isHoveringCard ? 'none' : 'grab',
+            gap: isMobile ? '24px' : '10vw',
+            padding: isMobile ? '0 24px' : '0 20vw',
+            cursor: isHoveringCard && !isMobile ? 'none' : 'grab',
             willChange: 'transform'
           }}
-          onMouseDown={e => e.currentTarget.style.cursor = 'grabbing'}
-          onMouseUp={e => e.currentTarget.style.cursor = 'grab'}
-          onMouseLeave={e => e.currentTarget.style.cursor = 'grab'}
         >
           {PROJECTS.map((proj, i) => (
             <div 
               key={proj.id}
               ref={el => cardsRef.current[i] = el}
-              onClick={() => openCaseStudy(proj, i)}
+              onClick={() => {
+                if (dragDistance.current > 10) return;
+                openCaseStudy(proj);
+              }}
               onMouseEnter={() => {
-                setIsHoveringCard(true);
-                setHoveredProjectTitle(proj.title);
-                gsap.to(customCursorRef.current, { scale: 1, opacity: 1, duration: 0.2 });
+                setHoveredProjectTitle(proj.cursorCta || proj.title);
+                if (customCursorRef.current && !isMobile) {
+                  setIsHoveringCard(true);
+                  gsap.to(customCursorRef.current, { scale: 1, opacity: 1, duration: 0.3, ease: 'back.out(1.5)' });
+                }
               }}
               onMouseLeave={() => {
-                setIsHoveringCard(false);
-                gsap.to(customCursorRef.current, { scale: 0, opacity: 0, duration: 0.2 });
+                if (!isMobile) {
+                  setIsHoveringCard(false);
+                  gsap.to(customCursorRef.current, { scale: 0, opacity: 0, duration: 0.2 });
+                }
               }}
-              className="modern-brutal-card"
+              className="work-gallery-card"
               style={{
-                height: isMobile ? '70vh' : '80vh',
-                width: isMobile ? '85vw' : '60vw',
-                minWidth: isMobile ? '85vw' : '60vw',
+                height: isMobile ? '65vh' : '72vh',
+                width: isMobile ? 'calc(100vw - 48px)' : '60vw',
+                minWidth: isMobile ? 'calc(100vw - 48px)' : '60vw',
                 display: 'flex',
                 flexDirection: 'column',
                 position: 'relative',
                 backgroundColor: proj.bgColor,
                 color: proj.textColor,
-                cursor: proj.link ? 'none' : 'default',
+                cursor: 'pointer',
                 flexShrink: 0,
-                borderRadius: '4px',
+                borderRadius: '8px',
                 border: 'none',
-                boxShadow: 'none',
-                overflow: 'hidden'
+                overflow: 'hidden',
+                scrollSnapAlign: isMobile ? 'center' : 'none',
+                boxShadow: '0 20px 50px rgba(0,0,0,0.3)'
               }}
             >
               <div style={{ flex: 1, position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
@@ -250,10 +347,11 @@ export default function WorkGallery({ theme, onClose, navigate }) {
                 )}
               </div>
 
+              {/* Title / Description Info overlay */}
               <div style={{
                 position: 'absolute',
                 bottom: 0, left: 0, right: 0,
-                padding: '60px 40px 40px 40px',
+                padding: isMobile ? '30px 24px 24px' : '60px 40px 40px',
                 background: `linear-gradient(to top, ${proj.bgColor} 80%, transparent)`,
                 display: 'flex',
                 justifyContent: 'space-between',
@@ -261,22 +359,22 @@ export default function WorkGallery({ theme, onClose, navigate }) {
                 pointerEvents: 'none'
               }}>
                 <div style={{ pointerEvents: 'auto' }}>
-                  <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+                  <div style={{ display: 'flex', gap: 6, marginBottom: 12, flexWrap: 'wrap' }}>
                     {proj.tags.map(tag => (
                       <span key={tag} style={{
-                        fontSize: 10, fontWeight: 700, fontFamily: "var(--font-body)",
-                        padding: '6px 16px', border: `1.5px solid ${proj.textColor}40`, borderRadius: 20,
+                        fontSize: '9px', fontWeight: 700, fontFamily: "var(--font-body)",
+                        padding: '4px 12px', border: `1.5px solid ${proj.textColor}30`, borderRadius: 20,
                         letterSpacing: '0.05em', textTransform: 'uppercase', background: `${proj.bgColor}CC`, backdropFilter: 'blur(4px)'
                       }}>
                         {tag}
                       </span>
                     ))}
                   </div>
-                  <h2 style={{ fontFamily: "var(--font-heading)", fontSize: 'clamp(32px, 4vw, 64px)', fontWeight: 900, margin: '0 0 16px 0', letterSpacing: '-0.02em', lineHeight: 0.9 }}>
+                  <h2 style={{ fontFamily: "var(--font-heading)", fontSize: 'clamp(28px, 3.5vw, 56px)', fontWeight: 900, margin: '0 0 10px 0', letterSpacing: '-0.02em', lineHeight: 0.9 }}>
                     {proj.title}
                   </h2>
                   {proj.cta && (
-                    <p style={{ fontFamily: "var(--font-body)", fontSize: '14px', margin: 0, opacity: 0.8, maxWidth: '80%' }}>
+                    <p style={{ fontFamily: "var(--font-body)", fontSize: isMobile ? '12px' : '13px', margin: 0, opacity: 0.85, maxWidth: '85%' }}>
                       {proj.cta}
                     </p>
                   )}
@@ -287,36 +385,45 @@ export default function WorkGallery({ theme, onClose, navigate }) {
         </div>
         
         {/* Custom Cursor */}
-        <div 
-          ref={customCursorRef}
-          style={{
-            position: 'fixed',
-            top: 0, left: 0,
-            padding: '8px 16px',
-            backgroundColor: '#FCFAF2',
-            color: '#0d0d0d',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            textAlign: 'center',
-            fontFamily: 'var(--font-heading)',
-            fontSize: '12px',
-            fontWeight: 900,
-            textTransform: 'uppercase',
-            letterSpacing: '0.1em',
-            pointerEvents: 'none',
-            zIndex: 9999,
-            transform: 'translate(-50%, -50%)',
-            opacity: 0,
-            scale: 0,
-            border: '2px solid #FCFAF2',
-            boxShadow: '4px 4px 0px rgba(255, 255, 255, 0.2)'
-          }}
-        >
-          View<br/>{hoveredProjectTitle}
-        </div>
+        {!isMobile && (
+          <div 
+            ref={customCursorRef}
+            style={{
+              position: 'fixed',
+              top: 0, left: 0,
+              padding: '8px 16px',
+              backgroundColor: '#FCFAF2',
+              color: '#0d0d0d',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              textAlign: 'center',
+              fontFamily: 'var(--font-heading)',
+              fontSize: '11px',
+              fontWeight: 900,
+              textTransform: 'uppercase',
+              letterSpacing: '0.1em',
+              pointerEvents: 'none',
+              zIndex: 9999,
+              transform: 'translate(-50%, -50%)',
+              opacity: 0,
+              scale: 0,
+              border: '2px solid #FCFAF2',
+              boxShadow: '4px 4px 0px rgba(255, 255, 255, 0.2)',
+              whiteSpace: 'nowrap'
+            }}
+          >
+            {hoveredProjectTitle}
+          </div>
+        )}
       </div>
 
+      <style>{`
+        @keyframes bobX {
+          0%, 100% { transform: translateX(0); }
+          50% { transform: translateX(6px); }
+        }
+      `}</style>
     </>
   );
 }

@@ -1,0 +1,68 @@
+.interactive-blocks-wrapper {
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  alignItems: center;
+  box-sizing: border-box;
+}
+
+.interactive-grid {
+  display: grid;
+  gap: 2px;
+  width: 100%;
+}
+
+.interactive-grid .cell {
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  background: rgba(26, 26, 26, 0.4);
+  border: 1px solid rgba(42, 42, 42, 0.5);
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s ease;
+}
+
+.interactive-grid .cell.active {
+  border-color: rgba(58, 58, 58, 0.8);
+}
+
+.interactive-grid .cell-inner {
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+/* Rubik's Cube Colors */
+.interactive-grid .white {
+  background: #ffffff;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
+}
+
+.interactive-grid .yellow {
+  background: #ffd500;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
+}
+
+.interactive-grid .red {
+  background: #b90000;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+}
+
+.interactive-grid .orange {
+  background: #ff5900;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
+}
+
+.interactive-grid .blue {
+  background: #0045ad;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+}
+
+.interactive-grid .green {
+  background: #009e60;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
+}

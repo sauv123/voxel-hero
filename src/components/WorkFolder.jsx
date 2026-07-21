@@ -52,6 +52,21 @@ export default function WorkFolder({ theme, onOpen }) {
       scrollTrigger: { trigger: workSection.current, start: "top 65%" }
     });
 
+    // Mobile Work Header Scroll Animation
+    gsap.fromTo('.mobile-work-header',
+      { opacity: 0, scale: 0.8, y: 30 },
+      {
+        opacity: 1, scale: 1, y: 0,
+        duration: 1.0,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: workSection.current,
+          start: "top 80%",
+          toggleActions: "play none none reverse"
+        }
+      }
+    );
+
     // Folder entrance
     gsap.fromTo(voxelFolder.current,
       { opacity: 0, y: 60, scale: 0.94 },
@@ -161,6 +176,7 @@ export default function WorkFolder({ theme, onOpen }) {
     // Zoom out the whole row a bit
     tl.to(wordRow.current, { scale: 0.8, opacity: 0, duration: 0.6, ease: "power3.in" }, 0);
     tl.to(curiousText.current, { opacity: 0, y: -20, duration: 0.4 }, 0);
+    tl.to('.mobile-work-cta', { opacity: 0, y: 10, duration: 0.4 }, 0);
   };
 
   // Handle individual file card hover
@@ -184,9 +200,12 @@ export default function WorkFolder({ theme, onOpen }) {
           <div className="curious-text" id="curiousText" ref={curiousText} style={{ color: theme.text }}>Curious?... Check out my</div>
           
           <div className="word-row" id="wordRow" ref={wordRow}>
-              <span className="word-char" ref={addToRefs} style={{ color: `${theme.text}20` }}>W</span>
+              <span className="word-char desktop-char" ref={addToRefs} style={{ color: `${theme.text}20` }}>W</span>
               
+              <div className="mobile-work-header" style={{ color: `${theme.text}90` }}>WORK</div>
+
               <div className="voxel-folder" id="voxelFolder" ref={voxelFolder} onClick={handleFolderClick}>
+                  <div className="folder-hitbox"></div>
                   {/* Back panel */}
                   <div className="folder-back" style={{ background: theme.text, opacity: 0.8 }}>
                       <div className="folder-back-tab" style={{ background: theme.text, opacity: 0.9 }}>
@@ -218,28 +237,16 @@ export default function WorkFolder({ theme, onOpen }) {
                       </div>
                       <div className="folder-ss">SS</div>
                   </div>
+                  {/* Mobile Call To Action */}
+                  <div className="mobile-work-cta" style={{
+                    display: "none", position: "absolute", bottom: -50, width: "100%", 
+                    textAlign: "center", fontSize: 13, fontWeight: 700, 
+                    color: theme.text, fontFamily: "var(--font-heading)", letterSpacing: 1
+                  }}>TAP FOLDER TO OPEN</div>
               </div>
               
-              <span className="word-char" ref={addToRefs} style={{ color: `${theme.text}20` }}>r</span>
-              <span className="word-char" ref={addToRefs} style={{ color: `${theme.text}20` }}>k</span>
-          </div>
-
-          <div 
-            className="mobile-work-cta" 
-            style={{ 
-              display: 'none', 
-              marginTop: '20px', 
-              fontFamily: 'var(--font-heading)',
-              fontSize: '14px',
-              textTransform: 'uppercase',
-              letterSpacing: '0.1em',
-              fontWeight: 900,
-              color: theme.text,
-              opacity: 0.6
-            }}
-            onClick={handleFolderClick}
-          >
-            Tap Folder to Open
+              <span className="word-char desktop-char" ref={addToRefs} style={{ color: `${theme.text}20` }}>r</span>
+              <span className="word-char desktop-char" ref={addToRefs} style={{ color: `${theme.text}20` }}>k</span>
           </div>
       </section>
       

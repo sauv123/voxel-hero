@@ -8,6 +8,30 @@ export default function NotFound({ theme, activeChar, navigateWithTransition }) 
   const canvasContainerRef = useRef(null);
   const [jumps, setJumps] = useState(0);
   
+  const handleJump = () => {
+    if (!canvasContainerRef.current) return;
+    
+    // Animate jump up and down, and a 360 spin
+    gsap.to(canvasContainerRef.current, {
+      y: -100,
+      duration: 0.3,
+      ease: "power2.out",
+      yoyo: true,
+      repeat: 1,
+      onComplete: () => {
+        gsap.set(canvasContainerRef.current, { y: 0 });
+      }
+    });
+
+    gsap.to(canvasContainerRef.current, {
+      rotateY: "+=360",
+      duration: 0.6,
+      ease: "power1.inOut"
+    });
+
+    setJumps(j => j + 1);
+  };
+
   useEffect(() => {
     gsap.fromTo(containerRef.current,
       { opacity: 0 },
@@ -23,27 +47,6 @@ export default function NotFound({ theme, activeChar, navigateWithTransition }) 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
-
-  const handleJump = () => {
-    if (!canvasContainerRef.current) return;
-    
-    // Animate jump up and down, and a 360 spin
-    gsap.to(canvasContainerRef.current, {
-      y: -100,
-      duration: 0.3,
-      ease: "power2.out",
-      yoyo: true,
-      repeat: 1
-    });
-    
-    gsap.to(canvasContainerRef.current, {
-      rotationZ: "+=360",
-      duration: 0.6,
-      ease: "power2.inOut"
-    });
-
-    setJumps(j => j + 1);
-  };
 
   return (
     <div 

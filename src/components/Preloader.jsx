@@ -8,6 +8,14 @@ export default function Preloader({ onComplete, onStartReveal }) {
   const progressLineRef = useRef();
   const counterRef = useRef();
 
+  const onCompleteRef = useRef(onComplete);
+  const onStartRevealRef = useRef(onStartReveal);
+
+  useEffect(() => {
+    onCompleteRef.current = onComplete;
+    onStartRevealRef.current = onStartReveal;
+  }, [onComplete, onStartReveal]);
+
   useEffect(() => {
     document.body.style.overflow = "hidden";
 
@@ -22,7 +30,7 @@ export default function Preloader({ onComplete, onStartReveal }) {
     const tl = gsap.timeline({
       onComplete: () => {
         document.body.style.overflow = "auto";
-        onComplete();
+        if (onCompleteRef.current) onCompleteRef.current();
       }
     });
 
@@ -73,9 +81,9 @@ export default function Preloader({ onComplete, onStartReveal }) {
       duration: 1.2, 
       ease: "expo.inOut",
       onStart: () => {
-        if (onStartReveal) onStartReveal();
+        if (onStartRevealRef.current) onStartRevealRef.current();
       }
-    }, `+=${holdTime}`);
+    });
 
     return () => {
         tl.kill();
