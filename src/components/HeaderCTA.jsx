@@ -255,7 +255,7 @@ export default function HeaderCTA({ theme }) {
                     onClick={(e) => e.stopPropagation()}
                     style={{ background: '#0a0a0a', borderColor: '#222' }}
                 >
-                    <img src={`/sauveerpp.png`} alt="Sauveer Sinha avatar profile" className="card-avatar" loading="lazy" style={{ width: 120, height: 120, borderColor: '#333', borderRadius: '32px' }} />
+                    <img src={`/sauveerpp.png`} alt="Sauveer Sinha avatar profile" className="card-avatar" loading="lazy" style={{ width: 200, height: 200, borderColor: '#333', borderRadius: '100px' }} />
                     
                     <div className="card-header">
                         <div className="card-name" style={{ color: '#fff' }}>Sauveer Sinha</div>

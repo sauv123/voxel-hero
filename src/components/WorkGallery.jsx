@@ -247,30 +247,7 @@ export default function WorkGallery({ onClose, navigate }) {
             </div>
           </div>
           
-          <button 
-            onClick={handleClose}
-            style={{
-              background: '#ffffff',
-              border: 'none',
-              color: '#0d0d0d',
-              width: '40px',
-              height: '40px',
-              borderRadius: '50%',
-              cursor: 'pointer',
-              fontSize: '16px',
-              fontWeight: 900,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
-              pointerEvents: 'auto',
-              transition: 'transform 0.2s'
-            }}
-            onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.1)'}
-            onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
-          >
-            ✕
-          </button>
+
         </div>
 
         <div 

@@ -147,17 +147,7 @@ export default function PlaygroundGallery({ onClose, theme, activeChar, onSwitch
         <div style={{ fontFamily: 'var(--font-heading)', fontSize: '11px', fontWeight: 900, letterSpacing: '0.15em', textTransform: 'uppercase' }}>
           [ PLAYGROUND &amp; TOYS ]
         </div>
-        <button 
-          onClick={handleClose}
-          style={{
-            background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer', fontWeight: 900, color: '#0d0d0d',
-            transition: 'transform 0.2s'
-          }}
-          onMouseEnter={(e) => e.target.style.transform = 'scale(1.2)'}
-          onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
-        >
-          ✕
-        </button>
+
       </div>
 
       {/* Main Grid Content Layout */}

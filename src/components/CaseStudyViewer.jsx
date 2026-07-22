@@ -125,36 +125,7 @@ export default function CaseStudyViewer({ startIndex, onClose }) {
           </a>
         )}
         
-        <button 
-          onClick={handleClose}
-          style={{
-            background: 'rgba(10, 10, 10, 0.85)',
-            backdropFilter: 'blur(12px)',
-            border: '1.5px solid rgba(255,255,255,0.15)',
-            color: '#ffffff',
-            width: '40px',
-            height: '40px',
-            borderRadius: '50%',
-            cursor: 'pointer',
-            fontSize: '16px',
-            fontWeight: 900,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            transition: 'all 0.2s',
-            boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-          }}
-          onMouseEnter={e => {
-            e.currentTarget.style.transform = 'scale(1.1)';
-            e.currentTarget.style.borderColor = '#ffffff';
-          }}
-          onMouseLeave={e => {
-            e.currentTarget.style.transform = 'scale(1)';
-            e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)';
-          }}
-        >
-          ✕
-        </button>
+
       </div>
 
       {duplicatedProjects.map((proj, i) => (

@@ -49,12 +49,12 @@ const ALBUMS = [
 ];
 
 const TIMELINE = [
-  { id: 1, text: "Graduated from MIT Manipal.", photos: [{ src: milanImg, bg: "#0d1a28", e: "🏫" }] },
+  { id: 1, text: "Graduated from MIT Manipal.", photos: [{ src: ncaImg, bg: "#0d1a28", e: "🏫" }] },
   { id: 2, text: "Started my career in Bengaluru at foundit.", photos: [{ src: founditImg, bg: "#281a0d", e: "🚀" }] },
   { id: 3, text: "Moved to Mumbai in search of bigger opportunities.", photos: [{ src: manipalImg, bg: "#0d1428", e: "🎨" }] },
   { id: 4, text: "Launched my first product as a designer.", photos: [{ videoSrc: "/product.mp4", bg: "#28100d", e: "🏆", caption: "PRODUCT_V1" }] },
-  { id: 5, text: "Took a leap of faith and moved to Milan for my Master's.", photos: [{ src: ncaImg, bg: "#0d1a28", e: "✈️" }] },
-  { id: 6, text: "Came 3rd in NCA(design awards).", photos: [{ src: mumbaiImg, bg: "#28280d", e: "🥉" }] },
+  { id: 5, text: "Took a leap of faith and moved to Milan for my Master's.", photos: [{ src: mumbaiImg, bg: "#0d1a28", e: "✈️" }] },
+  { id: 6, text: "Came 3rd in NCA(design awards).", photos: [{ src: milanImg, bg: "#28280d", e: "🥉" }] },
 ];
 
 // ─── Timeline (Mobile Responsive Optimized Sizes) ────────────────────
@@ -237,7 +237,9 @@ function Timeline({ theme }) {
           {/* Kinetic Background Numbers */}
           {TIMELINE.map((entry, idx) => {
             const x = lead + idx * pxStep;
-            const isActive = Math.abs(scroll - idx * pxStep) < pxStep / 2;
+            const isActive = idx === TIMELINE.length - 1 
+              ? (scroll + cw / 2 >= x - (isMobile ? 120 : 250))
+              : Math.abs(x - (scroll + cw / 2)) < (isMobile ? 120 : 250);
             return (
               <div key={entry.id} style={{
                 position: "absolute", left: x, top: axisY - (isMobile ? 40 : 60),
@@ -1042,28 +1044,7 @@ export default function AboutMe({ theme, onClose }) {
         overflowY: "auto"
       }}
     >
-      {/* Floating Top Back/Exit Button */}
-      <button
-        onClick={onClose}
-        aria-label="Close page"
-        style={{
-          position: 'absolute',
-          top: '30px',
-          right: '30px',
-          background: 'none',
-          border: 'none',
-          fontSize: '24px',
-          cursor: 'pointer',
-          color: theme.text,
-          zIndex: 200,
-          transition: 'transform 0.2s ease',
-          fontFamily: 'var(--font-heading)'
-        }}
-        onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.1)'}
-        onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
-      >
-        ✕
-      </button>
+
       <div style={{ 
         paddingTop: 40, 
         paddingBottom: 100, 
