@@ -227,9 +227,9 @@ export default function HeaderCTA({ theme }) {
                         className="emoji-circle" 
                         ref={emojiCircle} 
                         style={{ 
-                            backgroundColor: accentColor, 
+                            backgroundColor: '#000', 
                             border: '2px solid #ffffff',
-                            color: '#0d0d0d',
+                            color: '#fff',
                             fontSize: '18px',
                             fontWeight: 'bold',
                             display: 'flex',
@@ -241,7 +241,7 @@ export default function HeaderCTA({ theme }) {
                         👋
                     </div>
                     {/* Keep menu black, progress fill uses accent color */}
-                    <div className="get-in-touch-btn" ref={progressBtn} style={{ background: '#111', color: '#fff' }}>
+                    <div className="get-in-touch-btn" ref={progressBtn} style={{ background: '#000', color: '#fff' }}>
                         <div className="progress-fill" ref={progressFill} style={{ background: accentColor }}></div>
                         <span className="btn-text">GET IN TOUCH</span>
                     </div>
@@ -255,7 +255,7 @@ export default function HeaderCTA({ theme }) {
                     onClick={(e) => e.stopPropagation()}
                     style={{ background: '#0a0a0a', borderColor: '#222' }}
                 >
-                    <img src={`/sauveerpp.png`} alt="Sauveer Sinha avatar profile" className="card-avatar" loading="lazy" style={{ borderColor: '#333', borderRadius: '32px' }} />
+                    <img src={`/sauveerpp.png`} alt="Sauveer Sinha avatar profile" className="card-avatar" loading="lazy" style={{ width: 120, height: 120, borderColor: '#333', borderRadius: '32px' }} />
                     
                     <div className="card-header">
                         <div className="card-name" style={{ color: '#fff' }}>Sauveer Sinha</div>

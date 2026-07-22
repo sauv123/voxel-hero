@@ -115,7 +115,7 @@ function Timeline({ theme }) {
   const timelineHeight = isMobile ? 420 : 720;
   const axisY = isMobile ? 140 : 240;
 
-  const totalW = lead * 2 + (TIMELINE.length - 1) * pxStep;
+  const totalW = lead + (TIMELINE.length - 1) * pxStep + Math.max(lead, cw / 2 + 150);
   const clamp = useCallback((v) => Math.max(0, Math.min(totalW - cw, v)), [totalW, cw]);
 
   useEffect(() => {

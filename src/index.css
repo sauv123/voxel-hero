@@ -775,7 +775,6 @@ body {
 }
 .get-in-touch-btn:hover {
     border-color: rgba(255, 255, 255, 0.22);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.35);
 }
 
 .progress-fill {
