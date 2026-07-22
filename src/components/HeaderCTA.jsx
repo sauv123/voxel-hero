@@ -85,8 +85,8 @@ export default function HeaderCTA({ theme }) {
             );
             
             gsap.fromTo('.card-avatar',
-                { scale: 0, rotation: -180 },
-                { scale: 1, rotation: 0, duration: 0.6, ease: "back.out(1.7)", delay: 0.1 }
+                { scale: 0.95, y: 10, opacity: 0 },
+                { scale: 1, y: 0, opacity: 1, duration: 0.6, ease: "power3.out", delay: 0.1 }
             );
             
             gsap.fromTo(['.card-name', '.card-role', '.card-bio'],

@@ -437,10 +437,10 @@ export default function App() {
             <span className="line-wrap" style={{ fontWeight: 400, opacity: 0.8, display: 'block' }}>
               <SplitChars text="I help people understand" />
             </span>
-            <span className="line-wrap" style={{ fontWeight: 900, textTransform: 'uppercase', letterSpacing: '-0.06em', color: theme.brand, display: 'block', margin: '0.15rem 0' }}>
+            <span className="line-wrap" style={{ fontWeight: 400, opacity: 0.8, display: 'block' }}>
               <SplitChars text="& trust AI" />
             </span>
-            <span className="line-wrap" style={{ fontWeight: 400, opacity: 0.8, display: 'block' }}>
+            <span className="line-wrap" style={{ fontWeight: 900, textTransform: 'uppercase', letterSpacing: '-0.06em', color: theme.brand, display: 'block', margin: '0.15rem 0' }}>
               <SplitChars text="through thoughtful design." />
             </span>
           </h1>
