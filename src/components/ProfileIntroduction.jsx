@@ -1,6 +1,18 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 
 export default function ProfileIntroduction({ theme }) {
+  const videoRef = useRef(null);
+  const [isMuted, setIsMuted] = useState(true);
+
+  const handleUnmute = () => {
+    if (videoRef.current) {
+      videoRef.current.currentTime = 0; // Restart from the beginning
+      videoRef.current.muted = false;
+      setIsMuted(false);
+      videoRef.current.play(); // Ensure it continues playing
+    }
+  };
+
   return (
     <div style={{ padding: "0 40px" }}>
       <div
@@ -11,43 +23,49 @@ export default function ProfileIntroduction({ theme }) {
           flexDirection: "row"
         }}
       >
-        <div style={{
-          flex: "0 0 40%", 
-          aspectRatio: "3/4",
-          borderRadius: 4, overflow: "hidden",
-          border: `1.5px solid ${theme.text}25`,
-          background: `${theme.text}05`,
-          position: "relative"
-        }}>
-          {/* Replace this src with your uploaded image path, e.g., "/profile.jpg" */}
-          <img 
-            src="/profile.jpg" 
-            alt="Profile" 
-            style={{ width: "100%", height: "100%", objectFit: "cover" }} 
-            onError={(e) => {
-              e.target.style.display = 'none';
-              e.target.nextSibling.style.display = 'flex';
-            }}
-          />
-
-        </div>
-
-        <div style={{ flex: "1", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <div style={{ flex: "1", display: "flex", justifyContent: "center", alignItems: "center", position: "relative" }}>
           <video 
+            ref={videoRef}
             src="/portfolio.mp4" 
-            controls 
+            autoPlay
+            loop
+            muted={isMuted}
+            controls={!isMuted}
             playsInline
             preload="metadata"
             style={{ 
               width: "100%", 
               borderRadius: "16px",
-              boxShadow: "0 10px 30px rgba(0,0,0,0.5)", 
-              outline: "none",
-              border: `1.5px solid ${theme.text}25`
+              outline: "none"
             }}
           >
             Your browser does not support the video tag.
           </video>
+
+          {isMuted && (
+            <button
+              onClick={handleUnmute}
+              style={{
+                position: "absolute",
+                bottom: "20px",
+                right: "20px",
+                background: "rgba(0, 0, 0, 0.6)",
+                color: "#fff",
+                border: "1px solid rgba(255, 255, 255, 0.3)",
+                padding: "8px 16px",
+                borderRadius: "20px",
+                fontFamily: "var(--font-body), sans-serif",
+                fontSize: "14px",
+                cursor: "pointer",
+                backdropFilter: "blur(4px)",
+                transition: "background 0.2s"
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.background = "rgba(0, 0, 0, 0.8)"}
+              onMouseLeave={(e) => e.currentTarget.style.background = "rgba(0, 0, 0, 0.6)"}
+            >
+              Click to Unmute
+            </button>
+          )}
         </div>
       </div>
 
@@ -55,11 +73,6 @@ export default function ProfileIntroduction({ theme }) {
         @media (max-width: 768px) {
           .profile-intro-container {
             flex-direction: column !important;
-          }
-          .profile-intro-container > div:first-child {
-            width: 100% !important;
-            flex: none !important;
-            aspectRatio: "1/1" !important;
           }
         }
       `}</style>
