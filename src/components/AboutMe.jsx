@@ -191,7 +191,7 @@ function Timeline({ theme }) {
   }, [inertia, clamp]);
 
   return (
-    <div style={{ padding: "0", maxWidth: 1000, margin: "0 auto", position: "relative" }}>
+    <div style={{ padding: "0", margin: "0 auto", position: "relative", width: "100%" }}>
       <div style={{
         display: "flex",
         alignItems: "center",
@@ -966,29 +966,33 @@ function VinylPlayer({ theme }) {
                 onDragStart={(e) => e.dataTransfer.setData('albumIndex', i)}
                 onClick={() => { setLoaded(i); setPlaying(true); }} 
                 style={{
-                  display: "flex", flexDirection: "column", alignItems: "center", gap: 8, cursor: "grab",
-                  width: "70px"
+                  display: "flex", flexDirection: "column", alignItems: "center", gap: 12, cursor: "grab",
+                  width: "120px",
+                  transform: loaded === i ? "scale(1.05)" : "scale(1)",
+                  transition: "transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)"
                 }}
               >
                 {/* Mini Vinyl */}
                 <div style={{
-                  width: 70, height: 70, borderRadius: "50%",
+                  width: 120, height: 120, borderRadius: "50%",
                   background: `radial-gradient(circle at 50% 50%, #080808 0%, #111 20%, #050505 40%, #111 60%, #080808 80%, #000 100%)`,
-                  border: `2px solid ${loaded === i ? theme.brand || '#000' : '#222'}`,
+                  border: loaded === i ? `2px solid rgba(0,0,0,0.8)` : `2px solid #222`,
                   position: "relative", display: "flex", alignItems: "center", justifyContent: "center",
-                  boxShadow: loaded === i ? "0 4px 12px rgba(0,0,0,0.2)" : "none",
-                  transition: "all 0.2s"
+                  boxShadow: loaded === i ? "0 10px 25px rgba(0,0,0,0.3), 0 0 0 4px rgba(0,0,0,0.05)" : "none",
+                  transition: "all 0.3s ease"
                 }}>
-                  <div style={{position: "absolute", inset: 4, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.05)"}} />
+                  <div style={{position: "absolute", inset: 6, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.05)"}} />
                   <div style={{
-                    width: 24, height: 24, borderRadius: "50%",
-                    backgroundImage: `url(${a.cover})`, backgroundSize: "cover", backgroundPosition: "center"
+                    width: 40, height: 40, borderRadius: "50%",
+                    backgroundImage: `url(${a.cover})`, backgroundSize: "cover", backgroundPosition: "center",
+                    boxShadow: "0 0 8px rgba(0,0,0,0.5)"
                   }} />
-                  <div style={{position: "absolute", width: 4, height: 4, borderRadius: "50%", background: "#000"}} />
+                  <div style={{position: "absolute", width: 6, height: 6, borderRadius: "50%", background: "#000"}} />
                 </div>
                 {/* Text underneath */}
-                <div style={{ textAlign: "center", width: "100%" }}>
-                  <div style={{fontSize: 10, fontFamily: "var(--font-heading)", fontWeight: 800, color: "#000", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}}>{a.title}</div>
+                <div style={{ textAlign: "center", width: "100%", opacity: loaded === i ? 1 : 0.6, transition: "opacity 0.3s" }}>
+                  <div style={{fontSize: 12, fontFamily: "var(--font-heading)", fontWeight: 800, color: "#000", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}}>{a.title}</div>
+                  <div style={{fontSize: 10, fontFamily: "var(--font-body)", color: "#666", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}}>{a.artist}</div>
                 </div>
               </div>
             ))}
@@ -1064,7 +1068,6 @@ export default function AboutMe({ theme, onClose }) {
         paddingTop: 40, 
         paddingBottom: 100, 
         width: "100%",
-        maxWidth: "1000px",
         margin: "0 auto", 
         paddingLeft: "24px", 
         paddingRight: "24px",

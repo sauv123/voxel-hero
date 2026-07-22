@@ -18,7 +18,7 @@ export default function ProfileIntroduction({ theme }) {
       <div
         className="profile-intro-container"
         style={{
-          width: "100%", maxWidth: 1000, margin: "0 auto",
+          width: "100%", margin: "0 auto",
           display: "flex", gap: "40px", alignItems: "center",
           flexDirection: "row"
         }}
