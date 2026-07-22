@@ -212,26 +212,26 @@ export default function App() {
   // Premium GSAP scroll-driven background color scrub
   useEffect(() => {
     let ctx = gsap.context(() => {
-      // Hero -> Brutalist Cube (Red #2a0808)
+      // Hero -> Brutalist Cube (#050505)
       ScrollTrigger.create({
         trigger: rootRef.current,
         start: "bottom 90%",
         end: "bottom 10%",
         scrub: 1.5,
         onUpdate: (self) => {
-          const blendedColor = gsap.utils.interpolate(theme.bg, '#2a0808', self.progress);
+          const blendedColor = gsap.utils.interpolate(theme.bg, '#050505', self.progress);
           gsap.set([document.body, rootRef.current], { backgroundColor: blendedColor });
         }
       });
 
-      // Brutalist Cube (Charcoal #1c1c1c) -> Work Folder (#FCFAF2)
+      // Brutalist Cube -> Work Folder (#FCFAF2)
       ScrollTrigger.create({
         trigger: '.bc-container',
         start: "bottom 100%",
         end: "bottom 20%",
         scrub: 1.5,
         onUpdate: (self) => {
-          const blendedColor = gsap.utils.interpolate('#1c1c1c', '#FCFAF2', self.progress);
+          const blendedColor = gsap.utils.interpolate('#050505', '#FCFAF2', self.progress);
           gsap.set(document.body, { backgroundColor: blendedColor });
         }
       });
