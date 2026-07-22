@@ -29,20 +29,15 @@ export default function ProfileIntroduction({ theme }) {
               e.target.nextSibling.style.display = 'flex';
             }}
           />
-          <div style={{
-            position: "absolute", inset: 0, display: "none", 
-            alignItems: "center", justifyContent: "center",
-            fontFamily: "var(--font-heading)", fontSize: 24, opacity: 0.3,
-            color: theme.text, textTransform: "uppercase", textAlign: "center"
-          }}>
-            Drop<br/>profile.jpg<br/>in public/
-          </div>
+
         </div>
 
         <div style={{ flex: "1", display: "flex", justifyContent: "center", alignItems: "center" }}>
           <video 
             src="/portfolio.mp4" 
             controls 
+            playsInline
+            preload="metadata"
             style={{ 
               width: "100%", 
               borderRadius: "16px",
