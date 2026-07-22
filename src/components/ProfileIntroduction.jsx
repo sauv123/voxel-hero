@@ -32,7 +32,7 @@ export default function ProfileIntroduction({ theme }) {
             muted={isMuted}
             controls={!isMuted}
             playsInline
-            preload="metadata"
+            preload="auto"
             onClick={isMuted ? handleUnmute : undefined}
             style={{ 
               width: "100%", 

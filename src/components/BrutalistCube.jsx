@@ -5,7 +5,7 @@ import './brutalist-cube.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function BrutalistCube() {
+export default function BrutalistCube({ inFooter = false }) {
   const containerRef = useRef(null);
   const bgRef = useRef(null);
   const wrapperRef = useRef(null);
@@ -71,33 +71,44 @@ export default function BrutalistCube() {
       
       if (sceneEl) sceneEl.addEventListener('mousemove', handleMouseMove);
 
-      // 4. ScrollTrigger Cinematic Storytelling
-      const tl = gsap.timeline({
-          scrollTrigger: {
+      // 4. ScrollTrigger Cinematic Storytelling OR continuous if inFooter
+      if (!inFooter) {
+          const tl = gsap.timeline({
+              scrollTrigger: {
+                  trigger: containerRef.current,
+                  start: "top top",
+                  end: "bottom bottom",
+                  scrub: 1.2, 
+              }
+          });
+
+          const rubikEase = "expo.inOut"; 
+
+          tl.to(cubeRef.current, { rotateY: -75, rotateX: 5, duration: 1, ease: rubikEase })                    
+            .to(cubeRef.current, { rotateY: -165, rotateX: -5, duration: 1, ease: rubikEase })                  
+            .to(cubeRef.current, { rotateY: -282, rotateX: 12, duration: 1, ease: rubikEase })                  
+            .to(cubeRef.current, { rotateX: -78, rotateY: -350, duration: 1, ease: rubikEase })                 
+            .to(cubeRef.current, { rotateX: 78, rotateY: -355, duration: 1, ease: rubikEase });                 
+              
+          // 5. Parallax Background Animation
+          ScrollTrigger.create({
               trigger: containerRef.current,
               start: "top top",
               end: "bottom bottom",
-              scrub: 1.2, 
-          }
-      });
-
-      const rubikEase = "expo.inOut"; 
-
-      tl.to(cubeRef.current, { rotateY: -75, rotateX: 5, duration: 1, ease: rubikEase })                    
-        .to(cubeRef.current, { rotateY: -165, rotateX: -5, duration: 1, ease: rubikEase })                  
-        .to(cubeRef.current, { rotateY: -282, rotateX: 12, duration: 1, ease: rubikEase })                  
-        .to(cubeRef.current, { rotateX: -78, rotateY: -350, duration: 1, ease: rubikEase })                 
-        .to(cubeRef.current, { rotateX: 78, rotateY: -355, duration: 1, ease: rubikEase });                 
-          
-      // 5. Parallax Background Animation
-      ScrollTrigger.create({
-          trigger: containerRef.current,
-          start: "top top",
-          end: "bottom bottom",
-          onUpdate: (self) => {
-              gsap.to('.bg-stream', { y: self.progress * 500, duration: 0.5, stagger: 0.01, overwrite: true });
-          }
-      });
+              onUpdate: (self) => {
+                  gsap.to('.bg-stream', { y: self.progress * 500, duration: 0.5, stagger: 0.01, overwrite: true });
+              }
+          });
+      } else {
+          // Continuous rotation for footer
+          gsap.to(cubeRef.current, {
+              rotateY: "+=360",
+              rotateX: "+=360",
+              duration: 20,
+              ease: "none",
+              repeat: -1
+          });
+      }
 
       return () => {
         wrapper.removeEventListener('mouseenter', handleMouseEnter);
@@ -110,8 +121,8 @@ export default function BrutalistCube() {
   }, []);
 
   return (
-    <div className="bc-container" ref={containerRef}>
-      <div className="bc-sticky">
+    <div className={`bc-container ${inFooter ? 'in-footer' : ''}`} ref={containerRef}>
+      <div className={`bc-sticky ${inFooter ? 'in-footer' : ''}`}>
 
         <div className="bc-scene">
           <div className="bc-cube-wrapper" ref={wrapperRef}>

@@ -75,7 +75,7 @@ export default function Preloader({ onComplete, onStartReveal }) {
       );
     });
 
-    // 4. Clean End Screen Exit
+    // 4. Clean End Screen Exit (overlaps with the last word holding)
     tl.to(loaderRef.current, {
       yPercent: -100,
       duration: 1.2, 
@@ -83,7 +83,7 @@ export default function Preloader({ onComplete, onStartReveal }) {
       onStart: () => {
         if (onStartRevealRef.current) onStartRevealRef.current();
       }
-    });
+    }, totalLoopDuration - durationOut - holdTime);
 
     return () => {
         tl.kill();

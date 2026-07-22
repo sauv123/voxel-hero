@@ -125,3 +125,24 @@
   .bc-face-body { font-size: 0.95rem; padding: 0.8rem; box-shadow: 4px 4px 0px #000; word-break: break-word; }
   .bc-content { padding: 0.8rem; }
 }
+
+.bc-container.in-footer {
+  height: 300px;
+  --cube-size: 150px;
+  position: relative;
+  z-index: 10;
+}
+.bc-sticky.in-footer {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+.bc-container.in-footer .bc-dynamic-bg {
+  display: none;
+}
+@media (max-width: 768px) {
+  .bc-container.in-footer {
+    --cube-size: 120px;
+  }
+}
+

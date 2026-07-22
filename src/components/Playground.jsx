@@ -155,9 +155,30 @@ export default function PlaygroundGallery({ onClose, theme, activeChar, onSwitch
       }}
     >
       {/* Padded Content Wrapper */}
-      <div style={{ padding: '40px 6vw', flex: 1 }}>
+      <div style={{ padding: '40px 6vw', flex: 1, position: 'relative' }}>
         
-        {/* Top Header Row */}
+        {/* Top Header Row with Back Button */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
+          <button 
+            onClick={handleClose}
+            style={{
+              fontFamily: 'var(--font-heading)',
+              fontSize: '12px',
+              fontWeight: 900,
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+              background: 'transparent',
+              border: 'none',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              color: '#0d0d0d'
+            }}
+          >
+            ← Back to Home
+          </button>
+        </div>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: '40px' }}>
           <div style={{ fontFamily: 'var(--font-heading)', fontSize: '11px', fontWeight: 900, letterSpacing: '0.15em', textTransform: 'uppercase' }}>
             [ PLAYGROUND ]

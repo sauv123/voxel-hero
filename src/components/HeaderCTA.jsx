@@ -212,8 +212,6 @@ export default function HeaderCTA({ theme }) {
             <div 
               className="header-bar" 
               style={{ 
-                opacity: isOpen ? 0 : 1, 
-                pointerEvents: isOpen ? 'none' : 'auto', 
                 transition: 'opacity 0.4s' 
               }}
             >
@@ -253,7 +251,7 @@ export default function HeaderCTA({ theme }) {
             </div>
 
             {/* Modal */}
-            <div className="modal-backdrop" ref={modalBackdrop} onClick={() => setIsOpen(false)}>
+            <div className={`modal-backdrop ${isOpen ? 'active' : ''}`} ref={modalBackdrop} onClick={() => setIsOpen(false)}>
                 <div 
                     className="contact-card"
                     onClick={(e) => e.stopPropagation()}

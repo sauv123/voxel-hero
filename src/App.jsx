@@ -125,7 +125,7 @@ function CharacterPicker({ activeChar, onSelect, theme }) {
 // ─── Split text ───────────────────────────────────────────────────────────────
 function SplitChars({ text }) {
   return <>{text.split('').map((ch, i) => (
-    <span key={i} className="char">{ch === ' ' ? '\u00A0' : ch}</span>
+    <span key={i} className="char" style={ch === ' ' ? { whiteSpace: 'pre-wrap' } : {}}>{ch}</span>
   ))}</>;
 }
 
