@@ -334,7 +334,7 @@ export default function Footer({ theme, activeChar = 'deer' }) {
               letterSpacing: "-0.03em"
             }}
           >
-            Design is better when you have fun.
+            Design is better when you have <span style={{ color: brandColor }}>fun</span>.
           </h2>
 
           {/* Subtext directly under the headline */}
@@ -371,9 +371,9 @@ export default function Footer({ theme, activeChar = 'deer' }) {
                 fontWeight: 900,
                 textTransform: "uppercase",
                 letterSpacing: "0.05em",
-                opacity: 0.4, // Reduced opacity as requested
+                opacity: 0.4,
                 color: "#ffffff",
-                marginBottom: "16px",
+                marginBottom: "4px",
                 userSelect: "none"
               }}
             >

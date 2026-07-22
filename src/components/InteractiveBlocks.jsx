@@ -1,66 +1,77 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './InteractiveBlocks.css';
 
-const COLORS = ['white', 'yellow', 'red', 'orange', 'blue', 'green'];
-
 const PATTERNS = [
-  // SMILEY
-  [7, 10, 18, 23, 25, 26, 27, 28],
-  // FISH
-  [9, 12, 14, 15, 16, 18, 19, 20, 21, 22, 23, 24, 26, 27, 28, 33],
-  // TEDDY
-  [0, 5, 7, 8, 9, 10, 13, 16, 19, 20, 21, 22, 26, 27],
-  // ALIEN
-  [2, 3, 7, 8, 9, 10, 12, 13, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 27, 29, 30, 35]
+  { indices: [1, 2, 4, 7, 8, 11, 13, 14], color: 'yellow' }, // SMILEY
+  { indices: [1, 4, 5, 6, 9, 10, 11, 15], color: 'orange' }, // FISH
+  { indices: [0, 3, 5, 6, 8, 11, 13, 14], color: 'blue' }    // TEDDY
 ];
 
 export default function InteractiveBlocks() {
-  const [step, setStep] = useState(0); 
+  const [patternIndex, setPatternIndex] = useState(0);
+  const [revealed, setRevealed] = useState(new Set());
   
-  // step 0: empty
-  // step 1: pattern 0
-  // step 2: empty
-  // step 3: pattern 1
-  // ...
+  const currentPattern = PATTERNS[patternIndex];
+  const activeSet = new Set(currentPattern.indices);
 
-  const handleMouseEnter = () => {
-    setStep(prev => (prev + 1) % (PATTERNS.length * 2));
+  const handleMouseEnter = (idx) => {
+    if (!revealed.has(idx)) {
+      setRevealed(prev => new Set(prev).add(idx));
+    }
   };
 
-  const isVisible = step % 2 !== 0;
-  const patternIndex = Math.floor(step / 2) % PATTERNS.length;
-  const activePattern = new Set(PATTERNS[patternIndex]);
+  useEffect(() => {
+    // Once all 16 squares are revealed, hold for a moment then reset to the next pattern
+    if (revealed.size === 16) {
+      const timer = setTimeout(() => {
+        setRevealed(new Set());
+        setPatternIndex((prev) => (prev + 1) % PATTERNS.length);
+      }, 1500); 
+      return () => clearTimeout(timer);
+    }
+  }, [revealed]);
 
-  // grid 6x6 = 36 cells
-  const cells = Array.from({ length: 36 }, (_, i) => {
-    const active = isVisible && activePattern.has(i);
-    // Use a stable color based on index so it doesn't flicker when hiding
-    const color = COLORS[i % COLORS.length];
-    return { id: i, active, color };
+  const cells = Array.from({ length: 16 }, (_, i) => {
+    const isRevealed = revealed.has(i);
+    const isPartOfPattern = activeSet.has(i);
+    return { id: i, isRevealed, isPartOfPattern, color: currentPattern.color };
   });
 
   return (
     <div 
       className="interactive-blocks-wrapper" 
-      onMouseEnter={handleMouseEnter}
-      style={{ cursor: 'pointer', padding: '10px' }}
+      style={{ padding: '10px' }}
     >
       <div 
         className="interactive-grid"
         style={{
-          gridTemplateColumns: `repeat(6, 1fr)`,
-          gridTemplateRows: `repeat(6, 1fr)`,
+          gridTemplateColumns: `repeat(4, 1fr)`,
+          gridTemplateRows: `repeat(4, 1fr)`,
           width: '100%',
-          height: '100%'
+          height: '100%',
+          gap: '4px'
         }}
       >
         {cells.map((cell) => (
-          <div key={cell.id} className={`cell ${cell.active ? 'active' : ''}`}>
+          <div 
+            key={cell.id} 
+            className={`cell`}
+            onMouseEnter={() => handleMouseEnter(cell.id)}
+            onTouchStart={() => handleMouseEnter(cell.id)}
+            style={{ 
+              backgroundColor: cell.isRevealed 
+                ? (cell.isPartOfPattern ? 'transparent' : 'rgba(255, 255, 255, 0.02)') 
+                : 'rgba(255, 255, 255, 0.1)',
+              borderColor: cell.isRevealed ? 'transparent' : 'rgba(255, 255, 255, 0.2)',
+              transition: 'background-color 0.3s ease, border-color 0.3s ease',
+              cursor: 'crosshair'
+            }}
+          >
             <div 
               className={`cell-inner ${cell.color}`}
               style={{
-                opacity: cell.active ? 1 : 0,
-                transform: cell.active ? 'scale(1)' : 'scale(0.8)',
+                opacity: cell.isRevealed && cell.isPartOfPattern ? 1 : 0,
+                transform: cell.isRevealed && cell.isPartOfPattern ? 'scale(1)' : 'scale(0.5)',
                 transition: 'opacity 0.4s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)'
               }}
             ></div>
