@@ -62,6 +62,6 @@ export const PROJECTS = [
     img: "/mica.webp", 
     cta: "Designing belonging through emotionally intelligent housing experiences.",
     cursorCta: "See how I designed belonging",
-    link: "" // Can be added later
+    link: "https://micacasestudy.netlify.app"
   }
 ];
