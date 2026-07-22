@@ -243,7 +243,7 @@ function Timeline({ theme }) {
                 position: "absolute", left: x, top: axisY - (isMobile ? 40 : 60),
                 transform: `translate(-50%, -50%)`,
                 fontSize: isMobile ? 70 : 180, fontWeight: 900,
-                color: isActive ? theme.brand || '#FFF' : '#FFF', 
+                color: isActive && idx === 5 ? '#4ade80' : (isActive ? (theme.brand || '#FFF') : '#FFF'), 
                 opacity: isActive ? 0.6 : 0.05,
                 fontFamily: "var(--font-heading)",
                 transition: "all 0.3s ease"
@@ -733,15 +733,15 @@ function ToolboxSection({ theme }) {
   const categories = {
     tools: {
       label: "My Toolbox",
-      items: ["Figma", "Framer", "React", "Vite", "GSAP Animations", "Tailwind CSS", "Git", "VS Code"]
+      items: ["Figma", "Framer", "Open Design", "Open Code", "Claude Code", "Claude", "Antigravity"]
     },
     ai: {
-      label: "AI & Dev Stack",
-      items: ["Claude & Gemini APIs", "OpenAI API", "Antigravity SDK", "Agent Orchestration", "Python", "Node.js"]
+      label: "Currently Exploring",
+      items: ["AI Agents", "Creative Coding", "Vocal UX", "Generative Interfaces"]
     },
     interests: {
-      label: "Curiosities",
-      items: ["Proactive UI UX", "Creative Coding", "Spatial Computing", "Human-Machine Trust", "Vocal Interfaces"]
+      label: "Curious About",
+      items: ["Proactive Design", "How AI Changes Trust", "Human-Machine Collaborations", "Spatial Computing", "Digital Experiences Beyond Screens"]
     }
   };
 
@@ -896,10 +896,18 @@ function VinylPlayer({ theme }) {
         <div 
           onPointerDown={(e) => {
             if (!playing) setPlaying(true);
-            // Setup simple drag to spin effect visually, though we already have a continuous spin when playing
           }}
           onPointerMove={(e) => {
             if (e.buttons > 0 && !playing) setPlaying(true);
+          }}
+          onDragOver={(e) => e.preventDefault()}
+          onDrop={(e) => {
+            e.preventDefault();
+            const i = e.dataTransfer.getData('albumIndex');
+            if (i !== null && i !== "") {
+              setLoaded(Number(i));
+              setPlaying(true);
+            }
           }}
           style={{
           position:"relative", width: 220, height: 220, background: "#111", borderRadius: 4,
@@ -948,31 +956,39 @@ function VinylPlayer({ theme }) {
           </div>
         </div>
 
-        {/* Draggable/Tappable Records List */}
+        {/* Draggable Records Gallery */}
         <div style={{ flex: 1, minWidth: 200 }}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: 12 }}>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 20, justifyContent: "center" }}>
             {ALBUMS.map((a, i) => (
               <div 
                 key={i} 
+                draggable
+                onDragStart={(e) => e.dataTransfer.setData('albumIndex', i)}
                 onClick={() => { setLoaded(i); setPlaying(true); }} 
                 style={{
-                  display: "flex", alignItems: "center", gap: 10, padding: 10,
-                  background: loaded === i ? "rgba(0,0,0,0.03)" : "transparent",
-                  border: `1px solid ${loaded === i ? 'rgba(0,0,0,0.08)' : 'transparent'}`,
-                  borderRadius: 6, cursor: "pointer"
+                  display: "flex", flexDirection: "column", alignItems: "center", gap: 8, cursor: "grab",
+                  width: "70px"
                 }}
               >
+                {/* Mini Vinyl */}
                 <div style={{
-                  width: 36, height: 36, borderRadius: "50%", flexShrink: 0,
-                  backgroundImage: `url(${a.cover})`, backgroundSize: "cover", backgroundPosition: "center",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  border: "1px solid rgba(255,255,255,0.1)"
+                  width: 70, height: 70, borderRadius: "50%",
+                  background: `radial-gradient(circle at 50% 50%, #080808 0%, #111 20%, #050505 40%, #111 60%, #080808 80%, #000 100%)`,
+                  border: `2px solid ${loaded === i ? theme.brand || '#000' : '#222'}`,
+                  position: "relative", display: "flex", alignItems: "center", justifyContent: "center",
+                  boxShadow: loaded === i ? "0 4px 12px rgba(0,0,0,0.2)" : "none",
+                  transition: "all 0.2s"
                 }}>
-                  <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#000" }} />
+                  <div style={{position: "absolute", inset: 4, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.05)"}} />
+                  <div style={{
+                    width: 24, height: 24, borderRadius: "50%",
+                    backgroundImage: `url(${a.cover})`, backgroundSize: "cover", backgroundPosition: "center"
+                  }} />
+                  <div style={{position: "absolute", width: 4, height: 4, borderRadius: "50%", background: "#000"}} />
                 </div>
-                <div style={{ overflow: "hidden" }}>
-                  <div style={{fontSize: 15, fontFamily: "var(--font-heading)", fontWeight: 800, color: "#000", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", letterSpacing: "-0.02em"}}>{a.title}</div>
-                  <div style={{fontSize: 11, fontFamily: "var(--font-body)", color: "#888", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}}>{a.artist}</div>
+                {/* Text underneath */}
+                <div style={{ textAlign: "center", width: "100%" }}>
+                  <div style={{fontSize: 10, fontFamily: "var(--font-heading)", fontWeight: 800, color: "#000", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}}>{a.title}</div>
                 </div>
               </div>
             ))}
@@ -1061,13 +1077,16 @@ export default function AboutMe({ theme, onClose }) {
           fontWeight: 900, 
           fontFamily: "var(--font-heading)", 
           marginBottom: "40px", 
-          letterSpacing: "-0.02em" 
+          letterSpacing: "-0.02em",
+          display: "flex",
+          alignItems: "center",
+          gap: "16px"
         }}>
-          About Me
+          <span style={{ color: "#4ade80", fontSize: "40px" }}>✦</span> About Me
         </h1>
         
         {/* Profile Introduction Section */}
-        <div className="about-section-reveal" style={{ marginBottom: "32px" }}>
+        <div className="about-section-reveal" style={{ marginBottom: "80px" }}>
           <ProfileIntroduction theme={theme} />
         </div>
 

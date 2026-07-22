@@ -14,7 +14,7 @@ export default function ProfileIntroduction({ theme }) {
   };
 
   return (
-    <div style={{ padding: "0 40px" }}>
+    <>
       <div
         className="profile-intro-container"
         style={{
@@ -82,6 +82,6 @@ export default function ProfileIntroduction({ theme }) {
           }
         }
       `}</style>
-    </div>
+    </>
   );
 }
