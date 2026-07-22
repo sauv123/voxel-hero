@@ -121,7 +121,7 @@
 }
 
 @media (max-width: 768px) {
-  .bc-container { --cube-size: 75vmin; }
-  .bc-face-body { font-size: 1.1rem; padding: 1rem; box-shadow: 6px 6px 0px #000; }
-  .bc-content { padding: 1rem; }
+  .bc-container { --cube-size: 85vmin; }
+  .bc-face-body { font-size: 0.95rem; padding: 0.8rem; box-shadow: 4px 4px 0px #000; word-break: break-word; }
+  .bc-content { padding: 0.8rem; }
 }

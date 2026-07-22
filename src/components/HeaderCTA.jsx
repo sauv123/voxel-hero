@@ -211,9 +211,6 @@ export default function HeaderCTA({ theme }) {
             <div 
               className="header-bar" 
               style={{ 
-                opacity: isIdle ? 0 : 1, 
-                pointerEvents: isIdle ? 'none' : 'auto', 
-                transition: 'opacity 0.4s',
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
