@@ -1106,22 +1106,10 @@ export default function AboutMe({ theme, onClose }) {
         </div>
 
         {/* Brands Section */}
-        <div className="about-section-reveal" style={{ marginTop: "60px", marginBottom: "40px" }}>
+        <div className="about-section-reveal" style={{ marginTop: "20px", marginBottom: "40px" }}>
           <BrandsSection theme={theme} />
         </div>
 
-        {/* Footer Meta */}
-        <div style={{
-          paddingTop: "30px",
-          display: "flex", justifyContent: "center", alignItems: "center",
-          borderTop: `1px solid rgba(0,0,0,0.06)`,
-          marginTop: "40px",
-          marginBottom: "60px"
-        }}>
-          <p style={{ fontSize: 9, color: theme.text, opacity: 0.4, fontFamily: "Space Mono, monospace", letterSpacing: 2, fontWeight: 700, textTransform: "uppercase" }}>
-            Sauveer Sinha • Milan, Italy
-          </p>
-        </div>
       </div>
       
       {/* Global Footer */}

@@ -324,8 +324,8 @@ export default function Footer({ theme, activeChar = 'deer' }) {
             flex: 1,
             display: "flex",
             flexDirection: "column",
-            alignItems: isMobile ? "center" : "flex-start",
-            textAlign: isMobile ? "center" : "left",
+            alignItems: "flex-start",
+            textAlign: "left",
             zIndex: 10,
             boxSizing: "border-box"
           }}
@@ -366,7 +366,7 @@ export default function Footer({ theme, activeChar = 'deer' }) {
             style={{
               display: "flex",
               flexDirection: "column",
-              alignItems: isMobile ? "center" : "flex-start",
+              alignItems: "flex-start",
               width: "100%",
               boxSizing: "border-box",
               marginTop: "40px" // Pushed down to improve visual spacing

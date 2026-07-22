@@ -405,7 +405,7 @@ export default function App() {
         {/* ── Background text layer (behind canvas) ── */}
         <div className="text-layer" aria-hidden="true">
           {/* Eyebrow with optimized visual hierarchy and enhanced readability */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '3rem' }}>
+          <div className="hero-text-header" style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '3rem' }}>
             <span style={{ 
               fontFamily: "var(--font-body)",
               fontSize: "clamp(12px, 2vw, 16px)", 
