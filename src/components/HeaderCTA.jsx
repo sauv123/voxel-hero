@@ -212,8 +212,8 @@ export default function HeaderCTA({ theme }) {
             <div 
               className="header-bar" 
               style={{ 
-                opacity: 1, 
-                pointerEvents: 'auto', 
+                opacity: isOpen ? 0 : 1, 
+                pointerEvents: isOpen ? 'none' : 'auto', 
                 transition: 'opacity 0.4s' 
               }}
             >
