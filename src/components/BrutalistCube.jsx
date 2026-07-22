@@ -38,6 +38,7 @@ export default function BrutalistCube() {
 
       // 2. Initial State
       gsap.set(cubeRef.current, { rotateX: 12, rotateY: 18 }); 
+      gsap.set(containerRef.current, { backgroundColor: '#1a0000' }); // Dark Red variant
 
       // 3. Hover & Mouse Physics
       const wrapper = wrapperRef.current;
@@ -84,10 +85,15 @@ export default function BrutalistCube() {
       const rubikEase = "expo.inOut"; 
 
       tl.to(cubeRef.current, { rotateY: -75, rotateX: 5, duration: 1, ease: rubikEase })                    
+        .to(containerRef.current, { backgroundColor: '#00081a', duration: 1, ease: rubikEase }, "<") // Dark Blue variant
         .to(cubeRef.current, { rotateY: -165, rotateX: -5, duration: 1, ease: rubikEase })                  
+        .to(containerRef.current, { backgroundColor: '#1a1a00', duration: 1, ease: rubikEase }, "<") // Dark Yellow variant
         .to(cubeRef.current, { rotateY: -282, rotateX: 12, duration: 1, ease: rubikEase })                  
+        .to(containerRef.current, { backgroundColor: '#001a08', duration: 1, ease: rubikEase }, "<") // Dark Green variant
         .to(cubeRef.current, { rotateX: -78, rotateY: -350, duration: 1, ease: rubikEase })                 
-        .to(cubeRef.current, { rotateX: 78, rotateY: -355, duration: 1, ease: rubikEase });                 
+        .to(containerRef.current, { backgroundColor: '#1a0a00', duration: 1, ease: rubikEase }, "<") // Dark Orange variant
+        .to(cubeRef.current, { rotateX: 78, rotateY: -355, duration: 1, ease: rubikEase })                 
+        .to(containerRef.current, { backgroundColor: '#111111', duration: 1, ease: rubikEase }, "<"); // Dark Grey variant
           
       // 5. Parallax Background Animation
       ScrollTrigger.create({
@@ -122,7 +128,7 @@ export default function BrutalistCube() {
                 <div className="bc-content">
                   <div className="bc-face-body">
                     <span className="bc-highlight">Hi, I'm Sauveer &mdash;</span><br/>
-                    equivalent to a hundred men in Sanskrit.
+                    equivalent to a hundred men in Sanskrit
                   </div>
                 </div>
               </div>
@@ -141,7 +147,7 @@ export default function BrutalistCube() {
               <div className="bc-face bc-face--back">
                 <div className="bc-content">
                   <div className="bc-face-body">
-                    Over the last 6 years, ive evolved from a ux designer to a <span className="bc-highlight">product builder.</span>
+                    Over the last 6 years, ive evolved from a ux designer to a <span className="bc-highlight">product builder</span>
                   </div>
                 </div>
               </div>
@@ -150,8 +156,8 @@ export default function BrutalistCube() {
               <div className="bc-face bc-face--left">
                 <div className="bc-content">
                   <div className="bc-face-body">
-                    <span className="bc-highlight">Open source</span> changed how I build.<br/><br/>
-                    Experiment, adapt, and create without limitations.
+                    <span className="bc-highlight">Open source</span> changed how I build<br/><br/>
+                    Experiment, adapt, and create without limitations
                   </div>
                 </div>
               </div>
@@ -160,8 +166,8 @@ export default function BrutalistCube() {
               <div className="bc-face bc-face--top">
                 <div className="bc-content">
                   <div className="bc-face-body">
-                    AI turns ideas into reality faster.<br/><br/>
-                    <span className="bc-highlight">But craft</span> makes the work meaningful.
+                    AI turns ideas into reality faster<br/><br/>
+                    <span className="bc-highlight">But craft</span> makes the work meaningful
                   </div>
                 </div>
               </div>
@@ -171,7 +177,7 @@ export default function BrutalistCube() {
                 <div className="bc-content">
                   <div className="bc-face-body">
                     <span className="bc-highlight">Direction</span><br/>
-                    I’m drawn to teams that value quality, intention, and how things feel.
+                    I’m drawn to teams that value quality, intention, and how things feel
                   </div>
                 </div>
               </div>
