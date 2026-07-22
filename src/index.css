@@ -824,11 +824,11 @@ body {
 }
 
 .contact-card {
-    border: 1px solid;
-    width: 400px;
+    border: none;
+    width: 600px;
     max-width: 90%;
     border-radius: 28px;
-    padding: 40px 32px;
+    padding: 60px 48px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -860,10 +860,11 @@ body {
 .close-btn svg { width: 16px; height: 16px; }
 
 .card-avatar {
-    width: 88px;
-    height: 88px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
-    border: 3px solid;
+    margin-bottom: 24px;
+    border: none;
     object-fit: cover;
     transition: transform 0.4s ease;
 }

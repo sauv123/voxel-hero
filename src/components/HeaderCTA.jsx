@@ -251,11 +251,11 @@ export default function HeaderCTA({ theme }) {
             {/* Modal */}
             <div className="modal-backdrop" ref={modalBackdrop} onClick={() => setIsOpen(false)}>
                 <div 
-                    className="contact-card" 
+                    className="contact-card"
                     onClick={(e) => e.stopPropagation()}
-                    style={{ background: '#0a0a0a', borderColor: '#222' }}
+                    style={{ background: '#0a0a0a' }}
                 >
-                    <img src={`/sauveerpp.png`} alt="Sauveer Sinha avatar profile" className="card-avatar" loading="lazy" style={{ width: 200, height: 200, borderColor: '#333', borderRadius: '100px' }} />
+                    <img src={`/sauveerpp.png`} alt="Sauveer Sinha avatar profile" className="card-avatar" loading="lazy" style={{ width: 200, height: 200, borderRadius: '100px', border: 'none' }} />
                     
                     <div className="card-header">
                         <div className="card-name" style={{ color: '#fff' }}>Sauveer Sinha</div>

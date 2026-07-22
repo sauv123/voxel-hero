@@ -1,111 +1,67 @@
-import React, { useEffect, useRef, useState } from 'react';
-import gsap from 'gsap';
+import React, { useState } from 'react';
 import './InteractiveBlocks.css';
 
 const COLORS = ['white', 'yellow', 'red', 'orange', 'blue', 'green'];
 
-export default function InteractiveBlocks() {
-  const containerRef = useRef(null);
-  const [cells, setCells] = useState([]);
-  
-  // Initialize grid
-  useEffect(() => {
-    // We adjust columns based on screen width for responsiveness
-    const updateGrid = () => {
-      let currentCols = 4;
-      let currentRows = 4;
-      
-      const totalCells = currentRows * currentCols;
-      
-      // A connected smile shape in 4x4 grid:
-      // 0  1  2  3
-      // 4  5  6  7
-      // 8  9 10 11
-      // 12 13 14 15
-      // Left cheek: 4, 8
-      // Bottom lip: 12, 13, 14, 15
-      // Right cheek: 11, 7
-      const smileIndices = new Set([4, 8, 12, 13, 14, 15, 11, 7]);
-      
-      const newCells = Array.from({ length: totalCells }, (_, i) => {
-        const isPreFilled = smileIndices.has(i);
-        const color = isPreFilled ? COLORS[Math.floor(Math.random() * COLORS.length)] : null;
-        
-        return {
-          id: i,
-          color: color,
-          active: isPreFilled,
-        };
-      });
-      
-      setCells({ rows: currentRows, cols: currentCols, items: newCells });
-    };
-    
-    updateGrid();
-    window.addEventListener('resize', updateGrid);
-    return () => window.removeEventListener('resize', updateGrid);
-  }, []);
+const PATTERNS = [
+  // SMILEY
+  [7, 10, 18, 23, 25, 26, 27, 28],
+  // FISH
+  [9, 12, 14, 15, 16, 18, 19, 20, 21, 22, 23, 24, 26, 27, 28, 33],
+  // TEDDY
+  [0, 5, 7, 8, 9, 10, 13, 16, 19, 20, 21, 22, 26, 27],
+  // ALIEN
+  [2, 3, 7, 8, 9, 10, 12, 13, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 27, 29, 30, 35]
+];
 
-  const handleMouseEnter = (index, el) => {
-    setCells(prev => {
-      if (!prev.items || prev.items[index].active) return prev;
-      
-      const newItems = [...prev.items];
-      const randomColor = COLORS[Math.floor(Math.random() * COLORS.length)];
-      newItems[index] = { ...newItems[index], active: true, color: randomColor };
-      
-      // Animate entry
-      const inner = el.querySelector('.cell-inner');
-      if (inner) {
-        gsap.fromTo(inner, {
-          opacity: 0,
-          scale: 0.8
-        }, {
-          opacity: 1,
-          scale: 1,
-          duration: 0.5,
-          ease: "back.out(1.5)"
-        });
-      }
-      
-      // Bounce container
-      gsap.fromTo(el, {
-        scale: 1
-      }, {
-        scale: 1.05,
-        duration: 0.15,
-        yoyo: true,
-        repeat: 1,
-        ease: "power2.out"
-      });
-      
-      return { ...prev, items: newItems };
-    });
+export default function InteractiveBlocks() {
+  const [step, setStep] = useState(0); 
+  
+  // step 0: empty
+  // step 1: pattern 0
+  // step 2: empty
+  // step 3: pattern 1
+  // ...
+
+  const handleMouseEnter = () => {
+    setStep(prev => (prev + 1) % (PATTERNS.length * 2));
   };
 
-  if (!cells.items) return null;
+  const isVisible = step % 2 !== 0;
+  const patternIndex = Math.floor(step / 2) % PATTERNS.length;
+  const activePattern = new Set(PATTERNS[patternIndex]);
+
+  // grid 6x6 = 36 cells
+  const cells = Array.from({ length: 36 }, (_, i) => {
+    const active = isVisible && activePattern.has(i);
+    // Use a stable color based on index so it doesn't flicker when hiding
+    const color = COLORS[i % COLORS.length];
+    return { id: i, active, color };
+  });
 
   return (
-    <div className="interactive-blocks-wrapper" ref={containerRef}>
+    <div 
+      className="interactive-blocks-wrapper" 
+      onMouseEnter={handleMouseEnter}
+      style={{ cursor: 'pointer', padding: '10px' }}
+    >
       <div 
         className="interactive-grid"
         style={{
-          gridTemplateColumns: `repeat(${cells.cols}, 1fr)`,
-          gridTemplateRows: `repeat(${cells.rows}, 1fr)`
+          gridTemplateColumns: `repeat(6, 1fr)`,
+          gridTemplateRows: `repeat(6, 1fr)`,
+          width: '100%',
+          height: '100%'
         }}
       >
-        {cells.items.map((cell, idx) => (
-          <div 
-            key={`${cell.id}-${cells.cols}`}
-            className={`cell ${cell.active ? 'active' : ''}`}
-            onMouseEnter={(e) => handleMouseEnter(idx, e.currentTarget)}
-            onTouchStart={(e) => handleMouseEnter(idx, e.currentTarget)}
-          >
+        {cells.map((cell) => (
+          <div key={cell.id} className={`cell ${cell.active ? 'active' : ''}`}>
             <div 
-              className={`cell-inner ${cell.color || ''}`}
+              className={`cell-inner ${cell.color}`}
               style={{
                 opacity: cell.active ? 1 : 0,
-                transform: cell.active ? 'scale(1)' : 'scale(0.8)'
+                transform: cell.active ? 'scale(1)' : 'scale(0.8)',
+                transition: 'opacity 0.4s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)'
               }}
             ></div>
           </div>
