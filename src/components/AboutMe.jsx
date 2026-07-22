@@ -15,29 +15,29 @@ gsap.registerPlugin(ScrollTrigger);
 // ─── DATA ────────────────────────────────────────────────────────────
 const GAME_ROUNDS = [
   [
-    { text: '"I was ranked AIR 8 in a spelling bee."', type: "TRUTH", explain: "True." },
-    { text: '"I started my career with photography."', type: "TRUTH", explain: "True." },
-    { text: '"I have climbed K2 camp."', type: "LIE", explain: "Lie." },
+    { text: '"I was ranked AIR 8 in a spelling bee"', type: "TRUTH", explain: "True" },
+    { text: '"I started my career with photography"', type: "TRUTH", explain: "True" },
+    { text: '"I have climbed K2 camp"', type: "LIE", explain: "Lie" },
   ],
   [
-    { text: '"I can play 2 instruments."', type: "TRUTH", explain: "True." },
-    { text: '"I can solve a Rubik\'s Cube in 46 seconds."', type: "TRUTH", explain: "True." },
-    { text: '"I can juggle 5 balls at once."', type: "LIE", explain: "Lie." },
+    { text: '"I can play 2 instruments"', type: "TRUTH", explain: "True" },
+    { text: '"I can solve a Rubik\'s Cube in 46 seconds"', type: "TRUTH", explain: "True" },
+    { text: '"I can juggle 5 balls at once"', type: "LIE", explain: "Lie" },
   ],
   [
-    { text: '"I did my schooling in Bangalore."', type: "TRUTH", explain: "True." },
-    { text: '"I have a boxing video on YouTube."', type: "TRUTH", explain: "True." },
-    { text: '"I have never been to a beach in my life."', type: "LIE", explain: "Lie." },
+    { text: '"I did my schooling in Bangalore"', type: "TRUTH", explain: "True" },
+    { text: '"I have a boxing video on YouTube"', type: "TRUTH", explain: "True" },
+    { text: '"I have never been to a beach in my life"', type: "LIE", explain: "Lie" },
   ],
   [
-    { text: '"I\'m an engineer."', type: "TRUTH", explain: "True." },
-    { text: '"I got a pair of Jordans with my first salary."', type: "TRUTH", explain: "True." },
-    { text: '"I have travelled all continents."', type: "LIE", explain: "Lie." },
+    { text: '"I\'m an engineer"', type: "TRUTH", explain: "True" },
+    { text: '"I got a pair of Jordans with my first salary"', type: "TRUTH", explain: "True" },
+    { text: '"I have travelled all continents"', type: "LIE", explain: "Lie" },
   ],
   [
-    { text: '"I prefer beaches over mountains."', type: "TRUTH", explain: "True." },
-    { text: '"I have a chess rating of 800."', type: "TRUTH", explain: "True." },
-    { text: '"I once auditioned for a reality singing show."', type: "LIE", explain: "Lie." },
+    { text: '"I prefer beaches over mountains"', type: "TRUTH", explain: "True" },
+    { text: '"I have a chess rating of 800"', type: "TRUTH", explain: "True" },
+    { text: '"I once auditioned for a reality singing show"', type: "LIE", explain: "Lie" },
   ],
 ];
 
