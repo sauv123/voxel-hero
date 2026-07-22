@@ -238,7 +238,8 @@ export default function BottomDrawer({ theme, activePage, navigateWithTransition
               style={{
                 width: '100%',
                 height: '100%',
-                objectFit: 'cover'
+                objectFit: 'cover',
+                transform: 'scale(1.3)'
               }}
             />
           </div>

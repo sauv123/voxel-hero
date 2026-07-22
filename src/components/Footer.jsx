@@ -349,7 +349,7 @@ export default function Footer({ theme, activeChar = 'deer' }) {
               margin: "0 0 32px 0"
             }}
           >
-            I hope you had as much fun exploring the site as much as I had building it.
+            I hope you had as much fun exploring the site as I had building it.
           </p>
 
           {/* Static, low opacity labels & Stacked Link items underneath */}
