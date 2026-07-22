@@ -39,25 +39,20 @@ export default function ProfileIntroduction({ theme }) {
           </div>
         </div>
 
-        <div style={{ flex: "1" }}>
-          <h3 style={{
-            fontSize: 48, fontWeight: 900, fontFamily: "var(--font-heading)",
-            color: theme.text, marginBottom: 24, lineHeight: 1.1, letterSpacing: "-0.02em"
-          }}>
-            I build digital experiences that matter.
-          </h3>
-          <p style={{
-            fontSize: 16, fontFamily: "var(--font-body)", color: theme.text,
-            opacity: 0.8, lineHeight: 1.7, marginBottom: 24
-          }}>
-            I am a multidisciplinary Product Designer blending deep technical understanding with human-centered aesthetics. From conceptualizing 3D interactive experiences to crafting seamless mobile interfaces, I design digital products that leave a lasting impact.
-          </p>
-          <p style={{
-            fontSize: 16, fontFamily: "var(--font-body)", color: theme.text,
-            opacity: 0.8, lineHeight: 1.7
-          }}>
-            With a background in UI/UX, generative interfaces, and creative coding, I bridge the gap between imagination and execution.
-          </p>
+        <div style={{ flex: "1", display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <video 
+            src="/portfolio.mp4" 
+            controls 
+            style={{ 
+              width: "100%", 
+              borderRadius: "16px",
+              boxShadow: "0 10px 30px rgba(0,0,0,0.5)", 
+              outline: "none",
+              border: `1.5px solid ${theme.text}25`
+            }}
+          >
+            Your browser does not support the video tag.
+          </video>
         </div>
       </div>
 
