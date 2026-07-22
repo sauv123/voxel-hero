@@ -210,13 +210,22 @@ export default function Footer({ theme, activeChar = 'deer' }) {
   // GSAP Entrance reveals
   useEffect(() => {
     const el = footerRef.current;
-    gsap.set('.footer-fade', { opacity: 0, y: 35 });
+    if (!el) return;
+    
+    // Find closest scrollable container or default to window
+    const scrollContainer = el.closest('.scroll-container') || window;
+    
+    // Scope animations to this specific footer instance
+    const fadeElements = el.querySelectorAll('.footer-fade');
+
+    gsap.set(fadeElements, { opacity: 0, y: 35 });
 
     const trigger = ScrollTrigger.create({
       trigger: el,
-      start: "top 85%",
+      scroller: scrollContainer,
+      start: "top 95%",
       onEnter: () => {
-        gsap.to('.footer-fade', { 
+        gsap.to(fadeElements, { 
           opacity: 1, 
           y: 0, 
           duration: 0.8, 
@@ -225,7 +234,7 @@ export default function Footer({ theme, activeChar = 'deer' }) {
         });
       },
       onLeaveBack: () => {
-        gsap.set('.footer-fade', { opacity: 0, y: 35 });
+        gsap.set(fadeElements, { opacity: 0, y: 35 });
       }
     });
 
@@ -278,7 +287,7 @@ export default function Footer({ theme, activeChar = 'deer' }) {
         boxSizing: "border-box",
         overflow: "hidden", 
         borderTop: "1px solid rgba(255, 255, 255, 0.05)",
-        padding: isMobile ? "48px 24px 40px 24px" : "80px 6vw 48px 6vw",
+        padding: isMobile ? "48px 24px 180px 24px" : "80px 6vw 160px 6vw",
         zIndex: 20
       }}
     >
@@ -352,7 +361,6 @@ export default function Footer({ theme, activeChar = 'deer' }) {
             I hope you had as much fun exploring the site as I had building it.
           </p>
 
-          {/* Static, low opacity labels & Stacked Link items underneath */}
           <div 
             className="footer-fade"
             style={{
@@ -360,7 +368,8 @@ export default function Footer({ theme, activeChar = 'deer' }) {
               flexDirection: "column",
               alignItems: isMobile ? "center" : "flex-start",
               width: "100%",
-              boxSizing: "border-box"
+              boxSizing: "border-box",
+              marginTop: "40px" // Pushed down to improve visual spacing
             }}
           >
             {/* Say Hi Label (Static text, no link action, lower opacity) */}
@@ -417,27 +426,6 @@ export default function Footer({ theme, activeChar = 'deer' }) {
         </div>
 
       </div>
-
-      {/* Footer Bottom Line */}
-      <div 
-        style={{
-          width: "100%",
-          maxWidth: "1320px",
-          borderTop: "1px solid rgba(255, 255, 255, 0.08)",
-          paddingTop: "24px",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          fontFamily: "Space Mono, monospace",
-          fontSize: "10px",
-          color: "rgba(255, 255, 255, 0.4)",
-          textTransform: "uppercase",
-          letterSpacing: "0.05em"
-        }}
-      >
-        <span>© 2026 Sauveer Sinha, Milan</span>
-      </div>
-
     </footer>
   );
 }

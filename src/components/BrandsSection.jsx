@@ -35,6 +35,7 @@ export default function BrandsSection() {
       const tl = gsap.timeline({
           scrollTrigger: {
               trigger: sectionRef.current,
+              scroller: sectionRef.current.closest('.scroll-container') || window,
               start: 'top 80%',
               toggleActions: 'play none none reverse'
           }
@@ -111,6 +112,7 @@ export default function BrandsSection() {
           ease: 'none',
           scrollTrigger: {
               trigger: sectionRef.current,
+              scroller: sectionRef.current.closest('.scroll-container') || window,
               start: 'top bottom',
               end: 'bottom top',
               scrub: true
@@ -122,6 +124,7 @@ export default function BrandsSection() {
           ease: 'none',
           scrollTrigger: {
               trigger: sectionRef.current,
+              scroller: sectionRef.current.closest('.scroll-container') || window,
               start: 'top bottom',
               end: 'bottom top',
               scrub: true
@@ -140,7 +143,7 @@ export default function BrandsSection() {
       
       <div className="brands-container">
         <div className="section-header">
-          <h2 ref={headerTextRef} style={{ color: '#ffffff' }}>
+          <h2 ref={headerTextRef}>
             {words.map((word, index) => (
               <span key={index} className="word" style={{ display: 'inline-block' }}>
                 {word}&nbsp;

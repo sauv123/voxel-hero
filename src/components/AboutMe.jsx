@@ -3,12 +3,13 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ProfileIntroduction from "./ProfileIntroduction";
 
-// Imports of original milestone images
 import manipalImg from "../assets/PXL_20230613_050806226.webp";
 import founditImg from "../assets/IMG_128640.webp";
 import mumbaiImg from "../assets/IMG_5539.webp";
 import milanImg from "../assets/Screenshot 2026-06-01 at 11.17.15 AM.webp";
 import ncaImg from "../assets/1745310056phpNlbiko.webp";
+import Footer from "./Footer";
+import BrandsSection from "./BrandsSection";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -1043,6 +1044,7 @@ export default function AboutMe({ theme, onClose }) {
         overflowX: "hidden",
         overflowY: "auto"
       }}
+      className="scroll-container"
     >
 
       <div style={{ 
@@ -1103,18 +1105,27 @@ export default function AboutMe({ theme, onClose }) {
           <VinylPlayer theme={theme} />
         </div>
 
+        {/* Brands Section */}
+        <div className="about-section-reveal" style={{ marginTop: "60px", marginBottom: "40px" }}>
+          <BrandsSection theme={theme} />
+        </div>
+
         {/* Footer Meta */}
         <div style={{
           paddingTop: "30px",
           display: "flex", justifyContent: "center", alignItems: "center",
           borderTop: `1px solid rgba(0,0,0,0.06)`,
           marginTop: "40px",
+          marginBottom: "60px"
         }}>
           <p style={{ fontSize: 9, color: theme.text, opacity: 0.4, fontFamily: "Space Mono, monospace", letterSpacing: 2, fontWeight: 700, textTransform: "uppercase" }}>
             Sauveer Sinha • Milan, Italy
           </p>
         </div>
       </div>
+      
+      {/* Global Footer */}
+      <Footer theme={theme} activeChar="deer" />
     </div>
   );
 }

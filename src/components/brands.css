@@ -1,5 +1,5 @@
 .brands-section {
-    background: #000000 !important;
+    background: transparent;
     padding: 80px 40px;
     position: relative;
     overflow: hidden;
@@ -25,6 +25,7 @@
     line-height: 1;
     letter-spacing: -0.05em;
     text-transform: uppercase;
+    color: #0d0d0d !important;
 }
 
 .section-header h2 .word {
@@ -35,14 +36,15 @@
 .logo-grid {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    gap: 1px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    gap: 16px;
     opacity: 0;
 }
 
 .logo-item {
-    background: #000000;
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1.5px solid rgba(13, 13, 13, 0.08);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
     aspect-ratio: 16 / 9;
     display: flex;
     align-items: center;
@@ -51,7 +53,7 @@
     position: relative;
     overflow: hidden;
     cursor: pointer;
-    transition: background 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .logo-item::before {
@@ -61,17 +63,22 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(13, 13, 13, 0.03);
     opacity: 0;
     transition: opacity 0.3s ease;
 }
 
 .logo-item:hover {
-    background: #111111;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
 }
 
 .logo-item:hover::before {
     opacity: 1;
+}
+
+.logo-item:hover .brand-image {
+    filter: grayscale(0%) contrast(100%);
 }
 
 .logo-item:hover .logo-content {
@@ -93,9 +100,7 @@
     width: 60%;
     height: 60%;
     object-fit: contain;
-    /* Bulletproof method to turn any logo (JPG with white bg, or transparent PNG) into a pure white logo on a black background */
-    mix-blend-mode: screen;
-    filter: grayscale(100%) invert(1) contrast(1000%);
+    mix-blend-mode: multiply;
     transition: filter 0.3s ease;
 }
 

@@ -9,7 +9,6 @@ import InteractiveProjects from './components/InteractiveProjects';
 import Preloader from './components/Preloader';
 import BrutalistCube from './components/BrutalistCube';
 import BottomDrawer from './components/BottomDrawer';
-import BrandsSection from './components/BrandsSection';
 import Footer from './components/Footer';
 import ExperimentsGrid from './components/ExperimentsGrid';
 import gsap from 'gsap';
@@ -151,6 +150,7 @@ export default function App() {
   const [isHoveringCharacter, setIsHoveringCharacter] = useState(false);
   const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
   const transitionRef = useRef(null);
+  const isSwitchingRef = useRef(false);
   const [isPreloaderDone, setIsPreloaderDone] = useState(() => {
     if (typeof window !== 'undefined') {
       return sessionStorage.getItem('visited') === 'true';
@@ -236,29 +236,27 @@ export default function App() {
         }
       });
 
-      // Experiments Grid -> Brands Section (#000000)
-      ScrollTrigger.create({
-        trigger: '.experiments-section-modern',
-        start: "bottom 90%",
-        end: "bottom 20%",
-        scrub: 1.5,
-        onUpdate: (self) => {
-          const blendedColor = gsap.utils.interpolate('#FCFAF2', '#000000', self.progress);
-          gsap.set(document.body, { backgroundColor: blendedColor });
-        }
-      });
+
     });
     return () => ctx.revert();
   }, [theme]);
 
   // Character switching with flash
   const switchTo = useCallback((next) => {
-    if (next === activeChar) return;
+    if (next === activeChar || isSwitchingRef.current) return;
+    isSwitchingRef.current = true;
+    
+    gsap.killTweensOf('.hero-title .char');
     gsap.to('.hero-title .char', {
       y: '-110%', opacity: 0, duration: 0.35, ease: 'power3.in', stagger: 0.01,
       onComplete: () => {
         setActiveChar(next);
-        gsap.to('.hero-title .char', { y: '0%', opacity: 1, duration: 0.6, ease: 'power4.out', stagger: 0.018 });
+        gsap.to('.hero-title .char', { 
+          y: '0%', opacity: 1, duration: 0.6, ease: 'power4.out', stagger: 0.018,
+          onComplete: () => {
+            isSwitchingRef.current = false;
+          }
+        });
       },
     });
   }, [activeChar]);
@@ -507,8 +505,6 @@ export default function App() {
         <ExperimentsGrid theme={theme} />
       )}
 
-      {/* ── Brands Collaboration Section ── */}
-      <BrandsSection theme={theme} />
 
       <Suspense fallback={null}>
         {/* ── Work Gallery Overlay ── */}

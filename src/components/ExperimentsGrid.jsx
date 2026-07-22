@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
+import ReactDOM from 'react-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './ExperimentsGrid.css';
@@ -209,6 +210,8 @@ const EXPERIMENTS = [
     tags: ['AI Design', 'Generative Space', 'Art Direction'],
     video: '/works/AI design Sauveer.mp4',
     size: 'huge',
+    description: '[Placeholder text] Explores the intersection of generative AI and spatial UI design.',
+    techStack: ['WebGL', 'TensorFlow.js', 'Figma']
   },
   {
     id: 14,
@@ -216,6 +219,8 @@ const EXPERIMENTS = [
     tags: ['Generative Art', 'Mosaic Design', 'Creative Code'],
     video: '/works/mosaic.mp4',
     size: 'hero',
+    description: '[Placeholder text] A procedural artwork tool generating complex mosaic patterns.',
+    techStack: ['Canvas API', 'p5.js', 'GLSL']
   },
   {
     id: 1,
@@ -223,6 +228,8 @@ const EXPERIMENTS = [
     tags: ['Creative Coding', 'React'],
     video: '/works/pentagon font.mp4',
     size: 'wide',
+    description: '[Placeholder text] Real-time font generation utilizing a machine learning backend.',
+    techStack: ['React', 'Python', 'WebSockets']
   },
   {
     id: 2,
@@ -230,6 +237,8 @@ const EXPERIMENTS = [
     tags: ['Spatial', 'visionOS', 'SwiftUI'],
     video: '/2.mp4',
     size: 'square',
+    description: '[Placeholder text] Prototyping interactions for next-generation spatial headsets.',
+    techStack: ['visionOS', 'SwiftUI', 'RealityKit']
   },
   {
     id: 3,
@@ -237,6 +246,8 @@ const EXPERIMENTS = [
     tags: ['GSAP', 'Open Source', 'Micro-UX'],
     video: '/krizia.mp4',
     size: 'square',
+    description: '[Placeholder text] A library of reusable, buttery-smooth micro-interactions.',
+    techStack: ['GSAP', 'React Transition Group', 'CSS']
   },
   {
     id: 5,
@@ -244,6 +255,8 @@ const EXPERIMENTS = [
     tags: ['Interactive Pool', 'Creative Code', 'HTML5 Canvas'],
     isInteractivePool: true,
     size: 'wide',
+    description: '[Placeholder text] An interactive particle pool simulating fluid dynamics and repulsion physics based on mouse proximity.',
+    techStack: ['HTML5 Canvas', 'Vanilla JS', 'Physics Engine']
   },
   {
     id: 4,
@@ -251,6 +264,8 @@ const EXPERIMENTS = [
     tags: ['Notes', 'Interaction', 'UI'],
     video: '/lemon_notes.mp4',
     size: 'wide',
+    description: '[Placeholder text] A minimal, gestural-first note taking app prototype.',
+    techStack: ['React Native', 'Reanimated', 'Zustand']
   },
   {
     id: 15,
@@ -258,11 +273,107 @@ const EXPERIMENTS = [
     tags: ['Snake Fluid', 'Interaction Design', 'Micro-UX'],
     video: '/works/snake.mp4',
     size: 'wide',
+    description: '[Placeholder text] Fluid, cursor-following generative snake patterns built for high-performance rendering.',
+    techStack: ['WebGL', 'GLSL Shaders', 'Three.js']
   },
 ];
 
-function BentoCard({ item, theme, setCursorActive, disableScrollTrigger }) {
+// ─── Context Drawer Component ──────────────────────────────────────────────
+const ContextDrawer = ({ item, onClose, theme }) => {
+  const drawerRef = useRef(null);
+
+  useEffect(() => {
+    gsap.fromTo(drawerRef.current, 
+      { x: '100%', opacity: 0 }, 
+      { x: '0%', opacity: 1, duration: 0.5, ease: 'power3.out' }
+    );
+  }, [item]);
+
+  const handleClose = () => {
+    gsap.to(drawerRef.current, {
+      x: '100%', opacity: 0, duration: 0.4, ease: 'power2.in',
+      onComplete: onClose
+    });
+  };
+
+  if (!item) return null;
+
+  return ReactDOM.createPortal(
+    <>
+      <div 
+        style={{
+          position: 'fixed',
+          top: 0, left: 0, right: 0, bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.2)',
+          zIndex: 199,
+          opacity: 1,
+          animation: 'fadeIn 0.3s ease-out'
+        }}
+        onClick={handleClose}
+      />
+      <div 
+        ref={drawerRef}
+        style={{
+          position: 'fixed',
+          top: 0, right: 0, bottom: 0,
+          width: '100%', maxWidth: '400px',
+          backgroundColor: 'rgba(252, 250, 242, 0.95)',
+          backdropFilter: 'blur(20px)',
+          borderLeft: '1px solid rgba(0,0,0,0.05)',
+          zIndex: 200,
+          padding: '40px 32px',
+          boxShadow: '-10px 0 30px rgba(0,0,0,0.05)',
+          display: 'flex', flexDirection: 'column',
+          overflowY: 'auto'
+        }}
+      >
+        <button 
+          onClick={handleClose}
+          style={{
+            alignSelf: 'flex-end', background: 'none', border: 'none',
+            fontSize: '24px', cursor: 'pointer', color: '#0d0d0d',
+            padding: '8px'
+          }}
+        >
+          ✕
+        </button>
+
+      <h3 style={{ 
+        fontFamily: 'var(--font-heading)', fontSize: '28px', fontWeight: 900,
+        color: '#0d0d0d', marginBottom: '16px', letterSpacing: '-0.02em', marginTop: '24px'
+      }}>
+        {item.title}
+      </h3>
+
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '32px' }}>
+        {item.techStack?.map(tech => (
+          <span key={tech} style={{
+            background: 'rgba(0,0,0,0.05)', padding: '4px 10px', borderRadius: '4px',
+            fontSize: '11px', fontFamily: 'var(--font-body)', fontWeight: 600, color: '#0d0d0d'
+          }}>
+            {tech}
+          </span>
+        ))}
+      </div>
+
+      <div style={{ flex: 1 }}>
+        <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '14px', fontWeight: 700, color: '#0d0d0d', marginBottom: '8px', opacity: 0.5, textTransform: 'uppercase' }}>
+          The Concept
+        </h4>
+        <p style={{ fontFamily: 'var(--font-body)', fontSize: '15px', color: '#0d0d0d', lineHeight: 1.6, opacity: 0.8 }}>
+          {item.description}
+        </p>
+      </div>
+
+      </div>
+    </>,
+    document.body
+  );
+};
+
+function BentoCard({ item, theme, setCursorActive, disableScrollTrigger, onOpenDrawer }) {
   const cardRef = useRef();
+  const [hovered, setHovered] = useState(false);
 
   useEffect(() => {
     if (disableScrollTrigger) {
@@ -313,6 +424,8 @@ function BentoCard({ item, theme, setCursorActive, disableScrollTrigger }) {
   const handleCardClick = () => {
     if (item.link) {
       window.open(item.link, '_blank');
+    } else {
+      if (onOpenDrawer) onOpenDrawer(item);
     }
   };
 
@@ -325,9 +438,53 @@ function BentoCard({ item, theme, setCursorActive, disableScrollTrigger }) {
       onClick={handleCardClick}
       style={{
         borderColor: 'rgba(13, 13, 13, 0.08)',
-        cursor: item.link ? 'pointer' : 'default',
+        cursor: 'pointer',
+        position: 'relative'
       }}
     >
+      {/* Dark overlay that fades in on hover to decrease transparency/dim the card */}
+      {!item.isInteractivePool && (
+        <div 
+          style={{
+            position: 'absolute',
+            inset: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.35)',
+            zIndex: 40,
+            opacity: hovered ? 1 : 0,
+            transition: 'opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+            pointerEvents: 'none',
+            borderRadius: '16px'
+          }}
+        />
+      )}
+
+      {/* Visual Hover Cue */}
+      {!item.isInteractivePool && (
+        <div 
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            backgroundColor: '#0d0d0d', // Changed to black
+            color: '#ffffff',
+            padding: '8px 16px',
+            borderRadius: '100px',
+            fontFamily: 'var(--font-heading)',
+            fontSize: '12px',
+            fontWeight: 700,
+            letterSpacing: '0.1em',
+            pointerEvents: 'none',
+            zIndex: 50,
+            opacity: hovered ? 1 : 0,
+            transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+            boxShadow: '0 8px 24px rgba(0,0,0,0.2)'
+          }}
+        >
+          VIEW PROJECT
+        </div>
+      )}
+
       {/* Background Media, Binary Shark Pool, or Embedded Iframe */}
       {item.isInteractivePool ? (
         <BinarySharkPool />
@@ -386,6 +543,7 @@ export default function ExperimentsGrid({ theme, disableScrollTrigger }) {
   const headingRef = useRef();
   const cursorRef  = useRef();
   const [cursorActive, setCursorActive] = useState(false);
+  const [activeExperiment, setActiveExperiment] = useState(null);
 
   useEffect(() => {
     if (disableScrollTrigger) return;
@@ -473,17 +631,27 @@ export default function ExperimentsGrid({ theme, disableScrollTrigger }) {
 
         {/* Horizontal Bento Grid Layout */}
         <div className="modern-bento-grid">
-          {EXPERIMENTS.map((item, i) => (
-            <BentoCard
-              key={item.id}
-              item={item}
-              theme={theme}
-              setCursorActive={setCursorActive}
-              disableScrollTrigger={disableScrollTrigger}
+          {EXPERIMENTS.map((item) => (
+            <BentoCard 
+              key={item.id} 
+              item={item} 
+              theme={theme} 
+              setCursorActive={setCursorActive} 
+              disableScrollTrigger={disableScrollTrigger} 
+              onOpenDrawer={(experiment) => setActiveExperiment(experiment)}
             />
           ))}
         </div>
       </div>
+      
+      {/* Context Drawer for Explanations */}
+      {activeExperiment && (
+        <ContextDrawer 
+          item={activeExperiment} 
+          theme={theme} 
+          onClose={() => setActiveExperiment(null)} 
+        />
+      )}
     </section>
   );
 }
