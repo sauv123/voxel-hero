@@ -49,12 +49,12 @@ const ALBUMS = [
 ];
 
 const TIMELINE = [
-  { id: 1, text: "Took a leap of faith and moved to Milan for my Master's.", photos: [{ src: ncaImg, bg: "#0d1a28", e: "✈️" }] },
+  { id: 1, text: "Graduated from MIT Manipal.", photos: [{ src: milanImg, bg: "#0d1a28", e: "🏫" }] },
   { id: 2, text: "Started my career in Bengaluru at foundit.", photos: [{ src: founditImg, bg: "#281a0d", e: "🚀" }] },
   { id: 3, text: "Moved to Mumbai in search of bigger opportunities.", photos: [{ src: manipalImg, bg: "#0d1428", e: "🎨" }] },
   { id: 4, text: "Launched my first product as a designer.", photos: [{ videoSrc: "/product.mp4", bg: "#28100d", e: "🏆", caption: "PRODUCT_V1" }] },
-  { id: 5, text: "Came 3rd in NCA(design awards).", photos: [{ src: mumbaiImg, bg: "#28280d", e: "🥉" }] },
-  { id: 6, text: "Graduated from MIT Manipal.", photos: [{ src: milanImg, bg: "#0d1a28", e: "🏫" }] },
+  { id: 5, text: "Took a leap of faith and moved to Milan for my Master's.", photos: [{ src: ncaImg, bg: "#0d1a28", e: "✈️" }] },
+  { id: 6, text: "Came 3rd in NCA(design awards).", photos: [{ src: mumbaiImg, bg: "#28280d", e: "🥉" }] },
 ];
 
 // ─── Timeline (Mobile Responsive Optimized Sizes) ────────────────────
@@ -191,7 +191,7 @@ function Timeline({ theme }) {
   }, [inertia, clamp]);
 
   return (
-    <div style={{ padding: "0 24px", maxWidth: 1200, margin: "0 auto", position: "relative" }}>
+    <div style={{ padding: "0", maxWidth: 1000, margin: "0 auto", position: "relative" }}>
       <div style={{
         display: "flex",
         alignItems: "center",
@@ -212,7 +212,7 @@ function Timeline({ theme }) {
         onMouseDown={onMouseDown}
         onTouchStart={onMouseDown}
         style={{
-          position: "relative", height: timelineHeight, borderRadius: 4,
+          position: "relative", height: timelineHeight, borderRadius: 16,
           background: `#000`,
           border: `1px solid ${theme.text}20`,
           boxShadow: `none`,
@@ -237,13 +237,16 @@ function Timeline({ theme }) {
           {/* Kinetic Background Numbers */}
           {TIMELINE.map((entry, idx) => {
             const x = lead + idx * pxStep;
+            const isActive = Math.abs(scroll - idx * pxStep) < pxStep / 2;
             return (
               <div key={entry.id} style={{
                 position: "absolute", left: x, top: axisY - (isMobile ? 40 : 60),
                 transform: `translate(-50%, -50%)`,
                 fontSize: isMobile ? 70 : 180, fontWeight: 900,
-                color: '#FFF', opacity: 0.05,
-                fontFamily: "var(--font-heading)"
+                color: isActive ? theme.brand || '#FFF' : '#FFF', 
+                opacity: isActive ? 0.6 : 0.05,
+                fontFamily: "var(--font-heading)",
+                transition: "all 0.3s ease"
               }}>
                 {String(idx + 1).padStart(2, '0')}
               </div>
@@ -509,8 +512,8 @@ function LanguagesToggle({ theme }) {
             <button key={l} onClick={() => setLang(l)} style={{
               background: lang === l ? "#000000" : "transparent",
               color: lang === l ? "#ffffff" : theme.text, 
-              border: "none", borderRadius: 3, padding: "4px 10px", cursor: "pointer", 
-              fontSize: 10, fontWeight: 700, fontFamily: "var(--font-heading)"
+              border: "none", borderRadius: 4, padding: "8px 16px", cursor: "pointer", 
+              fontSize: 12, fontWeight: 700, fontFamily: "var(--font-heading)"
             }}>{l}</button>
           ))}
         </div>
@@ -766,9 +769,9 @@ function ToolboxSection({ theme }) {
                 background: activeTab === catKey ? "#000000" : "transparent",
                 color: activeTab === catKey ? "#ffffff" : "#888",
                 border: "none",
-                fontSize: 9,
+                fontSize: 12,
                 fontWeight: 900,
-                padding: "4px 8px",
+                padding: "10px 18px",
                 borderRadius: 4,
                 cursor: "pointer",
                 textTransform: "uppercase",
@@ -787,12 +790,12 @@ function ToolboxSection({ theme }) {
           <div
             key={idx}
             style={{
-              padding: "6px 12px",
+              padding: "10px 18px",
               background: "rgba(0,0,0,0.03)",
               border: "1px solid rgba(0,0,0,0.05)",
               color: "#000000",
               fontFamily: "Space Mono, monospace",
-              fontSize: "10px",
+              fontSize: "12px",
               fontWeight: 700,
               borderRadius: "4px",
               display: "flex",
@@ -890,9 +893,18 @@ function VinylPlayer({ theme }) {
 
       <div style={{ display: "flex", gap: "20px", alignItems: "center", flexWrap: "wrap", justifyContent: "center" }}>
         {/* Record Platter */}
-        <div style={{
+        <div 
+          onPointerDown={(e) => {
+            if (!playing) setPlaying(true);
+            // Setup simple drag to spin effect visually, though we already have a continuous spin when playing
+          }}
+          onPointerMove={(e) => {
+            if (e.buttons > 0 && !playing) setPlaying(true);
+          }}
+          style={{
           position:"relative", width: 220, height: 220, background: "#111", borderRadius: 4,
-          border: "1px solid #222", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0
+          border: "1px solid #222", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+          cursor: playing ? "default" : "grab"
         }}>
           <div style={{
             width: 190, height: 190, borderRadius: "50%",
@@ -959,8 +971,8 @@ function VinylPlayer({ theme }) {
                   <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#000" }} />
                 </div>
                 <div style={{ overflow: "hidden" }}>
-                  <div style={{fontSize: 11, fontWeight: 700, color: "#000", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}}>{a.title}</div>
-                  <div style={{fontSize: 9, color: "#888", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}}>{a.artist}</div>
+                  <div style={{fontSize: 15, fontFamily: "var(--font-heading)", fontWeight: 800, color: "#000", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", letterSpacing: "-0.02em"}}>{a.title}</div>
+                  <div style={{fontSize: 11, fontFamily: "var(--font-body)", color: "#888", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}}>{a.artist}</div>
                 </div>
               </div>
             ))}
@@ -1036,12 +1048,23 @@ export default function AboutMe({ theme, onClose }) {
         paddingTop: 40, 
         paddingBottom: 100, 
         width: "100%",
-        maxWidth: "1440px",
+        maxWidth: "1000px",
         margin: "0 auto", 
-        paddingLeft: "6vw", 
-        paddingRight: "6vw",
+        paddingLeft: "24px", 
+        paddingRight: "24px",
         boxSizing: "border-box"
       }}>
+        
+        {/* Title */}
+        <h1 className="about-section-reveal" style={{ 
+          fontSize: "56px", 
+          fontWeight: 900, 
+          fontFamily: "var(--font-heading)", 
+          marginBottom: "40px", 
+          letterSpacing: "-0.02em" 
+        }}>
+          About Me
+        </h1>
         
         {/* Profile Introduction Section */}
         <div className="about-section-reveal" style={{ marginBottom: "32px" }}>
