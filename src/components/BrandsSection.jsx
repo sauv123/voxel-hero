@@ -72,24 +72,7 @@ export default function BrandsSection() {
           ease: 'back.out(1.4)'
       }, '-=0.3');
 
-      // Hover animations for logos
-      logoItems.forEach((item) => {
-          item.addEventListener('mouseenter', () => {
-              gsap.to(item, {
-                  scale: 1.02,
-                  duration: 0.3,
-                  ease: 'power2.out'
-              });
-          });
 
-          item.addEventListener('mouseleave', () => {
-              gsap.to(item, {
-                  scale: 1,
-                  duration: 0.3,
-                  ease: 'power2.out'
-              });
-          });
-      });
 
       // Continuous subtle animation for decorative circles
       gsap.to(circle1Ref.current, {

@@ -615,9 +615,7 @@ export default function ExperimentsGrid({ theme, disableScrollTrigger }) {
         {/* Header Section (disabled in playground since playground already has header) */}
         {!disableScrollTrigger && (
           <div ref={headingRef} className="experiments-title-box">
-            <span className="experiments-title-tag" style={{ color: theme?.text || '#0d0d0d' }}>
-              [ EXPERIMENTS ]
-            </span>
+
             <h2 className="experiments-title-main" style={{ color: theme?.text || '#0d0d0d' }}>
               <span className="experiments-title-line">
                 <span className="experiments-title-word">EXPERIMENTS</span>

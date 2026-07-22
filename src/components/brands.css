@@ -44,7 +44,6 @@
     background: #ffffff;
     border-radius: 12px;
     border: 1.5px solid rgba(13, 13, 13, 0.08);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
     aspect-ratio: 16 / 9;
     display: flex;
     align-items: center;
@@ -52,38 +51,9 @@
     padding: 20px;
     position: relative;
     overflow: hidden;
-    cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.logo-item::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(13, 13, 13, 0.03);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
 
-.logo-item:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
-}
-
-.logo-item:hover::before {
-    opacity: 1;
-}
-
-.logo-item:hover .brand-image {
-    filter: grayscale(0%) contrast(100%);
-}
-
-.logo-item:hover .logo-content {
-    transform: scale(1.05);
-}
 
 .logo-content {
     width: 100%;
@@ -97,11 +67,10 @@
 }
 
 .brand-image {
-    width: 60%;
-    height: 60%;
+    width: 80%;
+    height: 80%;
     object-fit: contain;
     mix-blend-mode: multiply;
-    transition: filter 0.3s ease;
 }
 
 /* Decorative elements */
