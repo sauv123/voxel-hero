@@ -1043,14 +1043,14 @@ export default function AboutMe({ theme, onClose }) {
         boxSizing: "border-box"
       }}>
         
-        {/* Timeline block */}
-        <div className="about-section-reveal" style={{ marginBottom: "32px" }}>
-          <Timeline theme={theme} />
-        </div>
-
         {/* Profile Introduction Section */}
         <div className="about-section-reveal" style={{ marginBottom: "32px" }}>
           <ProfileIntroduction theme={theme} />
+        </div>
+
+        {/* Timeline block */}
+        <div className="about-section-reveal" style={{ marginBottom: "32px" }}>
+          <Timeline theme={theme} />
         </div>
 
         {/* Secondary Dashboard Grid */}

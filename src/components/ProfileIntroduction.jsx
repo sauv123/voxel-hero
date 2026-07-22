@@ -33,10 +33,16 @@ export default function ProfileIntroduction({ theme }) {
             controls={!isMuted}
             playsInline
             preload="metadata"
+            onClick={isMuted ? handleUnmute : undefined}
             style={{ 
               width: "100%", 
               borderRadius: "16px",
-              outline: "none"
+              outline: "none",
+              objectFit: "cover",
+              overflow: "hidden",
+              cursor: isMuted ? "pointer" : "default",
+              WebkitMaskImage: "-webkit-radial-gradient(white, black)",
+              transform: "translateZ(0)"
             }}
           >
             Your browser does not support the video tag.
