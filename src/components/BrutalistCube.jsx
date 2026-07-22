@@ -38,7 +38,7 @@ export default function BrutalistCube() {
 
       // 2. Initial State
       gsap.set(cubeRef.current, { rotateX: 12, rotateY: 18 }); 
-      gsap.set(containerRef.current, { backgroundColor: '#1a0000' }); // Dark Red variant
+      gsap.set(containerRef.current, { backgroundColor: '#210505' }); // Deep Ruby
 
       // 3. Hover & Mouse Physics
       const wrapper = wrapperRef.current;
@@ -85,15 +85,15 @@ export default function BrutalistCube() {
       const rubikEase = "expo.inOut"; 
 
       tl.to(cubeRef.current, { rotateY: -75, rotateX: 5, duration: 1, ease: rubikEase })                    
-        .to(containerRef.current, { backgroundColor: '#00081a', duration: 1, ease: rubikEase }, "<") // Dark Blue variant
+        .to(containerRef.current, { backgroundColor: '#050a21', duration: 1, ease: rubikEase }, "<") // Deep Sapphire
         .to(cubeRef.current, { rotateY: -165, rotateX: -5, duration: 1, ease: rubikEase })                  
-        .to(containerRef.current, { backgroundColor: '#1a1a00', duration: 1, ease: rubikEase }, "<") // Dark Yellow variant
+        .to(containerRef.current, { backgroundColor: '#211d05', duration: 1, ease: rubikEase }, "<") // Deep Gold
         .to(cubeRef.current, { rotateY: -282, rotateX: 12, duration: 1, ease: rubikEase })                  
-        .to(containerRef.current, { backgroundColor: '#001a08', duration: 1, ease: rubikEase }, "<") // Dark Green variant
+        .to(containerRef.current, { backgroundColor: '#05210e', duration: 1, ease: rubikEase }, "<") // Deep Emerald
         .to(cubeRef.current, { rotateX: -78, rotateY: -350, duration: 1, ease: rubikEase })                 
-        .to(containerRef.current, { backgroundColor: '#1a0a00', duration: 1, ease: rubikEase }, "<") // Dark Orange variant
+        .to(containerRef.current, { backgroundColor: '#210b05', duration: 1, ease: rubikEase }, "<") // Deep Burnt Orange
         .to(cubeRef.current, { rotateX: 78, rotateY: -355, duration: 1, ease: rubikEase })                 
-        .to(containerRef.current, { backgroundColor: '#111111', duration: 1, ease: rubikEase }, "<"); // Dark Grey variant
+        .to(containerRef.current, { backgroundColor: '#1a1a1a', duration: 1, ease: rubikEase }, "<"); // Deep Charcoal
           
       // 5. Parallax Background Animation
       ScrollTrigger.create({
