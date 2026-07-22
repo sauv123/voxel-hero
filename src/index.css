@@ -1,17 +1,6 @@
 /* ─── Reset ──────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html {
-  scroll-behavior: smooth;
-  overflow-x: hidden;
-  max-width: 100vw;
-}
-
-*:focus-visible {
-  outline: 2px solid #ffffff;
-  outline-offset: 2px;
-}
-
 :root {
   --font-heading: 'Space Grotesk', sans-serif;
   --font-body: 'Elms Sans', sans-serif;
@@ -20,18 +9,18 @@ html {
 body {
   overflow-x: hidden;
   background-color: #39FF14;
-  max-width: 100vw; width: 100%;
+  width: 100vw;
   min-height: 100vh;
   letter-spacing: 0.02em;
   line-height: 1.6;
 }
 
-#root { width: 100%; max-width: 100vw; overflow-x: hidden; min-height: 100%; }
+#root { width: 100%; min-height: 100%; }
 
 /* ─── Layout ─────────────────────────────────────── */
 .hero-container {
   position: relative;
-  max-width: 100vw; width: 100%;
+  width: 100vw;
   height: 100vh;
   overflow: hidden;
 }
@@ -254,7 +243,7 @@ body {
 
   .hero-title {
     font-size: clamp(1.2rem, 5.5vw, 2.2rem) !important;
-    max-width: 100vw; width: 100%;
+    max-width: 100vw;
     line-height: 1.2;
   }
 
@@ -285,29 +274,25 @@ body {
   }
 
   .char-chip {
-    font-size: 0.75rem; /* 1.2x scale */
+    font-size: 0.72rem; /* 1.2x scale */
     padding: 0.5em 1.05em; /* scaled up padding */
   }
 
   .meta-tag {
-    font-size: 0.75rem;
+    font-size: 0.5rem;
     letter-spacing: 0.14em;
     bottom: 4vh;
   }
 }
 
-@media (max-width: 430px) {
-  .hero-title { font-size: clamp(1.2rem, 5.5vw, 1.8rem) !important; }
-}
-
 /* ─── Very small (≤ 380px) ─────────────────────── */
 @media (max-width: 380px) {
-  .hero-title { font-size: clamp(1.1rem, 5vw, 1.5rem) !important; }
+  .hero-title { font-size: clamp(1.1rem, 5vw, 1.8rem) !important; }
   .cta-wrap {
     bottom: 100px;
     right: 20px;
   }
-  .cta-btn { font-size: 0.75rem; padding: 0.75em 1.5em; }
+  .cta-btn { font-size: 0.72rem; padding: 0.75em 1.5em; }
 }
 
 /* ─── Work Section ─── */
@@ -418,7 +403,7 @@ body {
 
 .tab-text {
     font-family: var(--font-body);
-    font-size: 0.75rem;
+    font-size: 0.6rem;
     font-weight: 600;
     letter-spacing: 0.06em;
     text-transform: uppercase;
@@ -495,7 +480,7 @@ body {
 }
 
 .file-card-title {
-    font-size: 0.75rem;
+    font-size: 0.62rem;
     font-weight: 700;
     color: #222;
     margin-bottom: 2px;
@@ -504,7 +489,7 @@ body {
 }
 
 .file-card-count {
-    font-size: 0.75rem;
+    font-size: 0.52rem;
     color: #999;
     font-weight: 500;
 }
@@ -583,14 +568,14 @@ body {
     .word-row { gap: 1rem; flex-wrap: wrap; justify-content: center; }
     .word-char { font-size: clamp(3rem, 15vw, 6rem); }
     .voxel-folder { width: clamp(160px, 45vw, 280px); height: clamp(120px, 35vw, 210px); margin: 0 10px; }
-    .folder-ss { font-size: 0.75rem; bottom: 8px; right: 10px; }
+    .folder-ss { font-size: 0.6rem; bottom: 8px; right: 10px; }
     .file-card-header { height: 30px; }
     .file-card-header svg { width: 14px; height: 14px; }
     .file-card-title { font-size: 0.45rem; }
     .curious-text { font-size: 1rem; margin-bottom: 1.5rem; text-align: center; width: 100%; }
     
     .macos-dock { padding: 8px 16px; gap: 8px; height: 60px; margin-top: 16px; }
-    .dock-item { width: 44px; height: 44px; }
+    .dock-item { width: 40px; height: 40px; }
     .dock-icon-box svg { width: 20px; height: 20px; }
     .dock-label { display: none; } /* Hide dock labels on mobile to save space */
     
@@ -602,7 +587,7 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    max-width: 100vw; width: 100%;
+    width: 100vw;
     height: 100vh;
     z-index: 100;
     overflow-y: auto;
@@ -639,7 +624,7 @@ body {
 }
 
 .gallery-panel {
-    max-width: 100vw; width: 100%;
+    width: 100vw;
     height: 100vh;
     display: flex;
     align-items: center;
@@ -718,7 +703,7 @@ body {
     }
     .panel-canvas {
         position: relative;
-        max-width: 100vw; width: 100%;
+        width: 100vw;
         height: 40vh;
         order: -1;
     }
@@ -819,7 +804,7 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    max-width: 100vw; width: 100%;
+    width: 100vw;
     height: 100vh;
     background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(12px);
@@ -1464,7 +1449,7 @@ body {
 /* ─── Case Studies Carousel ─────────────────────────────────────────────── */
 
 .carousel-section {
-  max-width: 100vw; width: 100%;
+  width: 100vw;
   height: 100vh;
   position: relative;
   overflow: hidden;
@@ -2089,7 +2074,7 @@ body {
 
 .sg-desc {
   font-family: var(--font-body);
-  font-size: 0.75rem;
+  font-size: 0.62rem;
   color: rgba(252,250,242,0.55);
   line-height: 1.55;
   margin-bottom: 12px;
@@ -2105,7 +2090,7 @@ body {
 
 .sg-tag {
   font-family: var(--font-body);
-  font-size: 0.75rem;
+  font-size: 0.5rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -2492,9 +2477,6 @@ body {
 
 @media (max-width: 768px) {
   .work-gallery-track {
-    width: 100vw !important;
-    max-width: 100vw !important;
-    box-sizing: border-box !important;
     overflow-x: auto !important;
     overflow-y: hidden !important;
     scroll-snap-type: x mandatory;
@@ -2629,12 +2611,3 @@ body {
     padding-bottom: 100px !important;
   }
 }
-
-/* Nav Helpers */
-@media (min-width: 768px) {
-  .mobile-nav-toggle { display: none !important; }
-}
-@media (max-width: 767px) {
-  .desktop-nav { display: none !important; }
-}
-
