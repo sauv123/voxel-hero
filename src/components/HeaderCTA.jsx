@@ -39,7 +39,7 @@ export default function HeaderCTA({ theme }) {
             if (target === document || target === document.documentElement) {
                 scrollY = window.scrollY;
                 scrollMax = document.documentElement.scrollHeight - window.innerHeight;
-            } else if (target.scrollHeight > target.clientHeight) {
+            } else if (target.scrollHeight > target.clientHeight && target.clientHeight >= window.innerHeight * 0.9) {
                 scrollY = target.scrollTop;
                 scrollMax = target.scrollHeight - target.clientHeight;
             } else {
@@ -64,6 +64,7 @@ export default function HeaderCTA({ theme }) {
         };
 
         window.addEventListener('scroll', handleScroll, true);
+        handleScroll({ target: document }); // Initial call to set correct progress on mount
         
         return () => window.removeEventListener('scroll', handleScroll, true);
     }, []);
@@ -221,14 +222,17 @@ export default function HeaderCTA({ theme }) {
                     ref={ctaTrigger}
                     onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}
-                    onClick={() => setIsOpen(true)}
+                    onClick={() => {
+                        setIsOpen(true);
+                        handleMouseLeave(); // Force hover state to exit when modal opens
+                    }}
                 >
                     <div 
                         className="emoji-circle" 
                         ref={emojiCircle} 
                         style={{ 
                             backgroundColor: '#000', 
-                            border: '2px solid #ffffff',
+                            border: 'none',
                             color: '#fff',
                             fontSize: '18px',
                             fontWeight: 'bold',
