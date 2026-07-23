@@ -88,29 +88,76 @@ export default function BottomDrawer({ theme, activePage, navigateWithTransition
 
   useEffect(() => {
     if (!linksRef.current) return;
+    const innerMenu = document.querySelector('.glass-island-inner');
+    const heroContainer = document.querySelector('.hero-container');
+    const workSection = document.querySelector('.work-section');
+
     if (isHovered && !isOpen) {
       gsap.to(linksRef.current, {
         width: 'auto',
         opacity: 1,
         paddingLeft: 16,
         paddingRight: 8,
-        duration: 0.4,
-        ease: 'power3.out'
+        duration: 0.5,
+        ease: 'expo.out'
       });
       // Stagger animate links slightly
       gsap.fromTo(linksRef.current.children, 
         { opacity: 0, x: -10 },
-        { opacity: 0.7, x: 0, duration: 0.3, stagger: 0.05, ease: 'power2.out', delay: 0.1 }
+        { opacity: 0.7, x: 0, duration: 0.4, stagger: 0.05, ease: 'power2.out', delay: 0.1 }
       );
-    } else {
+      
+      // Expand pill slightly
+      if (innerMenu) {
+        gsap.to(innerMenu, {
+          scale: 1.05,
+          background: 'rgba(25, 25, 25, 0.95)',
+          backdropFilter: 'blur(16px)',
+          boxShadow: '0 16px 40px rgba(0, 0, 0, 0.6)',
+          duration: 0.4,
+          ease: 'expo.out'
+        });
+      }
+
+      // Blur background slightly like opening the drawer
+      if (heroContainer && workSection) {
+        gsap.to([heroContainer, workSection], { 
+          filter: 'blur(3px) saturate(0.9) brightness(0.85)',
+          scale: 1.01,
+          duration: 0.5,
+          ease: 'expo.out'
+        });
+      }
+
+    } else if (!isOpen) {
       gsap.to(linksRef.current, {
         width: 0,
         opacity: 0,
         paddingLeft: 0,
         paddingRight: 0,
-        duration: 0.3,
-        ease: 'power3.in'
+        duration: 0.4,
+        ease: 'power3.inOut'
       });
+
+      if (innerMenu) {
+        gsap.to(innerMenu, {
+          scale: 1,
+          background: '#121212',
+          backdropFilter: 'none',
+          boxShadow: '0 12px 32px rgba(0, 0, 0, 0.5)',
+          duration: 0.4,
+          ease: 'power3.inOut'
+        });
+      }
+
+      if (heroContainer && workSection) {
+        gsap.to([heroContainer, workSection], { 
+          filter: 'blur(0px) saturate(1) brightness(1)',
+          scale: 1,
+          duration: 0.4,
+          ease: 'power3.inOut'
+        });
+      }
     }
   }, [isHovered, isOpen]);
 
@@ -335,7 +382,7 @@ export default function BottomDrawer({ theme, activePage, navigateWithTransition
           </div>
 
           {/* Right Side: Animated 3-line sandwich button (all bars same size: 20px) */}
-          <div style={{
+          <div className="hamburger-container" style={{
             width: '20px',
             height: '14px',
             display: 'flex',

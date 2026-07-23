@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import gsap from 'gsap';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { PerspectiveCamera, Environment, Html } from '@react-three/drei';
+import { PerspectiveCamera, Environment, Html, OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 import Grassland from './Grassland';
 import VoxelDeer from './VoxelDeer';
@@ -251,6 +251,7 @@ export default function PlaygroundGallery({ onClose, theme, activeChar, onSwitch
           <div style={{ flex: 1, position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
             <Canvas shadows dpr={[1, 2]} gl={{ alpha: false }}>
               <PerspectiveCamera makeDefault position={[0, 2, 8]} fov={45} />
+              <OrbitControls enableZoom={false} enablePan={false} maxPolarAngle={Math.PI/2 - 0.1} autoRotate={true} autoRotateSpeed={0.5} />
               <ambientLight intensity={0.6} />
               <directionalLight position={[5, 10, 5]} intensity={1.5} castShadow shadow-mapSize={[2048, 2048]} />
               <pointLight position={[-2, 4, -2]} intensity={0.8} color="#88ccff" />

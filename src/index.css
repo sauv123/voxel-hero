@@ -2703,3 +2703,9 @@ body {
     .bc-face-body { font-size: 0.8rem !important; padding: 0.5rem !important; }
     .curious-text { text-align: center !important; width: 100% !important; margin: 0 auto !important; }
 }
+
+@media (min-width: 769px) {
+  .hamburger-container {
+    display: none !important;
+  }
+}
