@@ -180,8 +180,8 @@ export default function BottomDrawer({ theme, activePage, navigateWithTransition
             </div>
             <div className="drawer-item-text">
               <div className="drawer-item-text-inner">
-                <span className="label-original" style={{ color: activePage === 'playground' ? theme.brand : '#FCFAF2' }}>Playground</span>
-                <span className="label-copy" style={{ color: theme.brand }}>Playground</span>
+                <span className="label-original" style={{ color: activePage === 'playground' ? theme.brand : '#FCFAF2' }}>Labs</span>
+                <span className="label-copy" style={{ color: theme.brand }}>Labs</span>
               </div>
             </div>
             {activePage === 'playground' && <span className="drawer-item-active-dot" style={{ background: theme.brand, width: 8, height: 8, borderRadius: '50%', marginLeft: 'auto', marginRight: 16 }} />}
@@ -234,7 +234,7 @@ export default function BottomDrawer({ theme, activePage, navigateWithTransition
           }}>
             <img 
               src="/sauveerpp.png" 
-              alt="SAUVEER SINHA" 
+              alt="SAUVEER" 
               style={{
                 width: '100%',
                 height: '100%',
@@ -260,7 +260,7 @@ export default function BottomDrawer({ theme, activePage, navigateWithTransition
               color: '#ffffff',
               lineHeight: 1.2
             }}>
-              {isOpen ? 'CLOSE MENU' : 'SAUVEER SINHA'}
+              {isOpen ? 'CLOSE MENU' : 'SAUVEER'}
             </span>
             {isOpen && (
               <span style={{

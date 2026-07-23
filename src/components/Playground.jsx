@@ -253,31 +253,9 @@ export default function PlaygroundGallery({ onClose, theme, activeChar, onSwitch
       {/* Padded Content Wrapper */}
       <div style={{ padding: '40px 6vw', flex: 1, position: 'relative' }}>
         
-        {/* Top Header Row with Back Button */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
-          <button 
-            onClick={handleClose}
-            style={{
-              fontFamily: 'var(--font-heading)',
-              fontSize: '12px',
-              fontWeight: 900,
-              letterSpacing: '0.1em',
-              textTransform: 'uppercase',
-              background: 'transparent',
-              border: 'none',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              color: '#0d0d0d'
-            }}
-          >
-            ← Back to Home
-          </button>
-        </div>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: '40px' }}>
           <div style={{ fontFamily: 'var(--font-heading)', fontSize: '11px', fontWeight: 900, letterSpacing: '0.15em', textTransform: 'uppercase' }}>
-            [ PLAYGROUND ]
+            [ LABS ]
           </div>
         </div>
 
@@ -325,7 +303,7 @@ export default function PlaygroundGallery({ onClose, theme, activeChar, onSwitch
           fontFamily: 'var(--font-heading)', fontSize: '1.5rem', fontWeight: 900, textTransform: 'uppercase',
           letterSpacing: '-0.02em', margin: '0 0 20px 0', borderBottom: '2px solid #0d0d0d', paddingBottom: '10px'
         }}>
-          Experiments Cabinet
+          Experiments
         </h3>
         <ExperimentsGrid theme={theme} disableScrollTrigger={true} />
       </div>

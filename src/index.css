@@ -2521,10 +2521,11 @@ body {
   }
   
   .modal-backdrop {
-    align-items: center !important;
+    align-items: flex-start !important;
     justify-content: center !important;
-    padding-top: 0 !important;
+    padding-top: 80px !important;
     background: rgba(0, 0, 0, 0.95) !important;
+    z-index: 9999999 !important;
   }
   .contact-card {
     width: 280px !important;

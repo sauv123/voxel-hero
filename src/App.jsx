@@ -433,13 +433,16 @@ export default function App() {
           {/* Main large headline (now holding the product statement) */}
           <h1 className="hero-title" style={{ color: theme.text, textTransform: 'none' }}>
             <span className="line-wrap" style={{ fontWeight: 400, opacity: 0.8, display: 'block' }}>
-              <SplitChars text="I help people understand" />
+              <SplitChars text="I help people" />
             </span>
             <span className="line-wrap" style={{ fontWeight: 400, opacity: 0.8, display: 'block' }}>
-              <SplitChars text="& trust AI" />
+              <SplitChars text="understand & trust AI" />
+            </span>
+            <span className="line-wrap" style={{ fontWeight: 400, opacity: 0.8, display: 'block' }}>
+              <SplitChars text="through" />
             </span>
             <span className="line-wrap" style={{ fontWeight: 900, textTransform: 'uppercase', letterSpacing: '-0.06em', color: theme.brand, display: 'block', margin: '0.15rem 0' }}>
-              <SplitChars text="through thoughtful design." />
+              <SplitChars text="thoughtful design." />
             </span>
           </h1>
         </div>
