@@ -261,11 +261,31 @@ const EXPERIMENTS = [
   {
     id: 4,
     title: 'LEMON NOTES',
-    tags: ['Notes', 'Interaction', 'UI'],
+    tags: ['EdTech', 'AI', 'Productivity', 'Next.js', 'Supabase', 'React', 'TailwindCSS'],
     video: '/lemon_notes.mp4',
     size: 'wide',
-    description: '[Placeholder text] A minimal, gestural-first note taking app prototype.',
-    techStack: ['React Native', 'Reanimated', 'Zustand']
+    description: 'An intelligent study companion that instantly transforms raw notes, PDFs, images, and audio recordings into structured summaries and interactive quizzes.',
+    whoItsFor: "Students, researchers, and lifelong learners who want to optimize their study time, improve their retention through active recall, and organize large volumes of study material quickly.",
+    problem: "Students spend too much time manually organizing notes, extracting key concepts from lengthy PDFs or lectures, and building flashcards/quizzes. This manual process takes away from actual learning and active recall time, leading to less efficient studying.",
+    goal: "To provide a friction-free pipeline where raw, unstructured information (text, documents, images, audio) is instantly \"squeezed\" into high-yield study materials (summaries, concept tags, and interactive quizzes) to maximize study efficiency and knowledge retention.",
+    techStackCategories: [
+      { label: "Frontend", value: "Next.js (App Router), React, Tailwind CSS, Framer Motion" },
+      { label: "UI Components", value: "Shadcn/UI, Base-UI, Radix UI" },
+      { label: "State Management", value: "Zustand (with Local Storage Persistence)" },
+      { label: "Authentication", value: "Supabase Auth (Magic Links & Password)" },
+      { label: "AI & Processing", value: "OpenAI API, Groq (Audio Transcription), Tesseract.js (Client-side OCR), PDF.js (Client-side Document Parsing)" }
+    ],
+    coreFeatures: [
+      "Multimodal Intake: Paste raw text, or drag-and-drop PDFs, Images, and Audio/Video files directly into the Dashboard for immediate processing.",
+      "Instant Summarization: Automatically extract concise summaries, core concepts, and subject tags from uploaded materials.",
+      "Interactive Quiz Generation: Automatically generate Multiple Choice and Short Answer quizzes based strictly on the uploaded content to test retention.",
+      "Weakness Tracking: Quiz results highlight \"Weak Topics\" allowing users to focus their review on concepts they got wrong.",
+      "Study Folders & Kits: Save generated study kits (Notes + Summary + Quiz) into subject-specific folders for organized long-term review.",
+      "AI Chat Assistant: A built-in contextual AI tutor to answer questions about the current study material.",
+      "Usage Quotas & Analytics: Track AI generations and storage usage locally on an elegant Dashboard with visual progression bars and gamified streaks.",
+      "Accessible UI: Global High Contrast mode toggle, Light/Dark system themes, and highly responsive modern design utilizing \"Alchemist Chic\" aesthetics."
+    ],
+    techStack: ['Next.js', 'React', 'TailwindCSS', 'Supabase']
   },
   {
     id: 15,
@@ -356,13 +376,86 @@ const ContextDrawer = ({ item, onClose, theme }) => {
         ))}
       </div>
 
-      <div style={{ flex: 1 }}>
+      <div style={{ flex: 1, paddingBottom: '40px' }}>
         <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '14px', fontWeight: 700, color: '#0d0d0d', marginBottom: '8px', opacity: 0.5, textTransform: 'uppercase' }}>
           The Concept
         </h4>
-        <p style={{ fontFamily: 'var(--font-body)', fontSize: '15px', color: '#0d0d0d', lineHeight: 1.6, opacity: 0.8 }}>
+        <p style={{ fontFamily: 'var(--font-body)', fontSize: '15px', color: '#0d0d0d', lineHeight: 1.6, opacity: 0.8, marginBottom: '24px' }}>
           {item.description}
         </p>
+
+        {item.whoItsFor && (
+          <div style={{ marginBottom: '24px' }}>
+            <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '14px', fontWeight: 700, color: '#0d0d0d', marginBottom: '8px', opacity: 0.5, textTransform: 'uppercase' }}>
+              Who It's For
+            </h4>
+            <p style={{ fontFamily: 'var(--font-body)', fontSize: '15px', color: '#0d0d0d', lineHeight: 1.6, opacity: 0.8 }}>
+              {item.whoItsFor}
+            </p>
+          </div>
+        )}
+
+        {item.problem && (
+          <div style={{ marginBottom: '24px' }}>
+            <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '14px', fontWeight: 700, color: '#0d0d0d', marginBottom: '8px', opacity: 0.5, textTransform: 'uppercase' }}>
+              Problem
+            </h4>
+            <p style={{ fontFamily: 'var(--font-body)', fontSize: '15px', color: '#0d0d0d', lineHeight: 1.6, opacity: 0.8 }}>
+              {item.problem}
+            </p>
+          </div>
+        )}
+
+        {item.goal && (
+          <div style={{ marginBottom: '24px' }}>
+            <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '14px', fontWeight: 700, color: '#0d0d0d', marginBottom: '8px', opacity: 0.5, textTransform: 'uppercase' }}>
+              Goal
+            </h4>
+            <p style={{ fontFamily: 'var(--font-body)', fontSize: '15px', color: '#0d0d0d', lineHeight: 1.6, opacity: 0.8 }}>
+              {item.goal}
+            </p>
+          </div>
+        )}
+
+        {item.techStackCategories && (
+          <div style={{ marginBottom: '24px' }}>
+            <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '14px', fontWeight: 700, color: '#0d0d0d', marginBottom: '12px', opacity: 0.5, textTransform: 'uppercase' }}>
+              Tools & Technology Stack
+            </h4>
+            <ul style={{ listStyleType: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {item.techStackCategories.map(cat => (
+                <li key={cat.label} style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#0d0d0d', lineHeight: 1.5, opacity: 0.8 }}>
+                  <span style={{ fontWeight: 700 }}>{cat.label}:</span> {cat.value}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {item.coreFeatures && (
+          <div style={{ marginBottom: '24px' }}>
+            <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '14px', fontWeight: 700, color: '#0d0d0d', marginBottom: '12px', opacity: 0.5, textTransform: 'uppercase' }}>
+              Core Features
+            </h4>
+            <ul style={{ paddingLeft: '20px', margin: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {item.coreFeatures.map((feature, idx) => {
+                const parts = feature.split(':');
+                if (parts.length > 1) {
+                  return (
+                    <li key={idx} style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#0d0d0d', lineHeight: 1.5, opacity: 0.8 }}>
+                      <span style={{ fontWeight: 700 }}>{parts[0]}:</span>{parts.slice(1).join(':')}
+                    </li>
+                  );
+                }
+                return (
+                  <li key={idx} style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#0d0d0d', lineHeight: 1.5, opacity: 0.8 }}>
+                    {feature}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        )}
       </div>
 
       </div>
