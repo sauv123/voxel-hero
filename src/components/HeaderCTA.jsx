@@ -26,6 +26,17 @@ export default function HeaderCTA({ theme }) {
         return () => window.removeEventListener('openContactModal', handleOpenContact);
     }, []);
 
+    // Handle Escape key to close modal
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.key === 'Escape' && isOpen) {
+                setIsOpen(false);
+            }
+        };
+        document.addEventListener('keydown', handleKeyDown);
+        return () => document.removeEventListener('keydown', handleKeyDown);
+    }, [isOpen]);
+
     // Scroll Progress
     useEffect(() => {
         const fill = progressFill.current;
@@ -218,6 +229,18 @@ export default function HeaderCTA({ theme }) {
                 <div 
                     className="cta-wrapper" 
                     ref={ctaTrigger}
+                    role="button"
+                    tabIndex={0}
+                    aria-expanded={isOpen}
+                    aria-haspopup="dialog"
+                    aria-label="Get in touch"
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            setIsOpen(true);
+                            handleMouseLeave();
+                        }
+                    }}
                     onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}
                     onClick={() => {
@@ -251,13 +274,21 @@ export default function HeaderCTA({ theme }) {
             </div>
 
             {/* Modal */}
-            <div className={`modal-backdrop ${isOpen ? 'active' : ''}`} ref={modalBackdrop} onClick={() => setIsOpen(false)}>
+            <div 
+                className={`modal-backdrop ${isOpen ? 'active' : ''}`} 
+                ref={modalBackdrop} 
+                onClick={() => setIsOpen(false)}
+                aria-hidden="true"
+            >
                 <div 
                     className="contact-card"
+                    role="dialog"
+                    aria-modal="true"
+                    aria-label="Contact Information"
                     onClick={(e) => e.stopPropagation()}
                     style={{ background: '#0a0a0a' }}
                 >
-                    <img src={`/sauveerpp.png`} alt="Sauveer Sinha avatar profile" className="card-avatar" loading="lazy" style={{ width: 200, height: 200, borderRadius: '100px', border: 'none' }} />
+                    <img src={`/sauveerpp.webp`} alt="Sauveer Sinha avatar profile" className="card-avatar" loading="lazy" style={{ width: 200, height: 200, borderRadius: '100px', border: 'none' }} />
                     
                     <div className="card-header">
                         <div className="card-name" style={{ color: '#fff' }}>Sauveer</div>
@@ -281,6 +312,7 @@ export default function HeaderCTA({ theme }) {
                                 href={item.href}
                                 target={item.target || "_self"}
                                 className="dock-item"
+                                aria-label={item.name}
                                 ref={el => dockItemsRef.current[i] = el}
                                 onMouseEnter={() => handleDockEnter(i)}
                             >

@@ -7,10 +7,12 @@ import { AdaptiveDpr, Environment, PerformanceMonitor } from '@react-three/drei'
 import HeaderCTA from './components/HeaderCTA';
 import InteractiveProjects from './components/InteractiveProjects';
 import Preloader from './components/Preloader';
-import BrutalistCube from './components/BrutalistCube';
+// Lazy loaded components
 import BottomDrawer from './components/BottomDrawer';
 import Footer from './components/Footer';
-import ExperimentsGrid from './components/ExperimentsGrid';
+import { Helmet } from 'react-helmet-async';
+const BrutalistCube = React.lazy(() => import('./components/BrutalistCube'));
+const ExperimentsGrid = React.lazy(() => import('./components/ExperimentsGrid'));
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { PROJECTS } from './cms/projects';
@@ -51,6 +53,15 @@ function ScrollIndicator({ theme }) {
 
   return (
     <div 
+      role="button"
+      tabIndex={0}
+      aria-label="Scroll to explore"
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleClick();
+        }
+      }}
       onClick={handleClick}
       style={{ 
         position: 'absolute',
@@ -378,8 +389,29 @@ export default function App() {
     return () => window.removeEventListener('popstate', handlePopState);
   }, [activePage, navigateWithTransition]);
 
+  const pageTitle = activeCaseStudyIndex !== null 
+    ? `${PROJECTS[activeCaseStudyIndex]?.title || 'Case Study'} - Sauveer Sinha`
+    : activePage === 'home' ? 'Sauveer Sinha - Product Designer'
+    : activePage === 'work' ? 'Work - Sauveer Sinha'
+    : activePage === 'about' ? 'About - Sauveer Sinha'
+    : activePage === 'playground' ? 'Playground - Sauveer Sinha'
+    : 'Page Not Found - Sauveer Sinha';
+
+  const pageDescription = activeCaseStudyIndex !== null 
+    ? (PROJECTS[activeCaseStudyIndex]?.roles?.join(', ') || 'A product design case study.')
+    : activePage === 'home' ? 'Portfolio of Sauveer Sinha, a Product Designer specializing in UI/UX, generative interfaces, and creative coding.'
+    : 'Explore the work, background, and experiments of Sauveer Sinha.';
+
   return (
     <>
+      <Helmet>
+        <title>{pageTitle}</title>
+        <meta name="description" content={pageDescription} />
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={pageDescription} />
+        <meta property="og:url" content={`https://sauveersinha.com/${activePage === 'home' ? '' : activePage}`} />
+        <link rel="canonical" href={`https://sauveersinha.com/${activePage === 'home' ? '' : activePage}`} />
+      </Helmet>
       <div 
         ref={transitionRef}
         style={{
@@ -498,14 +530,18 @@ export default function App() {
       </div>
 
       {/* ── Brutalist Dynamic Sculpture ── */}
-      <BrutalistCube />
+      <Suspense fallback={null}>
+        <BrutalistCube />
+      </Suspense>
 
       {/* ── Work Section ── */}
       {!isGalleryOpen && <WorkFolder theme={theme} onOpen={() => navigateWithTransition('work')} />}
 
       {/* ── Experiments & Artifacts Bento Grid Section ── */}
       {!isGalleryOpen && !isAboutOpen && !isPlaygroundOpen && activeCaseStudyIndex === null && (
-        <ExperimentsGrid theme={theme} />
+        <Suspense fallback={null}>
+          <ExperimentsGrid theme={theme} />
+        </Suspense>
       )}
 
 

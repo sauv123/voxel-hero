@@ -187,8 +187,11 @@ export default function WorkGallery({ onClose, navigate }) {
     <>
       <div 
         ref={containerRef} 
+        role="dialog"
+        aria-modal="true"
+        aria-label="Work Gallery"
         style={{ 
-          backgroundColor: '#0a0a0a', 
+          backgroundColor: '#FCFAF2', 
           position: 'fixed',
           top: 0, left: 0, right: 0, bottom: 0,
           zIndex: 180,
@@ -266,7 +269,16 @@ export default function WorkGallery({ onClose, navigate }) {
           {PROJECTS.map((proj, i) => (
             <div 
               key={proj.id}
+              role="button"
+              tabIndex={0}
+              aria-label={`View project: ${proj.title}`}
               ref={el => cardsRef.current[i] = el}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  openCaseStudy(proj);
+                }
+              }}
               onClick={() => {
                 if (dragDistance.current > 10) return;
                 openCaseStudy(proj);

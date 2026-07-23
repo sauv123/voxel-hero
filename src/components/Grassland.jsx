@@ -43,7 +43,8 @@ const fragmentShader = `
 export default function Grassland() {
   const meshRef = useRef();
   
-  const dummy = useMemo(() => new THREE.Object3D(), []);
+  const dummyRef = useRef(new THREE.Object3D());
+  const dummy = dummyRef.current;
   
   useEffect(() => {
     if (!meshRef.current) return;

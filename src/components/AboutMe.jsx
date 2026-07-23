@@ -368,13 +368,13 @@ function TruthsGame({ theme }) {
       border: `none`,
       borderRadius: 4,
       boxShadow: "0 4px 20px rgba(0,0,0,0.03)",
-      padding: "24px", position: "relative", color: theme.text, display:"flex", flexDirection:"column"
+      padding: "24px", position: "relative", color: '#FCFAF2', display:"flex", flexDirection:"column"
     }}>
       <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:20}}>
-        <h3 style={{fontSize: 11, textTransform:"uppercase", letterSpacing: 2, color: theme.text, opacity: 0.5, margin:0, fontFamily: "var(--font-body)", fontWeight: 700}}>
+        <h3 style={{fontSize: 11, textTransform:"uppercase", letterSpacing: 2, color: '#FCFAF2', opacity: 0.5, margin:0, fontFamily: "var(--font-body)", fontWeight: 700}}>
           Two Truths and a Lie
         </h3>
-        <span style={{fontSize: 10, color: theme.text, opacity: 0.5, fontFamily: "var(--font-body)", fontWeight: 700}}>
+        <span style={{fontSize: 10, color: '#FCFAF2', opacity: 0.5, fontFamily: "var(--font-body)", fontWeight: 700}}>
           {phase !== "finished" && `Round ${round+1} / ${GAME_ROUNDS.length}`}
         </span>
       </div>
@@ -422,7 +422,7 @@ function TruthsGame({ theme }) {
                     color: isLie ? "#000" : "#fff", fontFamily:"var(--font-body)",
                     textTransform: "uppercase"
                   }}>{isLie ? "✓ LIE" : "✗ TRUTH"}</div>
-                  <p style={{fontSize: 10, color: theme.text, lineHeight: 1.3, fontFamily:"var(--font-body)", opacity: 0.8, margin: 0}}>{c.explain}</p>
+                  <p style={{fontSize: 10, color: '#FCFAF2', lineHeight: 1.3, fontFamily:"var(--font-body)", opacity: 0.8, margin: 0}}>{c.explain}</p>
                 </div>
               )}
             </div>
@@ -435,10 +435,10 @@ function TruthsGame({ theme }) {
           display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",
           padding: "16px 0", textAlign: "center", animation: "about-fadeUp 0.4s ease"
         }}>
-          <h4 style={{ color: theme.text, fontSize: 18, marginBottom: 8, fontFamily: "var(--font-heading)", fontWeight: 900 }}>
+          <h4 style={{ color: '#FCFAF2', fontSize: 18, marginBottom: 8, fontFamily: "var(--font-heading)", fontWeight: 900 }}>
             Score: {score} / {GAME_ROUNDS.length}
           </h4>
-          <p style={{ color: theme.text, fontSize: 12, opacity: 0.8, marginBottom: 20, fontFamily: "var(--font-body)", lineHeight: 1.4 }}>
+          <p style={{ color: '#FCFAF2', fontSize: 12, opacity: 0.8, marginBottom: 20, fontFamily: "var(--font-body)", lineHeight: 1.4 }}>
             {score >= 4 
               ? "Impressive! Let's build something great together."
               : "Let's connect and catch up over a quick chat or call."}
@@ -462,7 +462,7 @@ function TruthsGame({ theme }) {
                 padding:"10px 20px",borderRadius:4,
                 border:"1px solid rgba(0,0,0,0.15)",
                 background: "transparent",
-                color: theme.text, fontSize: 11,
+                color: '#FCFAF2', fontSize: 11,
                 fontWeight: 900, fontFamily: "var(--font-heading)",
                 cursor: "pointer",
                 textTransform: "uppercase", letterSpacing: 1
@@ -500,14 +500,14 @@ function LanguagesToggle({ theme }) {
       background: "#ffffff",
       padding: "24px",
       borderRadius: 4,
-      color: theme.text,
+      color: '#FCFAF2',
       boxShadow: "0 4px 20px rgba(0,0,0,0.03)",
       display: "flex",
       flexDirection: "column",
       justifyContent: "space-between"
     }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
-        <h3 style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: 2, color: theme.text, opacity: 0.5, margin: 0, fontFamily: "var(--font-body)", fontWeight: 700 }}>
+        <h3 style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: 2, color: '#FCFAF2', opacity: 0.5, margin: 0, fontFamily: "var(--font-body)", fontWeight: 700 }}>
           Languages
         </h3>
         <div style={{ display: "flex", background: "rgba(0,0,0,0.04)", borderRadius: 4, padding: 2 }}>
@@ -525,22 +525,22 @@ function LanguagesToggle({ theme }) {
       <div style={{ minHeight: 80, display: "flex", flexDirection: "column", justifyContent: "center" }}>
         {lang === "EN" ? (
           <div>
-            <div style={{ fontSize: 22, fontWeight: 800, color: theme.text, marginBottom: 4, fontFamily: "var(--font-heading)", letterSpacing: "-0.02em" }}>"Hey there!"</div>
-            <div style={{ fontSize: 13, color: theme.text, opacity: 0.7, lineHeight: 1.4, fontFamily: "var(--font-body)" }}>
+            <div style={{ fontSize: 22, fontWeight: 800, color: '#FCFAF2', marginBottom: 4, fontFamily: "var(--font-heading)", letterSpacing: "-0.02em" }}>"Hey there!"</div>
+            <div style={{ fontSize: 13, color: '#FCFAF2', opacity: 0.7, lineHeight: 1.4, fontFamily: "var(--font-body)" }}>
               I speak English fluently, having learned and worked in it from a young age.
             </div>
           </div>
         ) : lang === "HI" ? (
           <div>
-            <div style={{ fontSize: 22, fontWeight: 800, color: theme.text, marginBottom: 4, fontFamily: "'Hind', sans-serif", letterSpacing: "-0.02em" }}>"कैसे हो!"</div>
-            <div style={{ fontSize: 13, color: theme.text, opacity: 0.7, lineHeight: 1.4, fontFamily: "var(--font-body)" }}>
+            <div style={{ fontSize: 22, fontWeight: 800, color: '#FCFAF2', marginBottom: 4, fontFamily: "'Hind', sans-serif", letterSpacing: "-0.02em" }}>"कैसे हो!"</div>
+            <div style={{ fontSize: 13, color: '#FCFAF2', opacity: 0.7, lineHeight: 1.4, fontFamily: "var(--font-body)" }}>
               हिंदी मेरी मातृभाषा है।
             </div>
           </div>
         ) : (
           <div>
-            <div style={{ fontSize: 22, fontWeight: 800, color: theme.text, marginBottom: 4, fontFamily: "var(--font-heading)", letterSpacing: "-0.02em" }}>"Ciao!"</div>
-            <div style={{ fontSize: 13, color: theme.text, opacity: 0.7, lineHeight: 1.4, fontFamily: "var(--font-body)" }}>
+            <div style={{ fontSize: 22, fontWeight: 800, color: '#FCFAF2', marginBottom: 4, fontFamily: "var(--font-heading)", letterSpacing: "-0.02em" }}>"Ciao!"</div>
+            <div style={{ fontSize: 13, color: '#FCFAF2', opacity: 0.7, lineHeight: 1.4, fontFamily: "var(--font-body)" }}>
               Parlo anche un po' di italiano, vivendo a Milano.
             </div>
           </div>
@@ -598,16 +598,16 @@ function QuoteCard({ theme }) {
       padding: "24px",
       display: "flex",
       flexDirection: "column",
-      color: theme.text,
+      color: '#FCFAF2',
       boxShadow: "0 4px 20px rgba(0,0,0,0.03)",
       justifyContent: "space-between"
     }}>
-      <h3 style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: 2, color: theme.text, opacity: 0.5, marginBottom: 20, fontFamily: "var(--font-body)", fontWeight: 700 }}>
+      <h3 style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: 2, color: '#FCFAF2', opacity: 0.5, marginBottom: 20, fontFamily: "var(--font-body)", fontWeight: 700 }}>
         Philosophy
       </h3>
       <p style={{
         fontSize: 17, fontWeight: 800, lineHeight: 1.3,
-        color: theme.text,
+        color: '#FCFAF2',
         fontFamily: "var(--font-heading)",
         marginBottom: 16, letterSpacing: "-0.01em"
       }}>
@@ -650,7 +650,7 @@ function VisualGalleryCard({ theme }) {
       background: "#ffffff",
       borderRadius: 4,
       padding: "24px",
-      color: theme.text,
+      color: '#FCFAF2',
       display: "flex",
       flexDirection: "column",
       boxShadow: "0 4px 20px rgba(0,0,0,0.03)",
@@ -753,13 +753,13 @@ function ToolboxSection({ theme }) {
       background: "#ffffff",
       borderRadius: 4,
       padding: "24px",
-      color: theme.text,
+      color: '#FCFAF2',
       boxShadow: "0 4px 20px rgba(0,0,0,0.03)",
       display: "flex",
       flexDirection: "column"
     }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 20, flexWrap: "wrap", gap: 10 }}>
-        <h3 style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: 2, color: theme.text, opacity: 0.5, margin: 0, fontFamily: "var(--font-body)", fontWeight: 700 }}>
+        <h3 style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: 2, color: '#FCFAF2', opacity: 0.5, margin: 0, fontFamily: "var(--font-body)", fontWeight: 700 }}>
           Tools & Stack
         </h3>
         
@@ -888,9 +888,9 @@ function VinylPlayer({ theme }) {
       borderRadius: 4,
       border: "none",
       boxShadow: "0 4px 20px rgba(0,0,0,0.03)",
-      padding: "24px", color: theme.text
+      padding: "24px", color: '#FCFAF2'
     }}>
-      <h3 style={{fontSize: 11, textTransform:"uppercase", letterSpacing: 2, color: theme.text, opacity: 0.5, marginBottom: 20, fontFamily: "var(--font-body)", fontWeight: 700}}>
+      <h3 style={{fontSize: 11, textTransform:"uppercase", letterSpacing: 2, color: '#FCFAF2', opacity: 0.5, marginBottom: 20, fontFamily: "var(--font-body)", fontWeight: 700}}>
         Music platter <span style={{ opacity: 0.6 }}>// Tap a record to play or drag on desktop</span>
       </h3>
 
@@ -949,7 +949,7 @@ function VinylPlayer({ theme }) {
           </div>
           
           <div style={{position: "absolute", bottom: 15, right: 15}}>
-            <button onClick={() => setPlaying(!playing)} style={{
+            <button onClick={() => setPlaying(!playing)} aria-label={playing ? "Pause" : "Play"} style={{
               width: 36, height: 36, borderRadius: "50%", background: theme.text, border: "none",
               color: '#ffffff', display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer",
               boxShadow: "0 2px 6px rgba(0,0,0,0.3)", fontSize: 13
@@ -1009,6 +1009,7 @@ function VinylPlayer({ theme }) {
 // ─── Main Component ───────────────────────────────────────────────────
 export default function AboutMe({ theme, onClose }) {
   const containerRef = useRef(null);
+  const invertedTheme = { ...theme, bg: '#0a0a0a', text: '#FCFAF2' };
 
   useEffect(() => {
     // Entrance animation
@@ -1035,12 +1036,15 @@ export default function AboutMe({ theme, onClose }) {
   return (
     <div 
       ref={containerRef} 
+      role="dialog"
+      aria-modal="true"
+      aria-label="About Me"
       style={{
         position: 'fixed',
         top: 0, left: 0, width: '100vw', height: '100vh',
         zIndex: 180,
-        backgroundColor: '#FCFAF2',
-        color: theme.text,
+        backgroundColor: '#0a0a0a',
+        color: '#FCFAF2',
         overflowX: "hidden",
         overflowY: "auto"
       }}
@@ -1069,12 +1073,12 @@ export default function AboutMe({ theme, onClose }) {
         
         {/* Profile Introduction Section */}
         <div className="about-section-reveal" style={{ marginBottom: "80px" }}>
-          <ProfileIntroduction theme={theme} />
+          <ProfileIntroduction theme={invertedTheme} />
         </div>
 
         {/* Timeline block */}
         <div className="about-section-reveal" style={{ marginBottom: "32px" }}>
-          <Timeline theme={theme} />
+          <Timeline theme={invertedTheme} />
         </div>
 
         {/* Secondary Dashboard Grid */}
@@ -1085,31 +1089,31 @@ export default function AboutMe({ theme, onClose }) {
           width: "100%"
         }}>
           <div className="about-section-reveal" style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            <TruthsGame theme={theme} />
-            <LanguagesToggle theme={theme} />
+            <TruthsGame theme={invertedTheme} />
+            <LanguagesToggle theme={invertedTheme} />
           </div>
 
           <div className="about-section-reveal" style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            <ToolboxSection theme={theme} />
-            <VisualGalleryCard theme={theme} />
-            <QuoteCard theme={theme} />
+            <ToolboxSection theme={invertedTheme} />
+            <VisualGalleryCard theme={invertedTheme} />
+            <QuoteCard theme={invertedTheme} />
           </div>
         </div>
 
         {/* Platter component taking full width */}
         <div className="about-section-reveal" style={{ marginTop: "16px" }}>
-          <VinylPlayer theme={theme} />
+          <VinylPlayer theme={invertedTheme} />
         </div>
 
         {/* Brands Section */}
         <div className="about-section-reveal" style={{ marginTop: "20px", marginBottom: "40px" }}>
-          <BrandsSection theme={theme} />
+          <BrandsSection theme={invertedTheme} />
         </div>
 
       </div>
       
       {/* Global Footer */}
-      <Footer theme={theme} activeChar="deer" />
+      <Footer theme={invertedTheme} activeChar="deer" />
     </div>
   );
 }

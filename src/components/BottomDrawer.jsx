@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import gsap from 'gsap';
 // Voxel imports removed
 
-export default function BottomDrawer({ theme, activePage, navigateWithTransition, activeChar = 'duck' }) {
+export default function BottomDrawer({ theme, activePage, navigateWithTransition }) {
   const [isOpen, setIsOpen] = useState(false);
   const [animating, setAnimating] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -198,6 +198,7 @@ export default function BottomDrawer({ theme, activePage, navigateWithTransition
         ref={overlayRef}
         className={`drawer-overlay ${isOpen ? 'active' : ''}`} 
         onClick={closeDrawer}
+        aria-hidden="true"
       ></div>
 
       {/* DRAWER */}
@@ -212,7 +213,7 @@ export default function BottomDrawer({ theme, activePage, navigateWithTransition
         <div className="drawer-items">
 
           {/* HOME */}
-          <button className={`drawer-item ${activePage === 'home' ? 'active-page' : ''}`} onClick={(e) => handleItemClick(e, 'home')}>
+          <button className={`drawer-item ${activePage === 'home' ? 'active-page' : ''}`} onClick={(e) => handleItemClick(e, 'home')} aria-current={activePage === 'home' ? 'page' : undefined}>
             <div className="drawer-item-icon" style={{ background: activePage === 'home' ? theme.brand : '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)' }}>
               <svg viewBox="0 0 24 24" fill={activePage === 'home' ? '#0d0d0d' : '#FCFAF2'} className="di-icon-svg">
                 <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
@@ -228,7 +229,7 @@ export default function BottomDrawer({ theme, activePage, navigateWithTransition
           </button>
 
           {/* WORK */}
-          <button className={`drawer-item ${activePage === 'work' ? 'active-page' : ''}`} onClick={(e) => handleItemClick(e, 'work')}>
+          <button className={`drawer-item ${activePage === 'work' ? 'active-page' : ''}`} onClick={(e) => handleItemClick(e, 'work')} aria-current={activePage === 'work' ? 'page' : undefined}>
             <div className="drawer-item-icon" style={{ background: activePage === 'work' ? theme.brand : '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)' }}>
               <svg viewBox="0 0 24 24" fill={activePage === 'work' ? '#0d0d0d' : '#FCFAF2'} className="di-icon-svg">
                 <path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z" />
@@ -244,7 +245,7 @@ export default function BottomDrawer({ theme, activePage, navigateWithTransition
           </button>
 
           {/* ABOUT */}
-          <button className={`drawer-item ${activePage === 'about' ? 'active-page' : ''}`} onClick={(e) => handleItemClick(e, 'about')}>
+          <button className={`drawer-item ${activePage === 'about' ? 'active-page' : ''}`} onClick={(e) => handleItemClick(e, 'about')} aria-current={activePage === 'about' ? 'page' : undefined}>
             <div className="drawer-item-icon" style={{ background: activePage === 'about' ? theme.brand : '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)' }}>
               <svg viewBox="0 0 24 24" fill={activePage === 'about' ? '#0d0d0d' : '#FCFAF2'} className="di-icon-svg">
                 <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
@@ -260,7 +261,7 @@ export default function BottomDrawer({ theme, activePage, navigateWithTransition
           </button>
 
           {/* PLAYGROUND */}
-          <button className={`drawer-item ${activePage === 'playground' ? 'active-page' : ''}`} onClick={(e) => handleItemClick(e, 'playground')}>
+          <button className={`drawer-item ${activePage === 'playground' ? 'active-page' : ''}`} onClick={(e) => handleItemClick(e, 'playground')} aria-current={activePage === 'playground' ? 'page' : undefined}>
             <div className="drawer-item-icon" style={{ background: activePage === 'playground' ? theme.brand : '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)' }}>
               <svg viewBox="0 0 24 24" fill={activePage === 'playground' ? '#0d0d0d' : '#FCFAF2'} className="di-icon-svg">
                 <path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm3-3c-.83 0-1.5-.67-1.5-1.5S17.67 9 18.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
@@ -298,7 +299,17 @@ export default function BottomDrawer({ theme, activePage, navigateWithTransition
 
         <div 
           className="glass-island-inner" 
-          onClick={(e) => {
+          role="button"
+          tabIndex={0}
+          aria-expanded={isOpen}
+          aria-label="Toggle navigation menu"
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              toggleDrawer();
+            }
+          }}
+          onClick={() => {
             if (typeof window !== 'undefined' && window.innerWidth > 768) {
               return; // Do not open drawer on desktop click
             }
@@ -330,7 +341,7 @@ export default function BottomDrawer({ theme, activePage, navigateWithTransition
             flexShrink: 0
           }}>
             <img 
-              src="/sauveerpp.png" 
+              src="/sauveerpp.webp" 
               alt="SAUVEER" 
               style={{
                 width: '100%',
@@ -394,6 +405,15 @@ export default function BottomDrawer({ theme, activePage, navigateWithTransition
             {['home', 'work', 'about', 'playground'].map(page => (
               <div 
                 key={page} 
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleItemClick(e, page);
+                  }
+                }}
                 onClick={(e) => { e.stopPropagation(); handleItemClick(e, page); }}
                 className="inline-nav-item"
               >

@@ -67,6 +67,9 @@ export default function CaseStudyViewer({ startIndex, onClose }) {
     <div 
       ref={containerRef}
       onScroll={handleScroll}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Case Study Viewer"
       style={{
         position: 'fixed',
         top: 0, left: 0, right: 0, bottom: 0,

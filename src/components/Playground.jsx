@@ -149,6 +149,9 @@ export default function PlaygroundGallery({ onClose, theme, activeChar, onSwitch
   return (
     <div 
       ref={containerRef}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Playground Gallery"
       className="scroll-container"
       style={{
         position: 'fixed',
@@ -279,6 +282,7 @@ export default function PlaygroundGallery({ onClose, theme, activeChar, onSwitch
                             <button
                               key={char}
                               type="button"
+                              aria-label={`Select ${char} character`}
                               onClick={() => setFormChar(char)}
                               style={{
                                 flex: 1, padding: '12px 0', borderRadius: '4px', cursor: 'pointer', fontSize: '20px',

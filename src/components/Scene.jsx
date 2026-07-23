@@ -1,9 +1,9 @@
-import React, { useRef, forwardRef, useImperativeHandle } from 'react';
+import React, { useRef, forwardRef, useImperativeHandle, Suspense, lazy } from 'react';
 import { PerspectiveCamera, Environment, ContactShadows } from '@react-three/drei';
 import { EffectComposer, Bloom, Noise } from '@react-three/postprocessing';
-import VoxelDeer from './VoxelDeer';
-import VoxelDuck from './VoxelDuck';
-import VoxelDino from './VoxelDino';
+const VoxelDeer = lazy(() => import('./VoxelDeer'));
+const VoxelDuck = lazy(() => import('./VoxelDuck'));
+const VoxelDino = lazy(() => import('./VoxelDino'));
 import * as THREE from 'three';
 
 const CHARACTERS = ['deer', 'duck', 'dino'];
@@ -22,15 +22,17 @@ const CharacterSwitch = forwardRef(({ activeChar, ctaHover }, ref) => {
   }));
 
   return (
-    <group>
-      {activeChar === 'deer' && <VoxelDeer ref={deerRef} ctaHover={ctaHover} />}
-      {activeChar === 'duck' && <VoxelDuck ref={duckRef} ctaHover={ctaHover} />}
-      {activeChar === 'dino' && <VoxelDino ref={dinoRef} ctaHover={ctaHover} />}
-    </group>
+    <Suspense fallback={null}>
+      <group>
+        {activeChar === 'deer' && <VoxelDeer ref={deerRef} ctaHover={ctaHover} />}
+        {activeChar === 'duck' && <VoxelDuck ref={duckRef} ctaHover={ctaHover} />}
+        {activeChar === 'dino' && <VoxelDino ref={dinoRef} ctaHover={ctaHover} />}
+      </group>
+    </Suspense>
   );
 });
 
-const Scene = ({ activeChar, ctaHover, onCharacterClick, onCharacterHover, charRef, minimal = false }) => {
+const Scene = React.memo(({ activeChar, ctaHover, onCharacterClick, onCharacterHover, charRef, minimal = false }) => {
   const isMobile = typeof window !== 'undefined' ? window.innerWidth < 768 : false;
   
   const charPos = minimal ? [0, -1, 0] : (isMobile ? [0, -0.2, 0] : [2.2, -0.5, 0]);
@@ -97,6 +99,6 @@ const Scene = ({ activeChar, ctaHover, onCharacterClick, onCharacterHover, charR
       )}
     </>
   );
-};
+});
 
 export default Scene;

@@ -402,6 +402,9 @@ const ContextDrawer = ({ item, onClose, theme }) => {
       />
       <div 
         ref={drawerRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label={item.title}
         style={{
           position: 'fixed',
           top: 0, right: 0, bottom: 0,
@@ -418,6 +421,7 @@ const ContextDrawer = ({ item, onClose, theme }) => {
       >
         <button 
           onClick={handleClose}
+          aria-label="Close dialog"
           style={{
             alignSelf: 'flex-end', background: 'none', border: 'none',
             fontSize: '24px', cursor: 'pointer', color: '#0d0d0d',

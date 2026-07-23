@@ -8,8 +8,11 @@
   transition: border-color 0.3s;
   margin-bottom: 24px;
 
+  @media (hover: hover) {
+
   &:hover {
     border-color: var(--accent-border);
+  }
   }
   &:focus-visible {
     outline: 2px solid var(--accent);
@@ -127,8 +130,11 @@
     text-decoration: none;
     transition: box-shadow 0.3s;
 
+    @media (hover: hover) {
+
     &:hover {
       box-shadow: var(--shadow);
+    }
     }
     .button-icon {
       height: 18px;
@@ -514,8 +520,11 @@
   transition: box-shadow 0.4s ease;
 }
 
+@media (hover: hover) {
+
 .product-card:hover {
   box-shadow: 0 50px 100px rgba(0,0,0,0.3), inset 0 0 0 2px rgba(255,255,255,0.2);
+}
 }
 
 .product-card h2 {
@@ -547,8 +556,10 @@
   opacity: 0.5;
   transition: opacity 0.3s;
 }
+@media (hover: hover) {
 .product-card:hover .card-glare {
   opacity: 0.8;
+}
 }
 
 /* Subtle sound-reactive visual pulse ring behind text */

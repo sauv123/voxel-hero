@@ -168,8 +168,11 @@ video.bento-media-asset {
   background: #000000; /* black background to blend sidebar contain gaps */
 }
 
+@media (hover: hover) {
+
 .modern-bento-card:hover .bento-media-asset {
   transform: scale(1.04);
+}
 }
 
 /* Info wrap - Absolute with z-index 10 to ensure tags sit on top of video wrapping */
@@ -195,9 +198,12 @@ video.bento-media-asset {
   transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+@media (hover: hover) {
+
 .modern-bento-card:hover .bento-card-tags {
   opacity: 1;
   transform: translateY(0);
+}
 }
 
 .bento-card-tag {
@@ -216,11 +222,14 @@ video.bento-media-asset {
   transition: all 0.25s ease;
 }
 
+@media (hover: hover) {
+
 .modern-bento-card:hover .bento-card-tag {
   border-color: #ffffff;
   color: #000000;
   background: #ffffff;
   box-shadow: 0px 4px 12px rgba(255, 255, 255, 0.15);
+}
 }
 
 
