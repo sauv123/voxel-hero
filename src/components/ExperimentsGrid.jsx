@@ -206,12 +206,31 @@ const BinarySharkPool = () => {
 const EXPERIMENTS = [
   {
     id: 9,
-    title: 'AI DESIGN SAUVEER',
-    tags: ['AI Design', 'Generative Space', 'Art Direction'],
+    title: 'ORION',
+    tags: ['AI Assistant', 'macOS Automation', 'Python', 'Three.js', 'Voice UI'],
     video: '/works/AI design Sauveer.mp4',
     size: 'huge',
-    description: '[Placeholder text] Explores the intersection of generative AI and spatial UI design.',
-    techStack: ['WebGL', 'TensorFlow.js', 'Figma']
+    description: 'A lightweight, ultra-fast, native macOS AI voice assistant built with a pure Python backend and an interactive 3D frontend.',
+    whoItsFor: 'General users, who want a deeply integrated, visually stunning, and highly responsive desktop AI assistant without the resource drain of heavy frameworks like Electron or React.',
+    problem: 'Most AI voice assistants are either trapped inside web browsers, suffer from high latency, or are built on bloated frameworks that slow down the computer. Furthermore, small fast models (like 8B parameter LLMs) struggle with strictly formatting JSON tool calls, leading to broken interactions when trying to execute local commands.',
+    goal: 'To deliver a sub-second latency, visually engaging, and highly capable desktop voice assistant that feels like a native OS feature. It aims to intelligently manage the user\'s computer, dynamically adapt to their speech, and gracefully handle API rate limits and parsing errors without ever crashing.',
+    techStackCategories: [
+      { label: "Backend Engine", value: "Pure Python (Standard Library: http.server, urllib, re, subprocess)" },
+      { label: "Frontend UI", value: "Vanilla JavaScript, HTML5, CSS3" },
+      { label: "Visuals & Animation", value: "Three.js (3D particle system), GSAP (Cinematic text animations)" },
+      { label: "AI Logic (LLM)", value: "Groq API (Llama-3.1-8b-instant)" },
+      { label: "Voice Synthesis", value: "Cartesia API (Sonic-3.5)" },
+      { label: "OS Automation", value: "Native macOS osascript (AppleScript) and shell commands" }
+    ],
+    coreFeatures: [
+      "Cinematic UI & Real-Time Transcription: A responsive 3D particle orb that changes states (Idle, Listening, Thinking, Responding) alongside Apple-style GSAP animated subtitles.",
+      "Native macOS Automation: Directly controls system hardware and software (adjust volume/brightness, open/close apps, play media, empty trash, check system stats).",
+      "Multimodal Drag-and-Drop: Seamlessly drag images or PDFs onto the UI to have the Orb analyze files using vision models or extract text for discussion.",
+      "Resilient Execution Engine: Uses a custom Regex-based extraction system that flawlessly catches and executes tool commands even when the AI outputs malformed JSON or broken XML tags.",
+      "Dynamic Memory System: Features both a short-term topic isolation module to prevent context bleeding, and a silent background agent that builds a persistent, long-term JSON knowledge graph of user preferences.",
+      "Rate Limit Armor: Intercepts external API HTTP 429 blocks, parses the exact required timeout, intelligently pauses execution, and automatically retries without dropping the conversation."
+    ],
+    techStack: ['Python', 'Three.js', 'Groq API', 'Cartesia API']
   },
   {
     id: 14,
