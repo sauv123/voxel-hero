@@ -511,13 +511,13 @@ function LanguagesToggle({ theme }) {
           Languages
         </h3>
         <div style={{ display: "flex", background: "rgba(0,0,0,0.04)", borderRadius: 4, padding: 2 }}>
-          {["EN", "HI", "IT"].map(l => (
-            <button key={l} onClick={() => setLang(l)} style={{
-              background: lang === l ? "#000000" : "transparent",
-              color: lang === l ? "#ffffff" : theme.text, 
+          {[{key: "EN", label: "🇺🇸 EN"}, {key: "HI", label: "🇮🇳 HI"}, {key: "IT", label: "🇮🇹 IT"}].map(l => (
+            <button key={l.key} onClick={() => setLang(l.key)} style={{
+              background: lang === l.key ? "#000000" : "transparent",
+              color: lang === l.key ? "#ffffff" : theme.text, 
               border: "none", borderRadius: 4, padding: "8px 16px", cursor: "pointer", 
               fontSize: 12, fontWeight: 700, fontFamily: "var(--font-heading)"
-            }}>{l}</button>
+            }}>{l.label}</button>
           ))}
         </div>
       </div>
