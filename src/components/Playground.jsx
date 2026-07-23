@@ -11,7 +11,7 @@ import ExperimentsGrid from './ExperimentsGrid';
 import Footer from './Footer';
 
 // Internal Character wrapper to handle hovers
-const CharacterNode = ({ type, position, rotation, onClick, children, footprints }) => {
+const CharacterNode = ({ log, position, rotation }) => {
   const [hovered, setHovered] = useState(false);
   const charRef = useRef();
 
@@ -21,41 +21,45 @@ const CharacterNode = ({ type, position, rotation, onClick, children, footprints
       rotation={rotation}
       onPointerOver={(e) => { e.stopPropagation(); setHovered(true); }}
       onPointerOut={() => setHovered(false)}
-      onClick={(e) => { e.stopPropagation(); if(onClick) onClick(); }}
     >
-      {type === 'deer' && <VoxelDeer ref={charRef} ctaHover={hovered} />}
-      {type === 'duck' && <VoxelDuck ref={charRef} ctaHover={hovered} />}
-      {type === 'dino' && <VoxelDino ref={charRef} ctaHover={hovered} />}
+      {log.char === 'deer' && <VoxelDeer ref={charRef} ctaHover={hovered} />}
+      {log.char === 'duck' && <VoxelDuck ref={charRef} ctaHover={hovered} />}
+      {log.char === 'dino' && <VoxelDino ref={charRef} ctaHover={hovered} />}
       
       {/* HTML Tooltip Overlay */}
-      {hovered && footprints.length > 0 && (
+      {hovered && (
         <Html position={[0, 2, 0]} center zIndexRange={[100, 0]} style={{ pointerEvents: 'none' }}>
           <div style={{
-            background: 'rgba(10, 10, 10, 0.9)',
-            backdropFilter: 'blur(8px)',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
-            padding: '12px 16px',
-            borderRadius: '12px',
-            color: '#fff',
-            minWidth: '200px',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
+            background: '#ffffff',
+            border: '1px solid rgba(0, 0, 0, 0.05)',
+            padding: '16px',
+            borderRadius: '4px',
+            color: '#0d0d0d',
+            minWidth: '220px',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
             transform: 'translateY(-10px)',
-            animation: 'fadeInUp 0.2s ease-out forwards'
+            animation: 'fadeInUp 0.2s ease-out forwards',
+            display: 'flex',
+            flexDirection: 'column'
           }}>
-            <div style={{ fontSize: '10px', textTransform: 'uppercase', color: '#888', marginBottom: '8px' }}>
-              Recent Visitors
-            </div>
-            {footprints.slice(0, 3).map((fp, i) => (
-              <div key={i} style={{ marginBottom: i === 2 ? 0 : '8px', borderBottom: i === 2 ? 'none' : '1px solid rgba(255,255,255,0.05)', paddingBottom: i === 2 ? 0 : '8px' }}>
-                <div style={{ fontWeight: 'bold', fontSize: '13px' }}>{fp.name}</div>
-                <div style={{ fontSize: '11px', color: '#ccc', marginTop: '2px' }}>{fp.desc}</div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+              <div style={{ fontSize: '13px', fontWeight: 900, fontFamily: 'var(--font-heading)', textTransform: 'uppercase' }}>
+                {log.name}
               </div>
-            ))}
+              <div style={{ fontSize: '9px', fontFamily: 'Space Mono, monospace', color: 'rgba(0,0,0,0.4)', textTransform: 'uppercase', marginLeft: '12px' }}>
+                {log.time}
+              </div>
+            </div>
           </div>
         </Html>
       )}
     </group>
   );
+};
+
+const seededRandom = (seed) => {
+  let x = Math.sin(seed++) * 10000;
+  return x - Math.floor(x);
 };
 
 export default function PlaygroundGallery({ onClose, theme, activeChar, onSwitchChar }) {
@@ -87,18 +91,19 @@ export default function PlaygroundGallery({ onClose, theme, activeChar, onSwitch
   const [visitorCount, setVisitorCount] = useState(() => {
     if (typeof window !== 'undefined') {
       const savedCount = localStorage.getItem('sauveer_playground_visitors');
-      if (savedCount) return parseInt(savedCount, 10);
-      const initial = Math.floor(Math.random() * 200) + 1480;
+      if (savedCount && parseInt(savedCount, 10) < 1000) return parseInt(savedCount, 10);
+      const initial = 682;
       localStorage.setItem('sauveer_playground_visitors', initial.toString());
       return initial;
     }
-    return 1482;
+    return 682;
   });
 
   // Form states
   const [formName, setFormName] = useState('');
   const [formChar, setFormChar] = useState(activeChar || 'deer');
   const [formDesc, setFormDesc] = useState('');
+  const [isFormExpanded, setIsFormExpanded] = useState(false);
 
   useEffect(() => {
     gsap.fromTo(containerRef.current,
@@ -139,9 +144,7 @@ export default function PlaygroundGallery({ onClose, theme, activeChar, onSwitch
     localStorage.setItem('sauveer_playground_submitted', 'true');
   };
 
-  const deerFootprints = visitorLogs.filter(l => l.char === 'deer');
-  const duckFootprints = visitorLogs.filter(l => l.char === 'duck');
-  const dinoFootprints = visitorLogs.filter(l => l.char === 'dino');
+
 
   return (
     <div 
@@ -162,138 +165,165 @@ export default function PlaygroundGallery({ onClose, theme, activeChar, onSwitch
       <div style={{ padding: '40px 6vw', flex: 1, position: 'relative' }}>
         
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: '40px' }}>
-          <div style={{ fontFamily: 'var(--font-heading)', fontSize: '11px', fontWeight: 900, letterSpacing: '0.15em', textTransform: 'uppercase' }}>
-            [ LABS ]
-          </div>
+          <h2 className="section-header" style={{ color: '#0d0d0d' }}>
+            Labs & Exploration
+          </h2>
         </div>
 
         {/* 3D Grassland Container */}
         <div style={{ 
-          width: '100%', minHeight: '600px', background: '#0a1a0a', borderRadius: '24px', 
-          border: '1.5px solid rgba(13, 13, 13, 0.08)', position: 'relative', overflow: 'hidden',
-          boxShadow: '0 8px 40px rgba(0,0,0,0.2)', display: 'flex', flexDirection: 'column'
+          width: '100%', minHeight: '600px', background: 'transparent', position: 'relative', overflow: 'hidden',
+          display: 'flex', flexDirection: 'column'
         }}>
           
-          <div style={{ 
-            position: 'absolute', top: 0, left: 0, right: 0,
-            padding: '24px 32px', zIndex: 10,
-            display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px',
-            background: 'linear-gradient(to bottom, rgba(10,26,10,0.9) 0%, rgba(10,26,10,0) 100%)', color: '#fff'
-          }}>
-            <div>
-              <span style={{ fontSize: '10px', fontFamily: 'Space Mono, monospace', opacity: 0.7, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-                GRASSLAND REGISTRY
-              </span>
-              <p style={{ margin: '2px 0 0 0', fontSize: '20px', fontWeight: 900, fontFamily: 'var(--font-heading)' }}>
-                Leave a footprint.
-              </p>
-              <div style={{ fontSize: '12px', opacity: 0.7, fontFamily: 'var(--font-body)', marginTop: '4px' }}>
-                Hover over the characters to see who was here.
-              </div>
-            </div>
-            
-            {/* Form Overlay */}
-            <div style={{ 
-              background: 'rgba(255,255,255,0.05)', backdropFilter: 'blur(10px)', 
-              border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', padding: '16px 20px',
-              minWidth: '280px'
-            }}>
-              {submitted ? (
-                <div style={{ textAlign: 'center', padding: '20px 0' }}>
-                  <div style={{ fontSize: '24px', marginBottom: '8px' }}>✨</div>
-                  <div style={{ fontWeight: 'bold' }}>Footprint recorded.</div>
-                  <div style={{ fontSize: '12px', opacity: 0.7, marginTop: '4px' }}>Thank you for visiting!</div>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmitEntry} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                  <input 
-                    type="text" 
-                    placeholder="Your Name" 
-                    value={formName}
-                    onChange={(e) => setFormName(e.target.value)}
-                    style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', padding: '10px 12px', borderRadius: '8px', fontSize: '14px', outline: 'none' }}
-                  />
-                  <div style={{ display: 'flex', gap: '8px' }}>
-                    {['deer', 'duck', 'dino'].map(char => (
-                      <button
-                        key={char}
-                        type="button"
-                        onClick={() => setFormChar(char)}
-                        style={{
-                          flex: 1, padding: '8px 0', borderRadius: '8px', cursor: 'pointer', fontSize: '18px',
-                          background: formChar === char ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.3)',
-                          border: `1px solid ${formChar === char ? '#fff' : 'rgba(255,255,255,0.1)'}`,
-                          transition: 'all 0.2s'
-                        }}
-                      >
-                        {char === 'deer' ? '🦌' : char === 'duck' ? '🦆' : '🦖'}
-                      </button>
-                    ))}
-                  </div>
-                  <textarea 
-                    placeholder="Leave a short thought..." 
-                    value={formDesc}
-                    onChange={(e) => setFormDesc(e.target.value)}
-                    rows={2}
-                    style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', padding: '10px 12px', borderRadius: '8px', fontSize: '14px', outline: 'none', resize: 'none' }}
-                  />
-                  <button 
-                    type="submit"
-                    style={{ background: '#fff', color: '#000', fontWeight: 'bold', padding: '10px', borderRadius: '8px', cursor: 'pointer', border: 'none', marginTop: '4px' }}
-                  >
-                    Submit Footprint
-                  </button>
-                </form>
-              )}
-            </div>
-          </div>
-
-          <div style={{ flex: 1, position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
-            <Canvas shadows dpr={[1, 2]} gl={{ alpha: false }}>
+          {/* Canvas Background */}
+          <div style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 1 }}>
+            <Canvas shadows dpr={[1, 2]} gl={{ alpha: true }}>
+              <fog attach="fog" args={['#FCFAF2', 5, 20]} />
               <PerspectiveCamera makeDefault position={[0, 2, 8]} fov={45} />
-              <OrbitControls enableZoom={false} enablePan={false} maxPolarAngle={Math.PI/2 - 0.1} autoRotate={true} autoRotateSpeed={0.5} />
-              <ambientLight intensity={0.6} />
-              <directionalLight position={[5, 10, 5]} intensity={1.5} castShadow shadow-mapSize={[2048, 2048]} />
-              <pointLight position={[-2, 4, -2]} intensity={0.8} color="#88ccff" />
-              <Environment preset="forest" />
+              <OrbitControls enableZoom={true} enablePan={true} maxPolarAngle={Math.PI/2 - 0.1} autoRotate={false} />
+              <ambientLight intensity={0.9} />
+              <directionalLight position={[5, 10, 5]} intensity={1.5} castShadow shadow-mapSize={[2048, 2048]} color="#ffffff" />
+              <pointLight position={[-2, 4, -2]} intensity={0.5} color="#88ccff" />
               
               <Grassland />
               
-              {/* Deer */}
-              <CharacterNode 
-                type="deer" 
-                position={[-2.5, -0.6, 1]} 
-                rotation={[0, 0.5, 0]} 
-                footprints={deerFootprints} 
-              />
-              
-              {/* Duck */}
-              <CharacterNode 
-                type="duck" 
-                position={[0, -0.6, -1]} 
-                rotation={[0, 0, 0]} 
-                footprints={duckFootprints} 
-              />
-              
-              {/* Dino */}
-              <CharacterNode 
-                type="dino" 
-                position={[2.5, -0.6, 1.5]} 
-                rotation={[0, -0.8, 0]} 
-                footprints={dinoFootprints} 
-              />
+              {/* Dynamic Footprints (Limit to 10 to prevent OOM crash) */}
+              {visitorLogs.slice(0, 10).map((log, i) => {
+                const angle = seededRandom(i * 123) * Math.PI * 2;
+                const radius = 2 + seededRandom(i * 321) * 20; 
+                const x = Math.cos(angle) * radius;
+                const z = Math.sin(angle) * radius;
+                const rotation = [0, seededRandom(i * 555) * Math.PI * 2, 0];
+                return (
+                  <CharacterNode 
+                    key={i}
+                    log={log}
+                    position={[x, -0.6, z]} 
+                    rotation={rotation} 
+                  />
+                );
+              })}
             </Canvas>
+          </div>
+
+          {/* UI Overlay */}
+          <div style={{ 
+            position: 'absolute', top: 0, left: 0, right: 0,
+            padding: '24px 32px', zIndex: 10,
+            display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-start', pointerEvents: 'none'
+          }}>
+            {/* Form Overlay */}
+            <div style={{ 
+              background: 'rgba(255, 255, 255, 0.9)',
+              backdropFilter: 'blur(10px)',
+              border: '1px solid rgba(0,0,0,0.05)', borderRadius: '12px', padding: '24px',
+              minWidth: '280px', pointerEvents: 'auto',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.08)',
+              color: '#0d0d0d',
+              display: 'flex', flexDirection: 'column'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginBottom: '16px' }}>
+                <span style={{ fontSize: '24px', fontWeight: 900, fontFamily: 'var(--font-heading)' }}>
+                  {visitorCount.toLocaleString()}
+                </span>
+                <span style={{ fontSize: '11px', color: 'rgba(0,0,0,0.6)', fontFamily: 'var(--font-body)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  Visitors checked in
+                </span>
+              </div>
+
+              {submitted ? (
+                <div style={{ textAlign: 'center', padding: '10px 0' }}>
+                  <div style={{ fontWeight: 'bold', fontFamily: 'var(--font-heading)' }}>Footprint recorded.</div>
+                  <div style={{ fontSize: '12px', opacity: 0.7, marginTop: '4px', fontFamily: 'var(--font-body)', marginBottom: '16px' }}>Thank you for visiting!</div>
+                  <button 
+                    onClick={() => {
+                      setSubmitted(false);
+                      setIsFormExpanded(true);
+                      setFormName('');
+                      setFormDesc('');
+                    }}
+                    style={{ background: '#000000', color: '#ffffff', fontWeight: 900, fontFamily: 'var(--font-heading)', padding: '8px 12px', borderRadius: '4px', cursor: 'pointer', border: 'none', textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '10px' }}
+                  >
+                    Leave another
+                  </button>
+                </div>
+              ) : (
+                <>
+                  {!isFormExpanded ? (
+                    <button 
+                      onClick={() => setIsFormExpanded(true)}
+                      style={{ background: '#000000', color: '#ffffff', fontWeight: 900, fontFamily: 'var(--font-heading)', padding: '12px', borderRadius: '4px', cursor: 'pointer', border: 'none', textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '11px', width: '100%' }}
+                    >
+                      Leave a Footprint
+                    </button>
+                  ) : (
+                    <form onSubmit={handleSubmitEntry} style={{ display: 'flex', flexDirection: 'column', gap: '16px', animation: 'fadeInUp 0.3s ease-out' }}>
+                      
+                      <div>
+                        <div style={{ fontSize: '11px', fontFamily: 'var(--font-heading)', textTransform: 'uppercase', marginBottom: '6px', fontWeight: 800 }}>Who are you?</div>
+                        <input 
+                          type="text" 
+                          placeholder="Your Name" 
+                          value={formName}
+                          onChange={(e) => setFormName(e.target.value)}
+                          required
+                          style={{ background: 'rgba(0,0,0,0.02)', border: '1px solid rgba(0,0,0,0.05)', color: '#0d0d0d', padding: '10px 12px', borderRadius: '4px', fontSize: '12px', fontFamily: 'var(--font-body)', outline: 'none', width: '100%' }}
+                        />
+                      </div>
+
+                      <div>
+                        <div style={{ fontSize: '11px', fontFamily: 'var(--font-heading)', textTransform: 'uppercase', marginBottom: '6px', fontWeight: 800 }}>Your character will visually capture this personality:</div>
+                        <div style={{ display: 'flex', gap: '8px' }}>
+                          {['deer', 'duck', 'dino'].map(char => (
+                            <button
+                              key={char}
+                              type="button"
+                              onClick={() => setFormChar(char)}
+                              style={{
+                                flex: 1, padding: '12px 0', borderRadius: '4px', cursor: 'pointer', fontSize: '20px',
+                                background: formChar === char ? '#000000' : 'rgba(0,0,0,0.02)',
+                                border: `1px solid ${formChar === char ? '#000' : 'rgba(0,0,0,0.05)'}`,
+                                transition: 'all 0.2s',
+                                color: formChar === char ? '#fff' : '#000'
+                              }}
+                            >
+                              {char === 'deer' ? '🦌' : char === 'duck' ? '🦆' : '🦖'}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      <textarea 
+                        placeholder="Leave a short thought..." 
+                        value={formDesc}
+                        onChange={(e) => setFormDesc(e.target.value)}
+                        rows={2}
+                        required
+                        style={{ background: 'rgba(0,0,0,0.02)', border: '1px solid rgba(0,0,0,0.05)', color: '#0d0d0d', padding: '10px 12px', borderRadius: '4px', fontSize: '12px', fontFamily: 'var(--font-body)', outline: 'none', resize: 'none', width: '100%' }}
+                      />
+                      
+                      <button 
+                        type="submit"
+                        style={{ background: '#000000', color: '#ffffff', fontWeight: 900, fontFamily: 'var(--font-heading)', padding: '12px', borderRadius: '4px', cursor: 'pointer', border: 'none', textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '11px' }}
+                      >
+                        Submit ↗
+                      </button>
+                    </form>
+                  )}
+                </>
+              )}
+            </div>
           </div>
         </div>
 
         {/* Embedded Section: Experiments Grid */}
         <div style={{ width: '100%', marginTop: '80px' }}>
-          <h3 style={{
-            fontFamily: 'var(--font-heading)', fontSize: '1.5rem', fontWeight: 900, textTransform: 'uppercase',
-            letterSpacing: '-0.02em', margin: '0 0 20px 0', borderBottom: '2px solid #0d0d0d', paddingBottom: '10px'
-          }}>
-            Experiments
-          </h3>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: '20px' }}>
+            <h2 className="section-header" style={{ color: '#0d0d0d' }}>
+              Selected Experiments
+            </h2>
+          </div>
           <ExperimentsGrid theme={theme} disableScrollTrigger={true} />
         </div>
       </div>

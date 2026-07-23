@@ -538,6 +538,7 @@ export default function App() {
           theme={theme} 
           activePage={activePage}
           navigateWithTransition={navigateWithTransition}
+          activeChar={activeChar}
         />
       )}
 

@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import gsap from 'gsap';
+// Voxel imports removed
 
-export default function BottomDrawer({ theme, activePage, navigateWithTransition }) {
+export default function BottomDrawer({ theme, activePage, navigateWithTransition, activeChar = 'duck' }) {
   const [isOpen, setIsOpen] = useState(false);
   const [animating, setAnimating] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -93,27 +94,32 @@ export default function BottomDrawer({ theme, activePage, navigateWithTransition
     const workSection = document.querySelector('.work-section');
 
     if (isHovered && !isOpen) {
+      gsap.killTweensOf(linksRef.current);
+      if (linksRef.current.children) gsap.killTweensOf(linksRef.current.children);
+      gsap.killTweensOf('.drawer-title-animate');
+
+      gsap.to('.drawer-title-animate', { x: 0, duration: 0.2 });
+
       gsap.to(linksRef.current, {
-        width: 'auto',
+        width: '320px',
         opacity: 1,
-        paddingLeft: 16,
-        paddingRight: 8,
-        duration: 0.5,
+        paddingLeft: 24,
+        paddingRight: 16,
+        duration: 0.6,
         ease: 'expo.out'
       });
-      // Stagger animate links slightly
+
       gsap.fromTo(linksRef.current.children, 
-        { opacity: 0, x: -10 },
-        { opacity: 0.7, x: 0, duration: 0.4, stagger: 0.05, ease: 'power2.out', delay: 0.1 }
+        { x: -20, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.4, stagger: 0.05, ease: "power2.out", delay: 0.1 }
       );
       
       // Expand pill slightly
       if (innerMenu) {
         gsap.to(innerMenu, {
-          scale: 1.05,
-          background: 'rgba(25, 25, 25, 0.95)',
-          backdropFilter: 'blur(16px)',
-          boxShadow: '0 16px 40px rgba(0, 0, 0, 0.6)',
+          background: '#121212',
+          backdropFilter: 'none',
+          boxShadow: 'none',
           duration: 0.4,
           ease: 'expo.out'
         });
@@ -130,6 +136,12 @@ export default function BottomDrawer({ theme, activePage, navigateWithTransition
       }
 
     } else if (!isOpen) {
+      gsap.killTweensOf(linksRef.current);
+      if (linksRef.current.children) gsap.killTweensOf(linksRef.current.children);
+      gsap.killTweensOf('.drawer-title-animate');
+
+      gsap.to('.drawer-title-animate', { x: 0, duration: 0.4, delay: 0.2 });
+
       gsap.to(linksRef.current, {
         width: 0,
         opacity: 0,
@@ -141,10 +153,9 @@ export default function BottomDrawer({ theme, activePage, navigateWithTransition
 
       if (innerMenu) {
         gsap.to(innerMenu, {
-          scale: 1,
           background: '#121212',
           backdropFilter: 'none',
-          boxShadow: '0 12px 32px rgba(0, 0, 0, 0.5)',
+          boxShadow: 'none',
           duration: 0.4,
           ease: 'power3.inOut'
         });
@@ -275,28 +286,35 @@ export default function BottomDrawer({ theme, activePage, navigateWithTransition
       {/* BOTTOM BAR */}
       <div 
         className={`glass-island-menu ${isOpen ? 'drawer-open' : ''}`}
+        onMouseEnter={() => typeof window !== 'undefined' && window.innerWidth > 768 && setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
         style={{
           opacity: 1,
           pointerEvents: 'auto',
           transition: 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
         }}
       >
+        {/* Voxel Character removed per user request */}
+
         <div 
           className="glass-island-inner" 
-          onClick={toggleDrawer}
-          onMouseEnter={() => typeof window !== 'undefined' && window.innerWidth > 768 && setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
+          onClick={(e) => {
+            if (typeof window !== 'undefined' && window.innerWidth > 768) {
+              return; // Do not open drawer on desktop click
+            }
+            toggleDrawer();
+          }}
           style={{
             background: '#121212',
             border: `1px solid rgba(255, 255, 255, 0.1)`,
             borderRadius: '16px',
             padding: '8px 16px 8px 8px',
-            boxShadow: `0 12px 32px rgba(0, 0, 0, 0.5)`,
+            boxShadow: 'none',
             gap: '14px',
             display: 'flex',
             alignItems: 'center',
-            cursor: 'pointer',
-            transition: 'all 0.3s ease'
+            cursor: 'pointer'
+            /* transition removed to prevent GSAP conflict */
           }}
         >
           {/* Left Side: White Avatar Square Box (Fills completely, no gaps, enlarged to 56px) */}
@@ -323,61 +341,67 @@ export default function BottomDrawer({ theme, activePage, navigateWithTransition
             />
           </div>
 
-          {/* Middle Section: Text Titles (strictly using var(--font-heading) and var(--font-body)) */}
-          <div style={{
+          {/* Middle Section: Text Titles / Voxel Character */}
+          <div className="drawer-title-animate" style={{
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'flex-start',
-            textAlign: 'left'
+            alignItems: 'center',
+            textAlign: 'center',
+            position: 'relative',
+            width: '80px',
+            height: '40px',
+            justifyContent: 'center'
           }}>
-            <span style={{
-              fontSize: '13px',
-              fontWeight: 800,
-              fontFamily: 'var(--font-heading)',
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              color: '#ffffff',
-              lineHeight: 1.2
+            {/* Voxel Character was moved outside this container to avoid backdrop-filter clipping */}
+
+            {/* Text Title */}
+            <div style={{
+              opacity: 1,
+              transition: 'opacity 0.2s ease',
+              display: 'flex',
+              flexDirection: 'column',
+              pointerEvents: isOpen ? 'auto' : 'none'
             }}>
-              {isOpen ? 'CLOSE MENU' : 'SAUVEER'}
-            </span>
-            {isOpen && (
               <span style={{
-                fontSize: '9px',
-                fontWeight: 500,
-                fontFamily: 'var(--font-body)',
-                color: 'rgba(255, 255, 255, 0.4)',
-                letterSpacing: '0.02em',
-                marginTop: '1px',
-                textTransform: 'uppercase'
+                fontSize: '13px',
+                fontWeight: 800,
+                fontFamily: 'var(--font-heading)',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                color: '#ffffff',
+                lineHeight: 1.2
               }}>
-                Return to site
+                {isOpen ? 'CLOSE MENU' : 'SAUVEER'}
               </span>
-            )}
+              {isOpen && (
+                <span style={{
+                  fontSize: '9px',
+                  fontWeight: 500,
+                  fontFamily: 'var(--font-body)',
+                  color: 'rgba(255, 255, 255, 0.4)',
+                  letterSpacing: '0.02em',
+                  marginTop: '1px',
+                  textTransform: 'uppercase'
+                }}>
+                  Return to site
+                </span>
+              )}
+            </div>
           </div>
 
           {/* Inline Links on Hover (Desktop) */}
-          <div ref={linksRef} style={{ display: 'flex', gap: '16px', overflow: 'hidden', width: 0, opacity: 0, alignItems: 'center' }}>
+          <div ref={linksRef} style={{ display: 'flex', gap: '32px', overflow: 'hidden', width: 0, opacity: 0, alignItems: 'center' }}>
             {['home', 'work', 'about', 'playground'].map(page => (
-              <span 
+              <div 
                 key={page} 
                 onClick={(e) => { e.stopPropagation(); handleItemClick(e, page); }}
-                style={{
-                  fontSize: '11px',
-                  fontWeight: 600,
-                  textTransform: 'uppercase',
-                  fontFamily: 'var(--font-heading)',
-                  color: activePage === page ? theme.brand : '#fff',
-                  cursor: 'pointer',
-                  opacity: 0.7,
-                  transition: 'opacity 0.2s',
-                  whiteSpace: 'nowrap'
-                }}
-                onMouseEnter={(e) => e.target.style.opacity = 1}
-                onMouseLeave={(e) => e.target.style.opacity = 0.7}
+                className="inline-nav-item"
               >
-                {page === 'playground' ? 'Labs' : page}
-              </span>
+                <div className="inline-nav-item-inner">
+                  <span className="inline-nav-label" style={{ color: activePage === page ? theme.brand : '#fff', opacity: activePage === page ? 1 : 0.6 }}>{page === 'playground' ? 'Labs' : page}</span>
+                  <span className="inline-nav-label" style={{ color: theme.brand }}>{page === 'playground' ? 'Labs' : page}</span>
+                </div>
+              </div>
             ))}
           </div>
 
@@ -385,7 +409,7 @@ export default function BottomDrawer({ theme, activePage, navigateWithTransition
           <div className="hamburger-container" style={{
             width: '20px',
             height: '14px',
-            display: 'flex',
+            display: typeof window !== 'undefined' && window.innerWidth > 768 ? 'none' : 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
             marginLeft: '8px',

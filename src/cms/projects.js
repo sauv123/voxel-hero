@@ -43,12 +43,12 @@ export const PROJECTS = [
     name: "KRIZIA",
     title: "Krizia",
     slug: "krizia",
-    tags: ["Web Design", "Branding"],
+    tags: ["WEB DESIGN", "UX", "ART DIRECTION"],
     bgColor: "#000000",
     textColor: "#FFFFFF",
     img: "/krizia.mp4",
-    cta: "Transforming sound into a global visual experience.",
-    cursorCta: "See how I visualized sound",
+    cta: "Rebranding Luxury Through Structure",
+    cursorCta: "See how I visualised luxury",
     link: "https://kriziacasestudy.netlify.app/"
   },
   {

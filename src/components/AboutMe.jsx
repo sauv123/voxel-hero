@@ -1058,17 +1058,13 @@ export default function AboutMe({ theme, onClose }) {
       }}>
         
         {/* Title */}
-        <h1 className="about-section-reveal" style={{ 
-          fontSize: "56px", 
-          fontWeight: 900, 
-          fontFamily: "var(--font-heading)", 
+        <h1 className="about-section-reveal section-header" style={{ 
           marginBottom: "40px", 
-          letterSpacing: "-0.02em",
           display: "flex",
           alignItems: "center",
           gap: "16px"
         }}>
-          <span style={{ color: "#4ade80", fontSize: "40px" }}>✦</span> About Me
+          <span style={{ color: "#4ade80", fontSize: "clamp(2rem, 5vw, 40px)" }}>✦</span> About Me
         </h1>
         
         {/* Profile Introduction Section */}

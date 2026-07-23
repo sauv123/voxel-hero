@@ -2,8 +2,8 @@ import React, { useRef, useMemo, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
-const BLADE_COUNT = 5000;
-const GRASS_SIZE = 16;
+const BLADE_COUNT = 10000;
+const GRASS_SIZE = 200;
 
 const vertexShader = `
   varying vec2 vUv;

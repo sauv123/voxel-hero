@@ -258,12 +258,31 @@ const EXPERIMENTS = [
   },
   {
     id: 1,
-    title: 'AI DESIGN ENGINE',
-    tags: ['Creative Coding', 'React'],
+    title: 'PENTAGON TYPO SCULPTOR',
+    tags: ['Typography', 'ParametricDesign', 'GenerativeArt', 'DesignTools', 'React', 'TailwindCSS', 'FontMorphing', 'SVGExport'],
     video: '/works/pentagon font.mp4',
     size: 'wide',
-    description: '[Placeholder text] Real-time font generation utilizing a machine learning backend.',
-    techStack: ['React', 'Python', 'WebSockets']
+    description: 'An interactive parametric typography composer that fluidly morphs character letterforms using a 5-point pentagonal font balance pad and generative mathematical algorithms.',
+    whoItsFor: 'Graphic & Editorial Designers: For creating unique headlines, display typography, and visual branding assets.\nTypographers & Creative Coders: For exploring multi-font spatial interpolation and parametric letterform variations.\nWeb Developers: For generating custom responsive typographic art or copying ready-to-use inline HTML/CSS code snippets.',
+    problem: 'Traditional variable fonts are limited to standard axes (such as weight, width, or slant). Creating complex, non-linear text effects or interpolating across multiple distinct typeface families usually requires tedious manual vector editing in tools like Illustrator or Figma.',
+    goal: 'Provide an intuitive visual workspace where designers can blend 5 distinct font families across custom distribution curves, fine-tune individual character parameters, and export production-ready assets (SVG, PNG, JPEG, or HTML/CSS).',
+    techStackCategories: [
+      { label: "Frontend Framework", value: "React 18 with TypeScript & Vite" },
+      { label: "Styling", value: "Tailwind CSS" },
+      { label: "Icons", value: "Lucide React" },
+      { label: "Animation", value: "Motion (motion/react)" },
+      { label: "Rendering & Export Engine", value: "HTML5 Canvas & Inline SVG Compiler" },
+      { label: "Typography", value: "Google Fonts Integration with 5-vertex spatial weight math" }
+    ],
+    coreFeatures: [
+      "5-Point Pentagon Balance Pad: Drag-and-drop coordinate handle mapping weight distribution across 5 configurable typeface vertices.",
+      "Generative Sculpting Algorithms: 8 parametric algorithms (Gaussian, Sine Wave Pulse, Fibonacci Spiral, Alternating Binary, Perlin Noise, Stepped Pyramid, Kinetic Ripple, and Per-Character Randomization).",
+      "Per-Character Micro Tuning: Click any letter on the artboard to adjust individual scale, rotation, baseline offset, weight, opacity, italic stance, and custom color overrides.",
+      "Multi-Format Export Options: SVG, PNG, JPEG, HTML/CSS.",
+      "Canvas Color & Grid Palette: Customizable canvas backgrounds (including transparent grid, dark, light, and custom hex colors).",
+      "Specimen Sheet Inspector: Technical modal displaying font weight ratios, kerning tables, and spatial coordinate metrics."
+    ],
+    techStack: ['React', 'Tailwind CSS', 'Motion', 'Canvas API']
   },
   {
     id: 2,
@@ -276,12 +295,28 @@ const EXPERIMENTS = [
   },
   {
     id: 3,
-    title: 'MOTION INTERACTIVE',
-    tags: ['GSAP', 'Open Source', 'Micro-UX'],
+    title: 'HYDROTYPE 3D',
+    tags: ['ReactThreeFiber', 'ThreeJS', 'GSAP', 'RapierPhysics', 'CreativeCoding', 'WebGL', 'InteractiveDesign'],
     video: '/krizia.mp4',
     size: 'square',
-    description: '[Placeholder text] A library of reusable, buttery-smooth micro-interactions.',
-    techStack: ['GSAP', 'React Transition Group', 'CSS']
+    description: 'An immersive web interaction combining reactive 2D typography with real-time 3D rigid-body physics to create a tactile, high-end hero section.',
+    goal: 'Build a high-performance interactive canvas where 2D editorial typography and 3D physical objects react in unison to user cursor gestures, providing immediate, realistic, and tactile feedback without sacrificing framerates.',
+    techStackCategories: [
+      { label: "Build Tool", value: "Vite" },
+      { label: "Frontend Framework", value: "React" },
+      { label: "3D Renderer", value: "React Three Fiber (@react-three/fiber) & Three.js" },
+      { label: "3D Helpers", value: "Drei (@react-three/drei)" },
+      { label: "Physics Engine", value: "Rapier (@react-three/rapier — WebAssembly-powered physics)" },
+      { label: "Animation Library", value: "GSAP (GreenSock) for high-precision text interpolation" }
+    ],
+    coreFeatures: [
+      "Magnifying Kinetic Typography: Individual DOM letter splitting with GSAP easing that magnifies, expands, and changes color on mouse hover.",
+      "Curved Surface Trimesh Physics: Custom cylinder pool geometry configured as a concave trimesh collider so objects roll realistically around internal curves.",
+      "Hover-Activated Physics Impulse: Trigger zones (e.g., wallet hover) that inject dynamic linear forces and directional torque onto the ball in real time.",
+      "Layered Event Passthrough: Dual-layer DOM architecture (pointer-events: none on overlay wrappers) allowing direct interactions with both the HTML overlay and the WebGL canvas behind it.",
+      "Custom Friction & Restitution Tuning: Fine-tuned physical parameters (gravity, mass, bounce, surface friction) for natural rolling movement without visual clipping."
+    ],
+    techStack: ['React Three Fiber', 'Rapier', 'GSAP']
   },
   {
     id: 5,
