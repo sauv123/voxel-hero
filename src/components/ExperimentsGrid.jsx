@@ -215,12 +215,27 @@ const EXPERIMENTS = [
   },
   {
     id: 14,
-    title: 'MOSAIC GENERATIVE',
-    tags: ['Generative Art', 'Mosaic Design', 'Creative Code'],
+    title: 'THE BLOCKCHAIN MOSAIC',
+    tags: ['Web3', 'GenerativeArt', 'WebAudio', 'LiveVisualization', 'React'],
     video: '/works/mosaic.mp4',
     size: 'hero',
-    description: '[Placeholder text] A procedural artwork tool generating complex mosaic patterns.',
-    techStack: ['Canvas API', 'p5.js', 'GLSL']
+    description: 'A live, generative art painting and audio engine that visualizes real-time Ethereum blockchain transaction patterns, block congestion, and whale alerts.',
+    whoItsFor: 'Web3 builders, crypto enthusiasts, generative art collectors, and digital galleries seeking a physical or virtual installation representing the "pulse" of the internet\'s financial layer.',
+    problem: 'Blockchain activity (swaps, NFT mints, high gas spikes, massive whale movements) is completely invisible to the naked eye. Users must look at dry hash blocks on Etherscan rather than experiencing the system\'s kinetic energy.',
+    goal: 'Map raw transaction metadata (volume, type, fee rates) to visual variables (Hues, Saturation, Grid coordinates) and spatialized sounds (Karplus-Strong string models, chimes, 808 sub-bass Kicks) to create a premium, real-time sensory installation.',
+    techStackCategories: [
+      { label: "Frontend", value: "Vanilla HTML5 Canvas, Vanilla CSS (Glassmorphism), JavaScript (ESM), GSAP (GreenSock Animation Platform), Web Audio API" },
+      { label: "Backend", value: "Node.js, Express, WebSocket (ws), SQLite (Ingestion Database)" },
+      { label: "Blockchain", value: "Ethers.js, Tenderly mainnet gateway RPC" }
+    ],
+    coreFeatures: [
+      "Generative Art Grid: Each tile represents a block, and inner pixels represent individual transactions color-coded by type (Swaps, Mints, Transfers).",
+      "Sonification Engine: Converts blockchain actions into high-fidelity physical string string-plucks (Karplus-Strong) and 808 drum beats.",
+      "Live WebSocket Sync: Real-time updates pushed directly to the UI without page reloads.",
+      "Wallet Tracker: Highlights specific tiles in real time when monitored addresses transact.",
+      "Daily Portraits & Dynamic Archives: Generates interactive calendar replays of historical blockchain activity, adjusting to the current calendar date automatically."
+    ],
+    techStack: ['HTML5 Canvas', 'Web Audio API', 'Node.js', 'Ethers.js']
   },
   {
     id: 1,
