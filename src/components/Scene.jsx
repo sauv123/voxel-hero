@@ -33,9 +33,9 @@ const CharacterSwitch = forwardRef(({ activeChar, ctaHover }, ref) => {
 const Scene = ({ activeChar, ctaHover, onCharacterClick, onCharacterHover, charRef, minimal = false }) => {
   const isMobile = typeof window !== 'undefined' ? window.innerWidth < 768 : false;
   
-  const charPos = minimal ? [0, -1, 0] : (isMobile ? [0, -1.0, 0] : [2.2, -0.5, 0]);
+  const charPos = minimal ? [0, -1, 0] : (isMobile ? [0, -0.2, 0] : [2.2, -0.5, 0]);
   const charRot = minimal ? [0, -0.5, 0] : (isMobile ? [0, -0.2, 0] : [0, -Math.PI / 2 + 0.3, 0]);
-  const shadowPos = isMobile ? [0, -2.5, 0] : [2.2, -2.2, 0];
+  const shadowPos = isMobile ? [0, -1.7, 0] : [2.2, -2.2, 0];
 
   return (
     <>

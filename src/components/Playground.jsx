@@ -1,108 +1,64 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import gsap from 'gsap';
-import { Canvas } from '@react-three/fiber';
-import Scene from './Scene';
-import VoiceBot from './VoiceBot';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { PerspectiveCamera, Environment, Html } from '@react-three/drei';
+import * as THREE from 'three';
+import Grassland from './Grassland';
+import VoxelDeer from './VoxelDeer';
+import VoxelDuck from './VoxelDuck';
+import VoxelDino from './VoxelDino';
 import ExperimentsGrid from './ExperimentsGrid';
 import Footer from './Footer';
 
+// Internal Character wrapper to handle hovers
+const CharacterNode = ({ type, position, rotation, onClick, children, footprints }) => {
+  const [hovered, setHovered] = useState(false);
+  const charRef = useRef();
+
+  return (
+    <group 
+      position={position} 
+      rotation={rotation}
+      onPointerOver={(e) => { e.stopPropagation(); setHovered(true); }}
+      onPointerOut={() => setHovered(false)}
+      onClick={(e) => { e.stopPropagation(); if(onClick) onClick(); }}
+    >
+      {type === 'deer' && <VoxelDeer ref={charRef} ctaHover={hovered} />}
+      {type === 'duck' && <VoxelDuck ref={charRef} ctaHover={hovered} />}
+      {type === 'dino' && <VoxelDino ref={charRef} ctaHover={hovered} />}
+      
+      {/* HTML Tooltip Overlay */}
+      {hovered && footprints.length > 0 && (
+        <Html position={[0, 2, 0]} center zIndexRange={[100, 0]} style={{ pointerEvents: 'none' }}>
+          <div style={{
+            background: 'rgba(10, 10, 10, 0.9)',
+            backdropFilter: 'blur(8px)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            padding: '12px 16px',
+            borderRadius: '12px',
+            color: '#fff',
+            minWidth: '200px',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
+            transform: 'translateY(-10px)',
+            animation: 'fadeInUp 0.2s ease-out forwards'
+          }}>
+            <div style={{ fontSize: '10px', textTransform: 'uppercase', color: '#888', marginBottom: '8px' }}>
+              Recent Visitors
+            </div>
+            {footprints.slice(0, 3).map((fp, i) => (
+              <div key={i} style={{ marginBottom: i === 2 ? 0 : '8px', borderBottom: i === 2 ? 'none' : '1px solid rgba(255,255,255,0.05)', paddingBottom: i === 2 ? 0 : '8px' }}>
+                <div style={{ fontWeight: 'bold', fontSize: '13px' }}>{fp.name}</div>
+                <div style={{ fontSize: '11px', color: '#ccc', marginTop: '2px' }}>{fp.desc}</div>
+              </div>
+            ))}
+          </div>
+        </Html>
+      )}
+    </group>
+  );
+};
+
 export default function PlaygroundGallery({ onClose, theme, activeChar, onSwitchChar }) {
-  const InteractiveCanvas = () => {
-    const canvasRef = useRef(null);
-
-    useEffect(() => {
-      const canvas = canvasRef.current;
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      let animationFrameId;
-      let particles = [];
-
-      const resize = () => {
-        canvas.width = canvas.parentElement.offsetWidth;
-        canvas.height = canvas.parentElement.offsetHeight;
-      };
-      resize();
-      window.addEventListener('resize', resize);
-
-      const colors = ['#4ade80', '#60a5fa', '#f472b6', '#fbbf24', '#c084fc'];
-
-      class Particle {
-        constructor(x, y) {
-          this.x = x;
-          this.y = y;
-          this.size = Math.random() * 15 + 5;
-          this.speedX = Math.random() * 6 - 3;
-          this.speedY = Math.random() * 6 - 3;
-          this.color = colors[Math.floor(Math.random() * colors.length)];
-          this.life = 1.0;
-          this.decay = Math.random() * 0.02 + 0.01;
-        }
-        update() {
-          this.x += this.speedX;
-          this.y += this.speedY;
-          this.life -= this.decay;
-          this.size *= 0.96;
-        }
-        draw() {
-          ctx.globalAlpha = Math.max(0, this.life);
-          ctx.fillStyle = this.color;
-          ctx.beginPath();
-          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.globalAlpha = 1.0;
-        }
-      }
-
-      const handleMouseMove = (e) => {
-        const rect = canvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        for (let i = 0; i < 3; i++) {
-          particles.push(new Particle(x, y));
-        }
-      };
-
-      const handleClick = (e) => {
-        const rect = canvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        for (let i = 0; i < 30; i++) {
-          particles.push(new Particle(x, y));
-        }
-      };
-
-      canvas.addEventListener('mousemove', handleMouseMove);
-      canvas.addEventListener('click', handleClick);
-      canvas.addEventListener('touchmove', (e) => {
-        const rect = canvas.getBoundingClientRect();
-        const x = e.touches[0].clientX - rect.left;
-        const y = e.touches[0].clientY - rect.top;
-        for (let i = 0; i < 3; i++) {
-          particles.push(new Particle(x, y));
-        }
-      }, {passive: true});
-
-      const animate = () => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        for (let i = 0; i < particles.length; i++) {
-          particles[i].update();
-          particles[i].draw();
-        }
-        particles = particles.filter(p => p.life > 0 && p.size > 0.5);
-        animationFrameId = requestAnimationFrame(animate);
-      };
-      animate();
-
-      return () => {
-        window.removeEventListener('resize', resize);
-        canvas.removeEventListener('mousemove', handleMouseMove);
-        canvas.removeEventListener('click', handleClick);
-        cancelAnimationFrame(animationFrameId);
-      };
-    }, []);
-
-    return <canvas ref={canvasRef} style={{ width: '100%', height: '100%', display: 'block', cursor: 'crosshair' }} />;
-  };
   const containerRef = useRef(null);
 
   // Visitor logs state
@@ -121,13 +77,13 @@ export default function PlaygroundGallery({ onClose, theme, activeChar, onSwitch
     return defaultLogs;
   });
 
-  const [tapped, setTapped] = useState(false);
   const [submitted, setSubmitted] = useState(() => {
     if (typeof window !== 'undefined') {
       return localStorage.getItem('sauveer_playground_submitted') === 'true';
     }
     return false;
   });
+  
   const [visitorCount, setVisitorCount] = useState(() => {
     if (typeof window !== 'undefined') {
       const savedCount = localStorage.getItem('sauveer_playground_visitors');
@@ -138,15 +94,11 @@ export default function PlaygroundGallery({ onClose, theme, activeChar, onSwitch
     }
     return 1482;
   });
-  const [activeLog, setActiveLog] = useState(null); // Click-to-find details state
 
   // Form states
   const [formName, setFormName] = useState('');
-  const [formChar, setFormChar] = useState(activeChar);
+  const [formChar, setFormChar] = useState(activeChar || 'deer');
   const [formDesc, setFormDesc] = useState('');
-
-  const AGENT_ID = "dgr_hflRtbK_JgwuVXOFlJb7K2_Yr7ohkZlEGsxsPq5ZMpY";
-  const API_KEY = "mps_sk_Wshrf3ZftiZqGQdt9FYttegz1IU7RRJz";
 
   useEffect(() => {
     gsap.fromTo(containerRef.current,
@@ -154,7 +106,6 @@ export default function PlaygroundGallery({ onClose, theme, activeChar, onSwitch
       { opacity: 1, scale: 1, duration: 0.5, ease: 'power3.out' }
     );
     document.body.style.overflow = 'hidden';
-
     return () => { document.body.style.overflow = 'auto'; };
   }, []);
 
@@ -165,14 +116,6 @@ export default function PlaygroundGallery({ onClose, theme, activeChar, onSwitch
     });
   };
 
-  const selectCharacter = (charKey) => {
-    setFormChar(charKey);
-    if (onSwitchChar) {
-      onSwitchChar(charKey);
-    }
-  };
-
-  // Submit traveler footprint form
   const handleSubmitEntry = (e) => {
     e.preventDefault();
     if (!formName.trim() || !formDesc.trim()) return;
@@ -194,45 +137,11 @@ export default function PlaygroundGallery({ onClose, theme, activeChar, onSwitch
 
     setSubmitted(true);
     localStorage.setItem('sauveer_playground_submitted', 'true');
-
-    // Tap sparkles
-    const rect = e.target.getBoundingClientRect();
-    const startX = rect.left + rect.width / 2;
-    const startY = rect.top;
-
-    for (let i = 0; i < 15; i++) {
-      const spark = document.createElement('div');
-      spark.className = 'sparkle-emoji';
-      spark.innerHTML = formChar === 'duck' ? '🦆' : formChar === 'dino' ? '🦖' : '🦌';
-      spark.style.position = 'fixed';
-      spark.style.left = `${startX}px`;
-      spark.style.top = `${startY}px`;
-      spark.style.pointerEvents = 'none';
-      spark.style.zIndex = '9999';
-      spark.style.fontSize = `${Math.random() * 12 + 14}px`;
-      document.body.appendChild(spark);
-
-      gsap.to(spark, {
-        x: `+=${(Math.random() - 0.5) * 200}`,
-        y: `-=${Math.random() * 120 + 80}`,
-        rotation: Math.random() * 360,
-        opacity: 0,
-        scale: 0.2,
-        duration: 1.3,
-        ease: 'power2.out',
-        onComplete: () => spark.remove()
-      });
-    }
   };
 
-  // Generate random static positions for the initial visitor logs so they don't jump around on re-renders
-  const [visitorPositions] = useState(() => {
-    return Array(50).fill(0).map(() => ({
-      top: `${10 + Math.random() * 80}%`, // 10% to 90%
-      left: `${10 + Math.random() * 80}%`,
-      delay: Math.random() * 2 // animation stagger
-    }));
-  });
+  const deerFootprints = visitorLogs.filter(l => l.char === 'deer');
+  const duckFootprints = visitorLogs.filter(l => l.char === 'duck');
+  const dinoFootprints = visitorLogs.filter(l => l.char === 'dino');
 
   return (
     <div 
@@ -250,7 +159,6 @@ export default function PlaygroundGallery({ onClose, theme, activeChar, onSwitch
         flexDirection: 'column'
       }}
     >
-      {/* Padded Content Wrapper */}
       <div style={{ padding: '40px 6vw', flex: 1, position: 'relative' }}>
         
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: '40px' }}>
@@ -259,71 +167,140 @@ export default function PlaygroundGallery({ onClose, theme, activeChar, onSwitch
           </div>
         </div>
 
-        {/* The New Interactive Avatar Board (Full Width) */}
+        {/* 3D Grassland Container */}
         <div style={{ 
-          width: '100%', minHeight: '600px', background: '#0d0d0d', borderRadius: '24px', 
+          width: '100%', minHeight: '600px', background: '#0a1a0a', borderRadius: '24px', 
           border: '1.5px solid rgba(13, 13, 13, 0.08)', position: 'relative', overflow: 'hidden',
-          boxShadow: '0 8px 40px rgba(0,0,0,0.03)', display: 'flex', flexDirection: 'column'
+          boxShadow: '0 8px 40px rgba(0,0,0,0.2)', display: 'flex', flexDirection: 'column'
         }}>
           
-          {/* Subtle Grid Background */}
-          <div style={{
-            position: 'absolute', inset: 0, opacity: 0.1, pointerEvents: 'none',
-            backgroundImage: `radial-gradient(#fff 1px, transparent 1px)`,
-            backgroundSize: '32px 32px'
-          }} />
-
-          {/* Interactive Tap Board Header / Stats */}
           <div style={{ 
-            padding: '24px 32px', borderBottom: '1px solid rgba(255, 255, 255, 0.1)', 
-            display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', zIndex: 10,
-            background: 'rgba(13,13,13,0.8)', backdropFilter: 'blur(10px)', color: '#fff'
+            position: 'absolute', top: 0, left: 0, right: 0,
+            padding: '24px 32px', zIndex: 10,
+            display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px',
+            background: 'linear-gradient(to bottom, rgba(10,26,10,0.9) 0%, rgba(10,26,10,0) 100%)', color: '#fff'
           }}>
             <div>
-              <span style={{ fontSize: '10px', fontFamily: 'Space Mono, monospace', opacity: 0.5, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-                DIGITAL SANDBOX
+              <span style={{ fontSize: '10px', fontFamily: 'Space Mono, monospace', opacity: 0.7, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                GRASSLAND REGISTRY
               </span>
               <p style={{ margin: '2px 0 0 0', fontSize: '20px', fontWeight: 900, fontFamily: 'var(--font-heading)' }}>
-                Leave a trace.
+                Leave a footprint.
               </p>
+              <div style={{ fontSize: '12px', opacity: 0.7, fontFamily: 'var(--font-body)', marginTop: '4px' }}>
+                Hover over the characters to see who was here.
+              </div>
             </div>
-            <div style={{ fontSize: '12px', opacity: 0.5, fontFamily: 'var(--font-body)' }}>
-              Click or drag to interact
+            
+            {/* Form Overlay */}
+            <div style={{ 
+              background: 'rgba(255,255,255,0.05)', backdropFilter: 'blur(10px)', 
+              border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', padding: '16px 20px',
+              minWidth: '280px'
+            }}>
+              {submitted ? (
+                <div style={{ textAlign: 'center', padding: '20px 0' }}>
+                  <div style={{ fontSize: '24px', marginBottom: '8px' }}>✨</div>
+                  <div style={{ fontWeight: 'bold' }}>Footprint recorded.</div>
+                  <div style={{ fontSize: '12px', opacity: 0.7, marginTop: '4px' }}>Thank you for visiting!</div>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmitEntry} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  <input 
+                    type="text" 
+                    placeholder="Your Name" 
+                    value={formName}
+                    onChange={(e) => setFormName(e.target.value)}
+                    style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', padding: '10px 12px', borderRadius: '8px', fontSize: '14px', outline: 'none' }}
+                  />
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    {['deer', 'duck', 'dino'].map(char => (
+                      <button
+                        key={char}
+                        type="button"
+                        onClick={() => setFormChar(char)}
+                        style={{
+                          flex: 1, padding: '8px 0', borderRadius: '8px', cursor: 'pointer', fontSize: '18px',
+                          background: formChar === char ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.3)',
+                          border: `1px solid ${formChar === char ? '#fff' : 'rgba(255,255,255,0.1)'}`,
+                          transition: 'all 0.2s'
+                        }}
+                      >
+                        {char === 'deer' ? '🦌' : char === 'duck' ? '🦆' : '🦖'}
+                      </button>
+                    ))}
+                  </div>
+                  <textarea 
+                    placeholder="Leave a short thought..." 
+                    value={formDesc}
+                    onChange={(e) => setFormDesc(e.target.value)}
+                    rows={2}
+                    style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', padding: '10px 12px', borderRadius: '8px', fontSize: '14px', outline: 'none', resize: 'none' }}
+                  />
+                  <button 
+                    type="submit"
+                    style={{ background: '#fff', color: '#000', fontWeight: 'bold', padding: '10px', borderRadius: '8px', cursor: 'pointer', border: 'none', marginTop: '4px' }}
+                  >
+                    Submit Footprint
+                  </button>
+                </form>
+              )}
             </div>
           </div>
 
-          <div style={{ flex: 1, position: 'relative', width: '100%', overflow: 'hidden' }}>
-            <InteractiveCanvas />
+          <div style={{ flex: 1, position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+            <Canvas shadows dpr={[1, 2]} gl={{ alpha: false }}>
+              <PerspectiveCamera makeDefault position={[0, 2, 8]} fov={45} />
+              <ambientLight intensity={0.6} />
+              <directionalLight position={[5, 10, 5]} intensity={1.5} castShadow shadow-mapSize={[2048, 2048]} />
+              <pointLight position={[-2, 4, -2]} intensity={0.8} color="#88ccff" />
+              <Environment preset="forest" />
+              
+              <Grassland />
+              
+              {/* Deer */}
+              <CharacterNode 
+                type="deer" 
+                position={[-2.5, -0.6, 1]} 
+                rotation={[0, 0.5, 0]} 
+                footprints={deerFootprints} 
+              />
+              
+              {/* Duck */}
+              <CharacterNode 
+                type="duck" 
+                position={[0, -0.6, -1]} 
+                rotation={[0, 0, 0]} 
+                footprints={duckFootprints} 
+              />
+              
+              {/* Dino */}
+              <CharacterNode 
+                type="dino" 
+                position={[2.5, -0.6, 1.5]} 
+                rotation={[0, -0.8, 0]} 
+                footprints={dinoFootprints} 
+              />
+            </Canvas>
           </div>
         </div>
 
-      {/* Embedded Section: Experiments Grid (Bypassing ScrollTrigger logic) */}
-      <div style={{ width: '100%', marginTop: '80px' }}>
-        <h3 style={{
-          fontFamily: 'var(--font-heading)', fontSize: '1.5rem', fontWeight: 900, textTransform: 'uppercase',
-          letterSpacing: '-0.02em', margin: '0 0 20px 0', borderBottom: '2px solid #0d0d0d', paddingBottom: '10px'
-        }}>
-          Experiments
-        </h3>
-        <ExperimentsGrid theme={theme} disableScrollTrigger={true} />
-      </div>
+        {/* Embedded Section: Experiments Grid */}
+        <div style={{ width: '100%', marginTop: '80px' }}>
+          <h3 style={{
+            fontFamily: 'var(--font-heading)', fontSize: '1.5rem', fontWeight: 900, textTransform: 'uppercase',
+            letterSpacing: '-0.02em', margin: '0 0 20px 0', borderBottom: '2px solid #0d0d0d', paddingBottom: '10px'
+          }}>
+            Experiments
+          </h3>
+          <ExperimentsGrid theme={theme} disableScrollTrigger={true} />
+        </div>
       </div>
 
-      {/* CSS Keyframes for smooth fadeIn */}
       <style>{`
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translate(-50%, 6px); }
-          to { opacity: 1; transform: translate(-50%, 0); }
-        }
-        @keyframes floatAvatar {
-          0% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-10px) rotate(5deg); }
-          100% { transform: translateY(0px) rotate(-5deg); }
-        }
-        @media (max-width: 900px) {
-          div[style*="display: grid"] {
-            grid-template-columns: 1fr !important;
-          }
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(0px); }
+          to { opacity: 1; transform: translateY(-10px); }
         }
       `}</style>
       

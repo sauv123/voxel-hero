@@ -4,9 +4,11 @@ import gsap from 'gsap';
 export default function BottomDrawer({ theme, activePage, navigateWithTransition }) {
   const [isOpen, setIsOpen] = useState(false);
   const [animating, setAnimating] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   const drawerRef = useRef(null);
   const overlayRef = useRef(null);
+  const linksRef = useRef(null);
 
   const toggleDrawer = () => {
     if (animating) return;
@@ -83,6 +85,34 @@ export default function BottomDrawer({ theme, activePage, navigateWithTransition
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, closeDrawer]);
+
+  useEffect(() => {
+    if (!linksRef.current) return;
+    if (isHovered && !isOpen) {
+      gsap.to(linksRef.current, {
+        width: 'auto',
+        opacity: 1,
+        paddingLeft: 16,
+        paddingRight: 8,
+        duration: 0.4,
+        ease: 'power3.out'
+      });
+      // Stagger animate links slightly
+      gsap.fromTo(linksRef.current.children, 
+        { opacity: 0, x: -10 },
+        { opacity: 0.7, x: 0, duration: 0.3, stagger: 0.05, ease: 'power2.out', delay: 0.1 }
+      );
+    } else {
+      gsap.to(linksRef.current, {
+        width: 0,
+        opacity: 0,
+        paddingLeft: 0,
+        paddingRight: 0,
+        duration: 0.3,
+        ease: 'power3.in'
+      });
+    }
+  }, [isHovered, isOpen]);
 
   const handleItemClick = (e, target) => {
     // Add ripple effect
@@ -207,6 +237,8 @@ export default function BottomDrawer({ theme, activePage, navigateWithTransition
         <div 
           className="glass-island-inner" 
           onClick={toggleDrawer}
+          onMouseEnter={() => typeof window !== 'undefined' && window.innerWidth > 768 && setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
           style={{
             background: '#121212',
             border: `1px solid rgba(255, 255, 255, 0.1)`,
@@ -275,6 +307,31 @@ export default function BottomDrawer({ theme, activePage, navigateWithTransition
                 Return to site
               </span>
             )}
+          </div>
+
+          {/* Inline Links on Hover (Desktop) */}
+          <div ref={linksRef} style={{ display: 'flex', gap: '16px', overflow: 'hidden', width: 0, opacity: 0, alignItems: 'center' }}>
+            {['home', 'work', 'about', 'playground'].map(page => (
+              <span 
+                key={page} 
+                onClick={(e) => { e.stopPropagation(); handleItemClick(e, page); }}
+                style={{
+                  fontSize: '11px',
+                  fontWeight: 600,
+                  textTransform: 'uppercase',
+                  fontFamily: 'var(--font-heading)',
+                  color: activePage === page ? theme.brand : '#fff',
+                  cursor: 'pointer',
+                  opacity: 0.7,
+                  transition: 'opacity 0.2s',
+                  whiteSpace: 'nowrap'
+                }}
+                onMouseEnter={(e) => e.target.style.opacity = 1}
+                onMouseLeave={(e) => e.target.style.opacity = 0.7}
+              >
+                {page === 'playground' ? 'Labs' : page}
+              </span>
+            ))}
           </div>
 
           {/* Right Side: Animated 3-line sandwich button (all bars same size: 20px) */}

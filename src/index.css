@@ -804,8 +804,8 @@ body {
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.6);
+    height: 100dvh;
+    background: rgba(10, 10, 10, 0.6);
     
 
     z-index: 999999;
@@ -2523,7 +2523,7 @@ body {
   .modal-backdrop {
     align-items: flex-start !important;
     justify-content: center !important;
-    padding-top: 80px !important;
+    padding-top: 100px !important;
     background: rgba(0, 0, 0, 0.95) !important;
     z-index: 9999999 !important;
   }
