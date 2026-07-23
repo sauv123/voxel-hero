@@ -246,7 +246,7 @@ function Timeline({ theme }) {
                 position: "absolute", left: x, top: axisY - (isMobile ? 40 : 60),
                 transform: `translate(-50%, -50%)`,
                 fontSize: isMobile ? 70 : 180, fontWeight: 900,
-                color: isActive && idx === 5 ? '#4ade80' : (isActive ? (theme.brand || '#FFF') : '#FFF'), 
+                color: isActive && idx === 0 ? '#4ade80' : (isActive ? (theme.brand || '#FFF') : '#FFF'), 
                 opacity: isActive ? 0.6 : 0.05,
                 fontFamily: "var(--font-heading)",
                 transition: "all 0.3s ease"

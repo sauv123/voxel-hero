@@ -2676,7 +2676,7 @@ body {
         margin-bottom: 1.5rem !important;
     }
     .hero-title { 
-        font-size: clamp(2rem, 9vw, 3.5rem) !important; 
+        font-size: clamp(1.5rem, 7.5vw, 2.5rem) !important; 
         max-width: 100% !important; 
         white-space: normal !important; 
         word-wrap: break-word; 

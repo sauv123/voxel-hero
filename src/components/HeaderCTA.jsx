@@ -260,7 +260,7 @@ export default function HeaderCTA({ theme }) {
                     <img src={`/sauveerpp.png`} alt="Sauveer Sinha avatar profile" className="card-avatar" loading="lazy" style={{ width: 200, height: 200, borderRadius: '100px', border: 'none' }} />
                     
                     <div className="card-header">
-                        <div className="card-name" style={{ color: '#fff' }}>Sauveer Sinha</div>
+                        <div className="card-name" style={{ color: '#fff' }}>Sauveer</div>
                         <div className="card-role" style={{ color: safeTheme.text }}>Product Designer</div>
                         <div className="card-bio" style={{ color: '#888' }}>Designing thoughtful interfaces that balance sophistication with personality.</div>
                     </div>

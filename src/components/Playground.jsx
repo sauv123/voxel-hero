@@ -7,6 +7,102 @@ import ExperimentsGrid from './ExperimentsGrid';
 import Footer from './Footer';
 
 export default function PlaygroundGallery({ onClose, theme, activeChar, onSwitchChar }) {
+  const InteractiveCanvas = () => {
+    const canvasRef = useRef(null);
+
+    useEffect(() => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let animationFrameId;
+      let particles = [];
+
+      const resize = () => {
+        canvas.width = canvas.parentElement.offsetWidth;
+        canvas.height = canvas.parentElement.offsetHeight;
+      };
+      resize();
+      window.addEventListener('resize', resize);
+
+      const colors = ['#4ade80', '#60a5fa', '#f472b6', '#fbbf24', '#c084fc'];
+
+      class Particle {
+        constructor(x, y) {
+          this.x = x;
+          this.y = y;
+          this.size = Math.random() * 15 + 5;
+          this.speedX = Math.random() * 6 - 3;
+          this.speedY = Math.random() * 6 - 3;
+          this.color = colors[Math.floor(Math.random() * colors.length)];
+          this.life = 1.0;
+          this.decay = Math.random() * 0.02 + 0.01;
+        }
+        update() {
+          this.x += this.speedX;
+          this.y += this.speedY;
+          this.life -= this.decay;
+          this.size *= 0.96;
+        }
+        draw() {
+          ctx.globalAlpha = Math.max(0, this.life);
+          ctx.fillStyle = this.color;
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.globalAlpha = 1.0;
+        }
+      }
+
+      const handleMouseMove = (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        for (let i = 0; i < 3; i++) {
+          particles.push(new Particle(x, y));
+        }
+      };
+
+      const handleClick = (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        for (let i = 0; i < 30; i++) {
+          particles.push(new Particle(x, y));
+        }
+      };
+
+      canvas.addEventListener('mousemove', handleMouseMove);
+      canvas.addEventListener('click', handleClick);
+      canvas.addEventListener('touchmove', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const x = e.touches[0].clientX - rect.left;
+        const y = e.touches[0].clientY - rect.top;
+        for (let i = 0; i < 3; i++) {
+          particles.push(new Particle(x, y));
+        }
+      }, {passive: true});
+
+      const animate = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < particles.length; i++) {
+          particles[i].update();
+          particles[i].draw();
+        }
+        particles = particles.filter(p => p.life > 0 && p.size > 0.5);
+        animationFrameId = requestAnimationFrame(animate);
+      };
+      animate();
+
+      return () => {
+        window.removeEventListener('resize', resize);
+        canvas.removeEventListener('mousemove', handleMouseMove);
+        canvas.removeEventListener('click', handleClick);
+        cancelAnimationFrame(animationFrameId);
+      };
+    }, []);
+
+    return <canvas ref={canvasRef} style={{ width: '100%', height: '100%', display: 'block', cursor: 'crosshair' }} />;
+  };
   const containerRef = useRef(null);
 
   // Visitor logs state
@@ -187,177 +283,39 @@ export default function PlaygroundGallery({ onClose, theme, activeChar, onSwitch
 
         {/* The New Interactive Avatar Board (Full Width) */}
         <div style={{ 
-          width: '100%', minHeight: '600px', background: '#ffffff', borderRadius: '24px', 
+          width: '100%', minHeight: '600px', background: '#0d0d0d', borderRadius: '24px', 
           border: '1.5px solid rgba(13, 13, 13, 0.08)', position: 'relative', overflow: 'hidden',
           boxShadow: '0 8px 40px rgba(0,0,0,0.03)', display: 'flex', flexDirection: 'column'
         }}>
           
           {/* Subtle Grid Background */}
           <div style={{
-            position: 'absolute', inset: 0, opacity: 0.04, pointerEvents: 'none',
-            backgroundImage: `radial-gradient(#000 1px, transparent 1px)`,
+            position: 'absolute', inset: 0, opacity: 0.1, pointerEvents: 'none',
+            backgroundImage: `radial-gradient(#fff 1px, transparent 1px)`,
             backgroundSize: '32px 32px'
           }} />
 
           {/* Interactive Tap Board Header / Stats */}
           <div style={{ 
-            padding: '24px 32px', borderBottom: '1px solid rgba(13, 13, 13, 0.08)', 
+            padding: '24px 32px', borderBottom: '1px solid rgba(255, 255, 255, 0.1)', 
             display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', zIndex: 10,
-            background: 'rgba(255,255,255,0.8)', backdropFilter: 'blur(10px)'
+            background: 'rgba(13,13,13,0.8)', backdropFilter: 'blur(10px)', color: '#fff'
           }}>
             <div>
               <span style={{ fontSize: '10px', fontFamily: 'Space Mono, monospace', opacity: 0.5, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-                EXPLORATION REGISTRY
+                DIGITAL SANDBOX
               </span>
               <p style={{ margin: '2px 0 0 0', fontSize: '20px', fontWeight: 900, fontFamily: 'var(--font-heading)' }}>
-                {visitorCount} Traveler Footprints
+                Leave a trace.
               </p>
             </div>
-
-            {/* Tap triggering the inline entry form */}
-            {!tapped && !submitted && (
-              <button
-                onClick={() => setTapped(true)}
-                style={{
-                  fontFamily: 'var(--font-heading)', fontSize: '11px', fontWeight: 900, letterSpacing: '0.1em',
-                  padding: '10px 22px', borderRadius: '100px', border: '1.5px solid #0d0d0d',
-                  backgroundColor: '#ffffff', color: '#0d0d0d', cursor: 'pointer',
-                  boxShadow: '3px 3px 0px rgba(13,13,13,0.1)', transition: 'all 0.2s'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = '#0d0d0d';
-                  e.currentTarget.style.color = '#ffffff';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = '#ffffff';
-                  e.currentTarget.style.color = '#0d0d0d';
-                }}
-              >
-                LEAVE FOOTPRINT
-              </button>
-            )}
-
-            {/* 2. Interactive Roll-out form once Tapped */}
-            {tapped && !submitted && (
-              <form onSubmit={handleSubmitEntry} style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
-                <input
-                  type="text" required placeholder="Name" value={formName}
-                  onChange={(e) => setFormName(e.target.value)}
-                  style={{
-                    padding: '8px 12px', borderRadius: '8px', border: '1.5px solid #0d0d0d',
-                    fontFamily: 'var(--font-body)', fontSize: '12px', outline: 'none', width: '120px'
-                  }}
-                />
-                
-                {/* Inline character indicator switch */}
-                <div style={{ display: 'flex', border: '1.5px solid #0d0d0d', borderRadius: '8px', overflow: 'hidden' }}>
-                  {[{ key: 'duck', label: '🦆' }, { key: 'dino', label: '🦖' }, { key: 'deer', label: '🦌' }].map((btn) => (
-                    <button
-                      type="button" key={btn.key} onClick={() => selectCharacter(btn.key)}
-                      style={{
-                        background: formChar === btn.key ? '#0d0d0d' : '#ffffff',
-                        border: 'none', padding: '6px 10px', cursor: 'pointer', fontSize: '12px',
-                        borderRight: btn.key !== 'deer' ? '1px solid #0d0d0d' : 'none'
-                      }}
-                    >
-                      {btn.label}
-                    </button>
-                  ))}
-                </div>
-
-                <input
-                  type="text" required placeholder="A short thought..." maxLength={75} value={formDesc}
-                  onChange={(e) => setFormDesc(e.target.value)}
-                  style={{
-                    padding: '8px 12px', borderRadius: '8px', border: '1.5px solid #0d0d0d',
-                    fontFamily: 'var(--font-body)', fontSize: '12px', outline: 'none', width: '200px'
-                  }}
-                />
-
-                <button
-                  type="submit"
-                  style={{
-                    fontFamily: 'var(--font-heading)', fontSize: '10px', fontWeight: 900, letterSpacing: '0.12em', 
-                    padding: '8px 16px', borderRadius: '6px', border: '1.5px solid #0d0d0d',
-                    background: '#0d0d0d', color: '#ffffff', cursor: 'pointer'
-                  }}
-                >
-                  SYNC
-                </button>
-              </form>
-            )}
-
-            {/* 3. Submitted State message */}
-            {submitted && (
-              <div style={{ 
-                background: '#F3F4F6', padding: '8px 14px', borderRadius: '8px', border: '1px solid rgba(13,13,13,0.1)',
-                display: 'flex', alignItems: 'center', gap: '8px', fontSize: '11px', fontWeight: 600
-              }}>
-                ✨ Spark saved! Look for it around the board.
-              </div>
-            )}
+            <div style={{ fontSize: '12px', opacity: 0.5, fontFamily: 'var(--font-body)' }}>
+              Click or drag to interact
+            </div>
           </div>
 
-          {/* Scattered Avatars Container */}
           <div style={{ flex: 1, position: 'relative', width: '100%', overflow: 'hidden' }}>
-            
-            {visitorLogs.map((log, index) => {
-              const avatars = { duck: '🦆', dino: '🦖', deer: '🦌' };
-              const colors = { duck: '#FEF08A', dino: '#BFDBFE', deer: '#A7F3D0' };
-              const isSelected = activeLog === log;
-              const pos = visitorPositions[index % visitorPositions.length];
-
-              return (
-                <div key={index} style={{
-                  position: 'absolute',
-                  top: pos.top,
-                  left: pos.left,
-                  animation: `floatAvatar 4s ease-in-out infinite alternate ${pos.delay}s`,
-                  zIndex: isSelected ? 50 : 10
-                }}>
-                  <button
-                    onClick={() => setActiveLog(isSelected ? null : log)}
-                    style={{
-                      width: '40px', height: '40px', borderRadius: '50%',
-                      backgroundColor: colors[log.char] || '#e5e7eb',
-                      border: '2px solid #0d0d0d', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: '18px', cursor: 'pointer',
-                      boxShadow: isSelected ? '0 0 0 4px rgba(13,13,13,0.1)' : '0 4px 12px rgba(0,0,0,0.1)',
-                      transform: isSelected ? 'scale(1.2)' : 'scale(1)',
-                      transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)'
-                    }}
-                    title={`Click to read ${log.name}'s footprint`}
-                  >
-                    {avatars[log.char]}
-                  </button>
-
-                  {/* Tooltip Popup */}
-                  {isSelected && (
-                    <div style={{
-                      position: 'absolute', bottom: 'calc(100% + 12px)', left: '50%', transform: 'translateX(-50%)',
-                      width: '260px', background: '#0d0d0d', color: '#ffffff', padding: '16px',
-                      borderRadius: '12px', zIndex: 60, border: '1.5px solid rgba(255,255,255,0.1)',
-                      boxShadow: '0 12px 40px rgba(0,0,0,0.2)', animation: 'fadeIn 0.2s ease-out'
-                    }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                        <span style={{ fontSize: '12px', fontWeight: 900 }}>{log.name}</span>
-                        <span style={{ fontSize: '10px', opacity: 0.5 }}>{log.time}</span>
-                      </div>
-                      <p style={{ margin: '0', fontSize: '13px', fontFamily: 'var(--font-body)', opacity: 0.9, lineHeight: 1.4 }}>
-                        "{log.desc}"
-                      </p>
-                      
-                      {/* Triangle pointer */}
-                      <div style={{
-                        position: 'absolute', bottom: '-6px', left: '50%', transform: 'translateX(-50%) rotate(45deg)',
-                        width: '12px', height: '12px', background: '#0d0d0d', borderBottom: '1.5px solid rgba(255,255,255,0.1)',
-                        borderRight: '1.5px solid rgba(255,255,255,0.1)'
-                      }} />
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+            <InteractiveCanvas />
           </div>
         </div>
 
