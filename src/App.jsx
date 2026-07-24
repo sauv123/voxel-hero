@@ -236,17 +236,8 @@ export default function App() {
         }
       });
 
-      // Brutalist Cube -> Work Folder (#FFFFFF)
-      ScrollTrigger.create({
-        trigger: '.bc-container',
-        start: "bottom 100%",
-        end: "bottom 20%",
-        scrub: 1.5,
-        onUpdate: (self) => {
-          const blendedColor = gsap.utils.interpolate('#050505', '#FFFFFF', self.progress);
-          gsap.set(document.body, { backgroundColor: blendedColor });
-        }
-      });
+      // Brutalist Cube -> Work Folder background scrub moved to BrutalistCube component
+      // to ensure it binds correctly after lazy-loading.
 
 
     });

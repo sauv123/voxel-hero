@@ -13,6 +13,20 @@ export default function BrutalistCube({ inFooter = false }) {
 
   useEffect(() => {
     let ctx = gsap.context(() => {
+      // 0. Background scrub to white for next section
+      if (!inFooter) {
+        ScrollTrigger.create({
+          trigger: containerRef.current,
+          start: "bottom 100%",
+          end: "bottom 20%",
+          scrub: 1.5,
+          onUpdate: (self) => {
+            const blendedColor = gsap.utils.interpolate('#050505', '#FFFFFF', self.progress);
+            gsap.set(document.body, { backgroundColor: blendedColor });
+          }
+        });
+      }
+
       // 1. Background ASCII System Generation
       const bg = bgRef.current;
       if (bg && bg.children.length === 0) {
