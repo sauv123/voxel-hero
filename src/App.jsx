@@ -175,7 +175,7 @@ export default function App() {
     return false;
   });
   const theme    = THEMES[activeChar];
-  const invertedTheme = { bg: theme.text, text: '#050505', brand: theme.brand };
+  const invertedTheme = { bg: '#FCFAF2', text: '#050505', brand: theme.brand };
   const rootRef  = useRef();
   const charRef  = useRef(); // forwarded to Scene → CharacterSwitch
 
