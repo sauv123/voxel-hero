@@ -686,20 +686,7 @@ function BentoCard({ item, theme, setCursorActive, disableScrollTrigger, onOpenD
         </div>
       )}
 
-      {/* Content wrapper */}
-      <div className="bento-card-info" style={{ pointerEvents: 'none' }}>
-        {/* Tags */}
-        <div className="bento-card-tags">
-          {item.tags.map((tag) => (
-            <span
-              key={tag}
-              className="bento-card-tag"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-      </div>
+      {/* Content wrapper removed per user request */}
     </div>
   );
 }

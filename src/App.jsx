@@ -235,14 +235,14 @@ export default function App() {
         }
       });
 
-      // Brutalist Cube -> Work Folder (#FCFAF2)
+      // Brutalist Cube -> Work Folder (#0a0a0a)
       ScrollTrigger.create({
         trigger: '.bc-container',
         start: "bottom 100%",
         end: "bottom 20%",
         scrub: 1.5,
         onUpdate: (self) => {
-          const blendedColor = gsap.utils.interpolate('#050505', '#FCFAF2', self.progress);
+          const blendedColor = gsap.utils.interpolate('#050505', '#0a0a0a', self.progress);
           gsap.set(document.body, { backgroundColor: blendedColor });
         }
       });

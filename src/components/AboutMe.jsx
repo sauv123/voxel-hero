@@ -68,7 +68,7 @@ function TimelinePhoto({ photo, index, total, isMobile }) {
     <div className="timeline-photo timeline-photo-interactive" style={{
       position: "absolute",
       width: cardW, height: cardH,
-      background: "#fff",
+      background: "#111111",
       padding: isMobile ? "4px 4px 18px 4px" : "8px 8px 30px 8px",
       boxShadow: "none",
       transform: `rotate(${rot}deg) translateX(${index * (isMobile ? 10 : 20)}px) translateY(${index * (isMobile ? 6 : 12)}px)`,
@@ -86,7 +86,7 @@ function TimelinePhoto({ photo, index, total, isMobile }) {
           photo.e
         )}
       </div>
-      <div style={{ position: "absolute", bottom: 2, right: 6, fontSize: 7, fontFamily: "var(--font-body)", color: "#000", opacity: 0.8, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: "90%" }}>
+      <div style={{ position: "absolute", bottom: 2, right: 6, fontSize: 7, fontFamily: "var(--font-body)", color: "#ffffff", opacity: 0.8, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: "90%" }}>
         {photo.caption || `IMG_${photo.e.codePointAt(0)}`}
       </div>
     </div>
@@ -364,7 +364,7 @@ function TruthsGame({ theme }) {
 
   return (
     <div style={{
-      background: `#ffffff`,
+      background: `#111111`,
       border: `none`,
       borderRadius: 4,
       boxShadow: "0 4px 20px rgba(0,0,0,0.03)",
@@ -396,12 +396,12 @@ function TruthsGame({ theme }) {
               style={{
                 background: revealed 
                   ? (isLie ? "rgba(74, 222, 128, 0.15)" : "rgba(248, 113, 113, 0.08)") 
-                  : (isPicked ? "#FFFA00" : `rgba(0,0,0,0.02)`), 
+                  : (isPicked ? "rgba(255, 255, 255, 0.1)" : `rgba(255, 255, 255, 0.03)`), 
                 borderRadius: 4, padding: "14px", minHeight: 70,
                 cursor: phase==="playing"?"pointer":"default",
                 border: revealed
                   ? `2px solid ${isLie ? "#4ade80" : "#f87171"}`
-                  : (isPicked ? `2px solid #000` : `1px solid rgba(0,0,0,0.05)`),
+                  : (isPicked ? `2px solid #ffffff` : `1px solid rgba(255, 255, 255, 0.1)`),
                 transition: "all 0.3s ease",
                 display: "flex", flexDirection: "column", justifyContent: "center"
               }}
@@ -409,7 +409,7 @@ function TruthsGame({ theme }) {
             >
               <p style={{
                 fontSize: 13, fontWeight: 700, lineHeight: 1.4,
-                marginBottom: revealed ? 8 : 0, color: (isPicked && !revealed) ? "#000" : theme.text,
+                marginBottom: revealed ? 8 : 0, color: (isPicked && !revealed) ? "#ffffff" : theme.text,
                 fontFamily: "var(--font-heading)", letterSpacing: "-0.01em", margin: 0
               }}>{c.text}</p>
               
@@ -419,7 +419,7 @@ function TruthsGame({ theme }) {
                     display:"inline-block",padding:"2px 6px",borderRadius:3,
                     fontSize:8,fontWeight:900,letterSpacing:0.5,marginBottom:4,
                     background: isLie ? "#4ade80" : "#f87171",
-                    color: isLie ? "#000" : "#fff", fontFamily:"var(--font-body)",
+                    color: isLie ? "#ffffff" : "#fff", fontFamily:"var(--font-body)",
                     textTransform: "uppercase"
                   }}>{isLie ? "✓ LIE" : "✗ TRUTH"}</div>
                   <p style={{fontSize: 10, color: '#FCFAF2', lineHeight: 1.3, fontFamily:"var(--font-body)", opacity: 0.8, margin: 0}}>{c.explain}</p>
@@ -448,19 +448,19 @@ function TruthsGame({ theme }) {
               onClick={triggerChat}
               style={{
                 padding:"10px 20px",borderRadius:4,
-                border:"none",
-                background: "#000000",
-                color: '#ffffff', fontSize: 11,
+                background: "#ffffff",
+                color: '#000000', fontSize: 11,
+                border: `none`,
                 fontWeight: 900, fontFamily: "var(--font-heading)",
-                cursor: "pointer",
-                textTransform: "uppercase", letterSpacing: 1
+                textTransform: "uppercase", letterSpacing: 1, cursor:"pointer"
               }}
-            >Let's Chat ↗</button>
+            >
+              Let's Chat
+            </button>
             <button
               onClick={restart}
               style={{
                 padding:"10px 20px",borderRadius:4,
-                border:"1px solid rgba(0,0,0,0.15)",
                 background: "transparent",
                 color: '#FCFAF2', fontSize: 11,
                 fontWeight: 900, fontFamily: "var(--font-heading)",
@@ -478,9 +478,9 @@ function TruthsGame({ theme }) {
             onClick={next}
             style={{
               padding:"10px 20px",borderRadius:4,
-              background: "#000000",
+              background: "#ffffff",
               border: "none",
-              color: '#ffffff', fontSize: 11,
+              color: '#000000', fontSize: 11,
               fontWeight: 800, cursor: "pointer", fontFamily: "var(--font-heading)",
               textTransform: "uppercase", letterSpacing: 1
             }}
@@ -497,7 +497,7 @@ function LanguagesToggle({ theme }) {
   
   return (
     <div style={{
-      background: "#ffffff",
+      background: "#111111",
       padding: "24px",
       borderRadius: 4,
       color: '#FCFAF2',
@@ -513,7 +513,7 @@ function LanguagesToggle({ theme }) {
         <div style={{ display: "flex", background: "rgba(0,0,0,0.04)", borderRadius: 4, padding: 2 }}>
           {[{key: "EN", label: "🇺🇸 EN"}, {key: "HI", label: "🇮🇳 HI"}, {key: "IT", label: "🇮🇹 IT"}].map(l => (
             <button key={l.key} onClick={() => setLang(l.key)} style={{
-              background: lang === l.key ? "#000000" : "transparent",
+              background: lang === l.key ? "#333333" : "transparent",
               color: lang === l.key ? "#ffffff" : theme.text, 
               border: "none", borderRadius: 4, padding: "8px 16px", cursor: "pointer", 
               fontSize: 12, fontWeight: 700, fontFamily: "var(--font-heading)"
@@ -593,7 +593,7 @@ function QuoteCard({ theme }) {
 
   return (
     <div style={{
-      background: "#ffffff",
+      background: "#111111",
       borderRadius: 4,
       padding: "24px",
       display: "flex",
@@ -615,25 +615,25 @@ function QuoteCard({ theme }) {
       </p>
       
       <div style={{ position: "relative", height: 32, display: "flex", alignItems: "center" }}>
-        <div style={{ width: "100%", height: 2, background: `rgba(0,0,0,0.06)`, position: "absolute" }} />
+        <div style={{ width: "100%", height: 2, background: `rgba(255, 255, 255, 0.15)`, position: "absolute" }} />
         
          <div 
           onMouseDown={handleDown}
           onTouchStart={handleDown}
           style={{
             position: "absolute", left: `${pull}%`, transform: "translateX(-50%)",
-            width: 24, height: 24, borderRadius: "50%", background: "#000",
+            width: 24, height: 24, borderRadius: "50%", background: "#ffffff",
             cursor: "grab", display: "flex", alignItems: "center", justifyContent: "center",
             boxShadow: "0 2px 8px rgba(0,0,0,0.25)", transition: isDragging ? "none" : "left 0.3s ease",
             zIndex: 10
           }}
         >
-          <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#FFF" }} />
+          <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#000000" }} />
         </div>
         
         <div style={{ 
           position: "absolute", width: "100%", textAlign: "center", pointerEvents: "none",
-          fontSize: 8, fontFamily: "Space Mono, monospace", color: "#888", opacity: pull === 100 ? 0 : Math.max(0.4, 1 - pull/50),
+          fontSize: 8, fontFamily: "Space Mono, monospace", color: "rgba(255, 255, 255, 0.6)", opacity: pull === 100 ? 0 : Math.max(0.4, 1 - pull/50),
           letterSpacing: 1.5, textTransform: "uppercase", fontWeight: 700
         }}>
           {pull > 20 ? "Pull →" : "Slide →"}
@@ -647,7 +647,7 @@ function QuoteCard({ theme }) {
 function VisualGalleryCard({ theme }) {
   return (
     <div style={{
-      background: "#ffffff",
+      background: "#111111",
       borderRadius: 4,
       padding: "24px",
       color: '#FCFAF2',
@@ -685,7 +685,7 @@ function ToolboxSection({ theme }) {
       <svg width="12" height="18" viewBox="0 0 38 57" fill="none" style={{ marginRight: "4px" }}>
         <path d="M0 9.5H38V28.5H19L0 9.5Z" fill="#00C5FF" />
         <path d="M0 28.5H38L19 47.5V28.5H0Z" fill="#0055FF" />
-        <path d="M19 47.5L38 28.5V47.5H19Z" fill="#000000" />
+        <path d="M19 47.5L38 28.5V47.5H19Z" fill="#ffffff" />
       </svg>
     );
     if (term.includes("react")) return (
@@ -750,7 +750,7 @@ function ToolboxSection({ theme }) {
 
   return (
     <div style={{
-      background: "#ffffff",
+      background: "#111111",
       borderRadius: 4,
       padding: "24px",
       color: '#FCFAF2',
@@ -769,7 +769,7 @@ function ToolboxSection({ theme }) {
               key={catKey}
               onClick={() => setActiveTab(catKey)}
               style={{
-                background: activeTab === catKey ? "#000000" : "transparent",
+                background: activeTab === catKey ? "#333333" : "transparent",
                 color: activeTab === catKey ? "#ffffff" : "#888",
                 border: "none",
                 fontSize: 12,
@@ -796,7 +796,7 @@ function ToolboxSection({ theme }) {
               padding: "10px 18px",
               background: "rgba(0,0,0,0.03)",
               border: "1px solid rgba(0,0,0,0.05)",
-              color: "#000000",
+              color: "#ffffff",
               fontFamily: "Space Mono, monospace",
               fontSize: "12px",
               fontWeight: 700,
@@ -884,7 +884,7 @@ function VinylPlayer({ theme }) {
 
   return (
     <div style={{
-      background: "#ffffff",
+      background: "#111111",
       borderRadius: 4,
       border: "none",
       boxShadow: "0 4px 20px rgba(0,0,0,0.03)",
@@ -937,7 +937,7 @@ function VinylPlayer({ theme }) {
              <div style={{position: "absolute", width: 8, height: 8, borderRadius: "50%", background: "#000"}} />
           </div>
 
-          <div style={{position: "absolute", top: 15, right: 15, width: 30, height: 30, borderRadius: "50%", background: "#222", border: "2px solid #000"}} />
+          <div style={{position: "absolute", top: 15, right: 15, width: 30, height: 30, borderRadius: "50%", background: "#222", border: "2px solid #555"}} />
           <div style={{
             position: "absolute", top: 30, right: 30, width: 6, height: 100,
             transformOrigin: "top center", transform: `rotate(${tonearmAngle}deg)`,
@@ -994,7 +994,7 @@ function VinylPlayer({ theme }) {
                 </div>
                 {/* Text underneath */}
                 <div style={{ textAlign: "center", width: "100%", opacity: loaded === i ? 1 : 0.6, transition: "opacity 0.3s" }}>
-                  <div style={{fontSize: 12, fontFamily: "var(--font-heading)", fontWeight: 800, color: "#000", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}}>{a.title}</div>
+                  <div style={{fontSize: 12, fontFamily: "var(--font-heading)", fontWeight: 800, color: "#ffffff", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}}>{a.title}</div>
                   <div style={{fontSize: 10, fontFamily: "var(--font-body)", color: "#666", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}}>{a.artist}</div>
                 </div>
               </div>
