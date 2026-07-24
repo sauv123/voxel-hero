@@ -5,7 +5,7 @@ import './brands.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function BrandsSection() {
+export default function BrandsSection({ theme = { text: '#FCFAF2' } }) {
   const sectionRef = useRef(null);
   const headerTextRef = useRef(null);
   const logoGridRef = useRef(null);
@@ -126,7 +126,7 @@ export default function BrandsSection() {
       
       <div className="brands-container">
         <div className="section-header">
-          <h2 ref={headerTextRef}>
+          <h2 ref={headerTextRef} style={{ color: theme.text }}>
             {words.map((word, index) => (
               <span key={index} className="word" style={{ display: 'inline-block' }}>
                 {word}&nbsp;

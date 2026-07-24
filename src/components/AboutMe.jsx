@@ -97,11 +97,6 @@ function Timeline({ theme }) {
   const containerRef = useRef(null);
   const [scroll, setScroll] = useState(0);
   const [cw, setCw] = useState(900);
-  const dragging = useRef(false);
-  const [isDragging, setIsDragging] = useState(false);
-  const dragData = useRef(null);
-  const vel = useRef(0);
-  const raf = useRef(null);
   
   const [isMobile, setIsMobile] = useState(typeof window !== "undefined" ? window.innerWidth < 768 : false);
 
@@ -117,7 +112,6 @@ function Timeline({ theme }) {
   const axisY = isMobile ? 140 : 240;
 
   const totalW = lead + (TIMELINE.length - 1) * pxStep + Math.max(lead, cw / 2 + 150);
-  const clamp = useCallback((v) => Math.max(0, Math.min(totalW - cw, v)), [totalW, cw]);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -126,70 +120,9 @@ function Timeline({ theme }) {
     return () => ro.disconnect();
   }, []);
 
-  const inertiaRef = useRef();
-  const inertia = useCallback(() => {
-    vel.current *= 0.94;
-    if (Math.abs(vel.current) < 0.3) { vel.current = 0; return; }
-    setScroll(p => clamp(p + vel.current));
-    raf.current = requestAnimationFrame(inertiaRef.current);
-  }, [clamp]);
-
-  useEffect(() => {
-    inertiaRef.current = inertia;
-  }, [inertia]);
-
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    const onWheel = (e) => {
-      e.preventDefault();
-      cancelAnimationFrame(raf.current);
-      const d = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-      vel.current = d * 0.85;
-      setScroll(p => clamp(p + d * 0.85));
-      raf.current = requestAnimationFrame(inertia);
-    };
-    el.addEventListener("wheel", onWheel, { passive: false });
-    return () => el.removeEventListener("wheel", onWheel);
-  }, [inertia, clamp, isMobile]);
-
-  const onMouseDown = (e) => {
-    cancelAnimationFrame(raf.current);
-    vel.current = 0;
-    dragging.current = true;
-    setIsDragging(true);
-    const clientX = e.touches && e.touches.length > 0 ? e.touches[0].clientX : e.clientX;
-    dragData.current = { sx: clientX, ss: scroll, lx: clientX, lt: Date.now() };
+  const handleScroll = (e) => {
+    setScroll(e.target.scrollLeft);
   };
-
-  useEffect(() => {
-    const move = (e) => {
-      if (!dragging.current || !dragData.current) return;
-      const clientX = e.touches && e.touches.length > 0 ? e.touches[0].clientX : e.clientX;
-      const dx = dragData.current.sx - clientX;
-      const dt = Date.now() - dragData.current.lt || 1;
-      vel.current = (clientX - dragData.current.lx) / dt * -16;
-      dragData.current.lx = clientX;
-      dragData.current.lt = Date.now();
-      setScroll(clamp(dragData.current.ss + dx));
-    };
-    const up = () => {
-      if (!dragging.current) return;
-      dragging.current = false;
-      setIsDragging(false);
-      raf.current = requestAnimationFrame(inertia);
-    };
-    window.addEventListener("mousemove", move);
-    window.addEventListener("mouseup", up);
-    window.addEventListener("touchmove", move, { passive: true });
-    window.addEventListener("touchend", up);
-    return () => { 
-      window.removeEventListener("mousemove", move); 
-      window.removeEventListener("mouseup", up); 
-      window.removeEventListener("touchmove", move);
-      window.removeEventListener("touchend", up);
-    };
-  }, [inertia, clamp]);
 
   return (
     <div style={{ padding: "0", margin: "0 auto", position: "relative", width: "100%" }}>
@@ -210,18 +143,25 @@ function Timeline({ theme }) {
 
       <div
         ref={containerRef}
-        onMouseDown={onMouseDown}
-        onTouchStart={onMouseDown}
+        onScroll={handleScroll}
         style={{
           position: "relative", height: timelineHeight, borderRadius: 16,
           background: `#000`,
           border: `1px solid ${theme.text}20`,
           boxShadow: `none`,
-          overflow: "hidden", cursor: isDragging ? "grabbing" : "grab",
+          overflowX: "auto", overflowY: "hidden", cursor: "grab",
           userSelect: "none",
+          WebkitOverflowScrolling: "touch",
+          scrollbarWidth: "none",
+          msOverflowStyle: "none"
         }}
       >
-        <div style={{ position: "absolute", top: 0, left: -scroll, width: totalW, height: "100%", willChange: "transform" }}>
+        <style>{`
+          .timeline-hide-scroll::-webkit-scrollbar {
+            display: none;
+          }
+        `}</style>
+        <div className="timeline-hide-scroll" style={{ position: "relative", width: totalW, height: "100%" }}>
           
           {/* Main Axis Line */}
           <div style={{ position: "absolute", left: 0, top: axisY, width: "100%", height: 2, background: `#FFFFFF30` }} />
@@ -314,7 +254,7 @@ function Timeline({ theme }) {
 
 // ─── Two Truths and a Lie ────────────────────────────────────────────
 function TruthsGame({ theme }) {
-  const [phase, setPhase] = useState("playing");
+  const [phase, setPhase] = useState("intro");
   const [round, setRound] = useState(0);
   const [picked, setPicked] = useState(null);
   const [score, setScore] = useState(0);
@@ -375,9 +315,45 @@ function TruthsGame({ theme }) {
           Two Truths and a Lie
         </h3>
         <span style={{fontSize: 10, color: '#FCFAF2', opacity: 0.5, fontFamily: "var(--font-body)", fontWeight: 700}}>
-          {phase !== "finished" && `Round ${round+1} / ${GAME_ROUNDS.length}`}
+          {phase === "intro" ? "Mini Game" : phase !== "finished" && `Round ${round+1} / ${GAME_ROUNDS.length}`}
         </span>
       </div>
+
+      {phase === "intro" && (
+        <div style={{
+          display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+          flex: 1, textAlign: "center", padding: "20px 0", animation: "about-fadeUp 0.4s ease"
+        }}>
+          <div style={{
+            width: 48, height: 48, borderRadius: "50%", background: "rgba(255,255,255,0.05)",
+            display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16,
+            backdropFilter: "blur(8px)"
+          }}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#FCFAF2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M9.09009 9.00002C9.32519 8.33169 9.78924 7.76813 10.4001 7.40915C11.011 7.05018 11.7314 6.91896 12.4391 7.03873C13.1468 7.15851 13.7994 7.52154 14.2885 8.06584C14.7777 8.61013 15.0733 9.3031 15.127 10.0298C15.1807 10.7565 14.9893 11.4727 14.5855 12.0573C14.1818 12.6419 13.5904 13.0583 12.9126 13.2323C12.2348 13.4062 11.5126 13.3262 10.8703 13.0069C10.228 12.6876 9.70582 12.1481 9.39009 11.477" stroke="#FCFAF2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M12 17H12.01" stroke="#FCFAF2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
+          <p style={{ color: '#FCFAF2', fontSize: 13, opacity: 0.9, marginBottom: 24, fontFamily: "var(--font-body)", lineHeight: 1.5, maxWidth: "240px" }}>
+            Each round has two truths and one lie, spot the lie to score.
+          </p>
+          <button
+            onClick={() => setPhase("playing")}
+            style={{
+              padding: "10px 24px", borderRadius: 4,
+              background: "#ffffff", color: "#111111", border: "none",
+              fontFamily: "var(--font-body)", fontWeight: 700, fontSize: 12,
+              cursor: "pointer", textTransform: "uppercase", letterSpacing: 1,
+              transition: "transform 0.2s ease",
+            }}
+            onMouseEnter={e => e.currentTarget.style.transform = "scale(1.02)"}
+            onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
+          >
+            Start Playing
+          </button>
+        </div>
+      )}
 
       <div style={{
         display: phase === "playing" || phase === "revealed" ? "grid" : "none",
@@ -511,7 +487,7 @@ function LanguagesToggle({ theme }) {
           Languages
         </h3>
         <div style={{ display: "flex", background: "rgba(0,0,0,0.04)", borderRadius: 4, padding: 2 }}>
-          {[{key: "EN", label: "🇺🇸 EN"}, {key: "HI", label: "🇮🇳 HI"}, {key: "IT", label: "🇮🇹 IT"}].map(l => (
+          {[{key: "EN", label: "EN"}, {key: "HI", label: "HI"}, {key: "IT", label: "IT"}].map(l => (
             <button key={l.key} onClick={() => setLang(l.key)} style={{
               background: lang === l.key ? "#333333" : "transparent",
               color: lang === l.key ? "#ffffff" : theme.text, 
@@ -522,26 +498,29 @@ function LanguagesToggle({ theme }) {
         </div>
       </div>
       
-      <div style={{ minHeight: 80, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+      <div style={{ minHeight: 80, display: "flex", flexDirection: "column", justifyContent: "center", position: "relative" }}>
         {lang === "EN" ? (
           <div>
             <div style={{ fontSize: 22, fontWeight: 800, color: '#FCFAF2', marginBottom: 4, fontFamily: "var(--font-heading)", letterSpacing: "-0.02em" }}>"Hey there!"</div>
-            <div style={{ fontSize: 13, color: '#FCFAF2', opacity: 0.7, lineHeight: 1.4, fontFamily: "var(--font-body)" }}>
-              I speak English fluently, having learned and worked in it from a young age.
+            <div style={{ fontSize: 13, color: '#FCFAF2', opacity: 0.7, lineHeight: 1.4, fontFamily: "var(--font-body)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span>I speak English fluently, having learned and worked in it from a young age.</span>
+              <span style={{ fontSize: 24, marginLeft: 12 }}>🇺🇸</span>
             </div>
           </div>
         ) : lang === "HI" ? (
           <div>
             <div style={{ fontSize: 22, fontWeight: 800, color: '#FCFAF2', marginBottom: 4, fontFamily: "'Hind', sans-serif", letterSpacing: "-0.02em" }}>"कैसे हो!"</div>
-            <div style={{ fontSize: 13, color: '#FCFAF2', opacity: 0.7, lineHeight: 1.4, fontFamily: "var(--font-body)" }}>
-              हिंदी मेरी मातृभाषा है।
+            <div style={{ fontSize: 13, color: '#FCFAF2', opacity: 0.7, lineHeight: 1.4, fontFamily: "var(--font-body)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span>हिंदी मेरी मातृभाषा है।</span>
+              <span style={{ fontSize: 24, marginLeft: 12 }}>🇮🇳</span>
             </div>
           </div>
         ) : (
           <div>
             <div style={{ fontSize: 22, fontWeight: 800, color: '#FCFAF2', marginBottom: 4, fontFamily: "var(--font-heading)", letterSpacing: "-0.02em" }}>"Ciao!"</div>
-            <div style={{ fontSize: 13, color: '#FCFAF2', opacity: 0.7, lineHeight: 1.4, fontFamily: "var(--font-body)" }}>
-              Parlo anche un po' di italiano, vivendo a Milano.
+            <div style={{ fontSize: 13, color: '#FCFAF2', opacity: 0.7, lineHeight: 1.4, fontFamily: "var(--font-body)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span>Parlo anche un po' di italiano, vivendo a Milano.</span>
+              <span style={{ fontSize: 24, marginLeft: 12 }}>🇮🇹</span>
             </div>
           </div>
         )}
