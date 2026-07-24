@@ -14,32 +14,6 @@ export const PROJECTS = [
   },
   {
     id: "02",
-    name: "ELI5",
-    title: "ELI5",
-    slug: "eli5",
-    tags: ["UX DESIGN", "INTERACTION & UX SYSTEMS"],
-    bgColor: "#000000",
-    textColor: "#FFFFFF",
-    img: "/works/media__1777587436505.webp",
-    cta: "Transforms complexity into visual clarity instantly.",
-    cursorCta: "See the visual clarity process",
-    link: "https://eli5casestudy.netlify.app"
-  },
-  {
-    id: "03",
-    name: "IKEAXPEANUTS",
-    title: "IkeaxPeanuts",
-    slug: "ikeapeanuts",
-    tags: ["EMOTIONAL EXPERIENCE DESIGN", "NARRATIVE SERVICE DESIGN"],
-    bgColor: "#000000",
-    textColor: "#FFFFFF",
-    img: "/ikeapeanuts.webp",
-    cta: "Transforming retail spaces into emotional storytelling experiences.",
-    cursorCta: "Explore narrative retail",
-    link: "https://ikeapeanutscasestudy.netlify.app/"
-  },
-  {
-    id: "04",
     name: "KRIZIA",
     title: "Krizia",
     slug: "krizia",
@@ -52,7 +26,20 @@ export const PROJECTS = [
     link: "https://kriziacasestudy.netlify.app/"
   },
   {
-    id: "05",
+    id: "03",
+    name: "ELI5",
+    title: "ELI5",
+    slug: "eli5",
+    tags: ["UX DESIGN", "INTERACTION & UX SYSTEMS"],
+    bgColor: "#000000",
+    textColor: "#FFFFFF",
+    img: "/works/media__1777587436505.webp",
+    cta: "Transforms complexity into visual clarity instantly.",
+    cursorCta: "See the visual clarity process",
+    link: "https://eli5casestudy.netlify.app"
+  },
+  {
+    id: "04",
     name: "MICA",
     title: "MICA",
     slug: "mica",
@@ -63,5 +50,18 @@ export const PROJECTS = [
     cta: "Designing belonging through emotionally intelligent housing experiences.",
     cursorCta: "See how I designed belonging",
     link: "https://micacasestudy.netlify.app"
+  },
+  {
+    id: "05",
+    name: "IKEAXPEANUTS",
+    title: "IkeaxPeanuts",
+    slug: "ikeapeanuts",
+    tags: ["EMOTIONAL EXPERIENCE DESIGN", "NARRATIVE SERVICE DESIGN"],
+    bgColor: "#000000",
+    textColor: "#FFFFFF",
+    img: "/ikeapeanuts.webp",
+    cta: "Transforming retail spaces into emotional storytelling experiences.",
+    cursorCta: "Explore narrative retail",
+    link: "https://ikeapeanutscasestudy.netlify.app/"
   }
 ];
