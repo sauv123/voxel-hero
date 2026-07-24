@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import gsap from 'gsap';
 // Voxel imports removed
 
-export default function BottomDrawer({ theme, activePage, navigateWithTransition }) {
+export default function BottomDrawer({ theme, activeNav, navigateWithTransition }) {
   const [isOpen, setIsOpen] = useState(false);
   const [animating, setAnimating] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -213,67 +213,67 @@ export default function BottomDrawer({ theme, activePage, navigateWithTransition
         <div className="drawer-items">
 
           {/* HOME */}
-          <button className={`drawer-item ${activePage === 'home' ? 'active-page' : ''}`} onClick={(e) => handleItemClick(e, 'home')} aria-current={activePage === 'home' ? 'page' : undefined}>
-            <div className="drawer-item-icon" style={{ background: activePage === 'home' ? theme.brand : '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)' }}>
-              <svg viewBox="0 0 24 24" fill={activePage === 'home' ? '#0d0d0d' : '#FCFAF2'} className="di-icon-svg">
+          <button className={`drawer-item ${activeNav === 'home' ? 'active-page' : ''}`} onClick={(e) => handleItemClick(e, 'home')} aria-current={activeNav === 'home' ? 'page' : undefined}>
+            <div className="drawer-item-icon" style={{ background: activeNav === 'home' ? theme.brand : '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)' }}>
+              <svg viewBox="0 0 24 24" fill={activeNav === 'home' ? '#0d0d0d' : '#FCFAF2'} className="di-icon-svg">
                 <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
               </svg>
             </div>
             <div className="drawer-item-text">
               <div className="drawer-item-text-inner">
-                <span className="label-original" style={{ color: activePage === 'home' ? theme.brand : '#FCFAF2' }}>Home</span>
+                <span className="label-original" style={{ color: activeNav === 'home' ? theme.brand : '#FCFAF2' }}>Home</span>
                 <span className="label-copy" style={{ color: theme.brand }}>Home</span>
               </div>
             </div>
-            {activePage === 'home' && <span className="drawer-item-active-dot" style={{ background: theme.brand, width: 8, height: 8, borderRadius: '50%', marginLeft: 'auto', marginRight: 16 }} />}
+            {activeNav === 'home' && <span className="drawer-item-active-dot" style={{ background: theme.brand, width: 8, height: 8, borderRadius: '50%', marginLeft: 'auto', marginRight: 16 }} />}
           </button>
 
           {/* WORK */}
-          <button className={`drawer-item ${activePage === 'work' ? 'active-page' : ''}`} onClick={(e) => handleItemClick(e, 'work')} aria-current={activePage === 'work' ? 'page' : undefined}>
-            <div className="drawer-item-icon" style={{ background: activePage === 'work' ? theme.brand : '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)' }}>
-              <svg viewBox="0 0 24 24" fill={activePage === 'work' ? '#0d0d0d' : '#FCFAF2'} className="di-icon-svg">
+          <button className={`drawer-item ${activeNav === 'work' ? 'active-page' : ''}`} onClick={(e) => handleItemClick(e, 'work')} aria-current={activeNav === 'work' ? 'page' : undefined}>
+            <div className="drawer-item-icon" style={{ background: activeNav === 'work' ? theme.brand : '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)' }}>
+              <svg viewBox="0 0 24 24" fill={activeNav === 'work' ? '#0d0d0d' : '#FCFAF2'} className="di-icon-svg">
                 <path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z" />
               </svg>
             </div>
             <div className="drawer-item-text">
               <div className="drawer-item-text-inner">
-                <span className="label-original" style={{ color: activePage === 'work' ? theme.brand : '#FCFAF2' }}>Work</span>
+                <span className="label-original" style={{ color: activeNav === 'work' ? theme.brand : '#FCFAF2' }}>Work</span>
                 <span className="label-copy" style={{ color: theme.brand }}>Work</span>
               </div>
             </div>
-            {activePage === 'work' && <span className="drawer-item-active-dot" style={{ background: theme.brand, width: 8, height: 8, borderRadius: '50%', marginLeft: 'auto', marginRight: 16 }} />}
+            {activeNav === 'work' && <span className="drawer-item-active-dot" style={{ background: theme.brand, width: 8, height: 8, borderRadius: '50%', marginLeft: 'auto', marginRight: 16 }} />}
           </button>
 
           {/* ABOUT */}
-          <button className={`drawer-item ${activePage === 'about' ? 'active-page' : ''}`} onClick={(e) => handleItemClick(e, 'about')} aria-current={activePage === 'about' ? 'page' : undefined}>
-            <div className="drawer-item-icon" style={{ background: activePage === 'about' ? theme.brand : '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)' }}>
-              <svg viewBox="0 0 24 24" fill={activePage === 'about' ? '#0d0d0d' : '#FCFAF2'} className="di-icon-svg">
+          <button className={`drawer-item ${activeNav === 'about' ? 'active-page' : ''}`} onClick={(e) => handleItemClick(e, 'about')} aria-current={activeNav === 'about' ? 'page' : undefined}>
+            <div className="drawer-item-icon" style={{ background: activeNav === 'about' ? theme.brand : '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)' }}>
+              <svg viewBox="0 0 24 24" fill={activeNav === 'about' ? '#0d0d0d' : '#FCFAF2'} className="di-icon-svg">
                 <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
               </svg>
             </div>
             <div className="drawer-item-text">
               <div className="drawer-item-text-inner">
-                <span className="label-original" style={{ color: activePage === 'about' ? theme.brand : '#FCFAF2' }}>About</span>
+                <span className="label-original" style={{ color: activeNav === 'about' ? theme.brand : '#FCFAF2' }}>About</span>
                 <span className="label-copy" style={{ color: theme.brand }}>About</span>
               </div>
             </div>
-            {activePage === 'about' && <span className="drawer-item-active-dot" style={{ background: theme.brand, width: 8, height: 8, borderRadius: '50%', marginLeft: 'auto', marginRight: 16 }} />}
+            {activeNav === 'about' && <span className="drawer-item-active-dot" style={{ background: theme.brand, width: 8, height: 8, borderRadius: '50%', marginLeft: 'auto', marginRight: 16 }} />}
           </button>
 
           {/* PLAYGROUND */}
-          <button className={`drawer-item ${activePage === 'playground' ? 'active-page' : ''}`} onClick={(e) => handleItemClick(e, 'playground')} aria-current={activePage === 'playground' ? 'page' : undefined}>
-            <div className="drawer-item-icon" style={{ background: activePage === 'playground' ? theme.brand : '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)' }}>
-              <svg viewBox="0 0 24 24" fill={activePage === 'playground' ? '#0d0d0d' : '#FCFAF2'} className="di-icon-svg">
+          <button className={`drawer-item ${activeNav === 'playground' ? 'active-page' : ''}`} onClick={(e) => handleItemClick(e, 'playground')} aria-current={activeNav === 'playground' ? 'page' : undefined}>
+            <div className="drawer-item-icon" style={{ background: activeNav === 'playground' ? theme.brand : '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)' }}>
+              <svg viewBox="0 0 24 24" fill={activeNav === 'playground' ? '#0d0d0d' : '#FCFAF2'} className="di-icon-svg">
                 <path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm3-3c-.83 0-1.5-.67-1.5-1.5S17.67 9 18.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
               </svg>
             </div>
             <div className="drawer-item-text">
               <div className="drawer-item-text-inner">
-                <span className="label-original" style={{ color: activePage === 'playground' ? theme.brand : '#FCFAF2' }}>Labs</span>
+                <span className="label-original" style={{ color: activeNav === 'playground' ? theme.brand : '#FCFAF2' }}>Labs</span>
                 <span className="label-copy" style={{ color: theme.brand }}>Labs</span>
               </div>
             </div>
-            {activePage === 'playground' && <span className="drawer-item-active-dot" style={{ background: theme.brand, width: 8, height: 8, borderRadius: '50%', marginLeft: 'auto', marginRight: 16 }} />}
+            {activeNav === 'playground' && <span className="drawer-item-active-dot" style={{ background: theme.brand, width: 8, height: 8, borderRadius: '50%', marginLeft: 'auto', marginRight: 16 }} />}
           </button>
 
         </div>
@@ -416,11 +416,15 @@ export default function BottomDrawer({ theme, activePage, navigateWithTransition
                 }}
                 onClick={(e) => { e.stopPropagation(); handleItemClick(e, page); }}
                 className="inline-nav-item"
+                style={{ position: 'relative' }}
               >
                 <div className="inline-nav-item-inner">
-                  <span className="inline-nav-label" style={{ color: activePage === page ? theme.brand : '#fff', opacity: activePage === page ? 1 : 0.6 }}>{page === 'playground' ? 'Labs' : page}</span>
+                  <span className="inline-nav-label" style={{ color: activeNav === page ? theme.brand : '#fff', opacity: activeNav === page ? 1 : 0.6 }}>{page === 'playground' ? 'Labs' : page}</span>
                   <span className="inline-nav-label" style={{ color: theme.brand }}>{page === 'playground' ? 'Labs' : page}</span>
                 </div>
+                {activeNav === page && (
+                  <div style={{ position: 'absolute', bottom: '-4px', left: '50%', transform: 'translateX(-50%)', width: '4px', height: '4px', borderRadius: '50%', background: theme.brand }} />
+                )}
               </div>
             ))}
           </div>

@@ -195,7 +195,7 @@ export default function WorkFolder({ theme, onOpen }) {
 
   return (
     <>
-      <section className="work-section" id="workSection" ref={workSection}>
+      <section className="work-section" id="workSection" ref={workSection} style={{ backgroundColor: theme.bg }}>
           <div className="curious-text" id="curiousText" ref={curiousText} style={{ color: theme.text }}>Curious?... Check out my</div>
           
           <div className="word-row" id="wordRow" ref={wordRow}>

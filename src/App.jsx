@@ -175,6 +175,7 @@ export default function App() {
     return false;
   });
   const theme    = THEMES[activeChar];
+  const invertedTheme = { bg: theme.text, text: '#050505', brand: theme.brand };
   const rootRef  = useRef();
   const charRef  = useRef(); // forwarded to Scene → CharacterSwitch
 
@@ -535,7 +536,7 @@ export default function App() {
       </Suspense>
 
       {/* ── Work Section ── */}
-      {!isGalleryOpen && <WorkFolder theme={theme} onOpen={() => navigateWithTransition('work')} />}
+      {!isGalleryOpen && <WorkFolder theme={invertedTheme} onOpen={() => navigateWithTransition('work')} />}
 
       {/* ── Experiments & Artifacts Bento Grid Section ── */}
       {!isGalleryOpen && !isAboutOpen && !isPlaygroundOpen && activeCaseStudyIndex === null && (
@@ -573,6 +574,7 @@ export default function App() {
         <BottomDrawer 
           theme={theme} 
           activePage={activePage}
+          activeNav={activeCaseStudyIndex !== null ? 'work' : activePage}
           navigateWithTransition={navigateWithTransition}
           activeChar={activeChar}
         />

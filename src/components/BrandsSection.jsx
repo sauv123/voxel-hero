@@ -26,11 +26,11 @@ export default function BrandsSection({ theme = { text: '#FCFAF2' } }) {
 
   useEffect(() => {
     let ctx = gsap.context(() => {
-      const header = document.querySelector('.section-header');
-      const wordElements = document.querySelectorAll('.word');
+      const header = gsap.utils.toArray('.section-header');
+      const wordElements = gsap.utils.toArray('.word');
       const logoGrid = logoGridRef.current;
-      const logoItems = document.querySelectorAll('.logo-item');
-      const logoContents = document.querySelectorAll('.logo-content');
+      const logoItems = gsap.utils.toArray('.logo-item');
+      const logoContents = gsap.utils.toArray('.logo-content');
 
       const tl = gsap.timeline({
           scrollTrigger: {
@@ -44,17 +44,17 @@ export default function BrandsSection({ theme = { text: '#FCFAF2' } }) {
       tl.to(header, {
           opacity: 1,
           y: 0,
-          duration: 0.8,
+          duration: 0.4,
           ease: 'power3.out'
       })
       .to(wordElements, {
           opacity: 1,
           y: 0,
           rotateX: 0,
-          duration: 0.8,
-          stagger: 0.03,
-          ease: 'back.out(1.7)'
-      }, '-=0.4')
+          duration: 0.4,
+          stagger: 0.02,
+          ease: 'power2.out'
+      }, '-=0.1')
       .to(logoGrid, {
           opacity: 1,
           duration: 0.6,
@@ -63,14 +63,14 @@ export default function BrandsSection({ theme = { text: '#FCFAF2' } }) {
       .to(logoContents, {
           opacity: 1,
           scale: 1,
-          duration: 0.6,
+          duration: 0.3,
           stagger: {
-              each: 0.05,
+              each: 0.03,
               grid: [2, 3], // Updated to 3 columns grid
               from: 'start'
           },
           ease: 'back.out(1.4)'
-      }, '-=0.3');
+      }, '-=0.2');
 
 
 
@@ -126,7 +126,7 @@ export default function BrandsSection({ theme = { text: '#FCFAF2' } }) {
       
       <div className="brands-container">
         <div className="section-header">
-          <h2 ref={headerTextRef} style={{ color: theme.text }}>
+          <h2 ref={headerTextRef} style={{ color: 'rgba(255, 255, 255, 0.7)' }}>
             {words.map((word, index) => (
               <span key={index} className="word" style={{ display: 'inline-block' }}>
                 {word}&nbsp;

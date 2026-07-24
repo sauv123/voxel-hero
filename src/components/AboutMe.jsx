@@ -16,29 +16,29 @@ gsap.registerPlugin(ScrollTrigger);
 // ─── DATA ────────────────────────────────────────────────────────────
 const GAME_ROUNDS = [
   [
-    { text: '"I was ranked AIR 8 in a spelling bee"', type: "TRUTH", explain: "True" },
-    { text: '"I started my career with photography"', type: "TRUTH", explain: "True" },
-    { text: '"I have climbed K2 camp"', type: "LIE", explain: "Lie" },
+    { text: '"I was ranked AIR 8"', type: "TRUTH", explain: "I was good in spelling B" },
+    { text: '"I started my career with photography"', type: "TRUTH", explain: "My first camera was a Canon EOS 1000D" },
+    { text: '"I have climbed K2 camp"', type: "LIE", explain: "That's my dream goal" },
   ],
   [
-    { text: '"I can play 2 instruments"', type: "TRUTH", explain: "True" },
-    { text: '"I can solve a Rubik\'s Cube in 46 seconds"', type: "TRUTH", explain: "True" },
-    { text: '"I can juggle 5 balls at once"', type: "LIE", explain: "Lie" },
+    { text: '"I can play 2 instruments"', type: "TRUTH", explain: "Guitar and piano" },
+    { text: '"I can solve a Rubik\'s Cube in 46 seconds"', type: "TRUTH", explain: "Yes, I was pretty good at it" },
+    { text: '"I can juggle 5 balls at once"', type: "LIE", explain: "It would be a struggle" },
   ],
   [
-    { text: '"I did my schooling in Bangalore"', type: "TRUTH", explain: "True" },
-    { text: '"I have a boxing video on YouTube"', type: "TRUTH", explain: "True" },
-    { text: '"I have never been to a beach in my life"', type: "LIE", explain: "Lie" },
+    { text: '"I did my schooling in Bangalore"', type: "TRUTH", explain: "Yes. In NHVPS" },
+    { text: '"I have a boxing video on YouTube"', type: "TRUTH", explain: "Yes, an amateur one" },
+    { text: '"I have never been to a beach in my life"', type: "LIE", explain: "I've been to plenty of pretty beaches" },
   ],
   [
-    { text: '"I\'m an engineer"', type: "TRUTH", explain: "True" },
-    { text: '"I got a pair of Jordans with my first salary"', type: "TRUTH", explain: "True" },
-    { text: '"I have travelled all continents"', type: "LIE", explain: "Lie" },
+    { text: '"I\'m an engineer"', type: "TRUTH", explain: "Yes. I'm a print and media engineer" },
+    { text: '"I got a pair of Jordans with my first salary"', type: "TRUTH", explain: "The Hyper Royals" },
+    { text: '"I have travelled all continents"', type: "LIE", explain: "Only two. Till now." },
   ],
   [
-    { text: '"I prefer beaches over mountains"', type: "TRUTH", explain: "True" },
-    { text: '"I have a chess rating of 800"', type: "TRUTH", explain: "True" },
-    { text: '"I once auditioned for a reality singing show"', type: "LIE", explain: "Lie" },
+    { text: '"I prefer beaches over mountains"', type: "TRUTH", explain: "Yes" },
+    { text: '"I have a chess rating of 800"', type: "TRUTH", explain: "Yes, I love to play chess" },
+    { text: '"I once auditioned for a reality singing show"', type: "LIE", explain: "No, I only sing in the shower" },
   ],
 ];
 
@@ -58,195 +58,126 @@ const TIMELINE = [
   { id: 6, text: "Came 3rd in NCA(design awards).", photos: [{ src: milanImg, bg: "#28280d", e: "🥉" }] },
 ];
 
-// ─── Timeline (Mobile Responsive Optimized Sizes) ────────────────────
-function TimelinePhoto({ photo, index, total, isMobile }) {
-  const rot = total === 1 ? 0 : index === 0 ? -10 : index === 1 ? 7 : -4;
-  const cardW = isMobile ? 140 : 260;
-  const cardH = isMobile ? 170 : 300;
-
-  return (
-    <div className="timeline-photo timeline-photo-interactive" style={{
-      position: "absolute",
-      width: cardW, height: cardH,
-      background: "#111111",
-      padding: isMobile ? "4px 4px 18px 4px" : "8px 8px 30px 8px",
-      boxShadow: "none",
-      transform: `rotate(${rot}deg) translateX(${index * (isMobile ? 10 : 20)}px) translateY(${index * (isMobile ? 6 : 12)}px)`,
-      zIndex: total - index,
-      borderRadius: 4,
-      display: "flex", flexDirection: "column",
-      border: "1px solid rgba(0,0,0,0.15)"
-    }}>
-      <div style={{ flex: 1, background: photo.bg, display: "flex", alignItems: "center", justifyContent: "center", fontSize: isMobile ? 22 : 36, overflow: "hidden", position: "relative" }}>
-        {photo.videoSrc ? (
-          <video src={photo.videoSrc} autoPlay loop muted playsInline style={{ width: "100%", height: "100%", objectFit: "cover", position: "absolute", inset: 0 }} />
-        ) : photo.src ? (
-          <img src={photo.src} alt={`About me photo ${index + 1}`} loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover", position: "absolute", inset: 0 }} />
-        ) : (
-          photo.e
-        )}
-      </div>
-      <div style={{ position: "absolute", bottom: 2, right: 6, fontSize: 7, fontFamily: "var(--font-body)", color: "#ffffff", opacity: 0.8, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: "90%" }}>
-        {photo.caption || `IMG_${photo.e.codePointAt(0)}`}
-      </div>
-    </div>
-  );
-}
-
 function Timeline({ theme }) {
   const containerRef = useRef(null);
-  const [scroll, setScroll] = useState(0);
-  const [cw, setCw] = useState(900);
-  
-  const [isMobile, setIsMobile] = useState(typeof window !== "undefined" ? window.innerWidth < 768 : false);
+  const listRef = useRef(null);
 
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    let ctx = gsap.context(() => {
+      const tl = gsap.timeline();
+      
+      tl.fromTo(".timeline-line",
+        { scaleY: 0, transformOrigin: "top" },
+        { scaleY: 1, duration: 1, ease: "power2.inOut" }
+      )
+      .fromTo(".timeline-dot",
+        { scale: 0 },
+        { scale: 1, duration: 0.4, stagger: 0.15, ease: "back.out(2)" },
+        "-=0.8"
+      )
+      .fromTo(".timeline-content",
+        { x: -20, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.5, stagger: 0.15, ease: "power2.out" },
+        "-=0.8"
+      );
+
+      // Scroll-based animations
+      const entries = gsap.utils.toArray(".timeline-entry");
+      const scroller = containerRef.current;
+      
+      entries.forEach((entry, i) => {
+        const dot = entry.querySelector(".timeline-dot");
+        
+        // Dissolve when scrolling up past the top
+        gsap.to(entry, {
+          opacity: 0,
+          scale: 0.95,
+          filter: "blur(4px)",
+          scrollTrigger: {
+            trigger: entry,
+            scroller: scroller,
+            start: "top top",
+            end: "bottom top",
+            scrub: true
+          }
+        });
+
+        // Dot turns green as you scroll to it
+        gsap.to(dot, {
+          backgroundColor: "#4ade80",
+          scrollTrigger: {
+            trigger: entry,
+            scroller: scroller,
+            start: "top 70%",
+            end: "top 40%",
+            scrub: true
+          }
+        });
+      });
+      
+    }, containerRef);
+    return () => ctx.revert();
   }, []);
-
-  const pxStep = isMobile ? 240 : 450;
-  const lead = isMobile ? 120 : 300;
-  const timelineHeight = isMobile ? 420 : 720;
-  const axisY = isMobile ? 140 : 240;
-
-  const totalW = lead + (TIMELINE.length - 1) * pxStep + Math.max(lead, cw / 2 + 150);
-
-  useEffect(() => {
-    if (!containerRef.current) return;
-    const ro = new ResizeObserver(([e]) => setCw(e.contentRect.width));
-    ro.observe(containerRef.current);
-    return () => ro.disconnect();
-  }, []);
-
-  const handleScroll = (e) => {
-    setScroll(e.target.scrollLeft);
-  };
 
   return (
-    <div style={{ padding: "0", margin: "0 auto", position: "relative", width: "100%" }}>
-      <div style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        marginBottom: "12px",
-        fontFamily: "Space Mono, monospace",
-        fontSize: isMobile ? "9px" : "11px",
-        textTransform: "uppercase",
-        letterSpacing: "0.12em",
-        color: "rgba(0, 0, 0, 0.6)"
-      }}>
-        <span>Important Career Milestones</span>
-        <span>Swipe / Drag to explore →</span>
+    <div ref={containerRef} className="custom-scroll" style={{
+      background: "#111111",
+      borderRadius: 4,
+      color: '#FCFAF2',
+      boxShadow: "0 4px 20px rgba(0,0,0,0.03)",
+      display: "flex",
+      flexDirection: "column",
+      height: "400px",
+      overflowY: "auto",
+      position: "relative"
+    }}>
+      <style>{`
+        .custom-scroll::-webkit-scrollbar { width: 4px; height: 4px; }
+        .custom-scroll::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
+        .custom-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
+      `}</style>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24, position: "sticky", top: 0, background: "#111111", zIndex: 10, padding: "24px 24px 10px 24px" }}>
+        <h3 style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: 2, color: '#FCFAF2', opacity: 0.5, margin: 0, fontFamily: "var(--font-body)", fontWeight: 700 }}>
+          Timeline
+        </h3>
       </div>
-
-      <div
-        ref={containerRef}
-        onScroll={handleScroll}
-        style={{
-          position: "relative", height: timelineHeight, borderRadius: 16,
-          background: `#000`,
-          border: `1px solid ${theme.text}20`,
-          boxShadow: `none`,
-          overflowX: "auto", overflowY: "hidden", cursor: "grab",
-          userSelect: "none",
-          WebkitOverflowScrolling: "touch",
-          scrollbarWidth: "none",
-          msOverflowStyle: "none"
-        }}
-      >
-        <style>{`
-          .timeline-hide-scroll::-webkit-scrollbar {
-            display: none;
-          }
-        `}</style>
-        <div className="timeline-hide-scroll" style={{ position: "relative", width: totalW, height: "100%" }}>
-          
-          {/* Main Axis Line */}
-          <div style={{ position: "absolute", left: 0, top: axisY, width: "100%", height: 2, background: `#FFFFFF30` }} />
-          
-          {/* Colored Progress Line */}
-          <div style={{ 
-            position: "absolute", left: 0, top: axisY, 
-            width: scroll + cw / 2, 
-            height: 2, 
-            background: theme.text,
-            transition: "width 0.1s ease-out" 
-          }} />
-
-          {/* Kinetic Background Numbers */}
-          {TIMELINE.map((entry, idx) => {
-            const x = lead + idx * pxStep;
-            const isActive = idx === TIMELINE.length - 1 
-              ? (scroll + cw / 2 >= x - (isMobile ? 120 : 250))
-              : Math.abs(x - (scroll + cw / 2)) < (isMobile ? 120 : 250);
-            return (
-              <div key={entry.id} style={{
-                position: "absolute", left: x, top: axisY - (isMobile ? 40 : 60),
-                transform: `translate(-50%, -50%)`,
-                fontSize: isMobile ? 70 : 180, fontWeight: 900,
-                color: isActive && idx === 0 ? '#4ade80' : (isActive ? (theme.brand || '#FFF') : '#FFF'), 
-                opacity: isActive ? 0.6 : 0.05,
-                fontFamily: "var(--font-heading)",
-                transition: "all 0.3s ease"
-              }}>
-                {String(idx + 1).padStart(2, '0')}
-              </div>
-            );
-          })}
-
-          {/* Photos & Connectors below axis */}
-          {TIMELINE.map((entry, idx) => {
-            const x = lead + idx * pxStep;
-            const isPassed = x <= scroll + cw / 2;
-            
-            return (
-              <div key={entry.id} style={{
-                position: "absolute", left: x, top: axisY,
-                display: "flex", flexDirection: "column", alignItems: "center"
-              }}>
-                <div style={{ width: 1, height: 12, background: isPassed ? theme.text : "rgba(255,255,255,0.2)" }} />
-                <div style={{ 
-                  width: 6, height: 6, borderRadius: "50%", 
-                  background: isPassed ? theme.text : '#FFF', 
-                  marginTop: -3, zIndex: 10
-                }} />
-                
-                {/* Polaroid Box */}
-                <div style={{ 
-                  position: "relative", 
-                  width: isMobile ? 140 : 260, 
-                  height: isMobile ? 170 : 300, 
-                  marginLeft: isMobile ? -70 : -130, 
-                  marginTop: 12 
-                }}>
-                  {entry.photos.map((ph, i) => (
-                    <TimelinePhoto key={i} photo={ph} index={i} total={entry.photos.length} theme={theme} isMobile={isMobile} />
-                  ))}
-                </div>
-
-                {/* Text Description */}
-                <div style={{
-                  marginTop: isMobile ? 16 : 24, 
-                  width: isMobile ? 130 : 220, 
-                  textAlign: "center",
-                  fontFamily: "var(--font-heading)", 
-                  fontSize: isMobile ? 10 : 13, 
-                  fontWeight: 700,
-                  color: '#FFF', 
-                  lineHeight: 1.3
-                }}>
-                  {entry.text}
-                </div>
-              </div>
-            );
-          })}
-        </div>
+      
+      <div ref={listRef} style={{ position: "relative", paddingLeft: "48px", paddingRight: "24px" }}>
+        {/* Vertical line */}
+        <div className="timeline-line" style={{ position: "absolute", left: "30px", top: 0, bottom: "24px", width: "2px", background: "rgba(255,255,255,0.1)" }} />
         
-        {/* Gradients to fade edges */}
-        <div style={{position:"absolute",inset:0,left:0,width:80, background:`linear-gradient(to right,#000,transparent)`,pointerEvents:"none"}} />
-        <div style={{position:"absolute",inset:0,left:"auto",right:0,width:80, background:`linear-gradient(to left,#000,transparent)`,pointerEvents:"none"}} />
+        {TIMELINE.map((entry, idx) => (
+          <div key={entry.id} className="timeline-entry" style={{ position: "relative", marginBottom: "32px", willChange: "transform, opacity" }}>
+            <div className="timeline-dot" style={{ position: "absolute", left: "-22px", top: "4px", width: "10px", height: "10px", borderRadius: "50%", background: "rgba(255,255,255,0.3)" }} />
+            
+            <div className="timeline-content">
+              <div style={{ fontSize: "14px", fontWeight: 700, fontFamily: "var(--font-body)", marginBottom: "12px", lineHeight: 1.4 }}>
+                {entry.text}
+              </div>
+              
+              <div className="custom-scroll" style={{ display: "flex", gap: "12px", overflowX: "auto", paddingBottom: "8px" }}>
+              {entry.photos.map((ph, i) => (
+                <div key={i} style={{
+                  width: "120px", height: "150px", flexShrink: 0, borderRadius: "6px", overflow: "hidden", position: "relative", background: ph.bg, border: "1px solid rgba(255,255,255,0.1)"
+                }}>
+                  {ph.videoSrc ? (
+                    <video src={ph.videoSrc} autoPlay loop muted playsInline style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  ) : ph.src ? (
+                    <img src={ph.src} alt="Timeline" loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  ) : (
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%", height: "100%", fontSize: "32px" }}>{ph.e}</div>
+                  )}
+                  {ph.caption && (
+                    <div style={{ position: "absolute", bottom: "4px", right: "6px", fontSize: "8px", fontFamily: "var(--font-body)", color: "#ffffff", opacity: 0.8, background: "rgba(0,0,0,0.5)", padding: "2px 4px", borderRadius: 2 }}>
+                      {ph.caption}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      ))}
       </div>
     </div>
   );
@@ -303,12 +234,13 @@ function TruthsGame({ theme }) {
   };
 
   return (
-    <div style={{
+    <div className="custom-scroll" style={{
       background: `#111111`,
       border: `none`,
       borderRadius: 4,
       boxShadow: "0 4px 20px rgba(0,0,0,0.03)",
-      padding: "24px", position: "relative", color: '#FCFAF2', display:"flex", flexDirection:"column"
+      padding: "24px", position: "relative", color: '#FCFAF2', display:"flex", flexDirection:"column",
+      height: "400px"
     }}>
       <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:20}}>
         <h3 style={{fontSize: 11, textTransform:"uppercase", letterSpacing: 2, color: '#FCFAF2', opacity: 0.5, margin:0, fontFamily: "var(--font-body)", fontWeight: 700}}>
@@ -370,35 +302,42 @@ function TruthsGame({ theme }) {
               key={i}
               onClick={()=>pick(i)}
               style={{
-                background: revealed 
-                  ? (isLie ? "rgba(74, 222, 128, 0.15)" : "rgba(248, 113, 113, 0.08)") 
-                  : (isPicked ? "rgba(255, 255, 255, 0.1)" : `rgba(255, 255, 255, 0.03)`), 
-                borderRadius: 4, padding: "14px", minHeight: 70,
+                background: "#fdf8e1", // note paper yellow
+                borderRadius: 2, 
+                padding: revealed ? "12px 24px 12px 16px" : "16px", 
+                minHeight: revealed ? 50 : 60,
                 cursor: phase==="playing"?"pointer":"default",
-                border: revealed
-                  ? `2px solid ${isLie ? "#4ade80" : "#f87171"}`
-                  : (isPicked ? `2px solid #ffffff` : `1px solid rgba(255, 255, 255, 0.1)`),
+                border: "none",
+                boxShadow: "2px 4px 10px rgba(0,0,0,0.15)",
+                transform: `rotate(${[-1.5, 2, -1][i % 3]}deg) scale(${isPicked && !revealed ? 1.02 : 1})`,
                 transition: "all 0.3s ease",
-                display: "flex", flexDirection: "column", justifyContent: "center"
+                display: "flex", flexDirection: "column", justifyContent: "center",
+                color: "#111111",
+                position: "relative"
               }}
               className={(isPicked && revealed && !isLie && jitter) ? "about-jitter" : ""}
             >
               <p style={{
-                fontSize: 13, fontWeight: 700, lineHeight: 1.4,
-                marginBottom: revealed ? 8 : 0, color: (isPicked && !revealed) ? "#ffffff" : theme.text,
+                fontSize: revealed ? 12 : 13, fontWeight: 700, lineHeight: 1.3,
+                marginBottom: revealed ? 4 : 0, color: "#111111",
                 fontFamily: "var(--font-heading)", letterSpacing: "-0.01em", margin: 0
               }}>{c.text}</p>
               
               {revealed && (
                 <div style={{animation:"about-fadeUp 0.4s ease both"}}>
                   <div style={{
-                    display:"inline-block",padding:"2px 6px",borderRadius:3,
-                    fontSize:8,fontWeight:900,letterSpacing:0.5,marginBottom:4,
-                    background: isLie ? "#4ade80" : "#f87171",
-                    color: isLie ? "#ffffff" : "#fff", fontFamily:"var(--font-body)",
-                    textTransform: "uppercase"
-                  }}>{isLie ? "✓ LIE" : "✗ TRUTH"}</div>
-                  <p style={{fontSize: 10, color: '#FCFAF2', lineHeight: 1.3, fontFamily:"var(--font-body)", opacity: 0.8, margin: 0}}>{c.explain}</p>
+                    position: "absolute",
+                    top: "50%",
+                    right: "12px",
+                    transform: "translateY(-50%) rotate(-10deg)",
+                    fontSize: 28,
+                    fontWeight: 900,
+                    color: isLie ? "#16a34a" : "#ef4444",
+                    opacity: 0.8
+                  }}>
+                    {isLie ? "✓" : "✗"}
+                  </div>
+                  <p style={{fontSize: 11, color: '#444444', lineHeight: 1.3, fontFamily:"var(--font-body)", margin: 0}}>{c.explain}</p>
                 </div>
               )}
             </div>
@@ -480,7 +419,8 @@ function LanguagesToggle({ theme }) {
       boxShadow: "0 4px 20px rgba(0,0,0,0.03)",
       display: "flex",
       flexDirection: "column",
-      justifyContent: "space-between"
+      height: "240px",
+      overflowY: "hidden"
     }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
         <h3 style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: 2, color: '#FCFAF2', opacity: 0.5, margin: 0, fontFamily: "var(--font-body)", fontWeight: 700 }}>
@@ -579,7 +519,8 @@ function QuoteCard({ theme }) {
       flexDirection: "column",
       color: '#FCFAF2',
       boxShadow: "0 4px 20px rgba(0,0,0,0.03)",
-      justifyContent: "space-between"
+      justifyContent: "space-between",
+      height: "240px"
     }}>
       <h3 style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: 2, color: '#FCFAF2', opacity: 0.5, marginBottom: 20, fontFamily: "var(--font-body)", fontWeight: 700 }}>
         Philosophy
@@ -635,7 +576,7 @@ function VisualGalleryCard({ theme }) {
       boxShadow: "0 4px 20px rgba(0,0,0,0.03)",
       justifyContent: "center",
       alignItems: "center",
-      minHeight: "150px",
+      height: "400px",
       textAlign: "center"
     }}>
       <span style={{ fontSize: 28, marginBottom: 8 }}>🖼️</span>
@@ -648,69 +589,6 @@ function VisualGalleryCard({ theme }) {
 // ─── Tools & Stack ───────────────────────────────────────────────────
 function ToolboxSection({ theme }) {
   const [activeTab, setActiveTab] = useState("tools");
-
-  const getToolLogo = (name) => {
-    const term = name.toLowerCase();
-    if (term.includes("figma")) return (
-      <svg width="12" height="18" viewBox="0 0 38 57" fill="none" style={{ marginRight: "4px" }}>
-        <path d="M19 28.5C24.2467 28.5 28.5 24.2467 28.5 19C28.5 13.7533 24.2467 9.5 19 9.5H9.5V28.5H19Z" fill="#F24E1E"/>
-        <path d="M9.5 28.5C4.25329 28.5 0 24.2467 0 19C0 13.7533 4.25329 9.5 9.5 9.5H19V28.5H9.5Z" fill="#A259FF"/>
-        <path d="M19 47.5C24.2467 47.5 28.5 43.2467 28.5 38C28.5 32.7533 24.2467 28.5 19 28.5H9.5V47.5H19Z" fill="#1ABCFE"/>
-        <path d="M9.5 47.5C4.25329 47.5 0 43.2467 0 38C0 32.7533 4.25329 28.5 9.5 28.5H19V47.5H9.5Z" fill="#0ACF83"/>
-        <path d="M19 57C13.7533 57 9.5 52.7467 9.5 47.5V38H19C24.2467 38 28.5 42.2533 28.5 47.5C28.5 52.7467 24.2467 57 19 57Z" fill="#FF7262"/>
-      </svg>
-    );
-    if (term.includes("framer")) return (
-      <svg width="12" height="18" viewBox="0 0 38 57" fill="none" style={{ marginRight: "4px" }}>
-        <path d="M0 9.5H38V28.5H19L0 9.5Z" fill="#00C5FF" />
-        <path d="M0 28.5H38L19 47.5V28.5H0Z" fill="#0055FF" />
-        <path d="M19 47.5L38 28.5V47.5H19Z" fill="#ffffff" />
-      </svg>
-    );
-    if (term.includes("react")) return (
-      <svg width="14" height="14" viewBox="0 0 841.9 595.3" style={{ marginRight: "4px" }}>
-        <g fill="none" stroke="#61DAFB" strokeWidth="58">
-          <ellipse rx="84" ry="24" transform="rotate(0)"/>
-          <ellipse rx="84" ry="24" transform="rotate(60)"/>
-          <ellipse rx="84" ry="24" transform="rotate(120)"/>
-        </g>
-        <circle cx="0" cy="0" r="17" fill="#61DAFB"/>
-      </svg>
-    );
-    if (term.includes("vite")) return (
-      <svg width="14" height="14" viewBox="0 0 512 512" style={{ marginRight: "4px" }}>
-        <path d="M256 0L48 96l208 416L464 96z" fill="url(#viteGrad)"/>
-        <defs>
-          <linearGradient id="viteGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#BD34FE" />
-            <stop offset="100%" stopColor="#41B883" />
-          </linearGradient>
-        </defs>
-      </svg>
-    );
-    if (term.includes("python")) return (
-      <svg width="14" height="14" viewBox="0 0 110 110" style={{ marginRight: "4px" }}>
-        <path d="M55 2c-15.3 0-24 1.4-27 4.2C24.4 9.5 24 16 24 24h31v3h-34c-6.8 0-12 1.4-14 3.7C5 33 5 40 5 48.7c0 8.7 0 15.6 2 18 2 2.3 7 3.7 14 3.7h9v-11c0-7.8 7-14.8 14.8-14.8h21c7.8 0 14.8-7 14.8-14.8V23c0-7.8-6.2-13.8-14-15.8C63.6 2.3 58 2 55 2z" fill="#3776AB"/>
-        <path d="M55 108c15.3 0 24-1.4 27-4.2 3.6-3.3 4-9.8 4-17.8H55v-3h34c6.8 0 12-1.4 14-3.7 2-2.3 2-9.3 2-18 0-8.7 0-15.6-2-18-2-2.3-7-3.7-14-3.7h-9v11c0 7.8-7 14.8-14.8 14.8h-21C41.4 64.4 34.4 71.4 34.4 79.2v11c0 7.8 6.2 13.8 14 15.8 3.2 1.8 8.8 2 11.8 2z" fill="#FFE873"/>
-      </svg>
-    );
-    if (term.includes("node")) return (
-      <svg width="14" height="14" viewBox="0 0 256 256" style={{ marginRight: "4px" }}>
-        <path d="M128 0L24 60v120l104 60 104-60V60z" fill="#339933" />
-      </svg>
-    );
-    if (term.includes("git")) return (
-      <svg width="14" height="14" viewBox="0 0 100 100" style={{ marginRight: "4px" }}>
-        <path d="M92 44.5L55.5 8c-3-3-8-3-11 0L33 19.5l11.5 11.5c3.2-1 7 .2 9.5 2.8 2.5 2.5 3.8 6.2 2.8 9.5l11.5 11.5c3.3-1 7 .2 9.5 2.8 3.6 3.6 3.6 9.5 0 13.1-3.6 3.6-9.5 3.6-13.1 0-2.8-2.8-3.8-6.8-2.8-10.2L51 49c-1 3.2-4.2 5.5-7.7 5.5-4.5 0-8-3.5-8-8 0-3.5 2.3-6.7 5.5-7.7v-12L39.3 25l-27.5 27.5c-3 3-3 8 0 11l36.5 36.5c3 3 8 3 11 0l33-33c3-3.2 3-8.2-.3-12.5z" fill="#F05032" />
-      </svg>
-    );
-    if (term.includes("claude")) return (
-      <svg width="14" height="14" viewBox="0 0 256 256" style={{ marginRight: "4px" }}>
-        <path d="M128 0c70.7 0 128 57.3 128 128s-57.3 128-128 128S0 198.7 0 128 57.3 0 128 0z" fill="#D97706" />
-      </svg>
-    );
-    return <span>✦</span>;
-  };
 
   const categories = {
     tools: {
@@ -735,7 +613,9 @@ function ToolboxSection({ theme }) {
       color: '#FCFAF2',
       boxShadow: "0 4px 20px rgba(0,0,0,0.03)",
       display: "flex",
-      flexDirection: "column"
+      flexDirection: "column",
+      height: "400px",
+      overflow: "hidden"
     }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 20, flexWrap: "wrap", gap: 10 }}>
         <h3 style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: 2, color: '#FCFAF2', opacity: 0.5, margin: 0, fontFamily: "var(--font-body)", fontWeight: 700 }}>
@@ -786,7 +666,6 @@ function ToolboxSection({ theme }) {
               animation: "about-fadeUp 0.3s ease both"
             }}
           >
-            {getToolLogo(item)}
             {item}
           </div>
         ))}
@@ -1055,26 +934,49 @@ export default function AboutMe({ theme, onClose }) {
           <ProfileIntroduction theme={invertedTheme} />
         </div>
 
-        {/* Timeline block */}
-        <div className="about-section-reveal" style={{ marginBottom: "32px" }}>
-          <Timeline theme={invertedTheme} />
+        {/* Primary Dashboard Grid (Top Row) */}
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(290px, 1fr))",
+          gap: "16px",
+          width: "100%",
+          marginBottom: "16px"
+        }}>
+          <div className="about-section-reveal">
+            <Timeline theme={invertedTheme} />
+          </div>
+          <div className="about-section-reveal">
+            <ToolboxSection theme={invertedTheme} />
+          </div>
         </div>
 
-        {/* Secondary Dashboard Grid */}
+        {/* Secondary Dashboard Grid (Bottom Row) */}
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(290px, 1fr))",
+          gap: "16px",
+          width: "100%",
+          marginBottom: "16px"
+        }}>
+          <div className="about-section-reveal">
+            <TruthsGame theme={invertedTheme} />
+          </div>
+          <div className="about-section-reveal">
+            <VisualGalleryCard theme={invertedTheme} />
+          </div>
+        </div>
+
+        {/* Tertiary Dashboard Grid (Third Row) */}
         <div style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(290px, 1fr))",
           gap: "16px",
           width: "100%"
         }}>
-          <div className="about-section-reveal" style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            <TruthsGame theme={invertedTheme} />
+          <div className="about-section-reveal">
             <LanguagesToggle theme={invertedTheme} />
           </div>
-
-          <div className="about-section-reveal" style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            <ToolboxSection theme={invertedTheme} />
-            <VisualGalleryCard theme={invertedTheme} />
+          <div className="about-section-reveal">
             <QuoteCard theme={invertedTheme} />
           </div>
         </div>
@@ -1086,7 +988,7 @@ export default function AboutMe({ theme, onClose }) {
 
         {/* Brands Section */}
         <div className="about-section-reveal" style={{ marginTop: "20px", marginBottom: "40px" }}>
-          <BrandsSection theme={invertedTheme} />
+          <BrandsSection theme={theme} />
         </div>
 
       </div>
