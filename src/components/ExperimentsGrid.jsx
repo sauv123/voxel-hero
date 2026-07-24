@@ -745,7 +745,7 @@ export default function ExperimentsGrid({ theme, disableScrollTrigger }) {
       ref={sectionRef} 
       className="experiments-section-modern" 
       style={{ 
-        backgroundColor: '#FCFAF2',
+        backgroundColor: '#FFFFFF',
         padding: disableScrollTrigger ? '20px 0 0 0' : undefined 
       }}
     >
@@ -756,7 +756,7 @@ export default function ExperimentsGrid({ theme, disableScrollTrigger }) {
           className={`bento-custom-cursor ${cursorActive ? 'active' : ''}`}
           style={{
             backgroundColor: theme?.text || '#0d0d0d',
-            color: '#FCFAF2',
+            color: '#FFFFFF',
             border: `2px solid ${theme?.text || '#0d0d0d'}`,
           }}
         >
