@@ -239,7 +239,7 @@ const EXPERIMENTS = [
     video: '/works/mosaic.mp4',
     size: 'hero',
     link: 'https://mosaichain.netlify.app',
-    ctaText: '⚡ LAUNCH LIVE MOSAIC',
+    liveCta: '⚡ LAUNCH LIVE BLOCKCHAIN MOSAIC',
     description: 'A live, generative art painting and audio engine that visualizes real-time Ethereum blockchain transaction patterns, block congestion, and whale alerts.',
     whoItsFor: 'Web3 builders, crypto enthusiasts, generative art collectors, and digital galleries seeking a physical or virtual installation representing the "pulse" of the internet\'s financial layer.',
     problem: 'Blockchain activity (swaps, NFT mints, high gas spikes, massive whale movements) is completely invisible to the naked eye. Users must look at dry hash blocks on Etherscan rather than experiencing the system\'s kinetic energy.',
@@ -533,7 +533,7 @@ const ContextDrawer = ({ item, onClose, theme }) => {
         )}
 
         {item.link && (
-          <div style={{ marginTop: '32px', paddingTop: '20px', borderTop: '1px solid rgba(0,0,0,0.08)' }}>
+          <div style={{ marginTop: '36px', paddingTop: '24px', borderTop: '1px solid rgba(0,0,0,0.1)' }}>
             <a
               href={item.link}
               target="_blank"
@@ -543,23 +543,23 @@ const ContextDrawer = ({ item, onClose, theme }) => {
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: '10px',
+                gap: '12px',
                 width: '100%',
-                padding: '16px 24px',
+                padding: '18px 28px',
                 backgroundColor: '#0d0d0d',
                 color: '#ffffff',
-                borderRadius: '14px',
+                borderRadius: '16px',
                 fontFamily: 'var(--font-heading)',
-                fontSize: '13px',
-                fontWeight: 700,
+                fontSize: '14px',
+                fontWeight: 900,
                 letterSpacing: '0.08em',
                 textDecoration: 'none',
-                boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+                boxShadow: '0 12px 32px rgba(0,0,0,0.25)',
                 transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
                 textTransform: 'uppercase'
               }}
             >
-              {item.ctaText || '⚡ LAUNCH LIVE PROJECT'} ➔
+              {item.liveCta || item.ctaText || '⚡ VIEW IT LIVE'} ➔
             </a>
           </div>
         )}
@@ -622,11 +622,7 @@ function BentoCard({ item, theme, setCursorActive, disableScrollTrigger, onOpenD
   };
 
   const handleCardClick = () => {
-    if (item.link) {
-      window.open(item.link, '_blank');
-    } else {
-      if (onOpenDrawer) onOpenDrawer(item);
-    }
+    if (onOpenDrawer) onOpenDrawer(item);
   };
 
   return (
