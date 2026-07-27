@@ -5,7 +5,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 import Footer from './Footer';
-
 import { PROJECTS } from '../cms/projects';
 
 export default function InteractiveProjects({ theme, onProjectSelect }) {
@@ -45,7 +44,6 @@ export default function InteractiveProjects({ theme, onProjectSelect }) {
             gsap.to(tab, { height: 40, y: 0, duration: 0.4, ease: 'power2.out' });
           });
           tab.addEventListener('click', (e) => {
-            // Prevent the folder click from triggering if they click the tab
             e.stopPropagation();
             document.querySelector('.gallery-overlay')?.scrollTo({
               top: wrapper.offsetTop - 40,
@@ -54,47 +52,6 @@ export default function InteractiveProjects({ theme, onProjectSelect }) {
           });
         }
       });
-
-      // Custom Cursor Logic
-      const cursor = document.querySelector('.f-custom-cursor');
-      const cursorText = document.querySelector('.f-custom-cursor-text');
-      const cursorCta = document.querySelector('.f-custom-cursor-cta');
-      
-      gsap.set(cursor, { xPercent: -50, yPercent: -50 });
-      const xSet = gsap.quickSetter(cursor, "x", "px");
-      const ySet = gsap.quickSetter(cursor, "y", "px");
-
-      window.addEventListener('mousemove', (e) => {
-        xSet(e.clientX);
-        ySet(e.clientY);
-      });
-
-      const folderContents = gsap.utils.toArray('.folder-content');
-      folderContents.forEach(content => {
-        content.addEventListener('mouseenter', (e) => {
-          const bg = e.currentTarget.dataset.txt;
-          const txt = e.currentTarget.dataset.bg;
-          const cta = e.currentTarget.dataset.cta;
-          
-          cursorText.innerText = cta;
-          cursorCta.innerText = "VIEW NOW";
-          gsap.to(cursorCta, { color: bg, backgroundColor: txt, duration: 0 });
-
-          gsap.to(cursor, { 
-            scale: 1, 
-            autoAlpha: 1, 
-            backgroundColor: bg, 
-            color: txt, 
-            duration: 0.4, 
-            ease: 'back.out(1.5)' 
-          });
-        });
-
-        content.addEventListener('mouseleave', () => {
-          gsap.to(cursor, { scale: 0, autoAlpha: 0, duration: 0.3, ease: 'power2.out' });
-        });
-      });
-
     }, containerRef);
 
     return () => ctx.revert();
@@ -102,13 +59,6 @@ export default function InteractiveProjects({ theme, onProjectSelect }) {
 
   return (
     <div className="illustrative-work-container" ref={containerRef}>
-      
-      {/* GLOBAL CUSTOM CURSOR */}
-      <div className="f-custom-cursor">
-        <span className="f-custom-cursor-text"></span>
-        <div className="f-custom-cursor-cta"></div>
-      </div>
-
       {/* HERO */}
       <section className="f-hero">
         <div className="paper-texture"></div>
@@ -133,14 +83,14 @@ export default function InteractiveProjects({ theme, onProjectSelect }) {
         <div key={proj.id} className={`folder-wrapper nr-0${i+1}`} style={{ '--bg': proj.bgColor, '--txt': proj.textColor }}>
           
           {/* STAGGERED TAB */}
-          <div className="fn-tab" style={{ left: `${i * 20}%`, width: '20%' }}>
+          <div className="fn-tab magnetic" style={{ left: `${i * 20}%`, width: '20%' }}>
             <span className="fn-tab-label">{proj.name}</span>
             <span className="fn-tab-id mobile-only">{proj.id}</span>
           </div>
 
           {/* FOLDER BODY */}
           <div 
-            className="folder-content" 
+            className="folder-content magnetic" 
             data-bg={proj.bgColor} 
             data-txt={proj.textColor} 
             data-title={proj.title}

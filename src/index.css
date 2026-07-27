@@ -61,7 +61,7 @@ body {
 
 /* ─── Main headline ─────────────────────────────── */
 .hero-title {
-  font-family: var(--font-heading);
+  font-family: var(--font-body);
   font-weight: 700;
   /* Minimalistic, smaller to avoid overlapping the character */
   font-size: clamp(1.5rem, 3vw, 2.8rem);
@@ -2814,5 +2814,12 @@ body {
 @media (min-width: 769px) {
   .hamburger-container {
     display: none !important;
+  }
+}
+
+/* Custom Cursor Override */
+@media (hover: hover) and (pointer: fine) {
+  *, *::before, *::after {
+    cursor: none !important;
   }
 }

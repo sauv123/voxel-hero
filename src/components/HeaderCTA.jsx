@@ -9,6 +9,7 @@ export default function HeaderCTA({ theme }) {
     const safeTheme = theme || { bg: '#39FF14', text: '#000' };
     const accentColor = (safeTheme.bg === '#0e0e0e' || safeTheme.bg === '#000' || safeTheme.bg === '#111') ? safeTheme.text : safeTheme.bg;
 
+
     const ctaTrigger = useRef();
     const emojiCircle = useRef();
     const progressBtn = useRef();
@@ -39,45 +40,18 @@ export default function HeaderCTA({ theme }) {
 
     // Scroll Progress
     useEffect(() => {
-        const fill = progressFill.current;
-        const btn = progressBtn.current;
-        
-        const handleScroll = (e) => {
-            const target = e.target;
-            let scrollY = 0;
-            let scrollMax = 1;
-
-            if (target === document || target === document.documentElement) {
-                scrollY = window.scrollY;
-                scrollMax = document.documentElement.scrollHeight - window.innerHeight;
-            } else if (target.scrollHeight > target.clientHeight && target.clientHeight >= window.innerHeight * 0.9) {
-                scrollY = target.scrollTop;
-                scrollMax = target.scrollHeight - target.clientHeight;
-            } else {
-                return;
-            }
-
-            if (scrollMax <= 0) scrollMax = 1;
-            const progress = Math.min(1, Math.max(0, scrollY / scrollMax));
-            
-            gsap.to(fill, {
-                width: `${progress * 100}%`,
-                duration: 0.2,
-                ease: "power2.out",
-                overwrite: "auto"
+        let ctx = gsap.context(() => {
+            ScrollTrigger.create({
+                trigger: document.body,
+                start: "top top",
+                end: "bottom bottom",
+                scrub: 0.1,
+                onUpdate: (self) => {
+                    gsap.set(progressFill.current, { scaleX: self.progress });
+                }
             });
-            
-            if (progress > 0.5) {
-                btn.classList.add('dark-text');
-            } else {
-                btn.classList.remove('dark-text');
-            }
-        };
-
-        window.addEventListener('scroll', handleScroll, true);
-        handleScroll({ target: document }); // Initial call to set correct progress on mount
-        
-        return () => window.removeEventListener('scroll', handleScroll, true);
+        });
+        return () => ctx.revert();
     }, []);
 
     // Modal Animations
@@ -223,11 +197,14 @@ export default function HeaderCTA({ theme }) {
             <div 
               className="header-bar" 
               style={{ 
-                transition: 'opacity 0.4s' 
+                transition: 'opacity 0.4s',
+                display: 'flex',
+                gap: '12px',
+                alignItems: 'center'
               }}
             >
                 <div 
-                    className="cta-wrapper" 
+                    className="cta-wrapper magnetic" 
                     ref={ctaTrigger}
                     role="button"
                     tabIndex={0}

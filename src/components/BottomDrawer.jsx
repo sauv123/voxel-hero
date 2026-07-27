@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import gsap from 'gsap';
-// Voxel imports removed
 
 export default function BottomDrawer({ theme, activeNav, navigateWithTransition }) {
   const [isOpen, setIsOpen] = useState(false);

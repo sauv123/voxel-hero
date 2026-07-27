@@ -1,0 +1,46 @@
+.sotd-cursor-wrapper {
+  pointer-events: none;
+  z-index: 99999999;
+}
+
+.sotd-cursor-outer,
+.sotd-cursor-dot,
+.sotd-cursor-ripple {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 99999999;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  will-change: transform, opacity, border-color;
+}
+
+/* Crisp Outer Trailing Ring */
+.sotd-cursor-outer {
+  width: 36px;
+  height: 36px;
+  border: 1.25px solid rgba(255, 255, 255, 0.35);
+  background-color: transparent;
+  mix-blend-mode: difference;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.08);
+}
+
+/* Razor-Sharp Core Dot */
+.sotd-cursor-dot {
+  width: 4px;
+  height: 4px;
+  background-color: #ffffff;
+  mix-blend-mode: difference;
+}
+
+/* Tactile Click Shockwave */
+.sotd-cursor-ripple {
+  width: 40px;
+  height: 40px;
+  border: 1.5px solid #ffffff;
+  background-color: rgba(255, 255, 255, 0.1);
+  mix-blend-mode: difference;
+  opacity: 0;
+  pointer-events: none;
+}

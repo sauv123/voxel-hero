@@ -238,6 +238,8 @@ const EXPERIMENTS = [
     tags: ['Web3', 'GenerativeArt', 'WebAudio', 'LiveVisualization', 'React'],
     video: '/works/mosaic.mp4',
     size: 'hero',
+    link: 'https://mosaichain.netlify.app',
+    ctaText: '⚡ LAUNCH LIVE MOSAIC',
     description: 'A live, generative art painting and audio engine that visualizes real-time Ethereum blockchain transaction patterns, block congestion, and whale alerts.',
     whoItsFor: 'Web3 builders, crypto enthusiasts, generative art collectors, and digital galleries seeking a physical or virtual installation representing the "pulse" of the internet\'s financial layer.',
     problem: 'Blockchain activity (swaps, NFT mints, high gas spikes, massive whale movements) is completely invisible to the naked eye. Users must look at dry hash blocks on Etherscan rather than experiencing the system\'s kinetic energy.',
@@ -527,6 +529,38 @@ const ContextDrawer = ({ item, onClose, theme }) => {
                 );
               })}
             </ul>
+          </div>
+        )}
+
+        {item.link && (
+          <div style={{ marginTop: '32px', paddingTop: '20px', borderTop: '1px solid rgba(0,0,0,0.08)' }}>
+            <a
+              href={item.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="magnetic"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '10px',
+                width: '100%',
+                padding: '16px 24px',
+                backgroundColor: '#0d0d0d',
+                color: '#ffffff',
+                borderRadius: '14px',
+                fontFamily: 'var(--font-heading)',
+                fontSize: '13px',
+                fontWeight: 700,
+                letterSpacing: '0.08em',
+                textDecoration: 'none',
+                boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+                transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
+                textTransform: 'uppercase'
+              }}
+            >
+              {item.ctaText || '⚡ LAUNCH LIVE PROJECT'} ➔
+            </a>
           </div>
         )}
       </div>

@@ -7,6 +7,7 @@ import { AdaptiveDpr, Environment, PerformanceMonitor } from '@react-three/drei'
 import HeaderCTA from './components/HeaderCTA';
 import InteractiveProjects from './components/InteractiveProjects';
 import Preloader from './components/Preloader';
+import CustomCursor from './components/CustomCursor';
 // Lazy loaded components
 import BottomDrawer from './components/BottomDrawer';
 import Footer from './components/Footer';
@@ -172,7 +173,6 @@ export default function App() {
     if (typeof window !== 'undefined') {
       return sessionStorage.getItem('visited') === 'true';
     }
-    return false;
   });
   const theme    = THEMES[activeChar];
   const invertedTheme = { bg: '#FFFFFF', text: '#050505', brand: theme.brand };
@@ -404,6 +404,11 @@ export default function App() {
         <meta property="og:url" content={`https://sauveersinha.com/${activePage === 'home' ? '' : activePage}`} />
         <link rel="canonical" href={`https://sauveersinha.com/${activePage === 'home' ? '' : activePage}`} />
       </Helmet>
+      
+      {/* ── Custom Cursor ── */}
+      <CustomCursor theme={theme} />
+      <AIVoiceSubtitle theme={theme} />
+
       <div 
         ref={transitionRef}
         style={{
@@ -411,8 +416,7 @@ export default function App() {
           backgroundColor: theme.text, zIndex: 9999999, transform: "translateY(100%)",
           display: "flex", alignItems: "center", justifyContent: "center",
         }}
-      >
-      </div>
+      ></div>
 
       <main>
 
@@ -455,7 +459,7 @@ export default function App() {
           </div>
 
           {/* Main large headline (now holding the product statement) */}
-          <h1 className="hero-title" style={{ color: theme.text, textTransform: 'none' }}>
+          <h1 className="hero-title" style={{ fontFamily: "var(--font-body)", color: theme.text, textTransform: 'none' }}>
             <span className="line-wrap" style={{ fontWeight: 400, opacity: 0.8, display: 'block' }}>
               <SplitChars text="I help people" />
             </span>
