@@ -13,6 +13,18 @@ export default function WorkFolder({ theme, onOpen }) {
   const wordRow = useRef();
 
   useEffect(() => {
+    // Background scrub to white for this section
+    ScrollTrigger.create({
+      trigger: workSection.current,
+      start: "top 100%",
+      end: "top 20%",
+      scrub: 1.5,
+      onUpdate: (self) => {
+        const blendedColor = gsap.utils.interpolate('#050505', '#FFFFFF', self.progress);
+        gsap.set(document.body, { backgroundColor: blendedColor });
+      }
+    });
+
     // Scroll Entrance
     gsap.fromTo(wordChars.current, 
       { y: "100%", skewY: 8, opacity: 0 },
