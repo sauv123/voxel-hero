@@ -407,7 +407,6 @@ export default function App() {
       
       {/* ── Custom Cursor ── */}
       <CustomCursor theme={theme} />
-      <AIVoiceSubtitle theme={theme} />
 
       <div 
         ref={transitionRef}
