@@ -440,7 +440,7 @@ const ContextDrawer = ({ item, onClose, theme }) => {
         {item.title}
       </h3>
 
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '32px' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: item.link ? '20px' : '32px' }}>
         {item.techStack?.map(tech => (
           <span key={tech} style={{
             background: 'rgba(0,0,0,0.05)', padding: '4px 10px', borderRadius: '4px',
@@ -450,6 +450,38 @@ const ContextDrawer = ({ item, onClose, theme }) => {
           </span>
         ))}
       </div>
+
+      {item.link && (
+        <div style={{ marginBottom: '28px' }}>
+          <a
+            href={item.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="magnetic"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '12px',
+              width: '100%',
+              padding: '18px 28px',
+              backgroundColor: '#0d0d0d',
+              color: '#ffffff',
+              borderRadius: '16px',
+              fontFamily: 'var(--font-heading)',
+              fontSize: '14px',
+              fontWeight: 900,
+              letterSpacing: '0.08em',
+              textDecoration: 'none',
+              boxShadow: '0 12px 32px rgba(0,0,0,0.25)',
+              transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
+              textTransform: 'uppercase'
+            }}
+          >
+            {item.liveCta || item.ctaText || '⚡ VIEW IT LIVE'} ➔
+          </a>
+        </div>
+      )}
 
       <div style={{ flex: 1, paddingBottom: '40px' }}>
         <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '14px', fontWeight: 700, color: '#0d0d0d', marginBottom: '8px', opacity: 0.5, textTransform: 'uppercase' }}>
@@ -529,38 +561,6 @@ const ContextDrawer = ({ item, onClose, theme }) => {
                 );
               })}
             </ul>
-          </div>
-        )}
-
-        {item.link && (
-          <div style={{ marginTop: '36px', paddingTop: '24px', borderTop: '1px solid rgba(0,0,0,0.1)' }}>
-            <a
-              href={item.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="magnetic"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '12px',
-                width: '100%',
-                padding: '18px 28px',
-                backgroundColor: '#0d0d0d',
-                color: '#ffffff',
-                borderRadius: '16px',
-                fontFamily: 'var(--font-heading)',
-                fontSize: '14px',
-                fontWeight: 900,
-                letterSpacing: '0.08em',
-                textDecoration: 'none',
-                boxShadow: '0 12px 32px rgba(0,0,0,0.25)',
-                transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
-                textTransform: 'uppercase'
-              }}
-            >
-              {item.liveCta || item.ctaText || '⚡ VIEW IT LIVE'} ➔
-            </a>
           </div>
         )}
       </div>
