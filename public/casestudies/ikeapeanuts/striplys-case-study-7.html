@@ -1,0 +1,740 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Striplys Window Talks: IKEA × Peanuts Case Study</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Poppins:wght@700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Striplys Palette - synthesized from IKEA x Peanuts */
+      --bg: oklch(97% 0.015 80);        /* Warm Paper / Cream */
+      --surface: oklch(100% 0 0);      /* Pure White */
+      --fg: oklch(20% 0.02 240);       /* Ink Black / Deep Charcoal */
+      --muted: oklch(65% 0.02 80);     /* Warm Grey */
+      --border: oklch(20% 0.02 240);   /* Solid Ink Line */
+      --accent: oklch(55% 0.18 250);   /* IKEA Blue */
+      --accent-soft: oklch(88% 0.15 90); /* Peanuts Yellow */
+      
+      --radius: 12px;
+      --ink-weight: 2.5px;
+      --max-width: 760px;
+      
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; }
+    
+    @keyframes boil {
+      0% { border-radius: 12px 14px 11px 13px / 13px 11px 14px 12px; }
+      50% { border-radius: 13px 11px 14px 12px / 12px 14px 11px 13px; }
+      100% { border-radius: 12px 14px 11px 13px / 13px 11px 14px 12px; }
+    }
+
+    @keyframes pulse-grid {
+      0%, 100% { opacity: 0.8; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.05); }
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'Montserrat', sans-serif;
+      line-height: 1.7;
+      font-size: 18px;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* Paper Texture Overlay */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      opacity: 0.04;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    .wrap {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 40px;
+      position: relative;
+      background-image: radial-gradient(var(--border) 0.5px, transparent 0.5px);
+      background-size: 40px 40px;
+      background-position: center top;
+    }
+
+    /* Header & Navigation */
+    nav.top {
+      padding: 60px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .logo {
+      font-weight: 800;
+      border: var(--ink-weight) solid var(--border);
+      padding: 6px 16px;
+      background: var(--surface);
+      box-shadow: 4px 4px 0px var(--border);
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      cursor: default;
+    }
+
+    .logo:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0px var(--border);
+    }
+
+    /* Article Header */
+    header.masthead {
+      padding: 40px 0 100px;
+      text-align: left;
+    }
+
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--accent);
+      margin-bottom: 24px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .eyebrow::before {
+      content: "●";
+      font-size: 8px;
+    }
+
+    h1 {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800;
+      font-size: clamp(48px, 10vw, 84px);
+      line-height: 0.95;
+      margin: 0 0 32px;
+      letter-spacing: -0.04em;
+    }
+
+    .deck {
+      font-size: 24px;
+      color: var(--fg);
+      max-width: 640px;
+      margin: 0 0 48px;
+      line-height: 1.35;
+      font-weight: 600;
+    }
+
+    .byline {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      text-transform: uppercase;
+    }
+
+    .avatar {
+      width: 48px;
+      height: 48px;
+      background: var(--accent-soft);
+      border: var(--ink-weight) solid var(--border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-family: 'Poppins', sans-serif;
+      animation: boil 3s infinite ease-in-out;
+    }
+
+    /* Hero Section */
+    .hero-container {
+      margin-bottom: 120px;
+      position: relative;
+    }
+
+    .hero-image {
+      aspect-ratio: 16/9;
+      background: var(--surface);
+      border: var(--ink-weight) solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 12px 12px 0px var(--border);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+
+    .hero-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(0.2) contrast(1.1);
+      transition: filter 0.4s ease, transform 0.4s ease;
+    }
+
+    .hero-image:hover img {
+      filter: grayscale(0) contrast(1);
+      transform: scale(1.02);
+    }
+
+    .hero-caption {
+      margin-top: 32px;
+      font-size: 15px;
+      color: var(--muted);
+      text-align: left;
+      font-family: var(--font-mono);
+      display: flex;
+      gap: 12px;
+    }
+
+    .hero-caption::before {
+      content: "FIG. 01";
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    /* Content Typography */
+    section {
+      margin-bottom: 120px;
+    }
+
+    h2 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 36px;
+      font-weight: 800;
+      margin: 0 0 40px;
+      letter-spacing: -0.03em;
+      position: relative;
+      display: inline-block;
+      text-transform: uppercase;
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: 2px;
+      left: 0;
+      width: 110%;
+      height: 12px;
+      background: var(--accent-soft);
+      z-index: -1;
+      transform: rotate(-1deg);
+    }
+
+    h3 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 26px;
+      font-weight: 700;
+      margin: 60px 0 24px;
+      letter-spacing: -0.02em;
+    }
+
+    p {
+      margin: 0 0 32px;
+    }
+
+    strong {
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    ul, ol {
+      margin: 0 0 40px;
+      padding-left: 0;
+      list-style: none;
+    }
+
+    li {
+      margin-bottom: 16px;
+      padding-left: 24px;
+      position: relative;
+    }
+
+    li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: 800;
+    }
+
+    /* Pull Quotes / Speech Bubbles */
+    blockquote.speech-bubble {
+      margin: 80px 0;
+      padding: 50px;
+      background: var(--surface);
+      border: var(--ink-weight) solid var(--border);
+      border-radius: 40px;
+      position: relative;
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.2;
+      font-family: 'Poppins', sans-serif;
+      box-shadow: 10px 10px 0px var(--accent-soft);
+      animation: boil 5s infinite ease-in-out;
+    }
+
+    blockquote.speech-bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -32px;
+      left: 80px;
+      width: 40px;
+      height: 40px;
+      background: var(--surface);
+      border-right: var(--ink-weight) solid var(--border);
+      border-bottom: var(--ink-weight) solid var(--border);
+      transform: rotate(45deg);
+      box-shadow: 6px 6px 0px var(--accent-soft);
+    }
+
+    .core-insight-box {
+      background: var(--accent);
+      color: var(--surface);
+      border: var(--ink-weight) solid var(--border);
+      padding: 48px;
+      margin: 60px 0;
+      border-radius: 4px;
+      box-shadow: 12px 12px 0px var(--border);
+      position: relative;
+      transition: transform 0.3s ease;
+    }
+
+    .core-insight-box:hover {
+      transform: translate(-4px, -4px);
+    }
+
+    .core-insight-box h3 {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      text-transform: uppercase;
+      margin: 0 0 24px;
+      color: var(--accent-soft);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .core-insight-box h3::after {
+      content: "KEY_INSIGHT.LOG";
+    }
+
+    .core-insight-box p {
+      font-family: 'Poppins', sans-serif;
+      font-size: 28px;
+      font-weight: 800;
+      line-height: 1.25;
+      margin: 0;
+      letter-spacing: -0.02em;
+    }
+
+    /* Figures & Panels */
+    figure {
+      margin: 60px -80px;
+      padding: 0;
+      background: var(--surface);
+      border: var(--ink-weight) solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 10px 10px 0px var(--border);
+      overflow: hidden;
+      position: relative;
+    }
+
+    figure img {
+      width: 100%;
+      display: block;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    figure:hover img {
+      transform: scale(1.03);
+    }
+
+    figcaption {
+      padding: 24px 40px;
+      font-size: 14px;
+      color: var(--muted);
+      text-align: left;
+      font-family: var(--font-mono);
+      border-top: var(--ink-weight) solid var(--border);
+      background: var(--surface);
+      display: flex;
+      gap: 16px;
+    }
+
+    figcaption::before {
+      content: "DATA";
+      font-weight: 800;
+      color: var(--accent);
+    }
+
+    .panel-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin: 48px 0;
+    }
+
+    .panel {
+      border: var(--ink-weight) solid var(--border);
+      padding: 32px;
+      background: var(--surface);
+      border-radius: 8px;
+      box-shadow: 6px 6px 0px var(--border);
+      transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+
+    .panel:hover {
+      transform: translate(-4px, -4px);
+      box-shadow: 10px 10px 0px var(--accent-soft);
+    }
+
+    .panel h4 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      margin: 0 0 16px;
+      color: var(--fg);
+      text-transform: uppercase;
+    }
+
+    /* Gallery Styles */
+    .research-gallery {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin: 80px -80px;
+    }
+
+    .gallery-item {
+      border: var(--ink-weight) solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--surface);
+      box-shadow: 8px 8px 0px var(--border);
+      position: relative;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      display: block;
+    }
+
+    .gallery-caption {
+      padding: 16px;
+      font-size: 11px;
+      font-family: var(--font-mono);
+      border-top: var(--ink-weight) solid var(--border);
+      color: var(--muted);
+      background: var(--surface);
+      text-transform: uppercase;
+    }
+
+    /* Card Item Style */
+    .step-card {
+      background: var(--surface);
+      border: var(--ink-weight) solid var(--border);
+      padding: 32px;
+      margin-bottom: 48px;
+      border-radius: 8px;
+      box-shadow: 6px 6px 0px var(--accent);
+      position: relative;
+    }
+
+    .step-number {
+      font-family: var(--font-mono);
+      font-weight: 800;
+      font-size: 12px;
+      color: var(--accent);
+      margin-bottom: 12px;
+      display: block;
+      border-bottom: 1px dashed var(--accent);
+      padding-bottom: 8px;
+    }
+
+    /* Flow Media Framing */
+    .flow-media {
+      margin: 24px -32px -32px;
+      border-top: var(--ink-weight) solid var(--border);
+      background: var(--bg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .flow-media img {
+      width: 100%;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+
+    .step-card:hover .flow-media img {
+      transform: scale(1.05);
+    }
+
+    /* Striplys Window Visualization */
+    .window-viz {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      padding: 24px;
+      background: var(--border);
+      border-radius: 4px;
+      margin: 40px 0;
+    }
+
+    .viz-cell {
+      aspect-ratio: 1;
+      background: var(--surface);
+      opacity: 0.3;
+    }
+
+    .viz-cell.active {
+      background: var(--accent-soft);
+      opacity: 1;
+      animation: pulse-grid 2s infinite alternate ease-in-out;
+    }
+
+    /* Footer */
+    footer {
+      border-top: var(--ink-weight) solid var(--border);
+      padding: 100px 0;
+      margin-top: 120px;
+      text-align: center;
+      background: var(--surface);
+    }
+
+    .author-footer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .author-bio {
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 520px;
+      line-height: 1.6;
+    }
+
+    /* Annotation Labels */
+    .label-tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      background: var(--accent-soft);
+      padding: 2px 6px;
+      border: 1px solid var(--border);
+      position: absolute;
+      z-index: 5;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      figure, .research-gallery { margin-left: 0; margin-right: 0; }
+    }
+
+    @media (max-width: 768px) {
+      h1 { font-size: 52px; }
+      .wrap { padding: 0 24px; }
+      .research-gallery { grid-template-columns: 1fr; }
+      .panel-grid { grid-template-columns: 1fr; }
+      .core-insight-box { padding: 32px; }
+      .flow-media { margin-left: -24px; margin-right: -24px; margin-bottom: -24px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <nav class="top">
+      <div class="logo">STRIPLYS</div>
+      <div>PART. NO 012 / IKEA_CASE_01</div>
+    </nav>
+
+    <header class="masthead">
+      <div class="eyebrow">EXPERIENTIAL UX / NARRATIVE DESIGN</div>
+      <h1>Striplys Window Talks</h1>
+      <p class="deck">Designing an Emotional Podcast Experience Through an IKEA × Peanuts Collaboration.</p>
+      <div class="byline">
+        <div class="avatar">SS</div>
+        <span>ARCHIVE_ENTRY: MAY 14, 2026</span>
+      </div>
+    </header>
+
+    <div class="hero-container">
+      <div class="label-tag" style="top: -10px; left: 20px;">SYSTEM: ACTIVE</div>
+      <div class="hero-image">
+        <img src="mp5z2a1s-Screenshot-2026-05-14-at-10.59.50-PM.png" alt="Striplys Window Talks Hero">
+      </div>
+      <p class="hero-caption">The Striplys Window: A modular LED storytelling interface visualizing spoken memories through comic-strip animations.</p>
+    </div>
+
+    <section id="overview">
+      <h2>Overview</h2>
+      <p><strong>Striplys Window Talks</strong> is a conceptual experiential podcast designed as a collaboration between IKEA and Peanuts. The project reimagines IKEA stores as emotional storytelling environments where conversations about memory, comfort, identity, and home become immersive experiences.</p>
+    </section>
+
+    <section id="problem">
+      <h2>Problem Statement</h2>
+      <p>Modern retail experiences often prioritize product visibility over emotional connection. While IKEA creates inspiring physical environments, there is an opportunity to deepen the relationship between people and the idea of “home.”</p>
+      
+      <blockquote class="speech-bubble">
+        "How might IKEA transform retail space into a platform for storytelling, comfort, and human connection?"
+      </blockquote>
+    </section>
+
+    <section id="research">
+      <h2>Research & Insights</h2>
+      <p>Research into IKEA revealed themes of emotional comfort, simplicity, and togetherness. Simultaneously, Peanuts insights highlighted vulnerability, childhood nostalgia, and emotional honesty.</p>
+      
+      <div class="core-insight-box">
+        <h3>STRIPLYS_CORE_PRINCIPLE</h3>
+        <p>People do not emotionally remember products — they remember moments, feelings, and spaces connected to their lives.</p>
+      </div>
+
+      <div class="research-gallery">
+        <div class="gallery-item">
+          <div class="label-tag" style="top: 10px; left: 10px;">ID: MAP_01</div>
+          <img src="mp5z1aws-Screenshot-2026-05-14-at-10.59.05-PM.png" alt="Brand Value Mapping">
+          <div class="gallery-caption">Brand Research: Mapping overlapping emotional territories.</div>
+        </div>
+        <div class="gallery-item">
+          <div class="label-tag" style="top: 10px; left: 10px;">ID: ENV_01</div>
+          <img src="mp5z11js-Screenshot-2026-05-14-at-10.58.52-PM.png" alt="IKEA x Peanuts Environment">
+          <div class="gallery-caption">Spatial Mapping: Environment as a storytelling stage.</div>
+        </div>
+        <div class="gallery-item">
+          <div class="label-tag" style="top: 10px; left: 10px;">ID: JRN_01</div>
+          <img src="mp5z1hlt-Screenshot-2026-05-14-at-10.59.13-PM.png" alt="Spatial Storytelling Map">
+          <div class="gallery-caption">Journey Mapping: Emotional transitions in space.</div>
+        </div>
+        <div class="gallery-item">
+          <div class="label-tag" style="top: 10px; left: 10px;">ID: INT_01</div>
+          <img src="mp5z2a1s-Screenshot-2026-05-14-at-10.59.50-PM.png" alt="Interface Research">
+          <div class="gallery-caption">Interaction: The Striplys Window interface.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="implementation">
+      <h2>Implementation</h2>
+      
+      <div class="panel" style="background: var(--accent); color: var(--surface); border-radius: 4px; box-shadow: 12px 12px 0px var(--accent-soft); margin-bottom: 60px;">
+        <h4 style="color: var(--accent-soft);">The Solution</h4>
+        <p style="font-size: 22px; font-weight: 800; line-height: 1.3; margin: 0;">Striplys Window Talks — An Emotional Podcast Experience Inside IKEA</p>
+      </div>
+
+      <p>The solution was designed as a <strong>multi-sensory storytelling ecosystem</strong> that combines podcasting, spatial design, emotional interaction, and brand experience into one cohesive service.</p>
+
+      <div class="panel" style="background: var(--surface); border-style: dashed; border-color: var(--accent); margin-bottom: 60px;">
+        <h4>Core Concept: Homes as Emotional Archives</h4>
+        <p>Furniture, objects, lighting, and spaces quietly hold memories, routines, and identity. The solution explores these connections through intimate conversations staged inside IKEA environments.</p>
+        <ul style="margin: 0;">
+          <li>Real human storytelling (Authenticity)</li>
+          <li>Peanuts-inspired emotional warmth (Nostalgia)</li>
+          <li>IKEA’s philosophy of everyday living (Practicality)</li>
+        </ul>
+      </div>
+
+      <h3>Episode Flow</h3>
+      
+      <div class="step-card">
+        <span class="step-number">PHASE 01: WELCOME INTO THE SPACE</span>
+        <p>The guest enters a carefully designed IKEA room set treated as a lived-in emotional space: warm lighting, soft textiles, and minimal visual noise to lower emotional barriers.</p>
+        <div class="flow-media">
+          <img src="mpa6fqeb-Screenshot-2026-05-17-at-9.37.18-PM.png" alt="Welcome into the space">
+        </div>
+      </div>
+
+      <div class="step-card" style="box-shadow: 6px 6px 0px var(--accent-soft);">
+        <span class="step-number">PHASE 02: PEANUTS QUESTION CARDS</span>
+        <p>Reflective prompts like <em>"What space made you feel safest growing up?"</em> or <em>"What object in your home carries the most memory?"</em> create emotional accessibility and authentic storytelling.</p>
+        <div class="flow-media">
+          <img src="mpa6gxjd-Screenshot-2026-05-17-at-9.38.15-PM.png" alt="Peanuts Question Cards">
+        </div>
+      </div>
+
+      <div class="step-card">
+        <span class="step-number">PHASE 03: MAIN CONVERSATION</span>
+        <p>The host—designed as calm, empathetic, and subtly inspired by Peanuts characters such as Linus—facilitates a quiet living-room conversation rather than an aggressive interview.</p>
+        <div class="flow-media">
+          <img src="mpa6hniv-Screenshot-2026-05-17-at-9.38.49-PM.png" alt="Main conversation">
+        </div>
+      </div>
+
+      <h3>The Striplys Window</h3>
+      <p>The emotional centerpiece—a modular 4×4 LED storytelling installation. The name combines "Strip" (Peanuts) and "Lys" (Swedish for light).</p>
+      
+      <figure style="margin: 40px 0;">
+        <img src="mpa6jhkr-Screenshot-2026-05-17-at-9.40.15-PM.png" alt="Striplys Window Interface Capture">
+        <figcaption>THE_STRIPLYS_WINDOW: Real-time memory visualization system.</figcaption>
+      </figure>
+
+      <p>As guests share stories, the Window responds dynamically. If a guest speaks about childhood storms and building pillow forts, the window animates rain, blanket forts, and Snoopy-style illustrations in a poetic, comic-strip style.</p>
+      
+      <div class="panel" style="background: var(--bg); border-color: var(--border); margin-top: 40px;">
+        <h4>Why It Matters</h4>
+        <p>The Striplys Window transforms passive listening into visual storytelling. It creates a bridge between memory, imagination, and physical space, allowing audiences to experience the story visually and emotionally.</p>
+      </div>
+    </section>
+
+    <section id="results">
+      <h2>Results & Impact</h2>
+      <div class="panel-grid">
+        <div class="panel">
+          <h4>For IKEA</h4>
+          <p>Increased emotional brand loyalty, longer in-store engagement times, and enhanced experiential marketing opportunities.</p>
+        </div>
+        <div class="panel">
+          <h4>For Peanuts</h4>
+          <p>Renewed relevance for younger audiences and an expanded storytelling format integrated into modern lifestyle culture.</p>
+        </div>
+      </div>
+      <div class="panel" style="margin-top: 32px; border-left: 8px solid var(--accent);">
+        <h4>UX Impact</h4>
+        <p>The project expanded traditional UX thinking beyond screens into environmental storytelling, emotional interaction, sensory design, and narrative-based engagement systems.</p>
+      </div>
+    </section>
+
+    <section id="takeaways">
+      <h2>Key Takeaways</h2>
+      <blockquote class="speech-bubble">
+        "Designing for emotion is not decorative — it is functional and foundational to memorable user experiences."
+      </blockquote>
+      <p>The project reinforced that storytelling is a UX tool, physical spaces can become interactive interfaces, and multi-sensory experiences increase meaning. Brand collaborations work best through shared emotional values.</p>
+    </section>
+
+    <section id="reflection">
+      <h2>Final Reflection</h2>
+      <p>Striplys Window Talks became more than a podcast concept — it evolved into an exploration of how design can create comfort, nostalgia, and emotional connection in everyday spaces. It reinforced the belief that meaningful design is about how people feel, remember, and connect.</p>
+    </section>
+
+    <footer>
+      <div class="author-footer">
+        <div class="avatar">SS</div>
+        <p class="author-bio">Striplys Window Talks: An exploration of experiential UX and emotional storytelling at the intersection of IKEA and Peanuts.</p>
+        <p style="font-size: 11px; font-family: var(--font-mono); color: var(--muted);">© 2026 · CASE_STUDY_ARCHIVE · [EOF]</p>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

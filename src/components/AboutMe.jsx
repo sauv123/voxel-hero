@@ -66,7 +66,7 @@ function Timeline({ theme }) {
     let ctx = gsap.context(() => {
       const tl = gsap.timeline();
       
-      tl.fromTo(".timeline-line",
+      tl.fromTo(".timeline-line-bg",
         { scaleY: 0, transformOrigin: "top" },
         { scaleY: 1, duration: 1, ease: "power2.inOut" }
       )
@@ -85,6 +85,19 @@ function Timeline({ theme }) {
       const entries = gsap.utils.toArray(".timeline-entry");
       const scroller = containerRef.current;
       
+      // Animate the fill line on scroll
+      gsap.to(".timeline-line-fill", {
+        scaleY: 1,
+        ease: "none",
+        scrollTrigger: {
+          trigger: listRef.current,
+          scroller: scroller,
+          start: "top 50%",
+          end: "bottom 50%",
+          scrub: true
+        }
+      });
+      
       entries.forEach((entry, i) => {
         const dot = entry.querySelector(".timeline-dot");
         
@@ -102,9 +115,9 @@ function Timeline({ theme }) {
           }
         });
 
-        // Dot turns green as you scroll to it
+        // Dot turns brand color as you scroll to it
         gsap.to(dot, {
-          backgroundColor: "#4ade80",
+          backgroundColor: theme.brand,
           scrollTrigger: {
             trigger: entry,
             scroller: scroller,
@@ -143,8 +156,10 @@ function Timeline({ theme }) {
       </div>
       
       <div ref={listRef} style={{ position: "relative", paddingLeft: "48px", paddingRight: "24px" }}>
-        {/* Vertical line */}
-        <div className="timeline-line" style={{ position: "absolute", left: "30px", top: 0, bottom: "24px", width: "2px", background: "rgba(255,255,255,0.1)" }} />
+        {/* Vertical line background */}
+        <div className="timeline-line-bg" style={{ position: "absolute", left: "30px", top: 0, bottom: "24px", width: "2px", background: "rgba(255,255,255,0.1)" }} />
+        {/* Vertical line fill (animates on scroll) */}
+        <div className="timeline-line-fill" style={{ position: "absolute", left: "30px", top: 0, bottom: "24px", width: "2px", background: theme.brand, transformOrigin: "top", transform: "scaleY(0)" }} />
         
         {TIMELINE.map((entry, idx) => (
           <div key={entry.id} className="timeline-entry" style={{ position: "relative", marginBottom: "32px", willChange: "transform, opacity" }}>

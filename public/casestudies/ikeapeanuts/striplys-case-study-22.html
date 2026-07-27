@@ -1,0 +1,1103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Striplys Window Talks: IKEA × Peanuts Case Study</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Newsreader:ital,opsz,wght@8..72,400;8..72,700;1,8..72,400&family=JetBrains+Mono:wght@400;700&family=Gaegu:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: oklch(95% 0.025 90);
+      --surface: oklch(100% 0 0);
+      --fg: oklch(18% 0.02 250);
+      --muted: oklch(52% 0.015 250);
+      --border: oklch(18% 0.02 250);
+      --accent: oklch(52% 0.20 260);
+      --accent-warm: oklch(86% 0.14 90);
+
+      --font-hand: 'Gaegu', cursive;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-serif: 'Newsreader', Georgia, serif;
+      --font-sans: 'Inter', system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    @keyframes squiggle {
+      0%   { filter: url(#sq-0); }
+      25%  { filter: url(#sq-1); }
+      50%  { filter: url(#sq-2); }
+      75%  { filter: url(#sq-3); }
+      100% { filter: url(#sq-4); }
+    }
+
+    @keyframes wobble {
+      0%, 100% { transform: rotate(-0.5deg); }
+      50% { transform: rotate(0.5deg); }
+    }
+
+    .squiggle-on {
+      animation: squiggle 0.4s infinite;
+    }
+
+    .wobble-on {
+      animation: wobble 3s infinite ease-in-out;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-sans);
+      line-height: 1.65;
+      font-size: 18px;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    .wrap {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 60px;
+    }
+
+    nav.top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 56px 0 36px;
+      border-bottom: 3px solid var(--fg);
+      margin-bottom: 72px;
+    }
+
+    .logo-box {
+      border: 3px solid var(--fg);
+      padding: 6px 20px;
+      background: var(--surface);
+      font-family: var(--font-sans);
+      font-weight: 900;
+      font-size: 15px;
+      letter-spacing: -0.01em;
+      box-shadow: 6px 6px 0px var(--fg);
+      transform: rotate(-1deg);
+    }
+
+    .nav-code {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+    }
+
+    header.masthead {
+      padding: 0 0 80px;
+      max-width: 860px;
+      position: relative;
+    }
+
+    .eyebrow-hand {
+      font-family: var(--font-hand);
+      font-size: 22px;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-family: var(--font-sans);
+      font-weight: 900;
+      font-size: clamp(48px, 10vw, 100px);
+      line-height: 0.78;
+      letter-spacing: -0.05em;
+      margin: 0 0 32px;
+      color: var(--fg);
+      text-transform: uppercase;
+    }
+
+    .deck {
+      font-family: var(--font-serif);
+      font-size: 28px;
+      line-height: 1.2;
+      font-style: italic;
+      color: var(--fg);
+      max-width: 680px;
+    }
+
+    section {
+      margin-bottom: 140px;
+      position: relative;
+    }
+
+    h2 {
+      font-family: var(--font-hand);
+      font-size: 38px;
+      margin-bottom: 32px;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    h2::after {
+      content: "";
+      height: 2px;
+      flex: 1;
+      background: var(--fg);
+      opacity: 0.12;
+    }
+
+    h2 .section-num {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      font-weight: 400;
+      margin-right: 6px;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 48px;
+      margin-top: 24px;
+    }
+
+    .prose {
+      font-family: var(--font-serif);
+      font-size: 20px;
+      line-height: 1.6;
+      color: var(--fg);
+    }
+
+    .prose p {
+      margin-bottom: 20px;
+    }
+
+    .prose strong {
+      font-family: var(--font-sans);
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      font-size: 0.85em;
+      letter-spacing: 0.02em;
+    }
+
+    .prose ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .prose li {
+      padding: 10px 0 10px 28px;
+      position: relative;
+      border-bottom: 1px solid oklch(80% 0.01 250);
+    }
+
+    .prose li:last-child {
+      border-bottom: none;
+    }
+
+    .prose li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .spec-card {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      padding: 28px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      line-height: 1.9;
+      box-shadow: 8px 8px 0px var(--accent);
+      position: relative;
+    }
+
+    .spec-card b {
+      display: block;
+      font-family: var(--font-sans);
+      font-weight: 700;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--fg);
+      margin-bottom: 10px;
+    }
+
+    .spec-card-warm {
+      background: var(--accent-warm);
+      border-color: var(--fg);
+      box-shadow: 8px 8px 0px var(--fg);
+    }
+
+    .spec-card-dark {
+      background: var(--fg);
+      border-color: var(--fg);
+      color: var(--surface);
+      box-shadow: 8px 8px 0px var(--accent);
+    }
+
+    .spec-card-dark b {
+      color: var(--surface);
+    }
+
+    .pull-quote {
+      font-family: var(--font-serif);
+      font-size: 30px;
+      line-height: 1.25;
+      font-style: italic;
+      color: var(--fg);
+      padding: 40px 0 40px 44px;
+      margin: 56px 0 56px 0;
+      border-left: 4px solid var(--accent);
+      max-width: 680px;
+    }
+
+    .pull-quote cite {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-style: normal;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-top: 14px;
+    }
+
+    .slider-container {
+      margin: 48px 0;
+      background: var(--surface);
+      border: 3px solid var(--border);
+      box-shadow: 14px 14px 0px var(--accent-warm);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slider-track {
+      display: flex;
+      transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .slide {
+      min-width: 100%;
+      position: relative;
+    }
+
+    .slide img {
+      width: 100%;
+      display: block;
+    }
+
+    .slide figcaption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 16px 24px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.75));
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .slider-controls {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      display: flex;
+      gap: 8px;
+      z-index: 10;
+    }
+
+    .slider-btn {
+      width: 46px;
+      height: 46px;
+      background: var(--surface);
+      border: 2px solid var(--fg);
+      font-family: var(--font-hand);
+      font-size: 22px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 3px 3px 0px var(--fg);
+      transition: all 0.12s ease;
+    }
+
+    .slider-btn:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 4px 4px 0px var(--fg);
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin: 40px 0;
+    }
+
+    .detail-card {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      padding: 28px;
+      box-shadow: 6px 6px 0px var(--accent);
+    }
+
+    .detail-card b {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .detail-stat {
+      font-family: var(--font-sans);
+      font-weight: 900;
+      font-size: 24px;
+      letter-spacing: -0.02em;
+      color: var(--fg);
+    }
+
+    .detail-stat-sub {
+      font-family: var(--font-serif);
+      font-size: 15px;
+      color: var(--muted);
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+
+    .rhythm-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid oklch(82% 0.008 250);
+    }
+
+    .rhythm-row:last-child {
+      border-bottom: none;
+    }
+
+    .rhythm-row .time {
+      font-weight: 700;
+      font-family: var(--font-mono);
+    }
+
+    .rhythm-row .label {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .recruitment-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin: 40px 0;
+    }
+
+    .recruitment-grid img {
+      width: 100%;
+      display: block;
+      border: 2px solid var(--border);
+      box-shadow: 5px 5px 0px var(--fg);
+    }
+
+    .channel-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin: 48px 0 80px;
+    }
+
+    .protocol-track {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      position: relative;
+      padding: 40px;
+      background: var(--surface);
+      border: 3px solid var(--border);
+      box-shadow: 12px 12px 0px var(--accent);
+      margin: 40px 0;
+    }
+
+    .protocol-track::before {
+      content: "";
+      position: absolute;
+      top: 62px;
+      left: 80px;
+      right: 80px;
+      height: 2px;
+      background: var(--border);
+      border-top: 1px dashed var(--muted);
+      z-index: 0;
+    }
+
+    .protocol-step {
+      flex: 1;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .protocol-node {
+      width: 46px;
+      height: 46px;
+      border: 2px solid var(--border);
+      border-radius: 50%;
+      margin: 0 auto 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-sans);
+      font-weight: 700;
+      font-size: 17px;
+      background: var(--surface);
+      box-shadow: 3px 3px 0px var(--fg);
+    }
+
+    .protocol-step.active .protocol-node {
+      background: var(--accent-warm);
+      border-color: var(--fg);
+    }
+
+    .protocol-step.highlight .protocol-node {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .protocol-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      line-height: 1.3;
+      color: var(--muted);
+    }
+
+    .protocol-step.active .protocol-label,
+    .protocol-step.highlight .protocol-label {
+      color: var(--fg);
+      font-weight: 700;
+    }
+
+    .gallery-grid {
+      display: grid;
+      gap: 24px;
+      margin: 40px 0;
+    }
+
+    .gallery-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .gallery-row.triple {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .gallery-item {
+      overflow: hidden;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      display: block;
+      border: 2px solid var(--border);
+      box-shadow: 4px 4px 0px var(--fg);
+    }
+
+    .step-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+      margin: 40px 0;
+    }
+
+    .step-card {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      padding: 20px;
+      box-shadow: 7px 7px 0px var(--fg);
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+
+    .step-card:hover {
+      box-shadow: 9px 9px 0px var(--fg);
+      transform: translate(-1px, -1px);
+    }
+
+    .step-num {
+      font-family: var(--font-sans);
+      font-weight: 900;
+      font-size: 30px;
+      letter-spacing: -0.03em;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+
+    .step-title {
+      font-weight: 700;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-bottom: 8px;
+    }
+
+    .step-desc {
+      font-family: var(--font-serif);
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .step-img-frame {
+      border: 2px solid var(--border);
+      background: var(--bg);
+      overflow: hidden;
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .step-img-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .window-figure {
+      max-width: 440px;
+      margin: 60px auto;
+    }
+
+    .window-figure img {
+      width: 100%;
+      display: block;
+      border: 3px solid var(--border);
+      box-shadow: 10px 10px 0px var(--accent);
+      transform: rotate(-0.5deg);
+    }
+
+    .window-figure figcaption {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      margin-top: 12px;
+      text-align: center;
+    }
+
+    h3 {
+      font-family: var(--font-sans);
+      font-weight: 700;
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin: 64px 0 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    h3::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      background: var(--accent-warm);
+      border: 2px solid var(--border);
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    h4 {
+      font-family: var(--font-sans);
+      font-weight: 700;
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin: 36px 0 16px;
+      color: var(--muted);
+    }
+
+    .video-section {
+      margin: 40px 0;
+      border: 3px solid var(--border);
+      box-shadow: 12px 12px 0px var(--accent-warm);
+      overflow: hidden;
+      background: var(--surface);
+    }
+
+    .video-section video {
+      width: 100%;
+      display: block;
+    }
+
+    .video-section figcaption {
+      padding: 12px 20px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      border-top: 1px solid oklch(82% 0.008 250);
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin: 32px 0;
+    }
+
+    .result-card {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      padding: 28px;
+      box-shadow: 7px 7px 0px var(--accent);
+    }
+
+    .result-card b {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .result-card p {
+      font-family: var(--font-serif);
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--fg);
+    }
+
+    .outcome-card {
+      grid-column: 1 / -1;
+      background: var(--surface);
+      border: 3px solid var(--fg);
+      padding: 36px;
+      box-shadow: 10px 10px 0px var(--accent-warm);
+      margin-top: 8px;
+    }
+
+    .outcome-header {
+      font-family: var(--font-hand);
+      font-size: 24px;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .outcome-card p {
+      font-family: var(--font-serif);
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--fg);
+    }
+
+    .outcome-list {
+      margin-top: 16px;
+    }
+
+    .outcome-list span {
+      display: block;
+      padding-left: 28px;
+      position: relative;
+      font-family: var(--font-serif);
+      font-size: 18px;
+      line-height: 1.6;
+      margin-bottom: 4px;
+    }
+
+    .outcome-list span::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    footer {
+      border-top: 3px solid var(--fg);
+      padding: 60px 0 80px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-logo {
+      font-family: var(--font-sans);
+      font-weight: 900;
+      font-size: 14px;
+      letter-spacing: -0.01em;
+    }
+
+    .footer-meta {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+    }
+
+    @media (max-width: 1024px) {
+      .step-grid { grid-template-columns: repeat(3, 1fr); }
+      .gallery-row.triple { grid-template-columns: 1fr 1fr; }
+      .recruitment-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .wrap { padding: 0 28px; }
+      .content-grid, .result-grid, .detail-grid, .channel-grid { grid-template-columns: 1fr; }
+      .step-grid { grid-template-columns: 1fr 1fr; }
+      .protocol-track { flex-wrap: wrap; gap: 16px; justify-content: center; padding: 28px; }
+      .protocol-track::before { display: none; }
+      .protocol-step { min-width: 80px; }
+      h1 { font-size: clamp(32px, 10vw, 48px); }
+      .deck { font-size: 22px; }
+      section { margin-bottom: 100px; }
+      .pull-quote { padding-left: 24px; font-size: 24px; }
+      .recruitment-grid { grid-template-columns: 1fr; }
+      .prose { font-size: 18px; }
+    }
+
+    @media (max-width: 480px) {
+      .step-grid { grid-template-columns: 1fr; }
+      nav.top { flex-direction: column; align-items: flex-start; gap: 12px; }
+      .gallery-row, .gallery-row.triple { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+    <filter id="sq-0"><feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="3" seed="0" /><feDisplacementMap in="SourceGraphic" scale="2" /></filter>
+    <filter id="sq-1"><feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="3" seed="1" /><feDisplacementMap in="SourceGraphic" scale="3" /></filter>
+    <filter id="sq-2"><feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="3" seed="2" /><feDisplacementMap in="SourceGraphic" scale="2" /></filter>
+    <filter id="sq-3"><feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="3" seed="3" /><feDisplacementMap in="SourceGraphic" scale="3" /></filter>
+    <filter id="sq-4"><feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="3" seed="4" /><feDisplacementMap in="SourceGraphic" scale="2" /></filter>
+  </svg>
+
+  <div class="wrap">
+
+    <nav class="top">
+      <div class="logo-box squiggle-on">STRIPLYS</div>
+      <div class="nav-code">Archive 2026</div>
+    </nav>
+
+    <header class="masthead">
+      <h1>Striplys<br>Window Talks</h1>
+      <div class="deck">Synthesizing Scandinavian functionalism and Peanuts' emotional honesty into a spatial podcast ecosystem.</div>
+    </header>
+
+    <section id="overview">
+      <h2>Brief Overview</h2>
+      <div class="content-grid">
+        <div class="prose">
+          <p><em>Striplys Window Talks</em> is a conceptual narrative platform that reimagines IKEA showrooms as immersive <strong>emotional archives.</strong></p>
+          <p>The project transforms personal stories into visual narratives using the Striplys Window — a real-time memory visualizer recorded live within authentic living simulations.</p>
+        </div>
+        <div class="spec-card">
+          <b>Metadata</b>
+          Role: UX / Service Designer<br>
+          Timeline: Conceptual Project<br>
+          Impact: Narrative Service Design
+        </div>
+      </div>
+    </section>
+
+    <section id="problem">
+      <h2>Problem Statement</h2>
+      <div class="content-grid">
+        <div class="prose">
+          <p>Modern retail environments often prioritize <strong>transactions</strong> over <strong>connection</strong>. While IKEA creates simulations of life, there is a missing emotional bridge between the product and the user's lived history.</p>
+          <p>Digital audiences are seeking "slower" content — authentic, reflective experiences that ground them in a world of high-velocity noise.</p>
+        </div>
+        <div class="spec-card spec-card-warm">
+          <b>Challenge</b>
+          How might IKEA transform retail space into a platform for connection while aligning with the nostalgic language of Peanuts?
+        </div>
+      </div>
+    </section>
+
+    <section id="objectives">
+      <h2>Objectives</h2>
+      <div class="content-grid">
+        <div class="prose">
+          <ul>
+            <li><strong>Create Emotional Brand Engagement:</strong> Connect through stories rather than ads.</li>
+            <li><strong>Integrate Peanuts Meaningfully:</strong> Rooted in nostalgia and emotional honesty.</li>
+            <li><strong>Redefine Podcast Formats:</strong> Transform audio into a spatial experience.</li>
+            <li><strong>Build an Experiential Retail Ecosystem:</strong> Active emotional environments.</li>
+          </ul>
+        </div>
+        <div class="spec-card spec-card-dark">
+          <b>Core Thesis</b>
+          Brands that make space for vulnerability earn lasting connection.
+        </div>
+      </div>
+    </section>
+
+    <section id="research">
+      <h2>Research &amp; Insights</h2>
+      <div class="content-grid">
+        <div class="prose">
+          <p>Research revealed that IKEA spaces are tied to <strong>life transitions.</strong> Peanuts provides the vocabulary for the vulnerability inherent in those moments.</p>
+        </div>
+        <div class="spec-card">
+          <b>Archetypes</b>
+          Charlie Brown — Vulnerability<br>
+          Linus — Reflection<br>
+          Snoopy — Imagination
+        </div>
+      </div>
+
+      <div class="pull-quote">
+        "People do not emotionally remember products — they remember moments."
+      </div>
+
+      <div class="slider-container">
+        <div class="slider-track" id="research-slider">
+          <div class="slide"><img src="mp5z11js-Screenshot-2026-05-14-at-10.58.52-PM.png"><figcaption>Spatial Simulation: The Showroom as Stage</figcaption></div>
+          <div class="slide"><img src="mpi5bef7-Screenshot-2026-05-23-at-11.28.07-AM.png"><figcaption>Value Clusters: Emotional Architecture</figcaption></div>
+          <div class="slide"><img src="mp5z1aws-Screenshot-2026-05-14-at-10.59.05-PM.png"><figcaption>Brand Mapping: Emotional Territories</figcaption></div>
+          <div class="slide"><img src="mp5z1hlt-Screenshot-2026-05-14-at-10.59.13-PM.png"><figcaption>Journey Mapping: Life Transitions</figcaption></div>
+          <div class="slide"><img src="mp5z2a1s-Screenshot-2026-05-14-at-10.59.50-PM.png"><figcaption>Interface: Initial Window Mockup</figcaption></div>
+          <div class="slide"><img src="mpi5q4s4-Screenshot-2026-05-23-at-11.39.35-AM.png"><figcaption>Publishing Strategy</figcaption></div>
+          <div class="slide"><img src="mpi5pmnx-Screenshot-2026-05-23-at-11.39.10-AM.png"><figcaption>Podcast Architecture &amp; Ecosystem</figcaption></div>
+          <div class="slide"><img src="mpivaicm-Screenshot-2026-05-23-at-11.35.16-PM.png"><figcaption>Quality Control: Selection Framework</figcaption></div>
+          <div class="slide"><img src="mpivatwb-Screenshot-2026-05-23-at-11.35.30-PM.png"><figcaption>Participant Journey: Discovery</figcaption></div>
+          <div class="slide"><img src="mpivb2kt-Screenshot-2026-05-23-at-11.35.42-PM.png"><figcaption>Production Anatomy: Technical Specs</figcaption></div>
+          <div class="slide"><img src="mpivbb5l-Screenshot-2026-05-23-at-11.35.53-PM.png"><figcaption>Final Execution: Record &amp; Release</figcaption></div>
+        </div>
+        <div class="slider-controls">
+          <button class="slider-btn" onclick="moveSlider(-1)">←</button>
+          <button class="slider-btn" onclick="moveSlider(1)">→</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="system-logic">
+      <h2><span class="section-num">03</span> System &amp; Logic</h2>
+      <div class="prose" style="margin-bottom: 40px;">
+        <p>Based on the architectural project slides, the following is a structured summary of the proposed podcast ecosystem — a soulful collaboration merging IKEA's spatial intelligence with the emotional honesty of Peanuts.</p>
+      </div>
+
+      <h3>1. Logistics &amp; Schedule</h3>
+      <div class="detail-grid">
+        <div class="detail-card">
+          <b>Frequency &amp; Release</b>
+          <div class="detail-stat">Weekly</div>
+          <div class="detail-stat-sub">Sundays at 14:00 — a ritualized weekend listening habit.</div>
+          <div style="margin-top: 24px;">
+            <b>Medium Strategy</b>
+            <div class="detail-stat" style="font-size: 18px;">Audio + Video Hybrid</div>
+            <div class="detail-stat-sub">Full podcast platforms + curated social clips</div>
+          </div>
+        </div>
+        <div class="detail-card">
+          <b>The 25-Minute Rhythm</b>
+          <div style="margin: 16px 0;">
+            <div class="rhythm-row">
+              <span class="time">12 min</span>
+              <span class="label">Deep conversational dive</span>
+            </div>
+            <div class="rhythm-row">
+              <span class="time">1 min</span>
+              <span class="label">"Snoopy Break" — Silent Reflection</span>
+            </div>
+            <div class="rhythm-row">
+              <span class="time">12 min</span>
+              <span class="label">Takeaways &amp; Home Rituals</span>
+            </div>
+          </div>
+          <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid oklch(82% 0.008 250);">
+            <b>Seasonal Specials</b>
+            <p style="font-size: 13px; margin-top: 6px; color: var(--muted);">AUG: Back to School · MAR: Spring Renewal · OCT: Mental Health Day</p>
+          </div>
+        </div>
+      </div>
+
+      <h3>2. Platforms &amp; Participant Recruitment</h3>
+      <div class="prose" style="margin-bottom: 0;">
+        <p>Recruitment is split into two primary channels to capture authentic memories from IKEA's global community.</p>
+      </div>
+
+      <div class="recruitment-grid">
+        <img src="mpk8rezs-Screenshot-2026-05-24-at-10.40.06-PM.png" alt="Recruitment">
+        <img src="mpk8rkqc-Screenshot-2026-05-24-at-10.40.13-PM.png" alt="Recruitment">
+        <img src="mpk8rvj4-Screenshot-2026-05-24-at-10.40.27-PM.png" alt="Recruitment">
+      </div>
+
+      <div class="channel-grid">
+        <div class="spec-card spec-card-warm">
+          <b>Online Channels</b>
+          Direct CTA forms hosted on the official IKEA website and integrated social media platforms.
+        </div>
+        <div class="spec-card">
+          <b>Offline Rituals</b>
+          Physical "Story Boxes" placed in-store, facilitating a lucky-draw style ritual for anonymous memory submission.
+        </div>
+      </div>
+
+      <div class="prose">
+        <p>A behind-the-scenes look at the set design and spatial atmosphere that grounds each recording session in the emotional language of home.</p>
+      </div>
+      <figure class="video-section">
+        <video controls playsinline preload="metadata">
+          <source src="mpolw0d5-ikea-.mp4" type="video/mp4">
+        </video>
+        <figcaption>Set Atmosphere: Spatial Recording Environment</figcaption>
+      </figure>
+
+      <h3>3. Quality Assurance &amp; Production Strategy</h3>
+      <div class="prose">
+        <p>To ensure high quality, we implement a strict 5-step editorial protocol governing every conversation and production choice.</p>
+      </div>
+
+      <div class="protocol-track">
+        <div class="protocol-step active">
+          <div class="protocol-node">1</div>
+          <div class="protocol-label">Curated<br>Profiles</div>
+        </div>
+        <div class="protocol-step">
+          <div class="protocol-node">2</div>
+          <div class="protocol-label">Tailored<br>Culture</div>
+        </div>
+        <div class="protocol-step">
+          <div class="protocol-node">3</div>
+          <div class="protocol-label">Pre-Interview<br>Convos</div>
+        </div>
+        <div class="protocol-step">
+          <div class="protocol-node">4</div>
+          <div class="protocol-label">Semi-Scripted<br>Flow</div>
+        </div>
+        <div class="protocol-step highlight">
+          <div class="protocol-node">5</div>
+          <div class="protocol-label">Editorial<br>Selection</div>
+        </div>
+      </div>
+
+      <div class="gallery-grid">
+        <div class="gallery-row">
+          <div class="gallery-item"><img src="mpk8sjnr-Screenshot-2026-05-24-at-10.40.59-PM.png"></div>
+          <div class="gallery-item"><img src="mpk8ysrr-Screenshot-2026-05-24-at-10.45.50-PM.png"></div>
+        </div>
+        <div class="gallery-row">
+          <div class="gallery-item"><img src="mpk8yzm2-Screenshot-2026-05-24-at-10.45.59-PM.png"></div>
+          <div class="gallery-item"><img src="mpk8ze93-Screenshot-2026-05-24-at-10.46.18-PM.png"></div>
+        </div>
+      </div>
+
+      <h3>Supporting Ecosystem Architecture</h3>
+      <h4>Mobile Prototypes</h4>
+      <div class="gallery-grid">
+        <div class="gallery-row">
+          <div class="gallery-item"><img src="mpk8zlly-Screenshot-2026-05-24-at-10.46.27-PM.png"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="implementation">
+      <h2><span class="section-num">04</span> Final Implementation Flow</h2>
+
+      <div class="step-grid">
+        <div class="step-card">
+          <div class="step-num">01</div>
+          <div class="step-title">Arrival</div>
+          <div class="step-desc">Guests enter a curated set where layered IKEA textiles lower emotional shields.</div>
+          <div class="step-img-frame"><img src="mpa6fqeb-Screenshot-2026-05-17-at-9.37.18-PM.png"></div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">02</div>
+          <div class="step-title">The Choice</div>
+          <div class="step-desc">Picking a Peanuts reflection card for immediate emotional access and vulnerability.</div>
+          <div class="step-img-frame"><img src="mpa6gxjd-Screenshot-2026-05-17-at-9.38.15-PM.png"></div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">03</div>
+          <div class="step-title">Conversation</div>
+          <div class="step-desc">Intimate dialogue turning the showroom into a story room for meaningful connection.</div>
+          <div class="step-img-frame"><img src="mpa6hniv-Screenshot-2026-05-17-at-9.38.49-PM.png"></div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">04</div>
+          <div class="step-title">Window Activation</div>
+          <div class="step-desc">The Striplys Window translates memories into real-time poetic animations.</div>
+          <div class="step-img-frame"><img src="mpa6jhkr-Screenshot-2026-05-17-at-9.40.15-PM.png"></div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">05</div>
+          <div class="step-title">Home Reflection</div>
+          <div class="step-desc">Closing moments focusing on personal rituals and the enduring meaning of home.</div>
+          <div class="step-img-frame"><img src="mpiva5m2-Screenshot-2026-05-23-at-11.34.59-PM.png"></div>
+        </div>
+      </div>
+
+      <figure class="window-figure">
+        <img src="mpa6jhkr-Screenshot-2026-05-17-at-9.40.15-PM.png">
+        <figcaption>REAL-TIME VISUALIZER: Memory Visualization Interface</figcaption>
+      </figure>
+    </section>
+
+    <section id="impact">
+      <h2>Results &amp; Impact</h2>
+      <div class="result-grid">
+        <div class="result-card">
+          <b>For IKEA</b>
+          <p>Stronger brand loyalty and longer engagement through narrative ownership.</p>
+        </div>
+        <div class="result-card">
+          <b>For Peanuts</b>
+          <p>Renewed cultural relevance by integrating nostalgia into modern lifestyle.</p>
+        </div>
+        <div class="outcome-card">
+          <div class="outcome-header">Final Solution Outcome</div>
+          <p>The final solution demonstrates how:</p>
+          <div class="outcome-list">
+            <span>a retail environment can become an emotional platform,</span>
+            <span>storytelling can function as a UX tool,</span>
+            <span>and brand experiences can create genuine emotional resonance.</span>
+          </div>
+          <p style="margin-top: 20px;">Rather than designing a podcast alone, the project created:<br>
+          an emotionally intelligent service ecosystem where people feel seen, safe, nostalgic, and connected through the language of home.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footer-logo squiggle-on">STRIPLYS</div>
+      <div class="footer-meta">Archived Case Study · 2026 · EOF</div>
+    </footer>
+
+  </div>
+
+  <script>
+    let currentSlide = 0;
+    const totalSlides = 11;
+    function moveSlider(dir) {
+      const track = document.getElementById('research-slider');
+      currentSlide = (currentSlide + dir + totalSlides) % totalSlides;
+      track.style.transform = 'translateX(-' + (currentSlide * 100) + '%)';
+    }
+  </script>
+
+</body>
+</html>

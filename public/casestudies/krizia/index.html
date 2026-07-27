@@ -1,0 +1,806 @@
+<!doctype html>
+<html lang="en" dir="ltr"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KRIZIA: Rebuilding Luxury Through Structure &amp; Material Intelligence</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <style>
+    :root {
+      --bg:      oklch(10% 0.01 250);
+      --surface: oklch(14% 0.015 250);
+      --fg:      oklch(98% 0.002 250);
+      --muted:   oklch(50% 0.01 250);
+      --border:  oklch(22% 0.01 250);
+      --highlight: #146289;
+      
+      --font-main: 'Space Grotesk', sans-serif;
+      --gutter: 5rem;
+      --max-width: 1300px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-main);
+      line-height: 1.35;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* Cinematic Background Drift */
+    .topography {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      opacity: 0.08;
+      background-image: url("data:image/svg+xml,%3Csvg width='1000' height='1000' viewBox='0 0 1000 1000' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 500 Q 250 400 500 500 T 1000 500 M0 550 Q 250 450 500 550 T 1000 550 M0 600 Q 250 500 500 600 T 1000 600 M0 450 Q 250 350 500 450 T 1000 450' fill='none' stroke='white' stroke-width='0.4'/%3E%3C/svg%3E");
+      background-size: 100% 100%;
+    }
+
+    section {
+      min-height: 100vh;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: var(--gutter);
+      position: relative;
+    }
+
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* Masthead Navigation */
+    .masthead {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 3rem var(--gutter);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      mix-blend-mode: difference;
+    }
+
+    .wordmark {
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 0.3em;
+      text-decoration: none;
+      color: var(--fg);
+      text-transform: uppercase;
+    }
+
+    /* Typography Hierarchy */
+    h1, h2, h3 {
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+    }
+
+    .eyebrow {
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.4em;
+      color: var(--highlight);
+      margin-bottom: 2.5rem;
+      display: block;
+    }
+
+    .display-large {
+      font-size: clamp(3.5rem, 11vw, 9.5rem);
+      line-height: 0.85;
+      margin-bottom: 5rem;
+      font-weight: 700;
+    }
+
+    .display-medium {
+      font-size: clamp(2rem, 5.5vw, 4rem);
+      line-height: 0.95;
+      margin-bottom: 3rem;
+    }
+
+    .prose {
+      max-width: 720px;
+      font-size: 1.3rem;
+      color: var(--muted);
+      font-weight: 300;
+    }
+
+    .prose p + p { margin-top: 3rem; }
+
+    .highlight {
+      color: var(--highlight);
+      font-weight: 700;
+    }
+
+    /* Visual Components */
+    .split-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 6rem;
+      align-items: start;
+    }
+
+    .asymmetric-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 8rem;
+      align-items: start;
+    }
+
+    .visual-block {
+      width: 100%;
+      height: 400px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      margin-bottom: 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Cinematic Aspect Ratios */
+    .visual-block.cinematic-view {
+      height: 80vh;
+      width: 80vw;
+      margin: 0 auto;
+      border: none;
+      background: transparent;
+    }
+
+    .visual-block img, .visual-block video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    [data-gsap="img-reveal"] img, [data-gsap="img-reveal"] video {
+      opacity: 0;
+      transform: scale(1.05);
+    }
+
+    .visual-block.cinematic-view img, .visual-block.cinematic-view video {
+      object-fit: contain;
+    }
+
+    /* Laptop Mockup */
+    .laptop-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1rem 0;
+    }
+    .laptop-frame {
+      position: relative;
+      width: min(60vw, 900px);
+      aspect-ratio: 1.55;
+      background: linear-gradient(160deg, #2a2a2e 0%, #1c1c1f 40%, #1a1a1d 60%, #242428 100%);
+      border-radius: 20px 20px 0 0;
+      box-shadow:
+        0 40px 100px rgba(0,0,0,0.8),
+        0 0 0 1px rgba(255,255,255,0.06);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .laptop-screen {
+      position: absolute;
+      inset: 14px 14px 10px 14px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #000;
+      box-shadow:
+        inset 0 0 0 1px rgba(0,0,0,0.5),
+        0 0 30px rgba(0,0,0,0.3);
+    }
+    .laptop-screen video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      background: #000;
+    }
+    .laptop-notch {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 5px;
+      background: #111;
+      border-radius: 0 0 5px 5px;
+      z-index: 2;
+    }
+    .laptop-hinge {
+      width: min(60vw, 900px);
+      height: 6px;
+      margin: 0 auto;
+      background: linear-gradient(to bottom, #1a1a1d, #18181b);
+      border-radius: 0;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+    }
+    .laptop-base {
+      width: min(60vw, 900px);
+      height: 24px;
+      margin: 0 auto;
+      background: linear-gradient(to bottom, #1e1e22, #161619);
+      border-radius: 0 0 16px 16px;
+      position: relative;
+      box-shadow: 0 16px 50px rgba(0,0,0,0.6);
+    }
+    .laptop-base::before {
+      content: '';
+      position: absolute;
+      top: 4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 30%;
+      height: 1px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 1px;
+    }
+    .laptop-base::after {
+      content: '';
+      position: absolute;
+      bottom: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 2px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 1px;
+    }
+    .laptop-label {
+      margin-top: 2.5rem;
+      font-size: 0.6rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--fg);
+      opacity: 0.6;
+      text-align: center;
+    }
+
+    /* Cinematic Reveal Mask */
+    .img-reveal-mask {
+      position: absolute;
+      inset: 0;
+      background: var(--bg);
+      z-index: 3;
+      transform-origin: right;
+    }
+
+    .stat-block {
+      border-left: 1px solid var(--highlight);
+      padding-left: 2.5rem;
+      margin-top: 4rem;
+    }
+
+    /* Horizontal Scroll Architecture */
+    #horizontal-wrapper {
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .horizontal-container {
+      display: flex;
+      width: 300vw; /* 3 concepts */
+      height: 100vh;
+    }
+
+    .horizontal-panel {
+      width: 100vw;
+      height: 100vh;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: var(--gutter);
+      border-right: 1px solid var(--border);
+    }
+
+    /* Output Stack Architecture */
+    #output-section {
+      padding: 0;
+      background: var(--bg);
+    }
+
+    .output-stack-container {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+    }
+
+    .output-card {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg);
+      z-index: 1;
+    }
+
+    /* Navigation Indicator */
+    .nav-indicator {
+      position: fixed;
+      left: 3rem;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      z-index: 100;
+    }
+
+    .nav-dot {
+      width: 1px;
+      height: 24px;
+      background: var(--border);
+      transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+    }
+
+    .nav-dot.active {
+      background: var(--highlight);
+      height: 60px;
+      width: 2px;
+    }
+
+    @media (max-width: 900px) {
+      :root { --gutter: 2rem; }
+      .asymmetric-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .nav-indicator { display: none; }
+      .display-large { font-size: clamp(3rem, 8vw, 4rem); margin-bottom: 3rem; }
+      .display-medium { font-size: clamp(1.5rem, 4.5vw, 2rem); margin-bottom: 2rem; }
+      .visual-block { height: 300px; }
+      .visual-block.cinematic-view { width: 90vw; height: 50vh; }
+      .horizontal-panel { padding: 3rem 1.5rem; }
+      #artifact .container { padding: 0 1.5rem; }
+      .stat-block { padding-left: 1.5rem; margin-top: 2rem; }
+      .prose { font-size: 1rem; }
+      .laptop-frame { width: min(80vw, 600px); }
+      .laptop-hinge { width: min(80vw, 600px); }
+      .laptop-base { width: min(80vw, 600px); }
+      .laptop-screen { inset: 8px; border-radius: 5px; }
+      .laptop-label { margin-top: 1.5rem; }
+    }
+
+    @media (max-width: 480px) {
+      section { padding: 2rem 1rem; }
+      .display-large { font-size: 2.8rem; }
+      .display-medium { font-size: 1.5rem; }
+      .prose { font-size: 0.9rem; }
+      .eyebrow { font-size: 0.6rem; }
+      .visual-block { height: 250px; }
+      .visual-block.cinematic-view { width: 100vw; height: 40vh; }
+      .horizontal-panel { padding: 2rem 1rem; min-height: 100vh; width: 100vw; }
+      .laptop-frame { border-radius: 8px 8px 0 0; }
+      .laptop-screen { inset: 5px; border-radius: 3px; }
+      .laptop-hinge { height: 4px; }
+      .laptop-base { height: 16px; }
+      .project-tags { gap: 0.5rem; }
+      .project-tags span { font-size: 0.5rem; padding: 0.3rem 0.6rem; letter-spacing: 0.15em; }
+      .stat-block { padding-left: 0.75rem; }
+      #artifact .container { padding: 0 1rem; }
+      .laptop-frame { width: 90vw; }
+      .laptop-hinge { width: 90vw; }
+      .laptop-base { width: 90vw; }
+      #hero-entry .visual-block { height: 100vh; }
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+    .project-tags span {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 0.5rem 1rem;
+      font-weight: 500;
+    }
+    .project-tags span:nth-child(-n+3) {
+      color: var(--highlight);
+      border-color: var(--highlight);
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="topography"></div>
+
+  <header class="masthead">
+    <a href="#" class="wordmark">KRIZIA</a>
+  </header>
+
+  <div class="nav-indicator" id="nav-dots"></div>
+
+  <main>
+    
+    <!-- HERO ENTRY -->
+    <section id="hero-entry" style="padding: 0; position: relative;">
+      <div class="visual-block fullscreen cinematic-view" style="width: 100vw; height: 100vh;">
+        <video class="cinematic-video" id="hero-video" style="width: 100%; height: 100%; object-fit: cover;" autoplay="" loop="" playsinline="" muted="">
+          <source src="mpjw0tdy-kriziatrail-2.mp4" type="video/mp4">
+        </video>
+        <div style="position: absolute; inset: 0; background: linear-gradient(to top, var(--bg) 0%, transparent 50%, transparent 70%, var(--bg) 100%);"></div>
+      </div>
+      <div style="position: absolute; bottom: 4rem; left: 50%; transform: translateX(-50%); text-align: center; z-index: 2; width: 100%; padding: 0 2rem;">
+        <p style="font-size: 0.6rem; letter-spacing: 0.5em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem;">Architectural Luxury House</p>
+      </div>
+    </section>
+
+    <!-- INTRODUCTION -->
+    <section id="introduction">
+      <div class="container">
+        <div class="project-tags" data-gsap="fade" style="margin-top: 0; margin-bottom: 2rem;">
+          <span>Art Direction</span>
+          <span>Sauveer Sinha (Academic &amp; Client Project)</span>
+          <span>Time: 4 Months</span>
+        </div>
+        <span class="eyebrow" data-gsap="fade">Introduction</span>
+        <div class="asymmetric-grid">
+          <div>
+            <h1 class="display-large" data-gsap="reveal" style="margin-bottom: 4rem;">
+              Beyond <span class="highlight">Excess</span>
+            </h1>
+            <div class="prose" data-gsap="fade">
+              <p>Luxury fashion has become saturated with excess. Branding, storytelling, speed. Heritage houses struggle to stay relevant while preserving depth of identity.</p>
+              <p>This project rebuilds Krizia as a contemporary luxury brand rooted in architectural precision, material honesty, and enduring design. Clothing is not seasonal decoration. It is engineered structure.</p>
+            </div>
+          </div>
+          <div class="stat-block" data-gsap="fade" style="align-self: end; margin-bottom: 2rem;">
+            <p style="font-size: 0.7rem; letter-spacing: 0.2em; margin-bottom: 1.5rem;">THE QUESTION</p>
+            <p class="display-medium" style="font-size: 2.2rem; line-height: 1.1;">What if luxury was defined not by excess, but by <span class="highlight">structural integrity</span>?</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+
+    <!-- THE PROBLEM -->
+    <section id="problem">
+      <div class="container">
+        <span class="eyebrow" data-gsap="fade">The Problem</span>
+        <h2 class="display-medium" data-gsap="reveal">Rediscovering <span class="highlight">Philosophy</span>.</h2>
+        <div class="asymmetric-grid" style="grid-template-columns: 1fr 1.2fr;">
+          <div class="prose" data-gsap="fade">
+            <p>Krizia had an influential history in Italian fashion but no clear contemporary positioning. Its archive of experimental textiles and architectural silhouettes was not translating into a cohesive modern identity.</p>
+            <p>The challenge: rediscover a philosophy that justifies luxury through meaning, not spectacle.</p>
+          </div>
+          <div>
+            <div class="visual-block" style="height: 550px;" data-gsap="img-reveal">
+              <div class="img-reveal-mask"></div>
+              <img src="mprd3vmi-Screenshot-2026-05-29-at-10.16.09-PM.png" alt="Rediscovering Philosophy">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STRATEGIC REFRAME -->
+    <section id="reframe" style="background: var(--surface);">
+      <div class="container">
+        <span class="eyebrow" data-gsap="fade">The Strategic Reframe</span>
+        <h2 class="display-large" data-gsap="reveal">Wearable <span class="highlight">Architecture</span>.</h2>
+        <div class="asymmetric-grid">
+          <div class="prose" data-gsap="fade">
+            <p>Krizia went from heritage fashion house to architectural luxury system. Garments became engineered forms and material structures, not decoration.</p>
+          </div>
+          <div class="stat-block" data-gsap="fade">
+            <p style="font-size: 0.7rem; letter-spacing: 0.2em; margin-bottom: 1.5rem;">POSITIONING</p>
+            <p class="display-medium" style="font-size: 1.8rem;">Designed for <span class="highlight">Endurance</span>.<br>Engineered for Form.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HISTORICAL RESEARCH -->
+    <section id="historical">
+      <div class="container">
+        <span class="eyebrow" data-gsap="fade">Historical Research</span>
+        <h2 class="display-medium" data-gsap="reveal">Milanese <span class="highlight">Industrial</span> Rigor.</h2>
+        <div class="asymmetric-grid" style="grid-template-columns: 1fr 1.2fr;">
+          <div class="prose" data-gsap="fade">
+            <p>Krizia's archives show a consistent relationship between structure and material experimentation. Founded by Mariuccia Mandelli, the house challenged Italian prêt-à-porter with metallic fabrics, sculptural tailoring, and broad-shouldered forms.</p>
+            <p>Mandelli's work aligned with Milanese modernism: architecture, industry, and intellectual rigor. Krizia was never decorative. It was structural.</p>
+          </div>
+          <div class="visual-block" style="height: 550px;" data-gsap="img-reveal">
+            <div class="img-reveal-mask"></div>
+            <img src="mpr28xs7-Screenshot-2026-05-29-at-5.12.09-PM.png" alt="Milanese Industrial Rigor">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HORIZONTAL CONCEPTS SECTION -->
+    <section id="horizontal-wrapper">
+      <div class="horizontal-container">
+        
+        <div class="horizontal-panel" style="background: var(--surface);">
+          <div class="container">
+            <span class="eyebrow">Strategic Concept 01</span>
+            <div class="asymmetric-grid" style="align-items: center;">
+              <div class="visual-block" style="height: 500px; border: none;" data-gsap="img-reveal">
+                <div class="img-reveal-mask"></div>
+                <img src="mpjoco5p-Screenshot-2026-05-24-at-1.08.45-PM.png" alt="01">
+              </div>
+              <div>
+                <h3 class="display-medium">The Structural Index™</h3>
+                <p class="prose">Transparency as luxury. An NFC-enabled garment passport revealing pleating density, material composition, and origin verification.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="horizontal-panel" style="background: var(--bg);">
+          <div class="container">
+            <span class="eyebrow">Strategic Concept 02</span>
+            <div class="asymmetric-grid" style="align-items: center;">
+              <div class="visual-block" style="height: 500px; border: none;" data-gsap="img-reveal">
+                <div class="img-reveal-mask"></div>
+                <img src="mpjod3xz-Screenshot-2026-05-24-at-1.09.06-PM.png" alt="02">
+              </div>
+              <div>
+                <h3 class="display-medium">The Drafting Table</h3>
+                <p class="prose">Retail as an architect’s studio. A hybrid environment between material laboratory and gallery space for technical studies.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="horizontal-panel" style="background: var(--surface);">
+          <div class="container">
+            <span class="eyebrow">Strategic Concept 03</span>
+            <div class="asymmetric-grid" style="align-items: center;">
+              <div class="visual-block" style="height: 500px; border: none;" data-gsap="img-reveal">
+                <div class="img-reveal-mask"></div>
+                <img src="mpjoelm7-Screenshot-2026-05-24-at-1.10.15-PM.png" alt="03">
+              </div>
+              <div>
+                <h3 class="display-medium">The Alchemic Material Library</h3>
+                <p class="prose">Material as experience. An interactive installation showcasing cork polymer composites, metallic fabrics, and bio-engineered materials.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- THE OUTPUT: ARCHITECTURAL STACK -->
+    <section id="output-section">
+      <div class="output-stack-container" id="stack-trigger">
+        
+        <div class="output-card" style="z-index: 10;"><div class="visual-block cinematic-view"><img src="mpi7ocb6-Screenshot-2026-05-23-at-12.34.09-PM.png" alt="01"></div></div>
+        <div class="output-card" style="z-index: 11;"><div class="visual-block cinematic-view"><img src="mpi7okwg-Screenshot-2026-05-23-at-12.34.22-PM.png" alt="02"></div></div>
+        <div class="output-card" style="z-index: 12;"><div class="visual-block cinematic-view"><img src="mpi7ov4p-Screenshot-2026-05-23-at-12.34.35-PM.png" alt="03"></div></div>
+        <div class="output-card" style="z-index: 13;"><div class="visual-block cinematic-view"><img src="mpi7p4yp-Screenshot-2026-05-23-at-12.34.47-PM.png" alt="04"></div></div>
+        <div class="output-card" style="z-index: 14;"><div class="visual-block cinematic-view"><img src="mpi7zr66-Screenshot-2026-05-23-at-12.43.03-PM.png" alt="05"></div></div>
+        <div class="output-card" style="z-index: 15;"><div class="visual-block cinematic-view"><img src="mpi807hw-Screenshot-2026-05-23-at-12.43.23-PM.png" alt="06"></div></div>
+        <div class="output-card" style="z-index: 16;"><div class="visual-block cinematic-view"><img src="mpi80p0h-Screenshot-2026-05-23-at-12.43.47-PM.png" alt="07"></div></div>
+        <div class="output-card" style="z-index: 17;"><div class="visual-block cinematic-view"><img src="mpi80xhu-Screenshot-2026-05-23-at-12.43.58-PM.png" alt="08"></div></div>
+        <div class="output-card" style="z-index: 18;"><div class="visual-block cinematic-view"><img src="mpi81aoj-Screenshot-2026-05-23-at-12.44.15-PM.png" alt="09"></div></div>
+        <div class="output-card" style="z-index: 19;"><div class="visual-block cinematic-view"><img src="mpi81ilw-Screenshot-2026-05-23-at-12.44.25-PM.png" alt="10"></div></div>
+        <div class="output-card" style="z-index: 20;"><div class="visual-block cinematic-view"><img src="mpi81sdm-Screenshot-2026-05-23-at-12.44.38-PM.png" alt="11"></div></div>
+        <div class="output-card" style="z-index: 21;"><div class="visual-block cinematic-view"><img src="mpi71jcc-Screenshot-2026-05-23-at-12.16.26-PM.png" alt="12"></div></div>
+        <div class="output-card" style="z-index: 22;"><div class="visual-block cinematic-view"><img src="mpi72m5j-Screenshot-2026-05-23-at-12.17.16-PM.png" alt="13"></div></div>
+        <div class="output-card" style="z-index: 23;"><div class="visual-block cinematic-view"><img src="mpi73clw-Screenshot-2026-05-23-at-12.17.51-PM.png" alt="14"></div></div>
+        <div class="output-card" style="z-index: 24; background: var(--bg);">
+          <div class="laptop-wrapper">
+            <div>
+              <div class="laptop-frame">
+                <div class="laptop-notch"></div>
+                <div class="laptop-screen">
+                  <video class="cinematic-video" autoplay="" loop="" playsinline="" muted="" style="object-fit: contain;">
+                    <source src="mpjp6gof-krizweb.mp4" type="video/mp4">
+                  </video>
+                </div>
+              </div>
+              <div class="laptop-hinge"></div>
+              <div class="laptop-base"></div>
+            </div>
+            <div class="laptop-label">Website Prototype</div>
+          </div>
+        </div>
+        
+        <!-- FINALE VIDEO -->
+        <div class="output-card" style="z-index: 25;">
+          <div class="visual-block cinematic-view">
+            <video class="cinematic-video" autoplay="" loop="" playsinline="" muted="">
+              <source src="mpkac5a9-kriziaposters-2.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ARTIFACT: KRIZIA INDEX -->
+    <section id="artifact" style="background: var(--bg); padding: 0; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+      <div style="position: absolute; inset: 0;">
+        <video class="cinematic-video" id="index-hero-video" style="width: 100%; height: 100%; object-fit: cover; opacity: 1;" autoplay="" loop="" playsinline="" muted="">
+          <source src="mpr0sigr-fnwoefrhqof.mp4" type="video/mp4">
+        </video>
+        <div style="position: absolute; inset: 0; background: linear-gradient(to top, var(--bg) 0%, transparent 40%, transparent 60%, var(--bg) 100%);"></div>
+      </div>
+      <div class="container" style="position: relative; z-index: 2; text-align: center; display: flex; flex-direction: column; align-items: center;">
+        <span class="eyebrow" data-gsap="fade" style="text-align: center;">Editorial Artifact</span>
+        <h2 class="display-medium" data-gsap="reveal" style="margin-bottom: 1.5rem; text-align: center;">The Krizia Index.</h2>
+        <p class="prose" data-gsap="fade" style="max-width: 600px; font-size: 1.1rem; text-align: center;">A magazine-editorial artifact documenting the philosophy of the brand. KRIZIA INDEX merges material studies with cultural storytelling to build meaning beyond the product.</p>
+      </div>
+    </section>
+
+    <!-- RESULTS & IMPACT -->
+    <section id="results-impact" style="background: var(--surface);">
+      <div class="container">
+        <span class="eyebrow" data-gsap="fade">Results &amp; Impact</span>
+        <h2 class="display-medium" data-gsap="reveal">Strategic <span class="highlight">Outcomes</span>.</h2>
+        <div class="asymmetric-grid">
+          <div class="prose" data-gsap="fade">
+            <p>The project established a fully articulated luxury positioning system that:</p>
+            <ul style="list-style: none; margin-top: 2rem;">
+              <li style="margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem;">differentiated Krizia from trend-based luxury competitors</li>
+              <li style="margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem;">connected historical heritage with future-facing innovation</li>
+              <li style="margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem;">created a scalable visual and experiential ecosystem</li>
+            </ul>
+          </div>
+          <div>
+            <div class="stat-block" data-gsap="fade" style="align-self: center;">
+              <p style="font-size: 0.7rem; letter-spacing: 0.2em; margin-bottom: 1.5rem;">BRAND PERCEPTION SHIFT</p>
+              <p class="prose" style="font-size: 1.1rem; color: var(--fg);">The rebrand transformed Krizia from <span class="highlight">a heritage fashion label</span> into <span class="highlight">a contemporary architectural luxury house</span> centered on design intelligence and material innovation.</p>
+            </div>
+            <div class="stat-block" data-gsap="fade" style="margin-top: 3rem;">
+              <p style="font-size: 0.7rem; letter-spacing: 0.2em; margin-bottom: 1.5rem;">DESIGN IMPACT</p>
+              <p class="prose" style="font-size: 1.1rem; color: var(--fg);">The project demonstrated how transparency can become luxury, material storytelling can replace excessive branding, and fashion can function as engineered cultural design.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    function playAllVideos() {
+      document.querySelectorAll('video').forEach(v => {
+        v.muted = true;
+        v.play().catch(() => {});
+      });
+    }
+
+    window.addEventListener('load', () => {
+      initCinematicAnimations();
+      initHorizontalScroll();
+      initOutputStack();
+      playAllVideos();
+    });
+
+    document.addEventListener('click', playAllVideos, { once: true });
+    document.addEventListener('touchstart', playAllVideos, { once: true });
+
+    function initCinematicAnimations() {
+      gsap.to('.topography', {
+        scrollTrigger: { trigger: 'body', start: 'top top', end: 'bottom bottom', scrub: 1.5 },
+        y: -150, scale: 1.15, rotation: 0.5, ease: "none"
+      });
+
+      document.querySelectorAll('[data-gsap="reveal"]').forEach(el => {
+        const text = el.innerText;
+        el.innerHTML = text.split('').map(char => `<span style="display:inline-block">${char === ' ' ? '&nbsp;' : char}</span>`).join('');
+        gsap.from(el.querySelectorAll('span'), {
+          scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none reverse' },
+          y: 40, opacity: 0, filter: "blur(10px)", duration: 1.2, stagger: 0.03, ease: "power2.out"
+        });
+      });
+
+      document.querySelectorAll('[data-gsap="fade"]').forEach(el => {
+        gsap.from(el, {
+          scrollTrigger: { trigger: el, start: 'top 92%', toggleActions: 'play none none reverse' },
+          y: 20, opacity: 0, filter: "blur(5px)", duration: 1.0, ease: "power2.out"
+        });
+      });
+
+      document.querySelectorAll('[data-gsap="img-reveal"]').forEach(el => {
+        const mask = el.querySelector('.img-reveal-mask');
+        const img = el.querySelector('img');
+        const tl = gsap.timeline({ scrollTrigger: { trigger: el, start: 'top 80%', toggleActions: 'play none none reverse' } });
+        if (mask) tl.to(mask, { scaleX: 0, duration: 1.0, ease: "expo.inOut" });
+        if (img) tl.to(img, { opacity: 1, scale: 1, duration: 1.2, ease: "power2.out" }, "-=0.8");
+      });
+
+      const sections = document.querySelectorAll('section');
+      const dots = [];
+      const dotsContainer = document.getElementById('nav-dots');
+      sections.forEach((section, i) => {
+        const dot = document.createElement('div');
+        dot.className = 'nav-dot';
+        dot.addEventListener('click', () => gsap.to(window, { scrollTo: section, duration: 1.2, ease: "power3.inOut" }));
+        dotsContainer.appendChild(dot);
+        dots.push(dot);
+        ScrollTrigger.create({
+          trigger: section, start: "top center", end: "bottom center",
+          onToggle: self => { if (self.isActive) { dots.forEach(d => d.classList.remove('active')); dot.classList.add('active'); } }
+        });
+      });
+    }
+
+    function initHorizontalScroll() {
+      const panels = gsap.utils.toArray('.horizontal-panel');
+      const mm = gsap.matchMedia();
+      mm.add("(min-width: 481px)", () => {
+        gsap.to(panels, {
+          xPercent: -100 * (panels.length - 1),
+          ease: "none",
+          scrollTrigger: {
+            trigger: "#horizontal-wrapper",
+            pin: true, scrub: 1,
+            end: () => "+=" + document.querySelector('.horizontal-container').offsetWidth,
+            invalidateOnRefresh: true
+          }
+        });
+      });
+      mm.add("(max-width: 480px)", () => {
+        gsap.to(panels, {
+          xPercent: -100 * (panels.length - 1),
+          ease: "none",
+          scrollTrigger: {
+            trigger: "#horizontal-wrapper",
+            pin: true, scrub: 1,
+            end: () => "+=" + document.querySelector('.horizontal-container').offsetWidth,
+            invalidateOnRefresh: true
+          }
+        });
+      });
+    }
+
+    function initOutputStack() {
+      const cards = gsap.utils.toArray('.output-card');
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: '#output-section',
+          start: "top top",
+          end: "+=1500%",
+          scrub: true,
+          pin: true,
+          anticipatePin: 1
+        }
+      });
+      cards.forEach((card, i) => {
+        if (i === 0) return;
+        tl.fromTo(card, { yPercent: 100 }, { yPercent: 0, duration: 1, ease: "none" });
+        tl.to(cards[i-1], { scale: 0.95, duration: 0.5, ease: "none" }, "-=1");
+      });
+    }
+  </script>
+
+
+</body></html>

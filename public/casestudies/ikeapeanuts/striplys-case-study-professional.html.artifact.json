@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "Striplys Window Talks — Professional Case Study",
+  "entry": "striplys-case-study-professional.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-05-29T21:15:15.004Z",
+  "updatedAt": "2026-05-29T21:15:15.030Z",
+  "sourceSkillId": "blog-post",
+  "designSystemId": "claymorphism",
+  "metadata": {
+    "identifier": "striplys-case-study-professional",
+    "artifactType": "text/html",
+    "inferred": false
+  }
+}

@@ -10,7 +10,7 @@ export const PROJECTS = [
     img: "/olo.webp",
     cta: "Turning small hellos into meaningful growth through introverted design.",
     cursorCta: "Discover introverted design",
-    link: "https://olocasestudy.netlify.app"
+    link: "/casestudies/olo/index.html"
   },
   {
     id: "02",
@@ -23,7 +23,7 @@ export const PROJECTS = [
     img: "/krizia.mp4",
     cta: "Rebranding Luxury Through Structure",
     cursorCta: "See how I visualised luxury",
-    link: "https://kriziacasestudy.netlify.app/"
+    link: "/casestudies/krizia/index.html"
   },
   {
     id: "03",
@@ -36,7 +36,7 @@ export const PROJECTS = [
     img: "/works/media__1777587436505.webp",
     cta: "Transforms complexity into visual clarity instantly.",
     cursorCta: "See the visual clarity process",
-    link: "https://eli5casestudy.netlify.app"
+    link: "/casestudies/eli5/index.html"
   },
   {
     id: "04",
@@ -49,7 +49,7 @@ export const PROJECTS = [
     img: "/mica.webp", 
     cta: "Designing belonging through emotionally intelligent housing experiences.",
     cursorCta: "See how I designed belonging",
-    link: "https://micacasestudy.netlify.app"
+    link: "/casestudies/mica/index.html"
   },
   {
     id: "05",
@@ -62,6 +62,6 @@ export const PROJECTS = [
     img: "/ikeapeanuts.webp",
     cta: "Transforming retail spaces into emotional storytelling experiences.",
     cursorCta: "Explore narrative retail",
-    link: "https://ikeapeanutscasestudy.netlify.app/"
+    link: "/casestudies/ikeapeanuts/index.html"
   }
 ];

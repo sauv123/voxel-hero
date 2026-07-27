@@ -1,0 +1,493 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Striplys Window Talks: IKEA × Peanuts Case Study</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Poppins:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Striplys Palette - synthesized from IKEA x Peanuts */
+      --bg: oklch(97% 0.015 80);        /* Warm Paper / Cream */
+      --surface: oklch(100% 0 0);      /* Pure White */
+      --fg: oklch(20% 0.02 240);       /* Ink Black / Deep Charcoal */
+      --muted: oklch(65% 0.02 80);     /* Warm Grey */
+      --border: oklch(20% 0.02 240);   /* Solid Ink Line */
+      --accent: oklch(55% 0.18 250);   /* IKEA Blue */
+      --accent-soft: oklch(88% 0.15 90); /* Peanuts Yellow */
+      
+      --radius: 12px;
+      --ink-weight: 2px;
+      --max-width: 720px;
+    }
+
+    * { box-sizing: border-box; }
+    
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'Montserrat', sans-serif;
+      line-height: 1.7;
+      font-size: 18px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrap {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Header & Navigation */
+    nav.top {
+      padding: 40px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: ui-monospace, monospace;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .logo {
+      font-weight: 800;
+      border: var(--ink-weight) solid var(--border);
+      padding: 4px 12px;
+      background: var(--surface);
+    }
+
+    /* Article Header */
+    header.masthead {
+      padding: 60px 0 80px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      font-family: ui-monospace, monospace;
+      font-size: 14px;
+      color: var(--accent);
+      margin-bottom: 16px;
+      display: inline-block;
+      border-bottom: var(--ink-weight) solid var(--accent);
+    }
+
+    h1 {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800;
+      font-size: clamp(40px, 8vw, 64px);
+      line-height: 1.05;
+      margin: 0 0 24px;
+      letter-spacing: -0.03em;
+    }
+
+    .deck {
+      font-size: 22px;
+      color: var(--muted);
+      max-width: 600px;
+      margin: 0 auto 40px;
+      line-height: 1.4;
+    }
+
+    .byline {
+      font-size: 14px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      background: var(--accent-soft);
+      border: var(--ink-weight) solid var(--border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: var(--fg);
+    }
+
+    /* Hero Section */
+    .hero-container {
+      margin-bottom: 80px;
+      position: relative;
+    }
+
+    .hero-image {
+      aspect-ratio: 16/9;
+      background: var(--surface);
+      border: var(--ink-weight) solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 8px 8px 0px var(--border);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .hero-caption {
+      margin-top: 24px;
+      font-size: 14px;
+      color: var(--muted);
+      font-style: italic;
+      text-align: center;
+    }
+
+    /* Content Typography */
+    section {
+      margin-bottom: 80px;
+    }
+
+    h2 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      margin: 0 0 24px;
+      letter-spacing: -0.02em;
+      position: relative;
+      display: inline-block;
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: 4px;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background: var(--accent-soft);
+      z-index: -1;
+      opacity: 0.6;
+    }
+
+    p {
+      margin: 0 0 24px;
+    }
+
+    ul, ol {
+      margin: 0 0 32px;
+      padding-left: 20px;
+    }
+
+    li {
+      margin-bottom: 12px;
+    }
+
+    /* Pull Quotes / Speech Bubbles */
+    blockquote.speech-bubble {
+      margin: 48px 0;
+      padding: 40px;
+      background: var(--surface);
+      border: var(--ink-weight) solid var(--border);
+      border-radius: 24px;
+      position: relative;
+      font-size: 24px;
+      font-weight: 600;
+      line-height: 1.3;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    blockquote.speech-bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -22px;
+      left: 60px;
+      border-width: 20px 20px 0 0;
+      border-style: solid;
+      border-color: var(--border) transparent transparent transparent;
+    }
+
+    blockquote.speech-bubble::before {
+      content: '';
+      position: absolute;
+      bottom: -16px;
+      left: 62px;
+      border-width: 18px 18px 0 0;
+      border-style: solid;
+      border-color: var(--surface) transparent transparent transparent;
+      z-index: 1;
+    }
+
+    .core-insight-box {
+      background: var(--accent-soft);
+      border: var(--ink-weight) solid var(--border);
+      padding: 32px;
+      margin: 40px 0;
+      border-radius: var(--radius);
+      box-shadow: 8px 8px 0px var(--border);
+      position: relative;
+    }
+
+    .core-insight-box h3 {
+      font-family: ui-monospace, monospace;
+      font-size: 14px;
+      text-transform: uppercase;
+      margin: 0 0 16px;
+      color: var(--accent);
+    }
+
+    .core-insight-box p {
+      font-family: 'Poppins', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1.3;
+      margin: 0;
+    }
+
+    /* Figures & Panels */
+    figure {
+      margin: 48px -40px;
+      padding: 0;
+      background: var(--surface);
+      border: var(--ink-weight) solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 6px 6px 0px var(--accent-soft);
+      overflow: hidden;
+    }
+
+    figure img {
+      width: 100%;
+      display: block;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+    }
+
+    figcaption {
+      padding: 20px;
+      font-size: 14px;
+      color: var(--muted);
+      text-align: left;
+      font-family: ui-monospace, monospace;
+      border-top: var(--ink-weight) solid var(--border);
+      background: var(--surface);
+    }
+
+    .panel-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin: 40px 0;
+    }
+
+    .panel {
+      border: var(--ink-weight) solid var(--border);
+      padding: 24px;
+      background: var(--surface);
+      border-radius: 4px;
+    }
+
+    .panel h3 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 18px;
+      margin: 0 0 12px;
+      color: var(--accent);
+    }
+
+    /* Footer */
+    footer {
+      border-top: var(--ink-weight) solid var(--border);
+      padding: 80px 0;
+      margin-top: 80px;
+      text-align: center;
+    }
+
+    .author-footer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .author-bio {
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 480px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      h1 { font-size: 40px; }
+      figure { margin: 40px 0; }
+      .panel-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <nav class="top">
+      <div class="logo">STRIPLYS</div>
+      <div>Case Study #012</div>
+    </nav>
+
+    <header class="masthead">
+      <div class="eyebrow" data-od-id="eyebrow">Experiential UX / Brand Case Study</div>
+      <h1 data-od-id="headline">Striplys Window Talks</h1>
+      <p class="deck">Designing an Emotional Podcast Experience Through an IKEA × Peanuts Collaboration.</p>
+      <div class="byline">
+        <div class="avatar">SS</div>
+        <span>By Case Study Author · May 14, 2026</span>
+      </div>
+    </header>
+
+    <div class="hero-container">
+      <div class="hero-image" data-od-id="hero">
+        <img src="mp5z2a1s-Screenshot-2026-05-14-at-10.59.50-PM.png" alt="Striplys Window Talks Hero" style="width: 100%; height: 100%; object-fit: cover;">
+      </div>
+      <p class="hero-caption">The Striplys Window: A modular LED storytelling interface visualizing spoken memories through comic-strip animations.</p>
+    </div>
+
+    <section id="overview" data-od-id="overview">
+      <h2>Overview</h2>
+      <p><strong>Striplys Window Talks</strong> is a conceptual experiential podcast designed as a collaboration between IKEA and Peanuts. The project reimagines IKEA stores as emotional storytelling environments where conversations about memory, comfort, identity, and home become immersive experiences.</p>
+      
+      <figure>
+        <img src="mp5z11js-Screenshot-2026-05-14-at-10.58.52-PM.png" alt="IKEA x Peanuts Environment">
+        <figcaption>Designing spatial environments that blend IKEA's functionalism with Peanuts' emotional warmth.</figcaption>
+      </figure>
+
+      <p>The concept combines a live podcast format, Peanuts-inspired storytelling, spatial design inside IKEA environments, and an interactive installation called the <strong>Striplys Window</strong> — a modular LED storytelling wall that visualizes memories through comic-strip-inspired animations.</p>
+    </section>
+
+    <section id="problem" data-od-id="problem">
+      <h2>Problem Statement</h2>
+      <p>Modern retail experiences often prioritize product visibility over emotional connection. While IKEA creates inspiring physical environments, there is an opportunity to deepen the relationship between people and the idea of “home.”</p>
+      
+      <blockquote class="speech-bubble" data-od-id="pull-quote">
+        "How might IKEA transform retail space into a platform for storytelling, comfort, and human connection?"
+      </blockquote>
+
+      <p>The challenge was to create a long-lasting emotional experience that aligns with the nostalgic values of Peanuts while reinforcing IKEA's human-centered philosophy.</p>
+    </section>
+
+    <section id="objectives" data-od-id="objectives">
+      <h2>Objectives</h2>
+      <div class="panel-grid">
+        <div class="panel">
+          <h3>Primary Goals</h3>
+          <ul>
+            <li>Create an emotionally engaging brand experience inside IKEA.</li>
+            <li>Combine physical and digital storytelling into one cohesive system.</li>
+            <li>Use Peanuts characters in a meaningful and non-superficial way.</li>
+            <li>Design a podcast format that encourages reflection, warmth, and relatability.</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3>Success Criteria</h3>
+          <ul>
+            <li>Strong emotional resonance with audiences.</li>
+            <li>High visual identity and recognizability.</li>
+            <li>Repeatable and scalable episode structure.</li>
+            <li>Potential for both physical and digital expansion.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="research" data-od-id="research">
+      <h2>Research & Insights</h2>
+      <p>Research into IKEA revealed themes of emotional comfort, simplicity, and togetherness. Simultaneously, Peanuts insights highlighted vulnerability, childhood nostalgia, and emotional honesty.</p>
+      
+      <div class="core-insight-box">
+        <h3>Core Insight</h3>
+        <p>People do not emotionally remember products — they remember moments, feelings, and spaces connected to their lives.</p>
+      </div>
+
+      <p>Audiences are increasingly seeking slower, more reflective digital experiences. Nostalgia creates stronger emotional retention and community interaction, making the IKEA × Peanuts pairing a powerful tool for engagement.</p>
+      
+      <figure>
+        <img src="mp5z1aws-Screenshot-2026-05-14-at-10.59.05-PM.png" alt="Brand Value Mapping">
+        <figcaption>Mapping the intersection of IKEA's 'Better Everyday Life' and Peanuts' 'Emotional Honesty'.</figcaption>
+      </figure>
+    </section>
+
+    <section id="approach" data-od-id="approach">
+      <h2>Approach / Methodology</h2>
+      <p>The experience was designed using three emotional pillars: Emotional Comfort, Nostalgic Minimalism, and Imaginative Practicality.</p>
+      
+      <div class="panel-grid">
+        <div class="panel">
+          <h3>Emotional Comfort</h3>
+          <p>Creating spaces where vulnerability feels safe, using real IKEA room sets as storytelling stages.</p>
+        </div>
+        <div class="panel">
+          <h3>Nostalgic Minimalism</h3>
+          <p>Using simple visual language and childhood-inspired storytelling rooted in the Peanuts universe.</p>
+        </div>
+      </div>
+
+      <figure>
+        <img src="mp5z1hlt-Screenshot-2026-05-14-at-10.59.13-PM.png" alt="Spatial Storytelling Map">
+        <figcaption>Spatial Storytelling: Mapping the emotional journey across different IKEA room sets.</figcaption>
+      </figure>
+
+      <p>The podcast ecosystem extends beyond audio into environment, interaction, and memory. Real IKEA room sets—bedrooms for vulnerability, living rooms for connection—become intentional stages for the narrative.</p>
+    </section>
+
+    <section id="implementation" data-od-id="implementation">
+      <h2>Implementation</h2>
+      <p>Each episode follows a consistent emotional rhythm: Introduction, Peanuts-inspired reflective questions, the main emotional conversation, the "Daydream Window" visual moment, and a home-related challenge.</p>
+      
+      <div class="panel" style="margin-bottom: 32px; border-left: 8px solid var(--accent-soft);">
+        <h3>The Striplys Window</h3>
+        <p>A core experiential element—conceptualized as a 4×4 LED panel. The window dynamically visualizes stories and emotions shared during the podcast using animated comic-style scenes.</p>
+      </div>
+
+      <p>Design elements include a soft Scandinavian palette, warm ambient lighting, and comic-strip framing. Interactive elements like Peanuts Question Cards and plush characters further ground the experience in physical space.</p>
+    </section>
+
+    <section id="challenges" data-od-id="challenges">
+      <h2>Challenges & Solutions</h2>
+      <div class="panel-grid">
+        <div class="panel">
+          <h3>Balancing Brands</h3>
+          <p><strong>Challenge:</strong> Avoiding visual clutter from two iconic brands.<br><strong>Solution:</strong> Focused on shared emotional values rather than overt visual imitation.</p>
+        </div>
+        <div class="panel">
+          <h3>Avoiding Sales-focus</h3>
+          <p><strong>Challenge:</strong> Risk of becoming overly promotional.<br><strong>Solution:</strong> Products became emotional tools rather than sales objects, integrated naturally into stories.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="results" data-od-id="results">
+      <h2>Results & Impact</h2>
+      <p>The final concept demonstrated that retail spaces can become emotional storytelling platforms and that brands can create meaningful engagement without traditional advertising.</p>
+      <ul>
+        <li><strong>For IKEA:</strong> Increased emotional brand loyalty and longer in-store engagement.</li>
+        <li><strong>For Peanuts:</strong> Renewed relevance for younger audiences and expanded storytelling formats.</li>
+        <li><strong>UX Impact:</strong> Expanded traditional thinking into environmental storytelling and sensory design.</li>
+      </ul>
+    </section>
+
+    <section id="takeaways" data-od-id="takeaways">
+      <h2>Key Takeaways</h2>
+      <blockquote class="speech-bubble">
+        "Designing for emotion is not decorative — it is functional and foundational to memorable user experiences."
+      </blockquote>
+      <p>The project reinforced that storytelling is a UX tool, physical spaces can become interactive interfaces, and multi-sensory experiences increase meaning.</p>
+    </section>
+
+    <section id="reflection" data-od-id="reflection">
+      <h2>Final Reflection</h2>
+      <p>Striplys Window Talks became more than a podcast concept — it evolved into an exploration of how design can create comfort, nostalgia, and emotional connection in everyday spaces.</p>
+    </section>
+
+    <footer>
+      <div class="author-footer">
+        <div class="avatar">SS</div>
+        <p class="author-bio">Striplys Window Talks is an exploration of experiential UX, emotional storytelling, and the intersection of brand values in physical space.</p>
+        <p style="font-size: 12px; color: var(--muted);">© 2026 · Case Study</p>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

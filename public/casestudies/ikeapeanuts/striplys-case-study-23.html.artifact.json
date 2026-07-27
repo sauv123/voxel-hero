@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "Striplys Window Talks: IKEA × Peanuts Case Study",
+  "entry": "striplys-case-study-23.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-05-24T21:46:39.533Z",
+  "updatedAt": "2026-05-24T21:46:39.565Z",
+  "sourceSkillId": "blog-post",
+  "designSystemId": "claymorphism",
+  "metadata": {
+    "identifier": "striplys-case-study",
+    "artifactType": "text/html",
+    "inferred": false
+  }
+}

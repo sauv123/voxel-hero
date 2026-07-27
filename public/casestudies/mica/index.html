@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Case Study</title>
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #111111;
+  --font-body: "Inter", -apple-system, system-ui, sans-serif;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #000;
+  font-family: var(--font-body);
+}
+
+.gallery {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.gallery > * {
+  opacity: 0;
+  transform: translateY(24px);
+  animation: fadeUp 600ms var(--ease-standard) forwards;
+}
+
+.gallery > :nth-child(1) { animation-delay: 100ms; }
+.gallery > :nth-child(2) { animation-delay: 200ms; }
+.gallery > :nth-child(3) { animation-delay: 300ms; }
+.gallery > :nth-child(4) { animation-delay: 400ms; }
+.gallery > :nth-child(5) { animation-delay: 500ms; }
+.gallery > :nth-child(6) { animation-delay: 600ms; }
+.gallery > :nth-child(7) { animation-delay: 700ms; }
+.gallery > :nth-child(8) { animation-delay: 800ms; }
+.gallery > :nth-child(9) { animation-delay: 900ms; }
+.gallery > :nth-child(10) { animation-delay: 1000ms; }
+
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.img-wrap {
+  position: relative;
+  width: 100%;
+  line-height: 0;
+}
+
+.img-wrap img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.gallery > img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.tag-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 60px 36px 28px;
+  background: linear-gradient(transparent 0%, rgba(0,0,0,0.45) 40%, rgba(0,0,0,0.82) 100%);
+  pointer-events: none;
+}
+
+.tag-name {
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.01em;
+  margin-bottom: 14px;
+  position: relative;
+  padding-left: 14px;
+}
+
+.tag-name::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 4px;
+  bottom: 4px;
+  width: 3px;
+  background: #2F6FEB;
+  border-radius: 2px;
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-left: 14px;
+}
+
+.tag {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(255,255,255,0.08);
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.06);
+  transition: background 200ms ease;
+}
+
+
+
+.video-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  width: 100%;
+  background: #000;
+}
+
+.video-pair video {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+
+</style>
+</head>
+<body>
+
+<div class="gallery">
+
+<div class="img-wrap">
+  <img loading="lazy" src="mq99ltdk-Frame.jpg" alt="Frame">
+  <div class="tag-overlay">
+    <div class="tag-name">Sauveer Sinha</div>
+    <div class="tag-row">
+      <span class="tag">4 months</span>
+      <span class="tag">Design Thinking</span>
+      <span class="tag">User Experience</span>
+      <span class="tag">Service Design</span>
+    </div>
+  </div>
+</div>
+<img loading="lazy" src="mq99mozd-Frame-1.jpg" alt="Frame 1">
+<img loading="lazy" src="mq99n0c1-Frame-2.jpg" alt="Frame 2">
+<img loading="lazy" src="mq99n0c5-Frame-3.jpg" alt="Frame 3">
+<img loading="lazy" src="mq99n0cd-Frame-4.jpg" alt="Frame 4">
+<img loading="lazy" src="mq99n0ck-Frame-5.jpg" alt="Frame 5">
+<img loading="lazy" src="mq99n0cs-Frame-6.jpg" alt="Frame 6">
+<img loading="lazy" src="mq99n0de-Frame-7.jpg" alt="Frame 7">
+<img loading="lazy" src="mq99n0dl-Frame-8.jpg" alt="Frame 8">
+<img loading="lazy" src="mq99n0do-Frame-9.jpg" alt="Frame 9">
+<img loading="lazy" src="mq99n0du-Frame-10.jpg" alt="Frame 10">
+<img loading="lazy" src="mq99n0dy-Frame-11.jpg" alt="Frame 11">
+<img loading="lazy" src="mq99n0e2-Frame-12.jpg" alt="Frame 12">
+<img loading="lazy" src="mq99n0ea-Frame-13.jpg" alt="Frame 13">
+<img loading="lazy" src="mq99n0ek-Frame-14.jpg" alt="Frame 14">
+<img loading="lazy" src="mq99n0f0-Frame-16.jpg" alt="Frame 16">
+<img loading="lazy" src="mq99n0fc-Frame-17.jpg" alt="Frame 17">
+<img loading="lazy" src="mq99n0fn-Frame-18.jpg" alt="Frame 18">
+<img loading="lazy" src="mq99n0ft-Frame-19.jpg" alt="Frame 19">
+<img loading="lazy" src="mq99n0fy-Frame-20.jpg" alt="Frame 20">
+<img loading="lazy" src="mq99n0fz-Frame-21.jpg" alt="Frame 21">
+<img loading="lazy" src="mq99n0g2-Frame-22.jpg" alt="Frame 22">
+<img loading="lazy" src="mq99n0g6-Frame-23.jpg" alt="Frame 23">
+<img loading="lazy" src="mq99n0g7-Frame-24.jpg" alt="Frame 24">
+<img loading="lazy" src="mq99n0g9-Frame-25.jpg" alt="Frame 25">
+<img loading="lazy" src="mq99n0gd-Frame-26.jpg" alt="Frame 26">
+<img loading="lazy" src="mq99n0ge-Frame-27.jpg" alt="Frame 27">
+<img loading="lazy" src="mq99n0gh-Frame-28.jpg" alt="Frame 28">
+<img loading="lazy" src="mq99n0gn-Frame-29.jpg" alt="Frame 29">
+<img loading="lazy" src="mq99n0gp-Frame-30.jpg" alt="Frame 30">
+<img loading="lazy" src="mq99n0gp-Frame-31.jpg" alt="Frame 31">
+<img loading="lazy" src="mq99n0gu-Frame-32.jpg" alt="Frame 32">
+<img loading="lazy" src="mq99n0gv-Frame-33.jpg" alt="Frame 33">
+<img loading="lazy" src="mq99n0gy-Frame-34.jpg" alt="Frame 34">
+<img loading="lazy" src="mq99n0gz-Frame-35.jpg" alt="Frame 35">
+<img loading="lazy" src="mq99n0h3-Frame-36.jpg" alt="Frame 36">
+<img loading="lazy" src="mq99n0h4-Frame-37.jpg" alt="Frame 37">
+<img loading="lazy" src="mq99n0h6-Frame-38.jpg" alt="Frame 38">
+<img loading="lazy" src="mq99n0hb-Frame-39.jpg" alt="Frame 39">
+<img loading="lazy" src="mq99n0hc-Frame-40.jpg" alt="Frame 40">
+<img loading="lazy" src="mq99n0hd-Frame-41.jpg" alt="Frame 41">
+<img loading="lazy" src="mq99n0hh-Frame-42.jpg" alt="Frame 42">
+<img loading="lazy" src="mq99n0hi-Frame-43.jpg" alt="Frame 43">
+<img loading="lazy" src="mq99n0hn-Frame-44.jpg" alt="Frame 44">
+<img loading="lazy" src="mq99n0ho-Frame-45.jpg" alt="Frame 45">
+<img loading="lazy" src="mq99n0hs-Frame-46.jpg" alt="Frame 46">
+<img loading="lazy" src="mq99n0hw-Frame-47.jpg" alt="Frame 47">
+<img loading="lazy" src="mq99n0i4-Frame-48.jpg" alt="Frame 48">
+<img loading="lazy" src="mq99n0i6-Frame-49.jpg" alt="Frame 49">
+<img loading="lazy" src="mq99n628-Frame-50.jpg" alt="Frame 50">
+<img loading="lazy" src="mq99n62a-Frame-51.jpg" alt="Frame 51">
+<img loading="lazy" src="mq99n62c-Frame-52.jpg" alt="Frame 52">
+<img loading="lazy" src="mq99n62e-Frame-53.jpg" alt="Frame 53">
+<div class="video-pair">
+  <video autoplay muted loop playsinline preload="auto">
+    <source src="mq9b1ghy-Screen-Recording-2026-06-11-at-11.10.16-AM.mov">
+  </video>
+  <video autoplay muted loop playsinline preload="auto">
+    <source src="mq9b1gj1-Screen-Recording-2026-06-11-at-11.11.12-AM.mov">
+  </video>
+</div>
+<img loading="lazy" src="mq99n62o-Frame-55.jpg" alt="Frame 55">
+<img loading="lazy" src="mq99n62w-Frame-57.jpg" alt="Frame 57">
+
+</div>
+
+</body>
+</html>

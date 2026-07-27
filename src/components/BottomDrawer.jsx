@@ -423,7 +423,7 @@ export default function BottomDrawer({ theme, activeNav, navigateWithTransition 
                   <span className="inline-nav-label" style={{ color: theme.brand }}>{page === 'playground' ? 'Labs' : page}</span>
                 </div>
                 {activeNav === page && (
-                  <div style={{ position: 'absolute', bottom: '-4px', left: '50%', transform: 'translateX(-50%)', width: '4px', height: '4px', borderRadius: '50%', background: theme.brand }} />
+                  <div style={{ position: 'absolute', bottom: '2px', left: '50%', transform: 'translateX(-50%)', width: '4px', height: '4px', borderRadius: '50%', background: theme.brand }} />
                 )}
               </div>
             ))}
