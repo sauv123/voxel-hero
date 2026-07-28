@@ -10,7 +10,7 @@ const TEXT_PROJECTS = [
     subtitle: 'Tactile, distraction-free note-taking workspace designed for deep focus.',
     tags: ['React', 'Local-First', 'Tactile UI'],
     link: null,
-    experimentId: 101, // Custom context
+    experimentId: 4,
     description: 'Lemon Notes is a minimalist, local-first markdown note-taking app that treats text like architecture. It eliminates sidebars and complex controls in favor of fluid typography and instant tactile feedback.',
     whoItsFor: 'Writers, researchers, and designers who want an aesthetic space to write without UI clutter.',
     problem: 'Modern note apps are bloated with database properties, sync delays, and multi-pane clutter that break creative flow.',
@@ -57,24 +57,6 @@ const TEXT_PROJECTS = [
       'Fluid Battery Charge Gauge: Dynamic drag-to-set energy level.',
       'Focus Boundary Signals: Auto-set Slack status based on battery level.',
       'Daily Energy Wave: Visual chart tracking weekly drain vs recovery patterns.'
-    ]
-  },
-  {
-    id: '04',
-    key: 'orion',
-    title: 'ORION AI ASSISTANT',
-    subtitle: 'Native macOS desktop voice assistant with Three.js particle orb.',
-    tags: ['Python', 'Three.js', 'Groq Llama-3'],
-    link: null,
-    experimentId: 9,
-    description: 'A lightweight, ultra-fast native macOS AI voice assistant built with a pure Python backend and interactive 3D particle orb.',
-    whoItsFor: 'Power users looking for sub-second desktop voice automation without heavy Electron overhead.',
-    problem: 'Existing AI voice tools suffer from latency, browser tabs, or bloated resource usage.',
-    goal: 'Sub-second response latency with native AppleScript OS hardware integration.',
-    coreFeatures: [
-      '3D Particle Orb: Real-time audio-reactive particle sphere.',
-      'macOS System Control: Adjust brightness, launch apps, manage files via speech.',
-      'Resilient Tool Parsing: Regex-backed JSON recovery for 100% reliable execution.'
     ]
   }
 ];

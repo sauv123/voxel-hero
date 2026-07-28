@@ -1,129 +1,159 @@
 /* ═══════════════════════════════════════════════════
-   EDITORIAL TEXT LAB SHOWCASE SYSTEM
+   BRUTALIST EDITORIAL TEXT LAB SHOWCASE SYSTEM
    ═══════════════════════════════════════════════════ */
 
 .text-lab-showcase-container {
   margin-top: 100px;
   padding-top: 60px;
-  border-top: 1px solid rgba(13, 13, 13, 0.1);
+  border-top: 2px solid #0d0d0d;
   position: relative;
 }
 
 .text-lab-header {
-  margin-bottom: 40px;
+  margin-bottom: 48px;
 }
 
 .text-lab-eyebrow {
   font-family: 'Space Mono', monospace;
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.25em;
   text-transform: uppercase;
   display: block;
   margin-bottom: 8px;
-  opacity: 0.5;
+  opacity: 0.6;
 }
 
 .text-lab-title {
   font-family: var(--font-heading);
-  font-size: clamp(1.8rem, 3.5vw, 3.2rem);
+  font-size: clamp(2.2rem, 4.5vw, 4rem);
   font-weight: 900;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.04em;
   text-transform: uppercase;
 }
 
-/* ── Editorial Rows ───────────────────────────── */
+/* ── Editorial Brutalist Rows ───────────────────────────── */
 .text-lab-list {
   display: flex;
   flex-direction: column;
+  border-top: 2px solid #0d0d0d;
 }
 
 .text-lab-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 28px 20px;
-  border-bottom: 1px solid rgba(13, 13, 13, 0.1);
+  padding: 38px 24px;
+  border-bottom: 2px solid #0d0d0d;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   background: transparent;
-  gap: 24px;
+  gap: 28px;
+  color: #0d0d0d;
 }
 
 .text-lab-row:hover {
-  background: rgba(13, 13, 13, 0.03);
-  padding-left: 28px;
+  background: #0d0d0d;
+  color: #ffffff !important;
+  padding-left: 36px;
+}
+
+.text-lab-row:hover .text-lab-num {
+  color: #2ECC40 !important;
+}
+
+.text-lab-row:hover .text-lab-proj-title {
+  color: #ffffff !important;
+  transform: skewX(-4deg);
+}
+
+.text-lab-row:hover .text-lab-proj-sub {
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+
+.text-lab-row:hover .text-lab-tag-chip {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
 .text-lab-row-left {
   display: flex;
   align-items: center;
-  gap: 24px;
-  min-width: 280px;
+  gap: 28px;
+  min-width: 380px;
 }
 
 .text-lab-num {
   font-family: 'Space Mono', monospace;
-  font-size: 0.9rem;
-  font-weight: 700;
+  font-size: 1.1rem;
+  font-weight: 900;
+  transition: color 0.3s ease;
 }
 
 .text-lab-proj-title {
   font-family: var(--font-heading);
-  font-size: clamp(1.3rem, 2.2vw, 2.2rem);
+  font-size: clamp(2rem, 4.2vw, 4.2rem);
   font-weight: 900;
-  letter-spacing: -0.02em;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
   text-transform: uppercase;
   margin: 0;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
 }
 
 .text-lab-row-middle {
   flex: 1;
+  max-width: 460px;
 }
 
 .text-lab-proj-sub {
   font-family: var(--font-body);
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: rgba(13, 13, 13, 0.65);
   margin: 0;
   line-height: 1.5;
+  transition: color 0.3s ease;
 }
 
 .text-lab-row-right {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 24px;
 }
 
 .text-lab-tags {
   display: flex;
-  gap: 6px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
 .text-lab-tag-chip {
-  background: rgba(13, 13, 13, 0.05);
+  background: rgba(13, 13, 13, 0.06);
   color: #0d0d0d;
-  font-family: var(--font-body);
+  border: 1px solid rgba(13, 13, 13, 0.12);
+  font-family: 'Space Mono', monospace;
   font-size: 10px;
   font-weight: 700;
-  padding: 4px 10px;
+  padding: 6px 12px;
   border-radius: 4px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  transition: all 0.3s ease;
 }
 
 .text-lab-arrow {
-  font-size: 1.2rem;
+  font-size: 1.6rem;
   font-weight: 900;
   opacity: 0.4;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, color 0.3s ease;
 }
 
 .text-lab-row:hover .text-lab-arrow {
   opacity: 1;
-  transform: translateX(6px);
+  color: #2ECC40;
+  transform: translateX(10px) scale(1.15);
 }
 
 /* ── 3D Floating Animated Preview Card ────────── */
