@@ -165,9 +165,9 @@ export default function WorkFolder({ theme, onOpen }) {
       
       // Animate file cards spreading out
       if (fileCards.length >= 3) {
-        tl.to(fileCards[0], { x: -60, y: -50, rotation: -15, scale: 1.1, duration: 0.5, ease: "back.out(1.4)" }, 0);
-        tl.to(fileCards[1], { x: 0, y: -80, rotation: 0, scale: 1.15, duration: 0.5, ease: "back.out(1.4)" }, 0);
-        tl.to(fileCards[2], { x: 60, y: -50, rotation: 15, scale: 1.1, duration: 0.5, ease: "back.out(1.4)" }, 0);
+        tl.to(fileCards[0], { opacity: 1, x: -60, y: -50, rotation: -15, scale: 1.1, duration: 0.5, ease: "back.out(1.4)" }, 0);
+        tl.to(fileCards[1], { opacity: 1, x: 0, y: -80, rotation: 0, scale: 1.15, duration: 0.5, ease: "back.out(1.4)" }, 0);
+        tl.to(fileCards[2], { opacity: 1, x: 60, y: -50, rotation: 15, scale: 1.1, duration: 0.5, ease: "back.out(1.4)" }, 0);
       }
       
       // Animate text reveal via scroll trigger rather than play()

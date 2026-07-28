@@ -869,38 +869,33 @@
 @media (max-width: 900px) {
   .tls-products {
     display: flex !important;
-    flex-direction: column !important;
-    width: 100% !important;
-    padding-bottom: 40px !important;
-    gap: 0 !important; /* Stack them closely */
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x mandatory !important;
+    scroll-behavior: smooth !important;
+    -webkit-overflow-scrolling: touch;
+    width: 100vw !important;
+    margin-left: -5vw !important;
+    padding: 0 5vw 40px 5vw !important;
+    gap: 20px !important;
+  }
+  
+  .tls-products::-webkit-scrollbar {
+    display: none;
   }
 
   .text-lab-row {
-    position: sticky !important;
-    /* Adding calc to top to offset each card slightly for a deck effect */
-    top: calc(100px + (var(--card-index, 0) * 20px)) !important;
-    
+    flex: 0 0 85vw !important;
+    scroll-snap-align: center !important;
     flex-direction: column !important;
     align-items: flex-start !important;
     gap: 16px !important;
     padding: 32px 24px !important;
     height: auto !important;
-    background: #080808 !important; /* Dark solid background so they stack cleanly */
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
     border-radius: 24px !important;
-    margin-bottom: 20px !important; /* Spacing before next card sticks */
-    
-    /* Box shadow to create depth between stacked cards */
-    box-shadow: 0 -10px 20px rgba(0,0,0,0.5) !important;
   }
-  
-  /* Use nth-child to assign variables for top offset stagger */
-  .text-lab-row:nth-child(1) { --card-index: 0; z-index: 10; }
-  .text-lab-row:nth-child(2) { --card-index: 1; z-index: 11; }
-  .text-lab-row:nth-child(3) { --card-index: 2; z-index: 12; }
-  .text-lab-row:nth-child(4) { --card-index: 3; z-index: 13; }
-  .text-lab-row:nth-child(5) { --card-index: 4; z-index: 14; }
-  .text-lab-row:nth-child(6) { --card-index: 5; z-index: 15; }
   .text-lab-row-left, .text-lab-row-middle, .text-lab-row-right {
     width: 100% !important;
     min-width: unset !important;
