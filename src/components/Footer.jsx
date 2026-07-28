@@ -392,11 +392,13 @@ export default function Footer({ theme, activeChar = 'deer' }) {
             {/* Spaced horizontal row of links placed directly under Say Hi */}
             <div 
               style={{
-                display: "flex",
-                flexDirection: isMobile ? "column" : "row",
-                alignItems: "center",
-                gap: isMobile ? "16px" : "24px",
-                boxSizing: "border-box"
+                display: isMobile ? "grid" : "flex",
+                gridTemplateColumns: isMobile ? "1fr 1fr" : "none",
+                flexDirection: isMobile ? "unset" : "row",
+                alignItems: isMobile ? "start" : "center",
+                gap: isMobile ? "24px 16px" : "24px",
+                boxSizing: "border-box",
+                width: "100%"
               }}
             >
               <FooterTextLink href="mailto:sauveersinha@gmail.com" text="Gmail" brandColor={brandColor} />

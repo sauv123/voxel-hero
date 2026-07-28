@@ -44,3 +44,13 @@
   opacity: 0;
   pointer-events: none;
 }
+
+/* Hard override for touch devices */
+@media (hover: none) and (pointer: coarse), (max-width: 768px) {
+  .sotd-cursor-wrapper,
+  .sotd-cursor-outer,
+  .sotd-cursor-dot,
+  .sotd-cursor-ripple {
+    display: none !important;
+  }
+}

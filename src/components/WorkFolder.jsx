@@ -138,29 +138,46 @@ export default function WorkFolder({ theme, onOpen }) {
       folderEl.addEventListener('mouseleave', handleTiltLeave);
     }
 
-    // Mobile: open folder on scroll (now triggers exactly at center)
+    // Mobile: open folder on scroll via scrub instead of class toggles
     const isMobile = window.matchMedia("(max-width: 768px)").matches;
     if (isMobile && folderEl) {
+      const folderFront = folderEl.querySelector('.folder-front');
+      const fileCards = folderEl.querySelectorAll('.file-card');
+      const folderSs = folderEl.querySelector('.folder-ss');
+
+      // Create a GSAP timeline for opening the folder
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: folderEl,
+          start: "top 65%",
+          toggleActions: "play reverse play reverse"
+        }
+      });
+
+      // Animate folder front opening
+      if (folderFront) {
+        tl.to(folderFront, {
+          rotationX: -45,
+          duration: 0.5,
+          ease: "power2.out"
+        }, 0);
+      }
+      
+      // Animate file cards spreading out
+      if (fileCards.length >= 3) {
+        tl.to(fileCards[0], { x: -60, y: -50, rotation: -15, scale: 1.1, duration: 0.5, ease: "back.out(1.4)" }, 0);
+        tl.to(fileCards[1], { x: 0, y: -80, rotation: 0, scale: 1.15, duration: 0.5, ease: "back.out(1.4)" }, 0);
+        tl.to(fileCards[2], { x: 60, y: -50, rotation: 15, scale: 1.1, duration: 0.5, ease: "back.out(1.4)" }, 0);
+      }
+      
+      // Animate text reveal via scroll trigger rather than play()
       ScrollTrigger.create({
         trigger: folderEl,
-        start: "center center",
-        end: "bottom top",
-        onEnter: () => {
-          folderEl.classList.add("is-open");
-          wordHoverTl.play();
-        },
-        onLeaveBack: () => {
-          folderEl.classList.remove("is-open");
-          wordHoverTl.reverse();
-        },
-        onLeave: () => {
-          folderEl.classList.remove("is-open");
-          wordHoverTl.reverse();
-        },
-        onEnterBack: () => {
-          folderEl.classList.add("is-open");
-          wordHoverTl.play();
-        }
+        start: "top 65%",
+        onEnter: () => wordHoverTl.play(),
+        onLeaveBack: () => wordHoverTl.reverse(),
+        onEnterBack: () => wordHoverTl.play(),
+        onLeave: () => wordHoverTl.reverse()
       });
     }
 
