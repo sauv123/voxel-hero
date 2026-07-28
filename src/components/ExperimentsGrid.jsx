@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import LazyVideo from './LazyVideo';
+import TextLabShowcase from './TextLabShowcase';
 import './ExperimentsGrid.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -821,6 +822,18 @@ export default function ExperimentsGrid({ theme, disableScrollTrigger }) {
             />
           ))}
         </div>
+
+        {/* Text-Based Editorial Interactive Lab Showcase */}
+        <TextLabShowcase 
+          theme={theme} 
+          onSelectProject={(project) => {
+            if (project.link) {
+              window.open(project.link, '_blank');
+            } else {
+              setActiveExperiment(project);
+            }
+          }}
+        />
       </div>
       
       {/* Context Drawer for Explanations */}
