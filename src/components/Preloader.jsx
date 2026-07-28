@@ -20,17 +20,30 @@ export default function Preloader({ onComplete, onStartReveal }) {
     document.body.style.overflow = "hidden";
 
     const greetings = ["CIAO", "नमस्ते", "HOLA", "BONJOUR", "HALLO", "KONNICHIWA"];
-    const durationIn = 0.16;
-    const holdTime = 0.14;
-    const durationOut = 0.14;
+    const durationIn = 0.08;
+    const holdTime = 0.08;
+    const durationOut = 0.08;
     
     const singleCycle = durationIn + holdTime + durationOut;
     const totalLoopDuration = greetings.length * singleCycle;
 
+    const completeLoader = () => {
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('visited', 'true');
+      }
+      document.body.style.overflow = "auto";
+      if (onCompleteRef.current) onCompleteRef.current();
+    };
+
+    // Hard safety timeout fallback (2 seconds max) to prevent hanging
+    const safetyTimer = setTimeout(() => {
+      completeLoader();
+    }, 2000);
+
     const tl = gsap.timeline({
       onComplete: () => {
-        document.body.style.overflow = "auto";
-        if (onCompleteRef.current) onCompleteRef.current();
+        clearTimeout(safetyTimer);
+        completeLoader();
       }
     });
 
@@ -75,23 +88,65 @@ export default function Preloader({ onComplete, onStartReveal }) {
       );
     });
 
-    // 4. Clean End Screen Exit (overlaps with the last word holding)
+    // 4. Clean End Screen Exit
     tl.to(loaderRef.current, {
       yPercent: -100,
-      duration: 1.2, 
+      duration: 0.6, 
       ease: "expo.inOut",
       onStart: () => {
         if (onStartRevealRef.current) onStartRevealRef.current();
       }
     }, totalLoopDuration - durationOut - holdTime);
 
+    const handleSkip = () => {
+      clearTimeout(safetyTimer);
+      completeLoader();
+    };
+
+    const loaderEl = loaderRef.current;
+    if (loaderEl) {
+      loaderEl.addEventListener('click', handleSkip);
+    }
+
     return () => {
+        if (loaderEl) loaderEl.removeEventListener('click', handleSkip);
+        clearTimeout(safetyTimer);
         tl.kill();
     };
   }, []);
 
+  const handleManualSkip = (e) => {
+    e.stopPropagation();
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('visited', 'true');
+    }
+    document.body.style.overflow = "auto";
+    if (onCompleteRef.current) onCompleteRef.current();
+  };
+
   return (
-    <div id="loader" className="brutal-loader" ref={loaderRef}>
+    <div id="loader" className="brutal-loader" ref={loaderRef} style={{ cursor: 'pointer' }}>
+      <button 
+        onClick={handleManualSkip}
+        style={{
+          position: 'absolute',
+          top: '24px',
+          right: '24px',
+          zIndex: 100,
+          background: 'rgba(255, 255, 255, 0.1)',
+          border: '1px solid rgba(255, 255, 255, 0.2)',
+          color: '#ffffff',
+          padding: '6px 14px',
+          borderRadius: '20px',
+          fontFamily: 'Space Mono, monospace',
+          fontSize: '11px',
+          letterSpacing: '0.1em',
+          cursor: 'pointer',
+          textTransform: 'uppercase'
+        }}
+      >
+        SKIP ➔
+      </button>
       <div className="greeting-wrapper">
         <div className="kinetic-mask">
           <h1 ref={greetingRef} className="brutal-text"></h1>

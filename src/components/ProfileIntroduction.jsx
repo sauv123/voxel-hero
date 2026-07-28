@@ -1,17 +1,8 @@
 import React, { useRef, useState } from 'react';
+import LazyVideo from './LazyVideo';
 
 export default function ProfileIntroduction({ theme }) {
-  const videoRef = useRef(null);
   const [isMuted, setIsMuted] = useState(true);
-
-  const handleUnmute = () => {
-    if (videoRef.current) {
-      videoRef.current.currentTime = 0; // Restart from the beginning
-      videoRef.current.muted = false;
-      setIsMuted(false);
-      videoRef.current.play(); // Ensure it continues playing
-    }
-  };
 
   return (
     <>
@@ -24,29 +15,21 @@ export default function ProfileIntroduction({ theme }) {
         }}
       >
         <div style={{ flex: "1", display: "flex", justifyContent: "center", alignItems: "center", position: "relative" }}>
-          <video 
-            ref={videoRef}
+          <LazyVideo 
             src="/portfolio.mp4" 
-            autoPlay
-            loop
+            poster="/sauveerpp.webp"
             muted={isMuted}
             controls={!isMuted}
-            playsInline
-            preload="auto"
-            onClick={isMuted ? handleUnmute : undefined}
             style={{ 
               width: "100%", 
               borderRadius: "16px",
               outline: "none",
               objectFit: "cover",
               overflow: "hidden",
-              cursor: isMuted ? "pointer" : "default",
               WebkitMaskImage: "-webkit-radial-gradient(white, black)",
               transform: "translateZ(0)"
             }}
-          >
-            Your browser does not support the video tag.
-          </video>
+          />
 
           {isMuted && (
             <button

@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import LazyVideo from './LazyVideo';
 import './ExperimentsGrid.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -697,12 +698,9 @@ function BentoCard({ item, theme, setCursorActive, disableScrollTrigger, onOpenD
       ) : (
         <div className="bento-media-wrap" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
           {item.video ? (
-            <video
+            <LazyVideo
               src={item.video}
-              autoPlay
-              muted
-              loop
-              playsInline
+              poster={item.image || item.img || item.thumb}
               className="bento-media-asset"
               style={{
                 width: '100%',

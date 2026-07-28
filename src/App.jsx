@@ -401,8 +401,17 @@ export default function App() {
         <meta name="description" content={pageDescription} />
         <meta property="og:title" content={pageTitle} />
         <meta property="og:description" content={pageDescription} />
-        <meta property="og:url" content={`https://sauveersinha.com/${activePage === 'home' ? '' : activePage}`} />
-        <link rel="canonical" href={`https://sauveersinha.com/${activePage === 'home' ? '' : activePage}`} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={`https://sauveer.com/${activePage === 'home' ? '' : activePage}`} />
+        <meta property="og:image" content="https://sauveer.com/og-preview.png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Sauveer Sinha - Product Designer Portfolio" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={pageTitle} />
+        <meta name="twitter:description" content={pageDescription} />
+        <meta name="twitter:image" content="https://sauveer.com/og-preview.png" />
+        <link rel="canonical" href={`https://sauveer.com/${activePage === 'home' ? '' : activePage}`} />
       </Helmet>
       
       {/* ── Custom Cursor ── */}

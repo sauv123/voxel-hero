@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import LazyVideo from './LazyVideo';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -116,8 +117,8 @@ export default function InteractiveProjects({ theme, onProjectSelect }) {
               <div className="ps-shoe">
                 {proj.img ? (
                   proj.img.endsWith('.mp4') ? (
-                    <video 
-                      src={proj.img} autoPlay loop muted playsInline 
+                    <LazyVideo 
+                      src={proj.img} 
                     />
                   ) : (
                     <img src={proj.img} alt={proj.title} loading="lazy" />
