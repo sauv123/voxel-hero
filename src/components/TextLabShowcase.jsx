@@ -10,6 +10,7 @@ export const TEXT_PROJECTS = [
     title: 'LEMON NOTES',
     subtitle: 'Tactile, distraction-free note-taking workspace designed for deep focus.',
     tags: ['React', 'Local-First', 'Tactile UI'],
+    techStack: ['React', 'Local-First', 'Tactile UI', 'Markdown', 'GSAP'],
     link: null,
     experimentId: 4,
     video: '/lemon_notes.mp4',
@@ -31,6 +32,7 @@ export const TEXT_PROJECTS = [
     title: 'THE BLOCKCHAIN MOSAIC',
     subtitle: 'Real-time Ethereum block matrix and WebAudio sonification engine.',
     tags: ['Web3', 'WebAudio API', 'Canvas 2D'],
+    techStack: ['HTML5 Canvas', 'Web Audio API', 'Node.js', 'Ethers.js'],
     link: 'https://mosaichain.netlify.app',
     liveCta: '⚡ LAUNCH LIVE BLOCKCHAIN MOSAIC',
     experimentId: 14,
@@ -52,6 +54,7 @@ export const TEXT_PROJECTS = [
     title: 'SOCIAL BATTERY APP',
     subtitle: 'Spatial focus meter and emotional energy tracking interface.',
     tags: ['UX System', 'Micro-Interactions', 'GSAP Physics'],
+    techStack: ['React', 'GSAP Physics', 'UX System', 'Micro-Interactions'],
     link: null,
     experimentId: 102,
     video: '/2.mp4',
@@ -240,14 +243,18 @@ export default function TextLabShowcase({ theme, onSelectProject, projects = TEX
             </div>
 
             {/* Video Container inside Hover Preview Card */}
-            <div className="preview-video-wrapper" style={{ borderRadius: '12px', overflow: 'hidden', marginBottom: '14px', position: 'relative' }}>
+            <div className="preview-video-wrapper" style={{ borderRadius: '12px', overflow: 'hidden', marginBottom: '14px', position: 'relative', height: '200px', backgroundColor: '#000' }}>
               {activeProject.video && (
-                <LazyVideo
+                <video
                   src={activeProject.video}
                   poster={activeProject.poster}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
                   style={{
                     width: '100%',
-                    height: '200px',
+                    height: '100%',
                     objectFit: 'cover',
                     display: 'block'
                   }}
