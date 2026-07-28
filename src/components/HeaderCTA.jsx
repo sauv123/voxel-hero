@@ -286,6 +286,7 @@ export default function HeaderCTA({ theme }) {
                                     { name: "Email", href: "mailto:sauveersinha@gmail.com", color: "#EA4335" },
                                     { name: "WhatsApp", href: "https://wa.me/393508124320", color: "#25D366" },
                                     { name: "LinkedIn", href: "https://www.linkedin.com/in/sauveer-sinha-684409215/", color: "#0A66C2" },
+                                    { name: "Instagram", href: "https://www.instagram.com/sauveer.design/", color: "#E1306C" },
                                     { name: "Resume", href: "https://sauveer.com/resume.pdf", color: "#fff", target: "_blank" }
                                 ].map((item, i) => (
                                     <a key={item.name} href={item.href} target={item.target || "_self"} style={{
