@@ -149,7 +149,7 @@ function FooterTextLink({ href, text, brandColor }) {
         padding: "10px",
         color: isHovered ? brandColor : "#ffffff",
         textDecoration: "none",
-        fontFamily: "Space Mono, monospace",
+        fontFamily: "Elms Sans, monospace",
         fontSize: "14px",
         fontWeight: 700,
         letterSpacing: "0.05em",
@@ -336,7 +336,7 @@ export default function Footer({ theme, activeChar = 'deer' }) {
             style={{
               fontFamily: "var(--font-heading)",
               fontSize: isMobile ? "34px" : "48px",
-              fontWeight: 900,
+              fontWeight: 400,
               lineHeight: 1.1,
               color: "#ffffff",
               marginBottom: "8px",
@@ -377,7 +377,7 @@ export default function Footer({ theme, activeChar = 'deer' }) {
               style={{
                 fontFamily: "var(--font-heading)",
                 fontSize: "20px",
-                fontWeight: 900,
+                fontWeight: 500,
                 textTransform: "uppercase",
                 letterSpacing: "0.05em",
                 opacity: 0.4,

@@ -47,13 +47,15 @@ export default function BrandsSection({ theme = { text: '#FCFAF2' } }) {
           duration: 0.4,
           ease: 'power3.out'
       })
-      .to(wordElements, {
+      .fromTo(wordElements, 
+        { y: '100%', rotateX: -25, opacity: 0 },
+        {
           opacity: 1,
-          y: 0,
+          y: '0%',
           rotateX: 0,
-          duration: 0.4,
-          stagger: 0.02,
-          ease: 'power2.out'
+          duration: 0.8,
+          stagger: 0.06,
+          ease: 'power3.out'
       }, '-=0.1')
       .to(logoGrid, {
           opacity: 1,

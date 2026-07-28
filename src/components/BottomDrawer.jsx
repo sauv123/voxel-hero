@@ -374,7 +374,7 @@ export default function BottomDrawer({ theme, activeNav, navigateWithTransition 
             }}>
               <span style={{
                 fontSize: '13px',
-                fontWeight: 800,
+                fontWeight: 500,
                 fontFamily: 'var(--font-heading)',
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase',

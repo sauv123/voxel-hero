@@ -138,7 +138,7 @@ export default function Preloader({ onComplete, onStartReveal }) {
           color: '#ffffff',
           padding: '6px 14px',
           borderRadius: '20px',
-          fontFamily: 'Space Mono, monospace',
+          fontFamily: 'Elms Sans, monospace',
           fontSize: '11px',
           letterSpacing: '0.1em',
           cursor: 'pointer',

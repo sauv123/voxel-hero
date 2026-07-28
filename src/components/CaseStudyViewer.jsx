@@ -99,7 +99,7 @@ export default function CaseStudyViewer({ startIndex, onClose }) {
             style={{
               fontSize: '10px',
               fontFamily: 'var(--font-heading)',
-              fontWeight: 900,
+              fontWeight: 500,
               color: '#ffffff',
               backgroundColor: 'rgba(10, 10, 10, 0.85)',
               backdropFilter: 'blur(12px)',

@@ -346,7 +346,7 @@ function TruthsGame({ theme }) {
                     right: "12px",
                     transform: "translateY(-50%) rotate(-10deg)",
                     fontSize: 28,
-                    fontWeight: 900,
+                    fontWeight: 500,
                     color: isLie ? "#16a34a" : "#ef4444",
                     opacity: 0.8
                   }}>
@@ -365,7 +365,7 @@ function TruthsGame({ theme }) {
           display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",
           padding: "16px 0", textAlign: "center", animation: "about-fadeUp 0.4s ease"
         }}>
-          <h4 style={{ color: '#FCFAF2', fontSize: 18, marginBottom: 8, fontFamily: "var(--font-heading)", fontWeight: 900 }}>
+          <h4 style={{ color: '#FCFAF2', fontSize: 18, marginBottom: 8, fontFamily: "var(--font-heading)", fontWeight: 500 }}>
             Score: {score} / {GAME_ROUNDS.length}
           </h4>
           <p style={{ color: '#FCFAF2', fontSize: 12, opacity: 0.8, marginBottom: 20, fontFamily: "var(--font-body)", lineHeight: 1.4 }}>
@@ -381,7 +381,7 @@ function TruthsGame({ theme }) {
                 background: "#ffffff",
                 color: '#000000', fontSize: 11,
                 border: `none`,
-                fontWeight: 900, fontFamily: "var(--font-heading)",
+                fontWeight: 500, fontFamily: "var(--font-heading)",
                 textTransform: "uppercase", letterSpacing: 1, cursor:"pointer"
               }}
             >
@@ -393,7 +393,7 @@ function TruthsGame({ theme }) {
                 padding:"10px 20px",borderRadius:4,
                 background: "transparent",
                 color: '#FCFAF2', fontSize: 11,
-                fontWeight: 900, fontFamily: "var(--font-heading)",
+                fontWeight: 500, fontFamily: "var(--font-heading)",
                 cursor: "pointer",
                 textTransform: "uppercase", letterSpacing: 1
               }}
@@ -411,7 +411,7 @@ function TruthsGame({ theme }) {
               background: "#ffffff",
               border: "none",
               color: '#000000', fontSize: 11,
-              fontWeight: 800, cursor: "pointer", fontFamily: "var(--font-heading)",
+              fontWeight: 500, cursor: "pointer", fontFamily: "var(--font-heading)",
               textTransform: "uppercase", letterSpacing: 1
             }}
           >{round===GAME_ROUNDS.length-1?"Show Final Score":"Next Round"}</button>
@@ -456,7 +456,7 @@ function LanguagesToggle({ theme }) {
       <div style={{ minHeight: 80, display: "flex", flexDirection: "column", justifyContent: "center", position: "relative" }}>
         {lang === "EN" ? (
           <div>
-            <div style={{ fontSize: 22, fontWeight: 800, color: '#FCFAF2', marginBottom: 4, fontFamily: "var(--font-heading)", letterSpacing: "-0.02em" }}>"Hey there!"</div>
+            <div style={{ fontSize: 22, fontWeight: 500, color: '#FCFAF2', marginBottom: 4, fontFamily: "var(--font-heading)", letterSpacing: "-0.02em" }}>"Hey there!"</div>
             <div style={{ fontSize: 13, color: '#FCFAF2', opacity: 0.7, lineHeight: 1.4, fontFamily: "var(--font-body)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <span>I speak English fluently, having learned and worked in it from a young age.</span>
               <span style={{ fontSize: 24, marginLeft: 12 }}>🇺🇸</span>
@@ -464,7 +464,7 @@ function LanguagesToggle({ theme }) {
           </div>
         ) : lang === "HI" ? (
           <div>
-            <div style={{ fontSize: 22, fontWeight: 800, color: '#FCFAF2', marginBottom: 4, fontFamily: "'Hind', sans-serif", letterSpacing: "-0.02em" }}>"कैसे हो!"</div>
+            <div style={{ fontSize: 22, fontWeight: 500, color: '#FCFAF2', marginBottom: 4, fontFamily: "'Hind', sans-serif", letterSpacing: "-0.02em" }}>"कैसे हो!"</div>
             <div style={{ fontSize: 13, color: '#FCFAF2', opacity: 0.7, lineHeight: 1.4, fontFamily: "var(--font-body)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <span>हिंदी मेरी मातृभाषा है।</span>
               <span style={{ fontSize: 24, marginLeft: 12 }}>🇮🇳</span>
@@ -472,7 +472,7 @@ function LanguagesToggle({ theme }) {
           </div>
         ) : (
           <div>
-            <div style={{ fontSize: 22, fontWeight: 800, color: '#FCFAF2', marginBottom: 4, fontFamily: "var(--font-heading)", letterSpacing: "-0.02em" }}>"Ciao!"</div>
+            <div style={{ fontSize: 22, fontWeight: 500, color: '#FCFAF2', marginBottom: 4, fontFamily: "var(--font-heading)", letterSpacing: "-0.02em" }}>"Ciao!"</div>
             <div style={{ fontSize: 13, color: '#FCFAF2', opacity: 0.7, lineHeight: 1.4, fontFamily: "var(--font-body)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <span>Parlo anche un po' di italiano, vivendo a Milano.</span>
               <span style={{ fontSize: 24, marginLeft: 12 }}>🇮🇹</span>
@@ -541,7 +541,7 @@ function QuoteCard({ theme }) {
         Philosophy
       </h3>
       <p style={{
-        fontSize: 17, fontWeight: 800, lineHeight: 1.3,
+        fontSize: 17, fontWeight: 500, lineHeight: 1.3,
         color: '#FCFAF2',
         fontFamily: "var(--font-heading)",
         marginBottom: 16, letterSpacing: "-0.01em"
@@ -568,7 +568,7 @@ function QuoteCard({ theme }) {
         
         <div style={{ 
           position: "absolute", width: "100%", textAlign: "center", pointerEvents: "none",
-          fontSize: 8, fontFamily: "Space Mono, monospace", color: "rgba(255, 255, 255, 0.6)", opacity: pull === 100 ? 0 : Math.max(0.4, 1 - pull/50),
+          fontSize: 8, fontFamily: "Elms Sans, monospace", color: "rgba(255, 255, 255, 0.6)", opacity: pull === 100 ? 0 : Math.max(0.4, 1 - pull/50),
           letterSpacing: 1.5, textTransform: "uppercase", fontWeight: 700
         }}>
           {pull > 20 ? "Pull →" : "Slide →"}
@@ -595,7 +595,7 @@ function VisualGalleryCard({ theme }) {
       textAlign: "center"
     }}>
       <span style={{ fontSize: 28, marginBottom: 8 }}>🖼️</span>
-      <h3 style={{ fontSize: 13, margin: "0 0 4px 0", fontFamily: "var(--font-heading)", fontWeight: 900 }}>Visual Journal</h3>
+      <h3 style={{ fontSize: 13, margin: "0 0 4px 0", fontFamily: "var(--font-heading)", fontWeight: 500 }}>Visual Journal</h3>
       <p style={{ fontSize: 10, color: "#888", fontFamily: "var(--font-body)", margin: 0 }}>Waiting for upload...</p>
     </div>
   );
@@ -647,7 +647,7 @@ function ToolboxSection({ theme }) {
                 color: activeTab === catKey ? "#ffffff" : "#888",
                 border: "none",
                 fontSize: 12,
-                fontWeight: 900,
+                fontWeight: 500,
                 padding: "10px 18px",
                 borderRadius: 4,
                 cursor: "pointer",
@@ -671,7 +671,7 @@ function ToolboxSection({ theme }) {
               background: "rgba(0,0,0,0.03)",
               border: "1px solid rgba(0,0,0,0.05)",
               color: "#ffffff",
-              fontFamily: "Space Mono, monospace",
+              fontFamily: "Elms Sans, monospace",
               fontSize: "12px",
               fontWeight: 700,
               borderRadius: "4px",
@@ -867,7 +867,7 @@ function VinylPlayer({ theme }) {
                 </div>
                 {/* Text underneath */}
                 <div style={{ textAlign: "center", width: "100%", opacity: loaded === i ? 1 : 0.6, transition: "opacity 0.3s" }}>
-                  <div style={{fontSize: 12, fontFamily: "var(--font-heading)", fontWeight: 800, color: "#ffffff", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}}>{a.title}</div>
+                  <div style={{fontSize: 12, fontFamily: "var(--font-heading)", fontWeight: 500, color: "#ffffff", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}}>{a.title}</div>
                   <div style={{fontSize: 10, fontFamily: "var(--font-body)", color: "#666", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}}>{a.artist}</div>
                 </div>
               </div>

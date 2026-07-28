@@ -2,11 +2,38 @@ import React, { useRef, useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import LazyVideo from './LazyVideo';
-import TextLabShowcase from './TextLabShowcase';
+
 import './ExperimentsGrid.css';
 
 gsap.registerPlugin(ScrollTrigger);
+
+const SafeVideo = ({ src, poster, className, style }) => {
+  const videoRef = useRef(null);
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.defaultMuted = true;
+      videoRef.current.muted = true;
+      const playPromise = videoRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(error => console.log('Autoplay prevented', error));
+      }
+    }
+  }, [src]);
+
+  return (
+    <video
+      ref={videoRef}
+      src={src}
+      poster={poster}
+      className={className}
+      muted
+      autoPlay
+      loop
+      playsInline
+      style={style}
+    />
+  );
+};
 
 // ─── Binary Shark Pool Component ─────────────────────────────────────────────
 const BinarySharkPool = () => {
@@ -204,12 +231,67 @@ const BinarySharkPool = () => {
 };
 
 // ─── Experiments Data ────────────────────────────────────────────────────────
+// ─── Experiments Data ────────────────────────────────────────────────────────
 const EXPERIMENTS = [
+  {
+    id: 9,
+    title: 'ORION',
+    tags: ['AI Assistant', 'macOS Automation', 'Python', 'Three.js', 'Voice UI'],
+    video: '/works/AI_design_Sauveer.mp4',
+    size: 'huge',
+    description: 'A lightweight, ultra-fast, native macOS AI voice assistant built with a pure Python backend and an interactive 3D frontend.',
+    whoItsFor: 'General users, who want a deeply integrated, visually stunning, and highly responsive desktop AI assistant without the resource drain of heavy frameworks like Electron or React.',
+    problem: 'Most AI voice assistants are either trapped inside web browsers, suffer from high latency, or are built on bloated frameworks that slow down the computer. Furthermore, small fast models (like 8B parameter LLMs) struggle with strictly formatting JSON tool calls, leading to broken interactions when trying to execute local commands.',
+    goal: 'To deliver a sub-second latency, visually engaging, and highly capable desktop voice assistant that feels like a native OS feature. It aims to intelligently manage the user\'s computer, dynamically adapt to their speech, and gracefully handle API rate limits and parsing errors without ever crashing.',
+    techStackCategories: [
+      { label: "Backend Engine", value: "Pure Python (Standard Library: http.server, urllib, re, subprocess)" },
+      { label: "Frontend UI", value: "Vanilla JavaScript, HTML5, CSS3" },
+      { label: "Visuals & Animation", value: "Three.js (3D particle system), GSAP (Cinematic text animations)" },
+      { label: "AI Logic (LLM)", value: "Groq API (Llama-3.1-8b-instant)" },
+      { label: "Voice Synthesis", value: "Cartesia API (Sonic-3.5)" },
+      { label: "OS Automation", value: "Native macOS osascript (AppleScript) and shell commands" }
+    ],
+    coreFeatures: [
+      "Cinematic UI & Real-Time Transcription: A responsive 3D particle orb that changes states (Idle, Listening, Thinking, Responding) alongside Apple-style GSAP animated subtitles.",
+      "Native macOS Automation: Directly controls system hardware and software (adjust volume/brightness, open/close apps, play media, empty trash, check system stats).",
+      "Multimodal Drag-and-Drop: Seamlessly drag images or PDFs onto the UI to have the Orb analyze files using vision models or extract text for discussion.",
+      "Resilient Execution Engine: Uses a custom Regex-based extraction system that flawlessly catches and executes tool commands even when the AI outputs malformed JSON or broken XML tags.",
+      "Dynamic Memory System: Features both a short-term topic isolation module to prevent context bleeding, and a silent background agent that builds a persistent, long-term JSON knowledge graph of user preferences.",
+      "Rate Limit Armor: Intercepts external API HTTP 429 blocks, parses the exact required timeout, intelligently pauses execution, and automatically retries without dropping the conversation."
+    ],
+    techStack: ['Python', 'Three.js', 'Groq API', 'Cartesia API']
+  },
+  {
+    id: 14,
+    title: 'THE BLOCKCHAIN MOSAIC',
+    tags: ['Web3', 'GenerativeArt', 'WebAudio', 'LiveVisualization', 'React'],
+    video: '/works/mosaic.mp4',
+    size: 'hero',
+    link: 'https://mosaichain.netlify.app',
+    liveCta: '⚡ LAUNCH LIVE BLOCKCHAIN MOSAIC',
+    description: 'A live, generative art painting and audio engine that visualizes real-time Ethereum blockchain transaction patterns, block congestion, and whale alerts.',
+    whoItsFor: 'Web3 builders, crypto enthusiasts, generative art collectors, and digital galleries seeking a physical or virtual installation representing the "pulse" of the internet\'s financial layer.',
+    problem: 'Blockchain activity (swaps, NFT mints, high gas spikes, massive whale movements) is completely invisible to the naked eye. Users must look at dry hash blocks on Etherscan rather than experiencing the system\'s kinetic energy.',
+    goal: 'Map raw transaction metadata (volume, type, fee rates) to visual variables (Hues, Saturation, Grid coordinates) and spatialized sounds (Karplus-Strong string models, chimes, 808 sub-bass Kicks) to create a premium, real-time sensory installation.',
+    techStackCategories: [
+      { label: "Frontend", value: "Vanilla HTML5 Canvas, Vanilla CSS (Glassmorphism), JavaScript (ESM), GSAP (GreenSock Animation Platform), Web Audio API" },
+      { label: "Backend", value: "Node.js, Express, WebSocket (ws), SQLite (Ingestion Database)" },
+      { label: "Blockchain", value: "Ethers.js, Tenderly mainnet gateway RPC" }
+    ],
+    coreFeatures: [
+      "Generative Art Grid: Each tile represents a block, and inner pixels represent individual transactions color-coded by type (Swaps, Mints, Transfers).",
+      "Sonification Engine: Converts blockchain actions into high-fidelity physical string string-plucks (Karplus-Strong) and 808 drum beats.",
+      "Live WebSocket Sync: Real-time updates pushed directly to the UI without page reloads.",
+      "Wallet Tracker: Highlights specific tiles in real time when monitored addresses transact.",
+      "Daily Portraits & Dynamic Archives: Generates interactive calendar replays of historical blockchain activity, adjusting to the current calendar date automatically."
+    ],
+    techStack: ['HTML5 Canvas', 'Web Audio API', 'Node.js', 'Ethers.js']
+  },
   {
     id: 1,
     title: 'PENTAGON TYPO SCULPTOR',
     tags: ['Typography', 'ParametricDesign', 'GenerativeArt', 'DesignTools', 'React', 'TailwindCSS', 'FontMorphing', 'SVGExport'],
-    video: '/works/pentagon font.mp4',
+    video: '/works/pentagon_font.mp4',
     size: 'wide',
     description: 'An interactive parametric typography composer that fluidly morphs character letterforms using a 5-point pentagonal font balance pad and generative mathematical algorithms.',
     whoItsFor: 'Graphic & Editorial Designers: For creating unique headlines, display typography, and visual branding assets.\nTypographers & Creative Coders: For exploring multi-font spatial interpolation and parametric letterform variations.\nWeb Developers: For generating custom responsive typographic art or copying ready-to-use inline HTML/CSS code snippets.',
@@ -232,6 +314,15 @@ const EXPERIMENTS = [
       "Specimen Sheet Inspector: Technical modal displaying font weight ratios, kerning tables, and spatial coordinate metrics."
     ],
     techStack: ['React', 'Tailwind CSS', 'Motion', 'Canvas API']
+  },
+  {
+    id: 2,
+    title: 'SPATIAL PROTOTYPES',
+    tags: ['Spatial', 'visionOS', 'SwiftUI'],
+    video: '/2.mp4',
+    size: 'square',
+    description: '[Placeholder text] Prototyping interactions for next-generation spatial headsets.',
+    techStack: ['visionOS', 'SwiftUI', 'RealityKit']
   },
   {
     id: 3,
@@ -259,22 +350,42 @@ const EXPERIMENTS = [
     techStack: ['React Three Fiber', 'Rapier', 'GSAP']
   },
   {
-    id: 2,
-    title: 'SPATIAL PROTOTYPES',
-    tags: ['Spatial', 'visionOS', 'SwiftUI'],
-    video: '/2.mp4',
-    size: 'square',
-    description: 'Prototyping interactions and volumetric interface patterns for next-generation spatial computing headsets.',
-    techStack: ['visionOS', 'SwiftUI', 'RealityKit']
-  },
-  {
     id: 5,
     title: 'GENERATIVE BRAND',
     tags: ['Interactive Pool', 'Creative Code', 'HTML5 Canvas'],
     isInteractivePool: true,
     size: 'wide',
-    description: 'An interactive particle pool simulating fluid dynamics and repulsion physics based on mouse proximity.',
+    description: '[Placeholder text] An interactive particle pool simulating fluid dynamics and repulsion physics based on mouse proximity.',
     techStack: ['HTML5 Canvas', 'Vanilla JS', 'Physics Engine']
+  },
+  {
+    id: 4,
+    title: 'LEMON NOTES',
+    tags: ['EdTech', 'AI', 'Productivity', 'Next.js', 'Supabase', 'React', 'TailwindCSS'],
+    video: '/lemon_notes.mp4',
+    size: 'wide',
+    description: 'An intelligent study companion that instantly transforms raw notes, PDFs, images, and audio recordings into structured summaries and interactive quizzes.',
+    whoItsFor: "Students, researchers, and lifelong learners who want to optimize their study time, improve their retention through active recall, and organize large volumes of study material quickly.",
+    problem: "Students spend too much time manually organizing notes, extracting key concepts from lengthy PDFs or lectures, and building flashcards/quizzes. This manual process takes away from actual learning and active recall time, leading to less efficient studying.",
+    goal: "To provide a friction-free pipeline where raw, unstructured information (text, documents, images, audio) is instantly \"squeezed\" into high-yield study materials (summaries, concept tags, and interactive quizzes) to maximize study efficiency and knowledge retention.",
+    techStackCategories: [
+      { label: "Frontend", value: "Next.js (App Router), React, Tailwind CSS, Framer Motion" },
+      { label: "UI Components", value: "Shadcn/UI, Base-UI, Radix UI" },
+      { label: "State Management", value: "Zustand (with Local Storage Persistence)" },
+      { label: "Authentication", value: "Supabase Auth (Magic Links & Password)" },
+      { label: "AI & Processing", value: "OpenAI API, Groq (Audio Transcription), Tesseract.js (Client-side OCR), PDF.js (Client-side Document Parsing)" }
+    ],
+    coreFeatures: [
+      "Multimodal Intake: Paste raw text, or drag-and-drop PDFs, Images, and Audio/Video files directly into the Dashboard for immediate processing.",
+      "Instant Summarization: Automatically extract concise summaries, core concepts, and subject tags from uploaded materials.",
+      "Interactive Quiz Generation: Automatically generate Multiple Choice and Short Answer quizzes based strictly on the uploaded content to test retention.",
+      "Weakness Tracking: Quiz results highlight \"Weak Topics\" allowing users to focus their review on concepts they got wrong.",
+      "Study Folders & Kits: Save generated study kits (Notes + Summary + Quiz) into subject-specific folders for organized long-term review.",
+      "AI Chat Assistant: A built-in contextual AI tutor to answer questions about the current study material.",
+      "Usage Quotas & Analytics: Track AI generations and storage usage locally on an elegant Dashboard with visual progression bars and gamified streaks.",
+      "Accessible UI: Global High Contrast mode toggle, Light/Dark system themes, and highly responsive modern design utilizing \"Alchemist Chic\" aesthetics."
+    ],
+    techStack: ['Next.js', 'React', 'TailwindCSS', 'Supabase']
   },
   {
     id: 15,
@@ -282,7 +393,7 @@ const EXPERIMENTS = [
     tags: ['Snake Fluid', 'Interaction Design', 'Micro-UX'],
     video: '/works/snake.mp4',
     size: 'wide',
-    description: 'Fluid, cursor-following generative snake patterns built for high-performance WebGL rendering.',
+    description: '[Placeholder text] Fluid, cursor-following generative snake patterns built for high-performance rendering.',
     techStack: ['WebGL', 'GLSL Shaders', 'Three.js']
   },
 ];
@@ -615,7 +726,7 @@ function BentoCard({ item, theme, setCursorActive, disableScrollTrigger, onOpenD
       ) : (
         <div className="bento-media-wrap" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
           {item.video ? (
-            <LazyVideo
+            <SafeVideo
               src={item.video}
               poster={item.image || item.img || item.thumb}
               className="bento-media-asset"
@@ -725,94 +836,9 @@ export default function ExperimentsGrid({ theme, disableScrollTrigger }) {
           </div>
         )}
 
-        {/* Unified Hybrid Grid Layout (Visual Cards & Editorial Text Cards Mixed Together) */}
+        {/* Horizontal Bento Grid Layout */}
         <div className="modern-bento-grid">
-          {/* Card 1 & 2: Visual Bento Cards */}
-          {EXPERIMENTS.slice(0, 2).map((item) => (
-            <BentoCard 
-              key={item.id} 
-              item={item} 
-              theme={theme} 
-              setCursorActive={setCursorActive} 
-              disableScrollTrigger={disableScrollTrigger} 
-              onOpenDrawer={(experiment) => setActiveExperiment(experiment)}
-            />
-          ))}
-
-          {/* Mixed Text Item 1: LEMON NOTES */}
-          <div className="bento-text-span-full">
-            <TextLabShowcase 
-              theme={theme} 
-              showHeader={false}
-              projects={TEXT_PROJECTS.filter(p => p.key === 'lemon')}
-              onSelectProject={(project) => {
-                if (project.link) {
-                  window.open(project.link, '_blank');
-                } else {
-                  setActiveExperiment(project);
-                }
-              }}
-            />
-          </div>
-
-          {/* Card 3: Interactive Binary Shark Pool */}
-          {EXPERIMENTS.slice(2, 3).map((item) => (
-            <BentoCard 
-              key={item.id} 
-              item={item} 
-              theme={theme} 
-              setCursorActive={setCursorActive} 
-              disableScrollTrigger={disableScrollTrigger} 
-              onOpenDrawer={(experiment) => setActiveExperiment(experiment)}
-            />
-          ))}
-
-          {/* Mixed Text Item 2: THE BLOCKCHAIN MOSAIC */}
-          <div className="bento-text-span-full">
-            <TextLabShowcase 
-              theme={theme} 
-              showHeader={false}
-              projects={TEXT_PROJECTS.filter(p => p.key === 'blockchain')}
-              onSelectProject={(project) => {
-                if (project.link) {
-                  window.open(project.link, '_blank');
-                } else {
-                  setActiveExperiment(project);
-                }
-              }}
-            />
-          </div>
-
-          {/* Card 4: Spatial Prototypes */}
-          {EXPERIMENTS.slice(3, 4).map((item) => (
-            <BentoCard 
-              key={item.id} 
-              item={item} 
-              theme={theme} 
-              setCursorActive={setCursorActive} 
-              disableScrollTrigger={disableScrollTrigger} 
-              onOpenDrawer={(experiment) => setActiveExperiment(experiment)}
-            />
-          ))}
-
-          {/* Mixed Text Item 3: SOCIAL BATTERY APP */}
-          <div className="bento-text-span-full">
-            <TextLabShowcase 
-              theme={theme} 
-              showHeader={false}
-              projects={TEXT_PROJECTS.filter(p => p.key === 'social_battery')}
-              onSelectProject={(project) => {
-                if (project.link) {
-                  window.open(project.link, '_blank');
-                } else {
-                  setActiveExperiment(project);
-                }
-              }}
-            />
-          </div>
-
-          {/* Card 5: Snake Interaction */}
-          {EXPERIMENTS.slice(4).map((item) => (
+          {EXPERIMENTS.map((item) => (
             <BentoCard 
               key={item.id} 
               item={item} 

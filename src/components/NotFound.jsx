@@ -68,7 +68,7 @@ export default function NotFound({ theme, activeChar, navigateWithTransition }) 
       <h1 style={{
         fontFamily: 'var(--font-heading)',
         fontSize: 'clamp(8rem, 25vw, 20rem)',
-        fontWeight: 900,
+        fontWeight: 500,
         textTransform: 'uppercase',
         letterSpacing: '-0.05em',
         textAlign: 'center',
@@ -87,7 +87,7 @@ export default function NotFound({ theme, activeChar, navigateWithTransition }) 
         404
       </h1>
 
-      <div style={{ position: 'absolute', top: 30, right: 30, fontFamily: 'var(--font-heading)', fontSize: '2rem', fontWeight: 900, zIndex: 10 }}>
+      <div style={{ position: 'absolute', top: 30, right: 30, fontFamily: 'var(--font-heading)', fontSize: '2rem', fontWeight: 500, zIndex: 10 }}>
         JUMPS: {jumps}
       </div>
 
@@ -106,7 +106,7 @@ export default function NotFound({ theme, activeChar, navigateWithTransition }) 
         <h2 style={{
           fontFamily: 'var(--font-heading)',
           fontSize: 'clamp(2rem, 5vw, 4rem)',
-          fontWeight: 900,
+          fontWeight: 500,
           textTransform: 'uppercase',
           letterSpacing: '-0.02em',
           margin: '0 0 16px 0',
@@ -135,7 +135,7 @@ export default function NotFound({ theme, activeChar, navigateWithTransition }) 
             color: theme.text,
             padding: '16px 40px',
             fontFamily: 'var(--font-heading)',
-            fontSize: 20, fontWeight: 900,
+            fontSize: 20, fontWeight: 500,
             textTransform: 'uppercase', cursor: 'pointer',
             borderRadius: 4
           }}

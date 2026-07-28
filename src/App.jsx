@@ -13,6 +13,7 @@ import BottomDrawer from './components/BottomDrawer';
 import Footer from './components/Footer';
 import { Helmet } from 'react-helmet-async';
 const BrutalistCube = React.lazy(() => import('./components/BrutalistCube'));
+const TextLabShowcase = React.lazy(() => import('./components/TextLabShowcase'));
 const ExperimentsGrid = React.lazy(() => import('./components/ExperimentsGrid'));
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -541,9 +542,10 @@ export default function App() {
       {/* ── Work Section ── */}
       {!isGalleryOpen && <WorkFolder theme={invertedTheme} onOpen={() => navigateWithTransition('work')} />}
 
-      {/* ── Experiments & Artifacts Bento Grid Section ── */}
+      {/* ── Products I've Built Section ── */}
       {!isGalleryOpen && !isAboutOpen && !isPlaygroundOpen && activeCaseStudyIndex === null && (
         <Suspense fallback={null}>
+          <TextLabShowcase theme={theme} onSelectProject={() => {}} />
           <ExperimentsGrid theme={theme} />
         </Suspense>
       )}

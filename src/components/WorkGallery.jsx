@@ -218,7 +218,7 @@ export default function WorkGallery({ onClose, navigate }) {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <span style={{ 
               fontSize: '10px', 
-              fontFamily: 'Space Mono, monospace', 
+              fontFamily: 'Elms Sans, monospace', 
               color: 'rgba(255,255,255,0.4)', 
               letterSpacing: '0.2em',
               textTransform: 'uppercase'
@@ -359,7 +359,7 @@ export default function WorkGallery({ onClose, navigate }) {
                       </span>
                     ))}
                   </div>
-                  <h2 style={{ fontFamily: "var(--font-heading)", fontSize: 'clamp(28px, 3.5vw, 56px)', fontWeight: 900, margin: '0 0 10px 0', letterSpacing: '-0.02em', lineHeight: 0.9 }}>
+                  <h2 style={{ fontFamily: "var(--font-heading)", fontSize: 'clamp(28px, 3.5vw, 56px)', fontWeight: 500, margin: '0 0 10px 0', letterSpacing: '-0.02em', lineHeight: 0.9 }}>
                     {proj.title}
                   </h2>
                   {proj.cta && (
@@ -389,7 +389,7 @@ export default function WorkGallery({ onClose, navigate }) {
               textAlign: 'center',
               fontFamily: 'var(--font-heading)',
               fontSize: '11px',
-              fontWeight: 900,
+              fontWeight: 500,
               textTransform: 'uppercase',
               letterSpacing: '0.1em',
               pointerEvents: 'none',

@@ -1,8 +1,19 @@
-import React, { useRef, useState } from 'react';
-import LazyVideo from './LazyVideo';
+import React, { useRef, useState, useEffect } from 'react';
 
 export default function ProfileIntroduction({ theme }) {
   const [isMuted, setIsMuted] = useState(true);
+  const [showControls, setShowControls] = useState(false);
+  const videoRef = useRef(null);
+
+  const handleVideoClick = () => {
+    if (videoRef.current && isMuted) {
+      videoRef.current.muted = false;
+      videoRef.current.currentTime = 0;
+      videoRef.current.play();
+      setIsMuted(false);
+      setShowControls(true);
+    }
+  };
 
   return (
     <>
@@ -15,46 +26,30 @@ export default function ProfileIntroduction({ theme }) {
         }}
       >
         <div style={{ flex: "1", display: "flex", justifyContent: "center", alignItems: "center", position: "relative" }}>
-          <LazyVideo 
+          <video 
+            ref={videoRef}
             src="/portfolio.mp4" 
-            poster="/sauveerpp.webp"
             muted={isMuted}
-            controls={!isMuted}
+            autoPlay
+            loop
+            playsInline
+            controls={showControls}
+            controlsList="nodownload noplaybackrate"
+            onClick={handleVideoClick}
             style={{ 
               width: "100%", 
+              minHeight: "400px",
+              aspectRatio: "16/9",
               borderRadius: "16px",
               outline: "none",
               objectFit: "cover",
               overflow: "hidden",
+              cursor: "pointer",
               WebkitMaskImage: "-webkit-radial-gradient(white, black)",
               transform: "translateZ(0)"
             }}
           />
 
-          {isMuted && (
-            <button
-              onClick={handleUnmute}
-              style={{
-                position: "absolute",
-                bottom: "20px",
-                right: "20px",
-                background: "rgba(0, 0, 0, 0.6)",
-                color: "#fff",
-                border: "1px solid rgba(255, 255, 255, 0.3)",
-                padding: "8px 16px",
-                borderRadius: "20px",
-                fontFamily: "var(--font-body), sans-serif",
-                fontSize: "14px",
-                cursor: "pointer",
-                backdropFilter: "blur(4px)",
-                transition: "background 0.2s"
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.background = "rgba(0, 0, 0, 0.8)"}
-              onMouseLeave={(e) => e.currentTarget.style.background = "rgba(0, 0, 0, 0.6)"}
-            >
-              Click to Unmute
-            </button>
-          )}
         </div>
       </div>
 
