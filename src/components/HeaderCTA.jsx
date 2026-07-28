@@ -56,6 +56,8 @@ export default function HeaderCTA({ theme }) {
 
     // Modal Animations
     useEffect(() => {
+        const isMobile = window.matchMedia('(max-width: 768px)').matches;
+        
         if (isOpen) {
             modalBackdrop.current.classList.add('active');
             
@@ -64,10 +66,17 @@ export default function HeaderCTA({ theme }) {
                 { opacity: 1, duration: 0.3, ease: "power2.out" }
             );
             
-            gsap.fromTo('.contact-card',
-                { scale: 0.9, y: 30, opacity: 0 },
-                { scale: 1, y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }
-            );
+            if (isMobile) {
+                gsap.fromTo('.contact-card',
+                    { y: "100%", opacity: 1, scale: 1 },
+                    { y: "0%", opacity: 1, scale: 1, duration: 0.5, ease: "power3.out", clearProps: "transform" }
+                );
+            } else {
+                gsap.fromTo('.contact-card',
+                    { scale: 0.9, y: 30, opacity: 0 },
+                    { scale: 1, y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }
+                );
+            }
             
             gsap.fromTo('.card-avatar',
                 { scale: 0.95, y: 10, opacity: 0 },
@@ -84,20 +93,30 @@ export default function HeaderCTA({ theme }) {
                 { scaleX: 1, duration: 0.6, ease: "power3.out", delay: 0.4 }
             );
             
-            gsap.fromTo('.social-item',
+            gsap.fromTo('.dock-item',
                 { y: 30, opacity: 0, scale: 0.8 },
                 { y: 0, opacity: 1, scale: 1, duration: 0.5, stagger: 0.05, ease: "back.out(1.5)", delay: 0.5 }
             );
         } else {
             // Check if it's already rendered to avoid animating on mount
             if (modalBackdrop.current && modalBackdrop.current.classList.contains('active')) {
-                gsap.to('.contact-card', {
-                    scale: 0.95,
-                    y: 20,
-                    opacity: 0,
-                    duration: 0.3,
-                    ease: "power2.in"
-                });
+                if (isMobile) {
+                    gsap.to('.contact-card', {
+                        y: "100%",
+                        opacity: 1,
+                        scale: 1,
+                        duration: 0.4,
+                        ease: "power2.in"
+                    });
+                } else {
+                    gsap.to('.contact-card', {
+                        scale: 0.95,
+                        y: 20,
+                        opacity: 0,
+                        duration: 0.3,
+                        ease: "power2.in"
+                    });
+                }
                 
                 gsap.to(modalBackdrop.current, {
                     opacity: 0,

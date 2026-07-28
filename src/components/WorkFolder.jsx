@@ -138,13 +138,13 @@ export default function WorkFolder({ theme, onOpen }) {
       folderEl.addEventListener('mouseleave', handleTiltLeave);
     }
 
-    // Mobile: open folder on scroll
+    // Mobile: open folder on scroll (now triggers exactly at center)
     const isMobile = window.matchMedia("(max-width: 768px)").matches;
     if (isMobile && folderEl) {
       ScrollTrigger.create({
-        trigger: workSection.current,
-        start: "top 45%",
-        end: "bottom 30%",
+        trigger: folderEl,
+        start: "center center",
+        end: "bottom top",
         onEnter: () => {
           folderEl.classList.add("is-open");
           wordHoverTl.play();

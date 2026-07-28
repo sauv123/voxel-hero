@@ -868,12 +868,34 @@
 
 @media (max-width: 900px) {
   .text-lab-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 16px !important;
+    padding: 24px 16px !important;
+    height: auto !important;
   }
-  .text-lab-row-left {
-    min-width: unset;
+  .text-lab-row-left, .text-lab-row-middle, .text-lab-row-right {
+    width: 100% !important;
+    min-width: unset !important;
+    max-width: unset !important;
+    justify-content: flex-start !important;
+  }
+  .text-lab-proj-title {
+    font-size: clamp(2.5rem, 8vw, 3rem) !important;
+    line-height: 1.1 !important;
+    word-break: break-word !important;
+    white-space: normal !important;
+  }
+  .text-lab-proj-sub {
+    font-size: 1rem !important;
+    text-align: left !important;
+    word-break: break-word !important;
+  }
+  .text-lab-tags {
+    flex-wrap: wrap !important;
+    justify-content: flex-start !important;
+    opacity: 1 !important;
+    transform: none !important;
   }
   .floating-preview-card {
     display: none !important;

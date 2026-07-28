@@ -15,6 +15,14 @@ export default function ProfileIntroduction({ theme }) {
     }
   };
 
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.play().catch(error => {
+        console.log("Autoplay prevented:", error);
+      });
+    }
+  }, []);
+
   return (
     <>
       <div

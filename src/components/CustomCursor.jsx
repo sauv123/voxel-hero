@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { audioManager } from '../utils/audioManager';
 import './CustomCursor.css';
@@ -12,7 +12,21 @@ export default function CustomCursor() {
   const mouse = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
   const delayedMouse = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
 
+  const [isMobile, setIsMobile] = useState(false);
+
   useEffect(() => {
+    // Check if device supports hover/fine pointer
+    const checkMobile = () => {
+      setIsMobile(window.matchMedia('(pointer: coarse)').matches || window.innerWidth <= 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  useEffect(() => {
+    if (isMobile) return;
+    
     document.body.style.cursor = 'none';
 
     const onMouseMove = (e) => {
@@ -115,6 +129,8 @@ export default function CustomCursor() {
 
   // Hover States (Element Magnetism Binding)
   useEffect(() => {
+    if (isMobile) return;
+
     const handleMouseOver = (e) => {
       const target = e.target.closest('.magnetic, a, button');
       if (target) {
@@ -169,7 +185,9 @@ export default function CustomCursor() {
       document.removeEventListener('mouseover', handleMouseOver);
       document.removeEventListener('mouseout', handleMouseOut);
     };
-  }, []);
+  }, [isMobile]);
+
+  if (isMobile) return null;
 
   return (
     <>

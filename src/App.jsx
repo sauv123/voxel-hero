@@ -27,6 +27,7 @@ const NotFound = React.lazy(() => import('./components/NotFound'));
 const CaseStudyViewer = React.lazy(() => import('./components/CaseStudyViewer'));
 
 gsap.registerPlugin(ScrollTrigger);
+ScrollTrigger.config({ ignoreMobileResize: true });
 
 // ─── Themes ──────────────────────────────────────────────────────────────────
 const THEMES = {
