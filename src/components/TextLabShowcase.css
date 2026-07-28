@@ -3,10 +3,17 @@
    ═══════════════════════════════════════════════════ */
 
 .text-lab-showcase-container {
-  margin-top: 100px;
-  padding-top: 60px;
-  border-top: 2px solid #0d0d0d;
+  margin-top: 20px;
+  padding-top: 0;
+  border-top: none;
   position: relative;
+  width: 100%;
+}
+
+.bento-text-span-full {
+  grid-column: 1 / -1;
+  width: 100%;
+  margin: 16px 0;
 }
 
 .text-lab-header {

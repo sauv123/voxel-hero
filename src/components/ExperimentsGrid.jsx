@@ -725,9 +725,94 @@ export default function ExperimentsGrid({ theme, disableScrollTrigger }) {
           </div>
         )}
 
-        {/* Horizontal Bento Grid Layout */}
+        {/* Unified Hybrid Grid Layout (Visual Cards & Editorial Text Cards Mixed Together) */}
         <div className="modern-bento-grid">
-          {EXPERIMENTS.map((item) => (
+          {/* Card 1 & 2: Visual Bento Cards */}
+          {EXPERIMENTS.slice(0, 2).map((item) => (
+            <BentoCard 
+              key={item.id} 
+              item={item} 
+              theme={theme} 
+              setCursorActive={setCursorActive} 
+              disableScrollTrigger={disableScrollTrigger} 
+              onOpenDrawer={(experiment) => setActiveExperiment(experiment)}
+            />
+          ))}
+
+          {/* Mixed Text Item 1: LEMON NOTES */}
+          <div className="bento-text-span-full">
+            <TextLabShowcase 
+              theme={theme} 
+              showHeader={false}
+              projects={TEXT_PROJECTS.filter(p => p.key === 'lemon')}
+              onSelectProject={(project) => {
+                if (project.link) {
+                  window.open(project.link, '_blank');
+                } else {
+                  setActiveExperiment(project);
+                }
+              }}
+            />
+          </div>
+
+          {/* Card 3: Interactive Binary Shark Pool */}
+          {EXPERIMENTS.slice(2, 3).map((item) => (
+            <BentoCard 
+              key={item.id} 
+              item={item} 
+              theme={theme} 
+              setCursorActive={setCursorActive} 
+              disableScrollTrigger={disableScrollTrigger} 
+              onOpenDrawer={(experiment) => setActiveExperiment(experiment)}
+            />
+          ))}
+
+          {/* Mixed Text Item 2: THE BLOCKCHAIN MOSAIC */}
+          <div className="bento-text-span-full">
+            <TextLabShowcase 
+              theme={theme} 
+              showHeader={false}
+              projects={TEXT_PROJECTS.filter(p => p.key === 'blockchain')}
+              onSelectProject={(project) => {
+                if (project.link) {
+                  window.open(project.link, '_blank');
+                } else {
+                  setActiveExperiment(project);
+                }
+              }}
+            />
+          </div>
+
+          {/* Card 4: Spatial Prototypes */}
+          {EXPERIMENTS.slice(3, 4).map((item) => (
+            <BentoCard 
+              key={item.id} 
+              item={item} 
+              theme={theme} 
+              setCursorActive={setCursorActive} 
+              disableScrollTrigger={disableScrollTrigger} 
+              onOpenDrawer={(experiment) => setActiveExperiment(experiment)}
+            />
+          ))}
+
+          {/* Mixed Text Item 3: SOCIAL BATTERY APP */}
+          <div className="bento-text-span-full">
+            <TextLabShowcase 
+              theme={theme} 
+              showHeader={false}
+              projects={TEXT_PROJECTS.filter(p => p.key === 'social_battery')}
+              onSelectProject={(project) => {
+                if (project.link) {
+                  window.open(project.link, '_blank');
+                } else {
+                  setActiveExperiment(project);
+                }
+              }}
+            />
+          </div>
+
+          {/* Card 5: Snake Interaction */}
+          {EXPERIMENTS.slice(4).map((item) => (
             <BentoCard 
               key={item.id} 
               item={item} 
@@ -738,18 +823,6 @@ export default function ExperimentsGrid({ theme, disableScrollTrigger }) {
             />
           ))}
         </div>
-
-        {/* Text-Based Editorial Interactive Lab Showcase */}
-        <TextLabShowcase 
-          theme={theme} 
-          onSelectProject={(project) => {
-            if (project.link) {
-              window.open(project.link, '_blank');
-            } else {
-              setActiveExperiment(project);
-            }
-          }}
-        />
       </div>
       
       {/* Context Drawer for Explanations */}
