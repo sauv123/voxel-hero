@@ -4,7 +4,9 @@ import { PROJECTS } from '../cms/projects';
 
 export default function CaseStudyViewer({ startIndex, onClose }) {
   const containerRef = useRef(null);
+  const toastRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [toastKey, setToastKey] = useState(0);
 
   // Duplicate the array to allow for smooth scrolling/looping
   const caseStudies = PROJECTS.filter(p => p.link);
@@ -34,22 +36,56 @@ export default function CaseStudyViewer({ startIndex, onClose }) {
     return () => { document.body.style.overflow = 'auto'; };
   }, [initialScrollIndex, caseStudyIndex]);
 
+  // IntersectionObserver for tracking active project
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = parseInt(entry.target.getAttribute('data-index'), 10);
+            setActiveIndex((prev) => {
+              if (prev !== index) {
+                setToastKey(Date.now());
+                return index;
+              }
+              return prev;
+            });
+          }
+        });
+      },
+      { threshold: 0.5, root: containerRef.current }
+    );
+
+    const children = containerRef.current?.querySelectorAll('.project-slide');
+    children?.forEach((child) => observer.observe(child));
+
+    return () => observer.disconnect();
+  }, []);
+
+  // GSAP Toast Animation
+  useEffect(() => {
+    if (toastKey > 0 && toastRef.current) {
+      gsap.killTweensOf(toastRef.current);
+      gsap.fromTo(toastRef.current,
+        { opacity: 0, x: 50 },
+        { opacity: 1, x: 0, duration: 0.6, ease: 'power3.out' }
+      );
+      gsap.to(toastRef.current, {
+        opacity: 0, x: 20, duration: 0.5, delay: 2.5, ease: 'power2.in'
+      });
+    }
+  }, [toastKey]);
+
   const handleScroll = () => {
     if (!containerRef.current) return;
-    const { scrollTop } = containerRef.current;
+    const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
     
-    const vh = window.innerHeight;
-    const blockHeight = itemsCount * vh;
-
-    // Track active page index
-    const relativeScroll = scrollTop % blockHeight;
-    const computedActive = Math.round(relativeScroll / vh) % itemsCount;
-    setActiveIndex(computedActive);
-
-    // Loop logic
-    if (scrollTop < vh) {
+    // Loop logic to maintain infinite scroll
+    const blockHeight = itemsCount * clientHeight;
+    
+    if (scrollTop < clientHeight) {
       containerRef.current.scrollTop = scrollTop + blockHeight;
-    } else if (scrollTop > blockHeight * 2 - vh) {
+    } else if (scrollTop > blockHeight * 2 - clientHeight) {
       containerRef.current.scrollTop = scrollTop - blockHeight;
     }
   };
@@ -127,13 +163,44 @@ export default function CaseStudyViewer({ startIndex, onClose }) {
             Open ↗
           </a>
         )}
-        
+      </div>
 
+      {/* Toast Notification */}
+      <div 
+        ref={toastRef}
+        style={{
+          position: 'fixed',
+          top: '50%',
+          right: '24px',
+          transform: 'translateY(-50%)',
+          opacity: 0,
+          pointerEvents: 'none',
+          backgroundColor: 'rgba(20, 20, 20, 0.85)',
+          backdropFilter: 'blur(12px)',
+          border: '1px solid rgba(255,255,255,0.15)',
+          padding: '12px 24px',
+          borderRadius: '100px',
+          color: '#fff',
+          fontFamily: 'var(--font-heading)',
+          fontSize: '11px',
+          letterSpacing: '0.1em',
+          textTransform: 'uppercase',
+          zIndex: 9999,
+          boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          maxWidth: '180px',
+          textAlign: 'right',
+        }}>
+        You are in the next project
       </div>
 
       {duplicatedProjects.map((proj, i) => (
         <div 
           key={`${proj.id}-${i}`}
+          className="project-slide"
+          data-index={i % itemsCount}
           style={{
             height: '100vh',
             width: '100vw',

@@ -2863,3 +2863,10 @@ body {
     cursor: none !important;
   }
 }
+
+@keyframes toastPop {
+  0% { opacity: 0; transform: translate(-50%, 20px); }
+  15% { opacity: 1; transform: translate(-50%, 0); }
+  85% { opacity: 1; transform: translate(-50%, 0); }
+  100% { opacity: 0; transform: translate(-50%, -10px); }
+}
