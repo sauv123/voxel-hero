@@ -8,7 +8,7 @@
   <meta property="og:description" content="A case study in calm, introvert-first design — built for real-world social confidence.">
   <meta property="og:type" content="website">
   <meta name="theme-color" content="#8BA88E">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>🌱</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'&gt;&lt;text y='28' font-size='28'&gt;🌱&lt;/text&gt;&lt;/svg&gt;">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
   <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhai+2:wght@400;500;600;700;800&amp;family=Nunito+Sans:ital,opsz,wght@0,6..12,300;0,6..12,400;0,6..12,500;0,6..12,600;0,6..12,700;1,6..12,400&amp;display=swap" rel="stylesheet">
@@ -60,22 +60,7 @@
     .section { padding: 120px 0; content-visibility: auto; contain-intrinsic-size: 600px; }
     .section-sm { padding: 80px 0; content-visibility: auto; contain-intrinsic-size: 400px; }
 
-    /* NAV */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-      background: rgba(248,246,242,0.85); backdrop-filter: blur(16px);
-      border-bottom: 1px solid transparent; transition: all 0.3s;
-    }
-    nav.scrolled { border-color: var(--border-light); background: rgba(248,246,242,0.95); }
-    nav .container { height: 80px; display: flex; align-items: center; justify-content: space-between; }
     .logo { font-family: var(--font-display); font-weight: 800; font-size: 1.75rem; color: var(--accent-sage); letter-spacing: -0.04em; text-decoration: none; }
-    .nav-links { display: flex; gap: 32px; list-style: none; }
-    .nav-links a { text-decoration: none; color: var(--fg-light); font-weight: 600; font-size: 0.875rem; transition: color 0.3s; position: relative; }
-    .nav-links a:hover { color: var(--accent-sage); }
-    .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--accent-sage); transition: width 0.3s; }
-    .nav-links a:hover::after { width: 100%; }
-    .nav-links a.active { color: var(--accent-sage); }
-    .nav-links a.active::after { width: 100%; }
 
     /* HERO */
     .hero { min-height: 100vh; display: flex; align-items: center; padding: 160px 0 120px; position: relative; overflow: hidden; }
@@ -95,6 +80,8 @@
     .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(139,168,142,0.4); }
     .btn-secondary { background: transparent; color: var(--fg); border-color: var(--border); }
     .btn-secondary:hover { background: var(--surface); border-color: var(--fg); }
+    .btn-skip { background: var(--accent-terracotta); color: #fff; font-size: 0.8rem; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; padding: 14px 28px; border-radius: 8px; box-shadow: 0 8px 24px rgba(212,149,107,0.3); }
+    .btn-skip:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(212,149,107,0.4); }
     .hero-visual { position: relative; }
     .hero-stack { position: relative; width: 100%; height: 500px; }
     .phone-mockup { position: absolute; width: 220px; height: 440px; background: var(--surface); border-radius: var(--radius-phone); box-shadow: 0 20px 60px rgba(61,64,66,0.12); overflow: hidden; border: 4px solid var(--border-light); will-change: transform; }
@@ -123,26 +110,7 @@
     .research-table td:last-child { color: var(--accent-sage); font-weight: 600; }
     .research-table tr:hover td { background: var(--accent-sage-light); }
 
-    /* REMOVED FEATURES */
-    .removed-features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 48px; }
-    .removed-card { background: var(--surface); border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 32px; text-align: center; position: relative; overflow: hidden; }
-    .removed-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--accent-terracotta); }
-    .removed-icon { font-size: 2rem; margin-bottom: 16px; opacity: 0.5; }
-    .removed-title { font-family: var(--font-display); font-weight: 700; font-size: 1rem; margin-bottom: 8px; color: var(--fg); text-decoration: line-through; opacity: 0.5; }
-    .removed-reason { font-size: 0.8125rem; color: var(--fg-light); margin-top: 12px; font-style: italic; }
-    .reason-strip { background: var(--accent-terracotta-light); border-radius: var(--radius-lg); padding: 32px; margin-top: 48px; text-align: center; }
-    .reason-strip h4 { font-family: var(--font-display); font-weight: 700; font-size: 1.125rem; margin-bottom: 8px; color: var(--accent-terracotta); }
-    .reason-strip p { color: var(--fg-light); font-size: 0.9375rem; }
 
-    /* CONCEPT VALIDATION */
-    .concept-validation { background: var(--surface); content-visibility: auto; contain-intrinsic-size: 500px; }
-    .concept-text { font-size: 1.125rem; color: var(--fg-light); max-width: 800px; margin: 48px 0; line-height: 1.8; }
-    .concept-text strong { color: var(--fg); }
-    .concept-gallery { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 48px; }
-    .concept-card { background: var(--surface-soft); border-radius: var(--radius-lg); overflow: hidden; cursor: zoom-in; transition: all 0.3s; border: 1px solid var(--border-light); }
-    .concept-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(0,0,0,0.08); }
-    .concept-card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; }
-    .concept-card-label { padding: 16px; font-size: 0.8125rem; font-weight: 600; color: var(--fg); text-align: center; }
 
     /* MOCKUP SHOWCASE */
     .mockup-showcase { background: var(--surface); overflow: hidden; content-visibility: auto; contain-intrinsic-size: 600px; }
@@ -205,7 +173,7 @@
     /* JOURNEY SECTION (Split-View) */
     .journey-section { background: var(--surface-soft); overflow: hidden; content-visibility: auto; contain-intrinsic-size: 900px; }
     .journey-steps-nav { display: flex; justify-content: space-between; position: relative; margin-bottom: 64px; max-width: 800px; margin-left: auto; margin-right: auto; }
-    .journey-steps-nav::before { content: ''; position: absolute; top: 24px; left: 0; right: 0; height: 2px; background: var(--border); z-index: 1; }
+    .journey-steps-nav::before { content: ''; position: absolute; top: 24px; left: 0; right: 0; height: 3px; background: var(--accent-sage); opacity: 0.3; z-index: 1; }
     .journey-nav-item { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 12px; cursor: pointer; }
     .step-dot { width: 48px; height: 48px; border-radius: 50%; background: var(--surface); border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 700; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
     .step-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--fg-light); }
@@ -226,6 +194,10 @@
     }
     .journey-phone-img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; opacity: 0; transition: opacity 0.5s ease; }
     .journey-phone-img.active { opacity: 1; z-index: 10; }
+    .journey-nav-btns { display: flex; justify-content: center; gap: 16px; margin-top: 48px; }
+    .journey-nav-btn { width: 48px; height: 48px; border-radius: 50%; background: var(--surface); border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s; font-size: 1.25rem; color: var(--fg); }
+    .journey-nav-btn:hover { border-color: var(--accent-sage); color: var(--accent-sage); background: var(--accent-sage-light); }
+    .journey-nav-btn:disabled { opacity: 0.3; cursor: default; pointer-events: none; }
 
     /* PROTOTYPE EVOLUTION */
     .prototype-section { background: var(--surface); content-visibility: auto; contain-intrinsic-size: 600px; }
@@ -233,8 +205,13 @@
     .evolution-card { background: var(--surface-soft); border-radius: var(--radius-xl); overflow: hidden; border: 1px solid var(--border-light); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); cursor: zoom-in; }
     .evolution-card:hover { transform: translateY(-8px); box-shadow: 0 20px 60px rgba(0,0,0,0.1); }
     .evolution-card img { width: 100%; aspect-ratio: 9/19; object-fit: cover; display: block; }
+    .evolution-phone-frame { position: relative; background: #1a1a1a; border-radius: var(--radius-lg); padding: 8px; margin: 12px 12px 0; }
+    .evolution-phone-frame img { border-radius: var(--radius-sm); aspect-ratio: 9/19; width: 100%; object-fit: cover; display: block; }
+    .evolution-phone-notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 60px; height: 18px; background: #1a1a1a; border-radius: 0 0 12px 12px; }
+    .evolution-phone-notch::after { content: ''; position: absolute; top: 5px; left: 50%; transform: translateX(-50%); width: 10px; height: 10px; background: #2a2a2a; border-radius: 50%; }
+    .evolution-stage-overlay { position: absolute; top: 16px; left: 16px; padding: 4px 12px; background: var(--accent-sage); color: #fff; border-radius: 100px; font-size: 0.6875rem; font-weight: 700; z-index: 2; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
     .evolution-info { padding: 24px; }
-    .evolution-stage { display: inline-block; padding: 4px 12px; background: var(--accent-sage); color: #fff; border-radius: 100px; font-size: 0.6875rem; font-weight: 700; margin-bottom: 12px; }
+    
     .evolution-title { font-family: var(--font-display); font-weight: 700; font-size: 1rem; margin-bottom: 8px; color: var(--fg); }
     .evolution-desc { font-size: 0.8125rem; color: var(--fg-light); line-height: 1.5; }
 
@@ -264,7 +241,13 @@
     .finding-card-text { font-size: 0.9375rem; color: var(--fg-light); margin-bottom: 20px; }
     .finding-card ul { list-style: none; padding: 0; }
     .finding-card li { padding: 6px 0; padding-left: 24px; position: relative; font-size: 0.9375rem; color: var(--fg-light); }
+    .finding-card.change { border-left-color: var(--accent-terracotta); }
     .finding-card li::before { content: ''; position: absolute; left: 0; top: 12px; width: 8px; height: 8px; background: var(--accent-sage); border-radius: 50%; }
+
+    .task-list { list-style: none; counter-reset: task; }
+    .task-list li { counter-increment: task; padding: 14px 0 14px 40px; position: relative; border-bottom: 1px dashed var(--border); font-size: 0.9rem; }
+    .task-list li:last-child { border-bottom: none; }
+    .task-list li::before { content: counter(task); position: absolute; left: 0; top: 12px; width: 24px; height: 24px; background: var(--accent-sage); color: #fff; border-radius: 50%; font-size: 0.7rem; font-weight: 700; display: flex; align-items: center; justify-content: center; }
 
     /* LIGHTBOX */
     .lightbox { position: fixed; inset: 0; background: rgba(248,246,242,0.98); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 40px; backdrop-filter: blur(12px); }
@@ -286,49 +269,35 @@
     footer .logo { margin-bottom: 24px; font-size: 2.5rem; }
     footer p { opacity: 0.7; max-width: 500px; margin: 0 auto 48px; }
 
+    /* ─── Floating Left Nav ─── */
+    .side-nav {
+      position: fixed; left: 20px; top: 50%; transform: translateY(-50%);
+      z-index: 1000; display: flex; flex-direction: column; gap: 4px;
+    }
+    .side-nav-item {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: var(--fg-light);
+      font-family: var(--font-body); font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.04em; text-transform: uppercase;
+      padding: 6px 10px; border-radius: 100px;
+      transition: all 0.3s; white-space: nowrap;
+    }
+    .side-nav-indicator {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--border); transition: all 0.4s; flex-shrink: 0;
+    }
+    .side-nav-item.active { color: var(--accent-sage); }
+    .side-nav-item.active .side-nav-indicator {
+      background: var(--accent-sage);
+      box-shadow: 0 0 0 3px var(--accent-sage-light);
+    }
+    .side-nav-item:hover { color: var(--accent-sage); }
+    .side-nav-item:hover .side-nav-indicator { background: var(--accent-sage); }
+
     @keyframes fadeInLB { from { opacity: 0; } to { opacity: 1; } }
     @keyframes slideUpFade { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* Horizontal Gallery */
-    .horizontal-gallery-section { background: var(--surface-soft); padding: 120px 0 80px; content-visibility: auto; contain-intrinsic-size: 600px; position: relative; }
-    .gallery-wrap { position: relative; }
-    .gallery-fade-right { pointer-events: none; position: absolute; top: 0; right: 0; bottom: 0; width: 120px; background: linear-gradient(to left, var(--surface-soft), transparent); z-index: 2; transition: opacity 0.5s; }
-    .gallery-fade-right.hidden { opacity: 0; }
-    .gallery-scroll-container { 
-      display: flex; 
-      gap: 24px; 
-      overflow-x: auto; 
-      padding: 48px 24px 80px; 
-      scroll-snap-type: x mandatory;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-    }
-    .gallery-scroll-container::-webkit-scrollbar { display: none; }
-    .gallery-arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 3; width: 44px; height: 44px; border-radius: 50%; background: var(--bg); border: 1px solid var(--border); box-shadow: 0 4px 16px rgba(0,0,0,0.08); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--fg); transition: all 0.25s; opacity: 0; pointer-events: none; }
-    .gallery-arrow:hover { background: var(--surface); box-shadow: 0 6px 24px rgba(0,0,0,0.12); }
-    .gallery-arrow.visible { opacity: 1; pointer-events: auto; }
-    .gallery-arrow-left { left: 12px; }
-    .gallery-arrow-right { right: 12px; }
-    .gallery-dots { display: flex; justify-content: center; gap: 8px; margin-top: -32px; position: relative; z-index: 2; }
-    .gallery-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); transition: all 0.3s; cursor: pointer; }
-    .gallery-dot.active { background: var(--accent-sage); width: 24px; border-radius: 4px; }
-    .gallery-hint { text-align: center; font-size: 0.8rem; color: var(--fg-light); letter-spacing: 0.04em; margin-top: 12px; opacity: 1; transition: opacity 0.8s; }
-    .gallery-hint.hidden { opacity: 0; }
-    .gallery-hint span { display: inline-block; animation: hintSlide 2s infinite; }
-    @keyframes hintSlide { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(6px); } }
-    .gallery-scroll-item { 
-      flex: 0 0 auto;
-      height: 75vh;
-      scroll-snap-align: start;
-      border-radius: var(--radius-phone);
-      overflow: hidden;
-      box-shadow: 0 20px 50px rgba(61,64,66,0.15);
-      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-      background: var(--surface);
-      border: 4px solid var(--border-light);
-    }
-    .gallery-scroll-item:hover { transform: translateY(-12px) scale(1.03); box-shadow: 0 40px 80px rgba(61,64,66,0.2); }
-    .gallery-scroll-item img { height: 100%; width: auto; display: block; }
+
 
     /* Full-Width Hero Banner */
     .full-width-hero { width: 100%; height: 80vh; position: relative; overflow: hidden; content-visibility: auto; contain-intrinsic-size: 600px; }
@@ -338,6 +307,7 @@
     .hero-video-content { text-align: center; color: #fff; padding: 40px; }
     .hero-video-content .section-label { color: rgba(255,255,255,0.9) !important; }
     .hero-video-content h2, .hero-video-content p { color: #fff; }
+    .video-tag { position: absolute; top: 24px; left: 24px; background: rgba(255,255,255,0.9); backdrop-filter: blur(6px); padding: 8px 16px; border-radius: var(--radius-pill, 9999px); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--fg); }
     .full-width-banner img {
       width: 100%;
       height: 100%;
@@ -356,12 +326,7 @@
     .custom-cursor { position: fixed; width: 24px; height: 24px; border: 2px solid var(--accent-sage); border-radius: 50%; pointer-events: none; z-index: 9999; transition: width 0.3s, height 0.3s, background 0.3s, border-color 0.3s; transform: translate(-50%, -50%); mix-blend-mode: difference; }
     .custom-cursor.hover { width: 48px; height: 48px; background: rgba(139,168,142,0.15); border-color: var(--accent-sage); }
 
-    /* HAMBURGER */
-    .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 8px; flex-direction: column; gap: 5px; z-index: 1001; }
-    .hamburger span { display: block; width: 24px; height: 2.5px; background: var(--fg); border-radius: 2px; transition: transform 0.3s, opacity 0.3s; }
-    .hamburger.open span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
-    .hamburger.open span:nth-child(2) { opacity: 0; }
-    .hamburger.open span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+
 
     /* ─── COMPREHENSIVE RESPONSIVE ─── */
 
@@ -384,7 +349,6 @@
       .detail-grid { grid-template-columns: 1fr; gap: 40px; }
       .results-grid { grid-template-columns: repeat(2, 1fr); }
       .findings-grid { grid-template-columns: 1fr; gap: 24px; }
-      .concept-gallery { grid-template-columns: repeat(2, 1fr); }
       .section-label, .section-title, .section-text { text-align: center; margin-left: auto; margin-right: auto; }
       .analogy-content { grid-template-columns: 1fr; gap: 32px; }
       .analogy-container { padding: 40px; }
@@ -394,19 +358,9 @@
 
     /* Mobile phones */
     @media (max-width: 768px) {
-      .hamburger { display: flex; }
-      .nav-links {
-        position: fixed; top: 0; right: -100%; width: 280px; height: 100vh;
-        background: var(--surface); flex-direction: column; padding: 100px 32px 40px;
-        gap: 8px; box-shadow: -10px 0 40px rgba(0,0,0,0.1);
-        transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1); z-index: 1000;
-        display: flex; /* override earlier display:none */
-      }
-      .nav-links.open { right: 0; }
-      .nav-links a { display: block; padding: 14px 16px; font-size: 1rem; border-radius: var(--radius-md); transition: background 0.2s; }
-      .nav-links a:hover { background: var(--surface-soft); }
-      .nav-links a::after { display: none; }
-      nav.scrolled .nav-links { border-color: var(--border-light); }
+      .side-nav { left: 8px; gap: 2px; }
+      .side-nav-item { font-size: 0.6rem; padding: 4px 6px; gap: 6px; }
+      .side-nav-indicator { width: 5px; height: 5px; }
 
       /* Hero */
       .hero { padding: 120px 0 80px; min-height: auto; }
@@ -433,14 +387,6 @@
       .phase-num { font-size: 2rem; }
       .gallery-grid { grid-template-columns: repeat(2, 1fr); }
 
-      /* Removed features */
-      .removed-features-grid { grid-template-columns: 1fr; gap: 16px; }
-      .removed-card { padding: 24px; }
-
-      /* Concept gallery */
-      .concept-gallery { grid-template-columns: 1fr 1fr; gap: 12px; }
-      .concept-text { font-size: 0.9375rem; }
-
       /* Research table */
       .research-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 -16px; padding: 0 16px; }
       .research-table { min-width: 560px; }
@@ -463,6 +409,7 @@
       .journey-desc { font-size: 1rem; }
       .journey-phone { width: 240px; height: 500px; border-width: 6px; border-radius: 28px; }
       .journey-section h2 { font-size: 2rem !important; }
+      .journey-nav-btn { width: 40px; height: 40px; font-size: 1rem; }
 
       /* Evolution timeline */
       .evolution-timeline { grid-template-columns: 1fr; gap: 16px; overflow-x: auto; }
@@ -470,10 +417,6 @@
 
       /* Mockup showcase */
       .mockup-grid { gap: 24px; }
-
-      /* Gallery scroll */
-      .gallery-scroll-container { padding: 24px 16px 48px; gap: 16px; }
-      .gallery-scroll-item { height: 55vh; border-width: 3px; }
 
       /* Full-width hero */
       .full-width-hero { height: 50vh; }
@@ -521,13 +464,10 @@
       .hero-btns { gap: 10px; }
       .hero-video-content h2 { font-size: 1.25rem; }
       .full-width-hero { height: 40vh; }
-      .gallery-scroll-item { height: 45vh; }
-      .concept-gallery { grid-template-columns: 1fr; }
       .journey-phone { width: 200px; height: 420px; }
       .journey-title { font-size: 1.5rem; }
       .journey-section h2 { font-size: 1.65rem !important; }
       .prototype-intro { font-size: 0.9375rem; }
-      .concept-text { font-size: 0.9375rem; }
       .insights-content { font-size: 0.9375rem; }
       .insights-grid { gap: 32px; }
       .quote-text { font-size: 1.125rem; }
@@ -541,20 +481,22 @@
 
   <div class="custom-cursor" id="cursor"></div>
 
-  <nav id="navbar">
-    <div class="container">
-      <a href="#" class="logo">olo</a>
-      <ul class="nav-links" id="navLinks">
-        <li><a href="#problem" class="nav-link" data-section="problem">Problem</a></li>
-        <li><a href="#discovery" class="nav-link" data-section="discovery">Research</a></li>
-        <li><a href="#insights" class="nav-link" data-section="insights">Insights</a></li>
-        <li><a href="#journey" class="nav-link" data-section="journey">Journey</a></li>
-        <li><a href="#screens" class="nav-link" data-section="screens">Screens</a></li>
-      </ul>
-      <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
+  <nav class="side-nav" id="sideNav">
+    <a href="#problem" class="side-nav-item nav-link" data-section="problem">
+      <span class="side-nav-indicator"></span><span>Problem</span>
+    </a>
+    <a href="#discovery" class="side-nav-item nav-link" data-section="discovery">
+      <span class="side-nav-indicator"></span><span>Research</span>
+    </a>
+    <a href="#insights" class="side-nav-item nav-link" data-section="insights">
+      <span class="side-nav-indicator"></span><span>Insights</span>
+    </a>
+    <a href="#process" class="side-nav-item nav-link" data-section="process">
+      <span class="side-nav-indicator"></span><span>Prototype</span>
+    </a>
+    <a href="#journey" class="side-nav-item nav-link" data-section="journey">
+      <span class="side-nav-indicator"></span><span>Takeaways</span>
+    </a>
   </nav>
 
   <header class="section hero" id="hero">
@@ -567,14 +509,12 @@
           <h1 class="hero-title">Designing for the <span style="color:var(--accent-sage)">Quiet</span>.</h1>
           <p class="hero-deck">olo is a calm, introvert-first mobile experience designed to help individuals build real-world confidence through micro-actions and reflective growth.</p>
           <div class="hero-tags">
-            <span class="hero-tag hero-tag-primary">Cosima Wagner + Sauveer Sinha</span>
-            <span class="hero-tag">Timeline: 2 months</span>
-            <span class="hero-tag">UX Design</span>
-            <span class="hero-tag">Introvert Design</span>
+            <span class="hero-tag">Role: Brand &amp; UX Design (team of 2)</span>
+            <span class="hero-tag">Duration: 5 months (Sep25–Jan26)</span>
+            <span class="hero-tag">Tools: Figma, After Effects, Principle</span>
           </div>
           <div class="hero-btns">
-            <a href="#journey" class="btn btn-primary">Explore the Journey</a>
-            <a href="#discovery" class="btn btn-secondary">Read Research</a>
+            <a href="#journey" class="btn btn-skip">Skip to Solution →</a>
           </div>
         </div>
         <div class="hero-visual reveal stagger-2">
@@ -592,6 +532,20 @@
     </div>
   </header>
 
+  <section class="section-sm" style="background:var(--surface);border-bottom:1px solid var(--border-light);">
+    <div class="container">
+      <div class="reveal" style="display:grid;grid-template-columns:auto 1fr;gap:32px;align-items:start;">
+        <div style="width:80px;height:80px;border-radius:50%;background:var(--accent-sage-light);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:2rem;font-weight:800;color:var(--accent-sage);flex-shrink:0;">SS</div>
+        <div>
+          <div class="section-label" style="color:var(--accent-sage);margin-bottom:8px;">My Role</div>
+          <h2 style="font-size:1.5rem;font-weight:700;margin-bottom:12px;font-family:var(--font-display);">Part of a two-person team</h2>
+          <p style="color:var(--fg-light);font-size:1rem;line-height:1.7;max-width:720px;">
+            <strong style="color: var(--fg); font-weight: 500;">I contributed to the UX design, Introvert and visual  research, Figma prototypes, and React prototypes hardcoded with Figma Make and Code, and also made the interaction video and AI-generated brand launch.</strong></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="section" id="problem">
     <div class="container">
       <div class="reveal">
@@ -604,7 +558,6 @@
         <div class="analogy-tabs">
           <button class="analogy-tab active" onclick="switchAnalogy(0)">Traditional Apps</button>
           <button class="analogy-tab" onclick="switchAnalogy(1)">Introvert Reality</button>
-          <button class="analogy-tab" onclick="switchAnalogy(2)">The olo Way</button>
         </div>
         <div id="analogy-content-wrap">
           <div class="analogy-content">
@@ -626,10 +579,26 @@
           </div>
         </div>
       </div>
+
+      <div class="reveal stagger-2" style="margin-top: 60px;">
+        <div class="section-label" style="color:var(--accent-sage)">By the Numbers</div>
+        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:24px;">
+          <div style="background:var(--surface); border-radius:var(--radius-lg); padding:32px; text-align:center; border:1px solid var(--border-light);">
+            <div style="font-family:var(--font-display); font-size:2.5rem; font-weight:800; color:var(--accent-sage); line-height:1;">72%</div>
+            <div style="font-size:0.8125rem; color:var(--fg-light); margin-top:8px;">of introverts avoid social apps due to performance pressure</div>
+          </div>
+          <div style="background:var(--surface); border-radius:var(--radius-lg); padding:32px; text-align:center; border:1px solid var(--border-light);">
+            <div style="font-family:var(--font-display); font-size:2.5rem; font-weight:800; color:var(--accent-sage); line-height:1;">3.2×</div>
+            <div style="font-size:0.8125rem; color:var(--fg-light); margin-top:8px;">higher retention in apps with private, self-paced progress</div>
+          </div>
+          <div style="background:var(--surface); border-radius:var(--radius-lg); padding:32px; text-align:center; border:1px solid var(--border-light);">
+            <div style="font-family:var(--font-display); font-size:2.5rem; font-weight:800; color:var(--accent-sage); line-height:1;">68%</div>
+            <div style="font-size:0.8125rem; color:var(--fg-light); margin-top:8px;">of users prefer reflection-based feedback over public metrics</div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
-
-
 
   <section class="section" id="discovery">
     <div class="container">
@@ -759,67 +728,35 @@
           </tr>
         </tbody>
       </table></div>
-    </div>
-  </section>
 
-  <!-- Strategic Cuts / Removed Features -->
-  <section class="section" style="background:var(--surface-soft);">
-    <div class="container">
-      <div class="reveal">
-        <div class="section-label" style="color:var(--accent-terracotta)">Strategic Cuts</div>
-        <h2 class="section-title">Removed Features.</h2>
-        <p class="section-text">Based on our research, we made deliberate choices to remove features common in social apps.</p>
-      </div>
-      <div class="removed-features-grid reveal stagger-3">
-        <div class="removed-card">
-          <div class="removed-icon">📱</div>
-          <div class="removed-title">Community Feed</div>
-          <div class="removed-reason">To reduce social pressure and cognitive overload.</div>
+      <h3 style="font-size:1.4rem;margin:56px 0 8px;font-family:var(--font-display);letter-spacing:-0.02em;">Features we deliberately cut</h3>
+      <p class="section-text" style="margin-bottom:8px">Every one of these tested well on paper. Each one directly contradicted the core research insight that visibility and pressure are what drive anxious users away.</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px;">
+        <div style="background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius-lg);padding:30px;position:relative;overflow:hidden;">
+          <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent-terracotta);"></div>
+          <div style="font-size:1.75rem;margin-bottom:14px;opacity:0.6;">📱</div>
+          <div style="font-family:var(--font-display);font-weight:700;font-size:1rem;margin-bottom:10px;color:var(--fg);text-decoration:line-through;opacity:0.55;">Community Feed</div>
+          <div style="font-size:0.8125rem;color:var(--fg-light);line-height:1.55;">Feed was rated "not of importance right now" in testing patterns, and was consistently a Threat/Weakness across the competitor SWOT.</div>
         </div>
-        <div class="removed-card">
-          <div class="removed-icon">📊</div>
-          <div class="removed-title">Public Comparison</div>
-          <div class="removed-reason">To eliminate social comparison stress and judgment anxiety.</div>
+        <div style="background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius-lg);padding:30px;position:relative;overflow:hidden;">
+          <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent-terracotta);"></div>
+          <div style="font-size:1.75rem;margin-bottom:14px;opacity:0.6;">📊</div>
+          <div style="font-family:var(--font-display);font-weight:700;font-size:1rem;margin-bottom:10px;color:var(--fg);text-decoration:line-through;opacity:0.55;">Public Comparison</div>
+          <div style="font-size:0.8125rem;color:var(--fg-light);line-height:1.55;">Directly contradicted the empathy map's central finding: being watched is the anxiety trigger, not the missing motivation.</div>
         </div>
-        <div class="removed-card">
-          <div class="removed-icon">🏆</div>
-          <div class="removed-title">Competitive Systems</div>
-          <div class="removed-reason">To replace performance-driven motivation with reflective growth.</div>
+        <div style="background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius-lg);padding:30px;position:relative;overflow:hidden;">
+          <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent-terracotta);"></div>
+          <div style="font-size:1.75rem;margin-bottom:14px;opacity:0.6;">⏱️</div>
+          <div style="font-family:var(--font-display);font-weight:700;font-size:1rem;margin-bottom:10px;color:var(--fg);text-decoration:line-through;opacity:0.55;">Timers &amp; Streaks</div>
+          <div style="font-size:0.8125rem;color:var(--fg-light);line-height:1.55;">Usability testing showed 3 of 4 participants felt pressured by a countdown on the very first challenge screen we tested.</div>
         </div>
-      </div>
-      <div class="reason-strip reveal stagger-3">
-        <h4>Why these cuts matter</h4>
-        <p>Removing these features reduced social pressure and cognitive overload — the two primary barriers to consistent engagement for introverted users.</p>
       </div>
     </div>
   </section>
 
-  <!-- Concept Validation -->
-  <section class="section concept-validation">
-    <div class="container">
-      <div class="reveal">
-        <div class="section-label" style="color:var(--accent-mustard)">Validation</div>
-        <h2 class="section-title">Concept Validation.</h2>
-      </div>
-      <p class="concept-text reveal stagger-2">
-        User feedback confirmed a preference for <strong>gradual confidence-building over instant matching</strong>, with small, pressure-free challenges proving most motivating. Users <strong>prioritized safety and authenticity over speed</strong> and wanted <strong>offline connections backed by digital reassurance</strong>. These insights validate a calm, step-by-step social support system.
-      </p>
-      <div class="concept-gallery reveal stagger-3">
-        <div class="concept-card" onclick="openLightbox('mp4jppnc-Screenshot-2026-05-13-at-11.02.19-PM.png', 'Concept Validation — Research Data 1')">
-          <img src="mp4jppnc-Screenshot-2026-05-13-at-11.02.19-PM.png" alt="Concept Validation 1" loading="lazy" decoding="async">
-        </div>
-        <div class="concept-card" onclick="openLightbox('mp4jq298-Screenshot-2026-05-13-at-11.02.39-PM.png', 'Concept Validation — Research Data 2')">
-          <img src="mp4jq298-Screenshot-2026-05-13-at-11.02.39-PM.png" alt="Concept Validation 2" loading="lazy" decoding="async">
-        </div>
-        <div class="concept-card" onclick="openLightbox('mp4jqhce-Screenshot-2026-05-13-at-11.02.59-PM.png', 'Concept Validation — Research Data 3')">
-          <img src="mp4jqhce-Screenshot-2026-05-13-at-11.02.59-PM.png" alt="Concept Validation 3" loading="lazy" decoding="async">
-        </div>
-        <div class="concept-card" onclick="openLightbox('mp4jqmom-Screenshot-2026-05-13-at-11.03.06-PM.png', 'Concept Validation — Research Data 4')">
-          <img src="mp4jqmom-Screenshot-2026-05-13-at-11.03.06-PM.png" alt="Concept Validation 4" loading="lazy" decoding="async">
-        </div>
-      </div>
-    </div>
-  </section>
+
+
+
 
   <section class="section insights-section" id="insights">
     <div class="container">
@@ -872,12 +809,76 @@
     </div>
   </section>
 
+  <section class="section prototype-section" id="process">
+    <div class="container">
+      <div class="reveal">
+        <div class="section-label" style="color:var(--accent-sage)">Overview</div>
+        <h2 class="section-title">Prototype Development</h2>
+      </div>
+      <p class="prototype-intro">The Challenge Screen evolved through four iterative passes — from a dense wireframe to a polished, calm interface with color hierarchy, step illustrations, and design-system-aligned components.</p>
+      <div class="evolution-timeline">
+        <div class="evolution-card">
+          <div class="evolution-phone-frame">
+            <span class="evolution-stage-overlay">V1</span>
+            <div class="evolution-phone-notch"></div>
+            <img src="mp4l14xk-Screenshot-2026-05-13-at-11.39.15-PM.png" alt="Wireframe v1" loading="lazy" decoding="async">
+          </div>
+          <div class="evolution-info">
+            <div class="evolution-title">Dense Wireframe</div>
+            <p class="evolution-desc">Initial low-fidelity prototype with diary and social connections features.</p>
+          </div>
+        </div>
+        <div class="evolution-card">
+          <div class="evolution-phone-frame">
+            <span class="evolution-stage-overlay">V2</span>
+            <div class="evolution-phone-notch"></div>
+            <img src="mp4l1baf-Screenshot-2026-05-13-at-11.39.24-PM.png" alt="Wireframe v2" loading="lazy" decoding="async">
+          </div>
+          <div class="evolution-info">
+            <div class="evolution-title">Streamlined Flow</div>
+            <p class="evolution-desc">Removed non-core features, added step numbers and difficulty metadata.</p>
+          </div>
+        </div>
+        <div class="evolution-card">
+          <div class="evolution-phone-frame">
+            <span class="evolution-stage-overlay">V3</span>
+            <div class="evolution-phone-notch"></div>
+            <img src="mp4l1lg7-Screenshot-2026-05-13-at-11.39.37-PM.png" alt="Wireframe v3" loading="lazy" decoding="async">
+          </div>
+          <div class="evolution-info">
+            <div class="evolution-title">Visual Hierarchy</div>
+            <p class="evolution-desc">Added color hierarchy, step illustrations, and calming typography.</p>
+          </div>
+        </div>
+        <div class="evolution-card">
+          <div class="evolution-phone-frame">
+            <span class="evolution-stage-overlay">V4</span>
+            <div class="evolution-phone-notch"></div>
+            <img src="mp4l1te4-Screenshot-2026-05-13-at-11.39.47-PM.png" alt="Wireframe v4" loading="lazy" decoding="async">
+          </div>
+          <div class="evolution-info">
+            <div class="evolution-title">Final Polish</div>
+            <p class="evolution-desc">Optimized contrast, aligned with design system, added subtle interactions.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="full-width-hero reveal" style="height:auto;margin-bottom:48px;">
+        <div class="hero-video-container" style="border-radius:var(--radius-xl);overflow:hidden;">
+          <video autoplay="" muted="" loop="" playsinline="" controls="" class="hero-video" preload="metadata" style="border-radius:var(--radius-xl);">
+            <source src="mp4o4kxm-oloexp-2.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="section journey-section" id="journey">
     <div class="container">
       <div class="reveal" style="text-align: center; margin-bottom: 80px;">
-        <div class="section-label" style="color:var(--accent-sage)">How It Works</div>
-        <h2 style="font-size: 3rem;">Your journey, step by step.</h2>
-        <p style="max-width: 600px; margin: 24px auto 0; color: var(--fg-light);">Tap each stage to see how olo guides users from internal intention to external confidence.</p>
+        <div class="section-label" style="color:var(--accent-sage)">Takeaways</div>
+        <h2 style="font-size: 3rem;">Key takeaways, step by step.</h2>
+        <p style="max-width: 600px; margin: 24px auto 0; color: var(--fg-light);">Each stage reveals a core lesson from designing olo — from mood check-in to visualized growth.</p>
       </div>
 
       <div class="journey-steps-nav">
@@ -937,50 +938,123 @@
           </div>
         </div>
       </div>
+      <div class="journey-nav-btns">
+        <button class="journey-nav-btn" id="journeyPrev" onclick="prevStep()" disabled="">←</button>
+        <button class="journey-nav-btn" id="journeyNext" onclick="nextStep()">→</button>
+      </div>
     </div>
   </section>
 
-  <section class="section prototype-section" id="process">
+  <!-- Takeaways -->
+  <section class="section" style="background:var(--surface);">
+    <div class="container">
+      <div class="reveal" style="text-align:center;">
+        <div class="section-label" style="color:var(--accent-periwinkle)">Takeaways</div>
+        <h2 class="section-title">What designing for the quiet taught us.</h2>
+        <p class="section-text" style="margin:0 auto 48px;">This case study reaffirmed that introvert-first design isn't about removing features — it's about removing pressure. Every decision, from cutting timers to private reflection, came back to one principle: design for comfort, not engagement.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;" class="reveal stagger-2">
+        <div style="background:var(--surface-soft);border-radius:var(--radius-lg);padding:32px;border:1px solid var(--border-light);">
+          <div style="font-family:var(--font-display);font-size:2rem;font-weight:800;color:var(--accent-sage);line-height:1;margin-bottom:16px;">01</div>
+          <h4 style="font-size:1.1rem;margin-bottom:12px;">Research over assumptions</h4>
+          <p style="font-size:0.875rem;color:var(--fg-light);">Empathy mapping and persona development revealed that introverts don't need less social interaction — they need safer ways to initiate it.</p>
+        </div>
+        <div style="background:var(--surface-soft);border-radius:var(--radius-lg);padding:32px;border:1px solid var(--border-light);">
+          <div style="font-family:var(--font-display);font-size:2rem;font-weight:800;color:var(--accent-sage);line-height:1;margin-bottom:16px;">02</div>
+          <h4 style="font-size:1.1rem;margin-bottom:12px;">Pressure is the enemy of growth</h4>
+          <p style="font-size:0.875rem;color:var(--fg-light);">Removing timers, streaks, and public metrics wasn't "dumbing down" — it was removing the exact mechanics that trigger avoidance in anxious users.</p>
+        </div>
+        <div style="background:var(--surface-soft);border-radius:var(--radius-lg);padding:32px;border:1px solid var(--border-light);">
+          <div style="font-family:var(--font-display);font-size:2rem;font-weight:800;color:var(--accent-sage);line-height:1;margin-bottom:16px;">03</div>
+          <h4 style="font-size:1.1rem;margin-bottom:12px;">Calm is a feature, not a theme</h4>
+          <p style="font-size:0.875rem;color:var(--fg-light);">The visual language — squircles, muted greens, spacious layouts — directly reduced cognitive load, making the product feel safe before a single challenge was attempted.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- USABILITY TESTING -->
+  <section class="section" id="testing" style="background:var(--surface-soft);">
     <div class="container">
       <div class="reveal">
-        <div class="section-label" style="color:var(--accent-sage)">Overview</div>
-        <h2 class="section-title">Prototype Development</h2>
+        <div class="section-label" style="color:var(--accent-terracotta)">Usability Testing</div>
+        <h2 class="section-title">What we tested, and what it actually changed.</h2>
+        <p class="section-text">Four participants (matched to our four personas) walked through a 7-task protocol against three named criteria. This is the round that killed the timer.</p>
       </div>
-      <p class="prototype-intro">The Challenge Screen evolved through iterative refinements. The initial low-fidelity prototype was a dense, monochrome wireframe featuring diary and social connections. The next iteration streamlined the experience by removing non-core features, numbering steps, and adding difficulty/duration metadata. Tips were reorganized into scannable, icon-supported containers. Subsequent versions introduced color hierarchy, step illustrations, and calming, rounded typography tailored to shy or easily overwhelmed users. The final polish optimized contrast for accessibility, aligned components with the design system, and integrated subtle interactions and animations.</p>
-      <div class="evolution-timeline">
-        <div class="evolution-card">
-          <img src="mp4l14xk-Screenshot-2026-05-13-at-11.39.15-PM.png" alt="Wireframe v1" loading="lazy" decoding="async">
-          <div class="evolution-info">
-            <span class="evolution-stage">V1</span>
-            <div class="evolution-title">Dense Wireframe</div>
-            <p class="evolution-desc">Initial low-fidelity prototype with diary and social connections features.</p>
-          </div>
+
+      <div class="testing-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:40px;margin:40px 0;">
+        <div>
+          <h4 style="margin-bottom:12px;font-size:1rem">User tasks</h4>
+          <ol class="task-list">
+            <li>Complete onboarding <div class="task-goal" style="color:var(--fg-light);font-size:0.8125rem;">Goal: understand personality, comfort zones, social energy</div></li>
+            <li>Log your mood <div class="task-goal" style="color:var(--fg-light);font-size:0.8125rem;">Goal: test emotional capture and simplicity</div></li>
+            <li>Explore your home screen <div class="task-goal" style="color:var(--fg-light);font-size:0.8125rem;">Goal: see where users naturally click</div></li>
+            <li>Attempt a daily social challenge <div class="task-goal" style="color:var(--fg-light);font-size:0.8125rem;">Goal: ensure clarity + emotional comfort</div></li>
+            <li>Navigate to the feed and react to a post <div class="task-goal" style="color:var(--fg-light);font-size:0.8125rem;">Goal: evaluate fear of judgment + clarity</div></li>
+            <li>Use the QR connect flow <div class="task-goal" style="color:var(--fg-light);font-size:0.8125rem;">Goal: test social comfort + usability</div></li>
+            <li>Check progress and settings in profile <div class="task-goal" style="color:var(--fg-light);font-size:0.8125rem;">Goal: validate information hierarchy</div></li>
+          </ol>
         </div>
-        <div class="evolution-card">
-          <img src="mp4l1baf-Screenshot-2026-05-13-at-11.39.24-PM.png" alt="Wireframe v2" loading="lazy" decoding="async">
-          <div class="evolution-info">
-            <span class="evolution-stage">V2</span>
-            <div class="evolution-title">Streamlined Flow</div>
-            <p class="evolution-desc">Removed non-core features, added step numbers and difficulty metadata.</p>
-          </div>
-        </div>
-        <div class="evolution-card">
-          <img src="mp4l1lg7-Screenshot-2026-05-13-at-11.39.37-PM.png" alt="Wireframe v3" loading="lazy" decoding="async">
-          <div class="evolution-info">
-            <span class="evolution-stage">V3</span>
-            <div class="evolution-title">Visual Hierarchy</div>
-            <p class="evolution-desc">Added color hierarchy, step illustrations, and calming typography.</p>
-          </div>
-        </div>
-        <div class="evolution-card">
-          <img src="mp4l1te4-Screenshot-2026-05-13-at-11.39.47-PM.png" alt="Wireframe v4" loading="lazy" decoding="async">
-          <div class="evolution-info">
-            <span class="evolution-stage">V4</span>
-            <div class="evolution-title">Final Polish</div>
-            <p class="evolution-desc">Optimized contrast, aligned with design system, added subtle interactions.</p>
+        <div>
+          <h4 style="margin-bottom:12px;font-size:1rem">Evaluation criteria</h4>
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div style="background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius-md);padding:18px 20px;">
+              <h4 style="font-size:0.9375rem;margin-bottom:6px;color:var(--accent-periwinkle);">Usability Factors</h4>
+              <p style="font-size:0.825rem;color:var(--fg-light);margin:0;">Can users complete tasks without hesitation? Is navigation intuitive? Are labels clear?</p>
+            </div>
+            <div style="background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius-md);padding:18px 20px;">
+              <h4 style="font-size:0.9375rem;margin-bottom:6px;color:var(--accent-periwinkle);">Clarity of Purpose</h4>
+              <p style="font-size:0.825rem;color:var(--fg-light);margin:0;">Does the user understand what the app does — and does it feel like it's actually helping introverts grow socially?</p>
+            </div>
+            <div style="background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius-md);padding:18px 20px;">
+              <h4 style="font-size:0.9375rem;margin-bottom:6px;color:var(--accent-periwinkle);">Emotional Comfort</h4>
+              <p style="font-size:0.825rem;color:var(--fg-light);margin:0;">Does the app create pressure or relief? Do challenges feel doable, or intimidating?</p>
+            </div>
           </div>
         </div>
       </div>
+
+      <h4 style="margin:40px 0 4px;font-size:1rem">Targets we tested against</h4>
+      <p style="font-size:0.85rem;color:var(--fg-light);margin-bottom:8px;">These were our success thresholds going in — the rubric, not a results claim.</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:32px 0;">
+        <div style="background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius-md);padding:18px;">
+          <div style="font-weight:700;font-size:0.85rem;margin-bottom:6px;">Task Success Rate</div>
+          <div style="font-size:0.75rem;color:var(--accent-sage);font-weight:700;">Goal: &gt;85% complete without help</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius-md);padding:18px;">
+          <div style="font-weight:700;font-size:0.85rem;margin-bottom:6px;">Time on Task</div>
+          <div style="font-size:0.75rem;color:var(--accent-sage);font-weight:700;">Onboarding &lt;90s · mood log &lt;10s</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius-md);padding:18px;">
+          <div style="font-weight:700;font-size:0.85rem;margin-bottom:6px;">Error Rate</div>
+          <div style="font-size:0.75rem;color:var(--accent-sage);font-weight:700;">Goal: &lt;2 misclicks per task</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius-md);padding:18px;">
+          <div style="font-weight:700;font-size:0.85rem;margin-bottom:6px;">Clarity Score</div>
+          <div style="font-size:0.75rem;color:var(--accent-sage);font-weight:700;">Goal: 8+ / 10</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius-md);padding:18px;">
+          <div style="font-weight:700;font-size:0.85rem;margin-bottom:6px;">Social Anxiety Trigger Check</div>
+          <div style="font-size:0.75rem;color:var(--accent-sage);font-weight:700;">Goal: &lt;10% report discomfort</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius-md);padding:18px;">
+          <div style="font-weight:700;font-size:0.85rem;margin-bottom:6px;">Net Promoter (would recommend)</div>
+          <div style="font-size:0.75rem;color:var(--accent-sage);font-weight:700;">Goal: avg. 8+ / 10</div>
+        </div>
+      </div>
+
+      <div class="reveal stagger-2" style="margin-top:48px;padding:32px;background:var(--surface);border-radius:var(--radius-lg);border:1px solid var(--border-light);">
+        <h4 style="font-size:1rem;margin-bottom:16px;font-family:var(--font-display);">Reflections</h4>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+          <div style="font-size:0.9rem;color:var(--fg-light);line-height:1.6;">
+            <strong style="color:var(--fg);">AI-generated brand launch</strong> — The final promo video was produced entirely with AI tools, from visual generation to motion and voiceover, demonstrating how rapid prototyping can extend into marketing assets.
+          </div>
+          <div style="font-size:0.9rem;color:var(--fg-light);line-height:1.6;">
+            <strong style="color:var(--fg);">Testing shaped the product</strong> — The shift from a single difficulty level to three tiers, and from timers to self-paced challenges, came directly from what participants told us, not from assumptions.
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -1004,188 +1078,23 @@
     </div>
   </section>
 
-  <section class="section-sm horizontal-gallery-section" id="screens">
-    <div class="container">
-      <div class="reveal">
-        <div class="section-label" style="color:var(--accent-periwinkle)">Final Screens</div>
-        <h2 class="section-title">Olo the screens:</h2>
-        <p class="section-text">A detailed look into the final high-fidelity experience — designed for clarity, safety, and supportive growth.</p>
-      </div>
-    </div>
-    <div class="gallery-wrap reveal stagger-2">
-      <div class="gallery-scroll-container" id="galleryScroll">
-        <div class="gallery-scroll-item" onclick="openLightbox('mp56vxkr-Onboarding.png', 'Onboarding')">
-          <img src="mp56vxkr-Onboarding.png" alt="Onboarding" loading="lazy" decoding="async">
-        </div>
-        <div class="gallery-scroll-item" onclick="openLightbox('mp56vzpf-Onboarding-part-2.png', 'Onboarding Part 2')">
-          <img src="mp56vzpf-Onboarding-part-2.png" alt="Onboarding Part 2" loading="lazy" decoding="async">
-        </div>
-        <div class="gallery-scroll-item" onclick="openLightbox('mp56w1tt-Home.png', 'Home')">
-          <img src="mp56w1tt-Home.png" alt="Home" loading="lazy" decoding="async">
-        </div>
-        <div class="gallery-scroll-item" onclick="openLightbox('mp56wfj2-Profile.png', 'Profile')">
-          <img src="mp56wfj2-Profile.png" alt="Profile" loading="lazy" decoding="async">
-        </div>
-        <div class="gallery-scroll-item" onclick="openLightbox('mp56wfj7-quests.png', 'Quests')">
-          <img src="mp56wfj7-quests.png" alt="Quests" loading="lazy" decoding="async">
-        </div>
-        <div class="gallery-scroll-item" onclick="openLightbox('mp56wjbs-components.png', 'Components')">
-          <img src="mp56wjbs-components.png" alt="Components" loading="lazy" decoding="async">
-        </div>
-      </div>
-      <div class="gallery-fade-right" id="galleryFade"></div>
-      <button class="gallery-arrow gallery-arrow-left" id="galleryArrowLeft" aria-label="Scroll left">‹</button>
-      <button class="gallery-arrow gallery-arrow-right" id="galleryArrowRight" aria-label="Scroll right">›</button>
-    </div>
-    <div class="gallery-dots" id="galleryDots"></div>
-    <div class="gallery-hint" id="galleryHint"><span>→ Swipe or scroll to explore ←</span></div>
-  </section>
+
 
   <section class="full-width-hero reveal">
     <div class="hero-video-container">
-      <video autoplay="" muted="" loop="" playsinline="" controls="" class="hero-video" preload="metadata">
-        <source src="mp4o4kxm-oloexp-2.mp4" type="video/mp4">
-      </video>
-    </div>
-  </section>
-
-  <section class="section" style="background:var(--bg);">
-    <div class="container">
-      <div class="reveal">
-        <div class="section-label" style="color:var(--accent-sage)">🌱 Physical Puzzle Cards</div>
-        <h2 class="section-title">Turn progress into something tangible</h2>
-        <p class="section-text">Each completed challenge unlocks a puzzle piece within the app. Once a journey is completed, users can choose to purchase the physical version of their puzzle cards as a personal keepsake.</p>
-      </div>
-
-      <div class="reveal stagger-3">
-        <h3 style="font-family:var(--font-display); font-size:1.5rem; margin-bottom:16px; color:var(--fg);">Why Physical Cards?</h3>
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:20px; margin-bottom:40px;">
-          <div style="padding:20px; background:var(--surface); border-radius:16px; border:1px solid var(--border);">
-            <div style="font-size:1.5rem; margin-bottom:8px;">💝</div>
-            <div style="font-weight:600; margin-bottom:8px;">Creates emotional attachment to progress</div>
-            <div style="color:var(--fg-light); font-size:0.9rem;">Transforms digital achievements into something you can hold</div>
-          </div>
-          <div style="padding:20px; background:var(--surface); border-radius:16px; border:1px solid var(--border);">
-            <div style="font-size:1.5rem; margin-bottom:8px;">📵</div>
-            <div style="font-weight:600; margin-bottom:8px;">Encourages offline interaction</div>
-            <div style="color:var(--fg-light); font-size:0.9rem;">Bridge between app progress and real-world play</div>
-          </div>
-          <div style="padding:20px; background:var(--surface); border-radius:16px; border:1px solid var(--border);">
-            <div style="font-size:1.5rem; margin-bottom:8px;">🎁</div>
-            <div style="font-weight:600; margin-bottom:8px;">Makes growth feel personal and memorable</div>
-            <div style="color:var(--fg-light); font-size:0.9rem;">A unique keepsake that represents your journey</div>
-          </div>
-          <div style="padding:20px; background:var(--surface); border-radius:16px; border:1px solid var(--border);">
-            <div style="font-size:1.5rem; margin-bottom:8px;">🏆</div>
-            <div style="font-weight:600; margin-bottom:8px;">Transforms small social wins into tangible achievements</div>
-            <div style="color:var(--fg-light); font-size:0.9rem;">Every card celebrates a moment of courage</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="reveal stagger-3" style="margin-bottom:40px;">
-        <h3 style="font-family:var(--font-display); font-size:1.5rem; margin-bottom:16px; color:var(--fg);">Card Design</h3>
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:16px;">
-          <div style="padding:16px; background:var(--accent-sage-light); border-radius:12px;">
-            <div style="font-weight:600; font-size:0.85rem; color:var(--fg-light); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:8px;">Finish</div>
-            <div style="font-size:1.1rem;">Soft-touch matte finish</div>
-          </div>
-          <div style="padding:16px; background:var(--accent-sage-light); border-radius:12px;">
-            <div style="font-weight:600; font-size:0.85rem; color:var(--fg-light); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:8px;">Shape</div>
-            <div style="font-size:1.1rem;">Rounded squircle edges for a calm feel</div>
-          </div>
-          <div style="padding:16px; background:var(--accent-sage-light); border-radius:12px;">
-            <div style="font-weight:600; font-size:0.85rem; color:var(--fg-light); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:8px;">Visual</div>
-            <div style="font-size:1.1rem;">Minimal, low-stimulation visuals</div>
-          </div>
-          <div style="padding:16px; background:var(--accent-sage-light); border-radius:12px;">
-            <div style="font-weight:600; font-size:0.85rem; color:var(--fg-light); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:8px;">Format</div>
-            <div style="font-size:1.1rem;">Pocket-sized and collectible</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="reveal stagger-4">
-        <h3 style="font-family:var(--font-display); font-size:1.5rem; margin-bottom:16px; color:var(--fg);">Experience</h3>
-        <p style="color:var(--fg-light); margin-bottom:24px; font-size:1.1rem;">Each card represents:</p>
-        <div style="display:flex; gap:16px; flex-wrap:wrap; justify-content:center;">
-          <div style="display:flex; align-items:center; gap:12px; padding:12px 20px; background:var(--surface); border-radius:50px; border:1px solid var(--border);">
-            <span style="font-size:1.5rem;">✅</span>
-            <span style="font-weight:500;">A completed social challenge</span>
-          </div>
-          <div style="display:flex; align-items:center; gap:12px; padding:12px 20px; background:var(--surface); border-radius:50px; border:1px solid var(--border);">
-            <span style="font-size:1.5rem;">💪</span>
-            <span style="font-weight:500;">A moment of courage</span>
-          </div>
-          <div style="display:flex; align-items:center; gap:12px; padding:12px 20px; background:var(--surface); border-radius:50px; border:1px solid var(--border);">
-            <span style="font-size:1.5rem;">🧩</span>
-            <span style="font-weight:500;">One piece of a larger personal journey</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="reveal stagger-5" style="margin-top:48px;">
-        <div style="background:var(--surface); border-radius:20px; overflow:hidden; border:1px solid var(--border);">
-          <img src="mp4maybg-Mockup-2_3000x2000px.png" alt="Physical Puzzle Cards Mockup" style="width:100%; height:auto; display:block;" loading="lazy" decoding="async">
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="full-width-hero reveal">
-    <div class="hero-video-container">
+      <span class="video-tag">AI generated · Brand launch</span>
       <video autoplay="" muted="" loop="" playsinline="" controls="" class="hero-video" preload="metadata">
         <source src="mp4oljph-olo-promo-2-2-2.mp4" type="video/mp4">
       </video>
     </div>
   </section>
 
-  <section class="section" style="background:var(--surface);">
-    <div class="container">
-      <div class="reveal" style="text-align: center;">
-        <div class="section-label" style="color:var(--accent-mustard)">Impact</div>
-        <h2 class="section-title">Designed for real change.</h2>
-      </div>
-      <div class="results-grid reveal stagger-2">
-        <div class="result-card">
-          <div class="result-img" style="background:var(--accent-sage-light)">📈</div>
-          <div class="result-title">87% Achievable</div>
-          <div class="result-text">Users found olo's challenges achievable and not intimidating.</div>
-        </div>
-        <div class="result-card">
-          <div class="result-img" style="background:var(--accent-periwinkle-light)">🛡️</div>
-          <div class="result-title">92% Felt Safe</div>
-          <div class="result-text">Users felt the experience was supportive and non-judgmental.</div>
-        </div>
-        <div class="result-card">
-          <div class="result-img" style="background:var(--accent-terracotta-light)">🧘</div>
-          <div class="result-title">64% Less Anxiety</div>
-          <div class="result-text">Reduction in social anxiety scores after 4 weeks of use.</div>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <section class="quote-section">
-    <div class="container">
-      <div class="reveal">
-        <p class="quote-text">"olo didn't just help me talk to people — <span class="quote-accent">it helped me feel safe enough to try.</span> For the first time, a social app felt like it was actually on my side."</p>
-        <div class="quote-author">
-          <div class="quote-avatar">JM</div>
-          <div style="text-align:left">
-            <div style="font-weight:700">Jamie M.</div>
-            <div style="font-size:0.75rem; color:var(--fg-light)">Early olo user</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <footer>
     <div class="container">
       <div class="logo">olo</div>
-      <p>A case study in calm, introvert-first design — built for real-world social confidence. Designing for introversion isn't about changing who you are—it's about creating space for who you want to become.</p>
-      <div style="font-family: var(--font-display); font-size: 1.5rem; color: var(--accent-sage);">Built with Care</div>
+      <p>Designed by Sauveer Sinha · Introvert-first design for real-world confidence.</p>
     </div>
   </footer>
 
@@ -1235,20 +1144,26 @@
     }
 
     // Journey Switching Logic
+    let currentStep = 1;
+    const totalSteps = 5;
     function switchStep(index) {
+      currentStep = index;
       document.querySelectorAll('.journey-nav-item').forEach(el => el.classList.remove('active'));
       document.querySelector(`.journey-nav-item:nth-child(${index})`).classList.add('active');
       document.querySelectorAll('.journey-step-view').forEach(el => el.classList.remove('active'));
       document.getElementById(`step-view-${index}`).classList.add('active');
       document.querySelectorAll('.journey-phone-img').forEach(el => el.classList.remove('active'));
       document.getElementById(`phone-img-${index}`).classList.add('active');
+      document.getElementById('journeyPrev').disabled = index === 1;
+      document.getElementById('journeyNext').disabled = index === totalSteps;
     }
+    function nextStep() { if (currentStep < totalSteps) switchStep(currentStep + 1); }
+    function prevStep() { if (currentStep > 1) switchStep(currentStep - 1); }
 
     // Analogy Switcher
     const analogies = [
       { icon: '📢', title: 'Loud & Performance-Driven', desc: 'High pressure, constant visibility, competitive metrics', bg: 'var(--accent-terracotta)', text: 'Traditional App Experience', items: ['Public feeds and leaderboards','Timers and streaks creating urgency','Aggressive push notifications','Social comparison metrics'] },
       { icon: '🌿', title: 'The Introvert Reality', desc: 'Social interaction requires energy management.', bg: 'var(--accent-sage)', text: 'Introvert Reality', items: ['Overthinking social outcomes','Fear of judgment in public spaces','Overstimulation from noise/clutter','Pressure to perform "extroversion"'] },
-      { icon: '🌱', title: 'The olo Way', desc: 'Calm design meets real-world confidence growth', bg: 'var(--accent-periwinkle)', text: 'Where olo Fits', items: ['Mood-based, adaptive challenges','Puzzle progression for motivation','Voice reflections for self-awareness','Private, supportive environment'] }
     ];
     function switchAnalogy(idx) {
       document.querySelectorAll('.analogy-tab').forEach((t, i) => t.classList.toggle('active', i === idx));
@@ -1263,19 +1178,6 @@
       }});
     }
 
-    // Wireframe Switcher
-    const wireframeData = [
-      { title: 'Low-Fi Wireframe', text: 'We started with low-fidelity wireframes focused on information architecture and user flow.', items: ['Check-in screen with mood selector','Challenge card with clear CTA'] },
-      { title: 'Visual Design', text: 'Visual design focused on calm, soft aesthetics: sage greens, muted tones, and generous whitespace.', items: ['Soft color palette exploration','Typography pairing'] },
-      { title: 'High-Fi Prototype', text: 'The final prototype combined polished UI with interactive flows.', items: ['Interactive mood-based challenge flow','Voice reflection recording interface'] }
-    ];
-    function setWireframe(index, el) {
-      document.querySelectorAll('.wireframe-phone').forEach(p => p.classList.remove('active'));
-      el.classList.add('active');
-      const d = wireframeData[index];
-      document.getElementById('wireframe-content').innerHTML = '<h3>' + d.title + '</h3><p>' + d.text + '</p><div style="display:flex;flex-direction:column;gap:16px;margin-top:24px">' + d.items.map(i => '<div style="padding:16px;background:var(--bg);border-radius:var(--radius-md);font-size:0.875rem">✓ ' + i + '</div>').join('') + '</div>';
-    }
-
     // Lightbox
     const lb = document.getElementById('lightbox');
     const lbImg = document.getElementById('lightbox-img');
@@ -1283,104 +1185,19 @@
     function openLightbox(src, caption) { lbImg.src = src; lbCap.textContent = caption; lb.classList.add('active'); document.body.style.overflow = 'hidden'; }
     function closeLightbox() { lb.classList.remove('active'); document.body.style.overflow = ''; }
 
-    // Gallery Scroll Cues + Drag Scroll
-    (function() {
-      const container = document.getElementById('galleryScroll');
-      if (!container) return;
-      const items = container.querySelectorAll('.gallery-scroll-item');
-      const leftArrow = document.getElementById('galleryArrowLeft');
-      const rightArrow = document.getElementById('galleryArrowRight');
-      const fade = document.getElementById('galleryFade');
-      const hint = document.getElementById('galleryHint');
-      const dotsContainer = document.getElementById('galleryDots');
-
-      items.forEach((_, i) => {
-        const dot = document.createElement('div');
-        dot.className = 'gallery-dot' + (i === 0 ? ' active' : '');
-        dot.addEventListener('click', () => {
-          items[i].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
-        });
-        dotsContainer.appendChild(dot);
-      });
-      const dots = dotsContainer.querySelectorAll('.gallery-dot');
-
-      function updateGalleryUI() {
-        const scrollLeft = container.scrollLeft;
-        const maxScroll = container.scrollWidth - container.clientWidth;
-        const atStart = scrollLeft <= 4;
-        const atEnd = scrollLeft >= maxScroll - 4;
-        leftArrow.classList.toggle('visible', !atStart);
-        rightArrow.classList.toggle('visible', !atEnd);
-        if (fade) fade.classList.toggle('hidden', atEnd);
-        if (scrollLeft > 20 && hint) hint.classList.add('hidden');
-
-        const itemW = items[0]?.offsetWidth + 24 || container.clientWidth;
-        const idx = Math.round(scrollLeft / itemW);
-        dots.forEach((d, i) => d.classList.toggle('active', i === Math.min(idx, dots.length - 1)));
-      }
-
-      container.addEventListener('scroll', updateGalleryUI);
-      window.addEventListener('resize', updateGalleryUI);
-      setTimeout(updateGalleryUI, 200);
-
-      leftArrow.addEventListener('click', () => {
-        const itemW = items[0]?.offsetWidth + 24 || container.clientWidth * 0.5;
-        container.scrollBy({ left: -itemW, behavior: 'smooth' });
-      });
-      rightArrow.addEventListener('click', () => {
-        const itemW = items[0]?.offsetWidth + 24 || container.clientWidth * 0.5;
-        container.scrollBy({ left: itemW, behavior: 'smooth' });
-      });
-
-      // Drag-to-scroll
-      let isDown = false, startX, scrollStart;
-      container.addEventListener('pointerdown', (e) => {
-        isDown = true; startX = e.clientX; scrollStart = container.scrollLeft;
-        container.style.cursor = 'grabbing'; container.style.userSelect = 'none';
-      });
-      container.addEventListener('pointermove', (e) => {
-        if (!isDown) return;
-        e.preventDefault();
-        container.scrollLeft = scrollStart + (startX - e.clientX);
-      });
-      container.addEventListener('pointerup', () => {
-        isDown = false; container.style.cursor = ''; container.style.userSelect = '';
-      });
-      container.addEventListener('pointerleave', () => {
-        isDown = false; container.style.cursor = ''; container.style.userSelect = '';
-      });
-    })();
-
-    // Hamburger
-    const hamburger = document.getElementById('hamburger');
-    const navLinksEl = document.getElementById('navLinks');
-    if (hamburger && navLinksEl) {
-      hamburger.addEventListener('click', () => {
-        hamburger.classList.toggle('open');
-        navLinksEl.classList.toggle('open');
-        hamburger.setAttribute('aria-expanded', navLinksEl.classList.contains('open'));
-      });
-      navLinksEl.querySelectorAll('a').forEach(a => {
-        a.addEventListener('click', () => {
-          hamburger.classList.remove('open');
-          navLinksEl.classList.remove('open');
-          hamburger.setAttribute('aria-expanded', 'false');
-        });
-      });
-    }
+    // Lightbox close on Escape
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
 
     // Cursor (disable on touch)
     const cursor = document.getElementById('cursor');
     if (cursor && window.matchMedia('(pointer: fine)').matches && !('ontouchstart' in window)) {
       document.addEventListener('mousemove', (e) => { cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px'; });
-      document.querySelectorAll('a, button, .insight-card, .gallery-item, .analogy-tab, .journey-nav-item, .wireframe-phone').forEach(el => {
+      document.querySelectorAll('a, button, .insight-card, .gallery-item, .side-nav-item, .analogy-tab, .journey-nav-item').forEach(el => {
         el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
         el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
       });
     }
 
-    // Lightbox close on Escape + backdrop tap
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
   </script>
 
 
