@@ -317,18 +317,18 @@ export default function WorkGallery({ onClose, navigate }) {
             >
               <div style={{ flex: 1, position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
                 {proj.img ? (
-                  proj.img.endsWith('.mp4') ? (
+                  (proj.img.endsWith('.mp4') || proj.img.endsWith('.mov')) ? (
                     <video 
                       src={proj.img} 
                       autoPlay loop muted playsInline 
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: proj.objectPosition || 'center' }} 
                     />
                   ) : (
                     <img 
                       src={proj.img} 
                       alt={proj.title} 
                       loading="lazy"
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: proj.objectPosition || 'center' }} 
                     />
                   )
                 ) : (
@@ -340,33 +340,53 @@ export default function WorkGallery({ onClose, navigate }) {
               <div style={{
                 position: 'absolute',
                 bottom: 0, left: 0, right: 0,
-                padding: isMobile ? '30px 24px 24px' : '60px 40px 40px',
-                background: `linear-gradient(to top, ${proj.bgColor} 80%, transparent)`,
+                padding: isMobile ? '30px 24px 24px' : '50px 40px 40px',
+                background: `linear-gradient(to top, ${proj.bgColor}f2 30%, ${proj.bgColor}99 75%, transparent)`,
                 display: 'flex',
+                flexDirection: isMobile ? 'column' : 'row',
                 justifyContent: 'space-between',
-                alignItems: 'flex-end',
+                alignItems: isMobile ? 'flex-start' : 'flex-end',
+                gap: isMobile ? '24px' : '40px',
                 pointerEvents: 'none'
               }}>
-                <div style={{ pointerEvents: 'auto' }}>
-                  <div style={{ display: 'flex', gap: 6, marginBottom: 12, flexWrap: 'wrap' }}>
-                    {proj.tags.map(tag => (
-                      <span key={tag} style={{
-                        fontSize: '9px', fontWeight: 700, fontFamily: "var(--font-body)",
-                        padding: '4px 12px', border: `1.5px solid ${proj.textColor}30`, borderRadius: 20,
-                        letterSpacing: '0.05em', textTransform: 'uppercase', background: `${proj.bgColor}CC`, backdropFilter: 'blur(4px)'
-                      }}>
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                  <h2 style={{ fontFamily: "var(--font-heading)", fontSize: 'clamp(28px, 3.5vw, 56px)', fontWeight: 500, margin: '0 0 10px 0', letterSpacing: '-0.02em', lineHeight: 0.9 }}>
+                {/* Left Side: Title & Info */}
+                <div style={{ pointerEvents: 'auto', flex: 1, maxWidth: isMobile ? '100%' : '60%' }}>
+                  <h2 style={{ fontFamily: "var(--font-heading)", fontSize: 'clamp(32px, 4vw, 64px)', fontWeight: 500, margin: '0 0 16px 0', letterSpacing: '-0.02em', lineHeight: 0.9 }}>
                     {proj.title}
                   </h2>
-                  {proj.cta && (
-                    <p style={{ fontFamily: "var(--font-body)", fontSize: isMobile ? '12px' : '13px', margin: 0, opacity: 0.85, maxWidth: '85%' }}>
-                      {proj.cta}
-                    </p>
-                  )}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    {proj.role && (
+                      <p style={{ fontFamily: "var(--font-body)", fontSize: isMobile ? '12px' : '13px', margin: 0, opacity: 0.65, fontWeight: 500, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+                        {proj.role}
+                      </p>
+                    )}
+                    {proj.cta && (
+                      <p style={{ fontFamily: "var(--font-body)", fontSize: isMobile ? '14px' : '16px', margin: 0, opacity: 0.9, lineHeight: 1.5, fontWeight: 400 }}>
+                        {proj.cta}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Right Side: Tags */}
+                <div style={{ 
+                  pointerEvents: 'auto', 
+                  display: 'flex', 
+                  gap: 8, 
+                  flexWrap: 'wrap', 
+                  justifyContent: isMobile ? 'flex-start' : 'flex-end',
+                  maxWidth: isMobile ? '100%' : '40%'
+                }}>
+                  {proj.tags.map(tag => (
+                    <span key={tag} style={{
+                      fontSize: '10px', fontWeight: 600, fontFamily: "var(--font-body)",
+                      padding: '6px 14px', border: `1px solid ${proj.textColor}30`, borderRadius: 100,
+                      letterSpacing: '0.05em', textTransform: 'uppercase', background: `${proj.bgColor}80`, backdropFilter: 'blur(8px)',
+                      color: proj.textColor
+                    }}>
+                      {tag}
+                    </span>
+                  ))}
                 </div>
               </div>
             </div>

@@ -1,0 +1,853 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ORCO: A Digital Culinary Ecosystem — Beverly Yip</title>
+<link rel="icon" type="image/png" href="./assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500;1,600&amp;display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:"Pokemon GB";src:url("./assets/fonts/PokemonGb.ttf") format("truetype");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:Satoshi;src:url("./assets/fonts/Satoshi-Light.otf") format("opentype");font-weight:300;font-style:normal;font-display:swap}
+@font-face{font-family:Satoshi;src:url("./assets/fonts/Satoshi-LightItalic.otf") format("opentype");font-weight:300;font-style:italic;font-display:swap}
+@font-face{font-family:Satoshi;src:url("./assets/fonts/Satoshi-Regular.otf") format("opentype");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:Satoshi;src:url("./assets/fonts/Satoshi-Italic.otf") format("opentype");font-weight:400;font-style:italic;font-display:swap}
+@font-face{font-family:Satoshi;src:url("./assets/fonts/Satoshi-Medium.otf") format("opentype");font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:Satoshi;src:url("./assets/fonts/Satoshi-MediumItalic.otf") format("opentype");font-weight:500;font-style:italic;font-display:swap}
+@font-face{font-family:Satoshi;src:url("./assets/fonts/Satoshi-Bold.otf") format("opentype");font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:Satoshi;src:url("./assets/fonts/Satoshi-BoldItalic.otf") format("opentype");font-weight:700;font-style:italic;font-display:swap}
+@font-face{font-family:Satoshi;src:url("./assets/fonts/Satoshi-Black.otf") format("opentype");font-weight:900;font-style:normal;font-display:swap}
+@font-face{font-family:Satoshi;src:url("./assets/fonts/Satoshi-BlackItalic.otf") format("opentype");font-weight:900;font-style:italic;font-display:swap}
+
+:root{--page-max-width:110rem;--page-gutter-x:1.5rem;--bento-card-radius:4px;--case-study-body-size:1rem;--case-study-body-line-height:1.6;--case-study-body-weight:300;--case-study-label-size:.7rem;--case-study-label-weight:400;--case-study-label-tracking:.05em;--case-study-label-color:#666;--orco-accent:#9A3B2C}
+@media(min-width:768px){:root{--case-study-body-size:1.125rem;--case-study-label-size:.875rem}}
+@media(min-width:1024px){:root{--case-study-body-size:1.25rem}}
+
+html,:host{line-height:1.5;-webkit-text-size-adjust:100%;tab-size:4;font-family:Satoshi,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif;font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}
+html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
+body{margin:0;background:#f5f5f5}
+*{box-sizing:border-box}
+.page-content-shell{max-width:var(--page-max-width);margin-left:auto;margin-right:auto;padding-left:var(--page-gutter-x);padding-right:var(--page-gutter-x)}
+
+/* ===== keyframes ===== */
+@keyframes fadeInUp{0%{opacity:0;transform:translateY(30px)}100%{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{0%{opacity:0}100%{opacity:1}}
+@keyframes revealFromBottom{0%{clip-path:inset(100% 0 0 0)}100%{clip-path:inset(0 0 0 0)}}
+@keyframes case-study-spy-nav-item-in{to{opacity:1;transform:translateY(0)}}
+@keyframes siteNavIn{to{opacity:1;transform:translateY(0)}}
+@keyframes pillCircle{from{transform:translate(-50%,0) scale(0)}to{transform:translate(-50%,0) scale(1.2)}}
+@media(prefers-reduced-motion:reduce){
+  .orco-hero-content,.orco-hero-after{animation:none!important;opacity:1!important;transform:none!important}
+  .orco-hero-before .orco-hero-image{clip-path:none!important;animation:none!important}
+  .case-study-spy-nav__item{animation:none;opacity:1;transform:none}
+}
+
+/* ===== site nav ===== */
+.site-nav{position:relative;top:0;z-index:100;background:#fafafab3;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);border-top:none;border-left:none;border-right:none;border-bottom:1px solid rgba(15,15,15,.12);box-shadow:none;opacity:0;transform:translateY(-100px);animation:siteNavIn .7s cubic-bezier(.4,0,.2,1) .5s forwards}
+.site-nav.hidden{animation:none;opacity:0;transform:translateY(-100%);transition:transform .7s cubic-bezier(.4,0,.2,1)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 0;gap:1.5rem;min-height:32px}
+.logo-link{display:flex;align-items:center;cursor:pointer}
+.logo-image{height:36px;width:36px;object-fit:cover;border-radius:9px;display:block;transition:transform .2s ease}
+.logo-link:hover .logo-image{transform:scale(.95)}
+.pill-list{list-style:none;margin:0;padding:0;pointer-events:auto;display:flex;align-items:center;gap:1.5rem}
+@media(min-width:768px){.pill-list{gap:2rem}}
+@media(min-width:1024px){.pill-list{gap:3rem}}
+@media(min-width:1280px){.pill-list{gap:4rem}}
+.pill{display:inline-flex;align-items:center;justify-content:center;height:42px;padding:0 28px;color:#0f0f0f;text-decoration:none;border-radius:9999px;box-sizing:border-box;font-weight:300;font-size:18px;line-height:0;text-transform:lowercase;letter-spacing:.2px;white-space:nowrap;cursor:pointer;position:relative;overflow:hidden;pointer-events:auto;transition:font-weight .25s ease;background:transparent}
+.pill:hover{font-weight:500}
+.pill-active{font-weight:500}
+.pill-active-dot{display:inline-block;width:8px;min-width:8px;height:8px;border-radius:1.5px;background:currentColor;flex-shrink:0;position:relative;z-index:2;align-self:center;transform:translateY(2px);overflow:hidden;opacity:0;max-width:0;margin-right:0;pointer-events:none;transition:opacity .25s ease,max-width .25s ease,margin-right .25s ease}
+.pill-active .pill-active-dot{opacity:1;max-width:8px;margin-right:8px}
+.hover-circle{position:absolute;left:50%;bottom:0;border-radius:50%;background:#fafafa;z-index:1;display:block;pointer-events:none;will-change:transform;transform:translate(-50%,0) scale(0);width:calc(100% + 4px);height:calc(100% + 4px);transition:transform .4s cubic-bezier(.4,0,.2,1)}
+.pill:hover .hover-circle{animation:pillCircle .4s cubic-bezier(.4,0,.2,1) forwards}
+.label-stack{position:relative;display:inline-flex;align-items:center;height:24px;line-height:1;z-index:2}
+.pill-label{display:inline-block}
+.pill-label-hover{display:none}
+.pill-flower{padding:0 14px}
+.pill-flower-icon{display:block;width:24px;height:24px;object-fit:contain;transform-origin:center center}
+
+/* ===== case-study layout + spy nav ===== */
+.case-study-layout{width:100%;overflow:visible}
+.case-study-layout__main{min-width:0}
+.case-study-spy-nav-slot,.case-study-spy-nav{display:none}
+@media(min-width:1024px){
+  .case-study-layout{--case-study-spy-nav-top:112px;display:grid;grid-template-columns:10.5rem minmax(0,1fr);gap:2.5rem;max-width:var(--page-max-width);margin-left:auto;margin-right:auto;padding-left:var(--page-gutter-x);padding-right:var(--page-gutter-x);align-items:start}
+  .case-study-spy-nav-slot{display:block;position:relative;align-self:start}
+  .case-study-spy-nav{display:block;padding-top:var(--case-study-spy-nav-top);opacity:1;transform:none;background:none;backdrop-filter:none;-webkit-backdrop-filter:none;border:none;box-shadow:none;z-index:2}
+  .case-study-spy-nav.is-pinned{padding-top:0}
+  .case-study-spy-nav__track{position:relative}
+  .case-study-spy-nav__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.375rem}
+  .case-study-spy-nav__item{opacity:0;transform:translateY(.5rem);animation:case-study-spy-nav-item-in .65s cubic-bezier(.4,0,.2,1) forwards;animation-delay:calc(.45s + var(--nav-stagger-index,0)*.1s)}
+  .case-study-spy-nav__link{display:inline-flex;align-items:center;width:100%;padding:.125rem 0;border:none;background:none;text-align:left;font-family:inherit;font-size:var(--case-study-label-size);line-height:1;font-weight:var(--case-study-label-weight);text-transform:uppercase;letter-spacing:var(--case-study-label-tracking);color:var(--case-study-label-color);cursor:pointer;transition:color .2s ease-out,font-weight .2s ease-out}
+  .case-study-spy-nav__label{line-height:1.4}
+  .case-study-spy-nav__dot{display:block;width:8px;height:8px;max-width:0;border-radius:1.5px;background:currentColor;flex-shrink:0;align-self:center;margin-right:0;opacity:0;transform:translateY(.5px);transition:opacity .2s ease-out,max-width .2s ease-out,margin-right .2s ease-out}
+  .case-study-spy-nav__link.is-active .case-study-spy-nav__dot{opacity:1;max-width:8px;margin-right:.5rem}
+  .case-study-spy-nav__link:hover{color:var(--orco-accent,#0f0f0f)}
+  .case-study-spy-nav__link.is-active{color:var(--orco-accent,#0f0f0f);font-weight:700}
+  .case-study-layout__main .page-content-shell{max-width:none;padding-left:0;padding-right:0}
+  .case-study-layout__main [id]{scroll-margin-top:8.75rem}
+}
+@media(min-width:1280px){.case-study-layout{grid-template-columns:11.5rem minmax(0,1fr);gap:3rem}.case-study-spy-nav__list{gap:.5rem}}
+@media(min-width:1536px){.case-study-layout{grid-template-columns:12.5rem minmax(0,1fr);gap:3.5rem}}
+
+/* ===== case-study statement ===== */
+.case-study-statement{--case-study-statement-width:52rem;display:flex;flex-direction:column;gap:1rem;width:100%;max-width:min(var(--case-study-statement-width),100%);margin-inline:auto;text-align:center}
+.case-study-statement--wide{--case-study-statement-width:56rem}
+.case-study-statement--narrow{--case-study-statement-width:44rem}
+.case-study-statement__headline{font-family:"Crimson Pro",serif;font-size:clamp(2.25rem,1.5rem + 2vw,3.25rem);font-weight:500;line-height:1.2;letter-spacing:-.05em;color:#0f0f0f;margin:0;text-wrap:balance}
+.case-study-statement__headline em,.case-study-statement__headline i,.case-study-statement__headline [class*=-accent-text]{line-height:inherit;letter-spacing:inherit}
+.case-study-statement__body{font-size:1rem;font-weight:300;line-height:1.6;color:#0f0f0f;margin:0;text-wrap:pretty}
+@media(max-width:1023px){.case-study-statement{--case-study-statement-width:46rem}.case-study-statement--wide{--case-study-statement-width:50rem}}
+@media(min-width:768px){.case-study-statement{gap:1.25rem}.case-study-statement__body{font-size:1.125rem}}
+@media(min-width:1024px){.case-study-statement__body{font-size:1.25rem}}
+
+/* ===== orco hero ===== */
+.orco-case-study{width:100%;min-height:100vh;background-color:#f5f5f5;color:#0f0f0f}
+.orco-hero-section{width:100%;padding-top:6rem;padding-bottom:1rem;background-color:#f5f5f5;overflow-y:hidden}
+.orco-hero-image-container{max-width:var(--page-max-width);margin:0 auto;width:100%;padding:0 1.5rem}
+.orco-hero-before{margin-bottom:2rem;overflow:hidden}
+.orco-hero-after{margin-top:2rem;opacity:0;animation:fadeIn .6s cubic-bezier(.4,0,.2,1) 2.2s forwards}
+.orco-hero-after:empty{display:none}
+.orco-hero-content{max-width:var(--page-max-width);margin:0 auto;display:grid;grid-template-columns:1fr;gap:3rem;padding:0 1.5rem;opacity:0;transform:translateY(30px);animation:fadeInUp 1s cubic-bezier(.4,0,.2,1) 1.2s forwards}
+.orco-hero-left{display:flex;flex-direction:column;gap:2rem}
+.orco-hero-title{font-family:"Crimson Pro",serif;font-size:3rem;font-weight:500;letter-spacing:-.06em;color:#0f0f0f;margin:0;line-height:1}
+.orco-hero-details{display:flex;flex-direction:column;gap:1.5rem}
+.orco-hero-detail-item{display:flex;flex-direction:column;gap:.25rem}
+.orco-hero-detail-label{font-size:.7rem;font-weight:400;text-transform:uppercase;letter-spacing:.05em;color:#666}
+.orco-hero-detail-value{font-size:.875rem;font-weight:500;color:#0f0f0f}
+.orco-hero-right{display:flex;flex-direction:column;gap:1.5rem;align-items:flex-start}
+.orco-hero-tags{display:flex;flex-wrap:wrap;gap:.5rem}
+.orco-hero-tag{font-size:.75rem;padding:.25rem .75rem;background-color:#0f0f0f1a;color:#0f0f0f;border-radius:9999px;font-weight:400;border:1px solid rgba(15,15,15,.15)}
+.orco-hero-subtitle{font-size:1rem;line-height:1.6;color:#0f0f0f;margin:0;font-weight:300}
+.orco-skip-to-solution-btn{display:flex;align-items:center;justify-content:flex-start;gap:1rem;width:100%;padding:.375rem .4rem;background-color:transparent;background-image:repeating-linear-gradient(0deg,rgba(154,59,44,.05) 0px,transparent 1px,transparent 2px,rgba(154,59,44,.05) 3px),repeating-linear-gradient(90deg,rgba(154,59,44,.05) 0px,transparent 1px,transparent 2px,rgba(154,59,44,.05) 3px);background-size:4px 4px;color:var(--orco-accent);border:1px solid rgba(154,59,44,.2);border-radius:9999px;font-size:.875rem;font-weight:500;letter-spacing:.025em;cursor:pointer;transition:all .4s cubic-bezier(.4,0,.2,1);font-family:Satoshi,sans-serif;position:relative;overflow:hidden}
+.orco-skip-icon-container{display:flex;align-items:center;justify-content:center;width:36px;height:36px;min-width:36px;min-height:36px;border-radius:50%;background-color:transparent;flex-shrink:0;position:relative;z-index:2;transition:all .4s cubic-bezier(.4,0,.2,1)}
+.orco-skip-arrow{width:20px;height:20px;color:#fff;transition:transform .4s cubic-bezier(.4,0,.2,1);position:relative;z-index:3;display:block;margin:0 auto}
+.orco-skip-text{color:var(--orco-accent);position:relative;z-index:2;transition:color .4s cubic-bezier(.4,0,.2,1)}
+.orco-skip-to-solution-btn:before{content:"";position:absolute;left:2px;top:2px;width:44px;height:44px;background-color:var(--orco-accent);border-radius:50%;transition:all .4s cubic-bezier(.4,0,.2,1);z-index:1}
+.orco-skip-to-solution-btn:hover{background-image:none}
+.orco-skip-to-solution-btn:hover:before{left:0;top:0;width:100%;height:100%;border-radius:9999px}
+.orco-skip-to-solution-btn:hover .orco-skip-text{color:#fff}
+.orco-skip-to-solution-btn:active{transform:scale(.98)}
+.orco-hero-image{width:100%;height:auto;display:block;border-radius:8px}
+.orco-hero-before .orco-hero-image{max-height:32vh;object-fit:cover;object-position:center;clip-path:inset(100% 0 0 0);animation:revealFromBottom 1.2s cubic-bezier(.4,0,.2,1) forwards}
+@media(min-width:640px){.orco-hero-section{padding-top:7rem}.orco-hero-image-container,.orco-hero-content,.orco-context-content,.orco-solution-content{padding:0 2rem}}
+@media(min-width:768px){
+  .orco-hero-before{margin-bottom:2.5rem}.orco-hero-after{margin-top:2.5rem}
+  .orco-hero-title{font-size:4rem}
+  .orco-hero-details{flex-direction:row;gap:2rem}
+  .orco-hero-detail-label{font-size:.875rem}.orco-hero-detail-value{font-size:1.125rem}
+  .orco-hero-tag{font-size:.875rem}.orco-hero-subtitle{font-size:1.125rem}
+  .orco-skip-to-solution-btn{font-size:1rem;padding:.4375rem .5rem}
+  .orco-skip-icon-container{width:40px;height:40px;min-width:40px;min-height:40px}
+  .orco-skip-to-solution-btn:before{top:2px;bottom:0;left:2px;width:50px;height:50px}
+  .orco-hero-before .orco-hero-image{max-height:40vh}
+}
+@media(min-width:1024px){
+  .orco-hero-image-container{padding:0 3rem}
+  .orco-hero-before{margin-bottom:3rem}.orco-hero-after{margin-top:3rem}
+  .orco-hero-content{padding:0 3rem;grid-template-columns:1.3fr 1fr;gap:4rem;align-items:start}
+  .orco-hero-title{font-size:5rem}.orco-hero-subtitle{font-size:1.25rem}
+  .orco-hero-before .orco-hero-image{max-height:48vh}
+}
+
+/* ===== orco context ===== */
+.orco-context-section{width:100%;padding-top:1rem;padding-bottom:1rem;background-color:#f5f5f5;overflow-y:hidden}
+.orco-context-content{max-width:var(--page-max-width);margin:0 auto;padding:0 1.5rem}
+.orco-context-top{display:grid;grid-template-columns:1fr;gap:3rem;margin-bottom:3.5rem}
+.orco-context-item{display:flex;flex-direction:column;gap:1rem}
+.orco-context-title{font-family:"Crimson Pro",serif;font-size:2rem;font-weight:600;color:#0f0f0f;margin:0;line-height:1.2;letter-spacing:-.05em}
+.orco-context-description{font-size:1rem;line-height:1.6;color:#0f0f0f;margin:0;font-weight:300}
+.orco-context-statement{display:flex;flex-direction:column;gap:1rem;margin-bottom:0}
+.orco-context-statement-title{font-size:.7rem;font-weight:400;text-transform:uppercase;letter-spacing:.05em;color:#666;margin:2rem 0 0;text-align:left}
+.orco-context-statement-question-group{display:flex;flex-direction:column;gap:.125rem;width:100%;text-align:center}
+.orco-context-statement-answer{font-size:.875rem;line-height:1.6;color:#666;margin:0;font-weight:300}
+.orco-context-statement-bold{font-weight:700;margin-top:1rem}
+.orco-context-statement-medium-bold{font-weight:600}
+.orco-context-image-container{width:100%}
+.orco-context-statement .orco-context-image-container:first-of-type{margin-top:1.25rem;margin-bottom:1.25rem}
+.orco-context-image{width:100%;height:auto;display:block;border-radius:8px}
+.orco-context-statement .orco-context-image-container:last-of-type .orco-context-image{margin-top:.5rem;margin-bottom:1.5rem}
+.orco-context-image-caption{font-size:1rem;line-height:1.6;color:#0f0f0f;margin:1rem 0 0;font-weight:300;text-align:center}
+.orco-accent-text{color:var(--orco-accent);font-style:italic;margin:0 .05em}
+@media(min-width:768px){
+  .orco-context-section{padding-top:1.5rem;padding-bottom:1.5rem}.orco-context-content{padding:0 2rem}
+  .orco-context-top{grid-template-columns:1fr 1fr;gap:4rem;margin-bottom:3.5rem}
+  .orco-context-title{font-size:2.5rem}.orco-context-description{font-size:1.125rem}
+  .orco-context-statement{gap:1.25rem;margin-bottom:0}.orco-context-statement-title{font-size:.875rem}
+  .orco-context-statement-answer{font-size:1rem}.orco-context-image-caption{font-size:1.125rem}
+}
+@media(min-width:1024px){
+  .orco-context-section{padding-top:2rem;padding-bottom:2rem}.orco-context-content{padding:0 3rem}
+  .orco-context-title{font-size:2.75rem}.orco-context-description{font-size:1.25rem}
+  .orco-context-statement-answer{font-size:1.125rem}.orco-context-image-caption{font-size:1.25rem}
+}
+
+/* ===== orco research ===== */
+.orco-research-section{width:100%;padding-top:1rem;padding-bottom:1rem;background-color:#f5f5f5;overflow-y:hidden}
+.orco-research-content{max-width:var(--page-max-width);margin:0 auto;padding:0 1.5rem}
+.orco-research-title{font-size:.7rem;font-weight:400;text-transform:uppercase;letter-spacing:.05em;color:#666;margin:2rem 0}
+.orco-research-overview{display:flex;flex-direction:column;gap:1.5rem;margin-bottom:4rem}
+.orco-research-benchmarking{display:flex;flex-direction:column;gap:1.5rem;margin-bottom:1.5rem}
+.orco-research-benchmarking-text-container{display:flex;flex-direction:column;gap:.5rem}
+.orco-research-benchmarking-title{font-size:1.125rem;line-height:1.6;color:#0f0f0f;margin:0;font-weight:500}
+.orco-research-benchmarking-text{font-size:1rem;line-height:1.6;color:#0f0f0f;margin:0;font-weight:300}
+.orco-research-overview-text{font-size:1rem;line-height:1.6;color:#0f0f0f;font-weight:300;text-align:center;max-width:36rem;margin:0 auto}
+.orco-research-image-container{width:100%;margin-top:.5rem}
+.orco-research-image{width:100%;height:auto;display:block;border-radius:8px}
+.orco-research-benchmarking .orco-research-image{max-height:400px;object-fit:contain}
+.orco-research-finding{display:flex;flex-direction:column;gap:1rem;margin-bottom:4rem}
+.orco-research-finding:last-child{margin-bottom:0}
+.orco-research-finding-title{font-size:.875rem;font-weight:400;text-transform:uppercase;letter-spacing:.05em;color:#666;margin:2rem 0 1rem}
+@media(min-width:768px){
+  .orco-research-section{padding-top:1.5rem;padding-bottom:1.5rem}.orco-research-content{padding:0 2rem}
+  .orco-research-title,.orco-research-finding-title{font-size:.875rem}
+  .orco-research-benchmarking{flex-direction:row;gap:2rem;align-items:center}
+  .orco-research-benchmarking .orco-research-image-container{flex:1.2;margin-top:0}
+  .orco-research-benchmarking .orco-research-image{max-height:500px}
+  .orco-research-benchmarking-text-container{flex:1}
+  .orco-research-benchmarking-title{font-size:1.25rem}
+  .orco-research-benchmarking-text,.orco-research-overview-text{font-size:1.125rem}
+}
+@media(min-width:1024px){
+  .orco-research-section{padding-top:2rem;padding-bottom:2rem}.orco-research-content{padding:0 3rem}
+  .orco-research-benchmarking-title{font-size:1.375rem}
+  .orco-research-benchmarking-text,.orco-research-overview-text{font-size:1.25rem}
+  .orco-research-benchmarking .orco-research-image{max-height:600px}
+}
+
+/* ===== orco solution ===== */
+.orco-solution-section{width:100%;padding-top:1rem;padding-bottom:1rem;background-color:#f5f5f5;overflow-y:hidden}
+.orco-solution-content{max-width:var(--page-max-width);margin:0 auto;padding:0 1.5rem}
+.orco-solution-title{font-size:.7rem;font-weight:400;text-transform:uppercase;letter-spacing:.05em;color:#666;margin:2rem 0}
+.orco-solution-visual-identity{display:flex;flex-direction:column;gap:1.5rem;margin-bottom:4rem}
+.orco-solution-visual-identity-content{display:flex;flex-direction:column;gap:1rem;text-align:left}
+.orco-solution-visual-identity-text{font-size:1rem;line-height:1.6;color:#0f0f0f;margin:0;font-weight:300}
+.orco-solution-visual-identity-medium-bold{font-weight:600}
+.orco-solution-visual-identity-grid{display:grid;grid-template-columns:1fr;gap:1rem;align-items:stretch}
+.orco-solution-image-container{width:100%;overflow:hidden}
+.orco-solution-image{width:100%;height:auto;display:block;border-radius:8px}
+.orco-solution-key-features{display:flex;flex-direction:column;gap:1.5rem;margin-top:4rem}
+.orco-solution-item{display:flex;flex-direction:column;gap:1rem;margin-bottom:4rem}
+.orco-solution-item:last-child{margin-bottom:0}
+.orco-solution-item-title{font-size:.875rem;font-weight:400;text-transform:uppercase;letter-spacing:.05em;color:#666;margin:2rem 0 1rem}
+.orco-solution-media{display:grid;grid-template-columns:1fr;gap:3.5rem;margin-top:1rem}
+.orco-solution-video-container{width:100%;position:relative;overflow:hidden}
+.orco-solution-video{width:100%;height:auto;max-height:580px;display:block;border-radius:8px;object-fit:contain;position:relative;z-index:1}
+.orco-solution-caption{font-size:1rem;line-height:1.6;color:#0f0f0f;margin:0;font-weight:300}
+.orco-solution-caption-bold{font-weight:700}
+.orco-solution-caption-semi-bold{font-weight:600}
+@media(min-width:768px){
+  .orco-solution-section{padding-top:1.5rem;padding-bottom:1.5rem}.orco-solution-content{padding:0 2rem}
+  .orco-solution-title,.orco-solution-item-title{font-size:.875rem}
+  .orco-solution-visual-identity-grid{grid-template-columns:1fr 1fr}
+  .orco-solution-media{grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+  .orco-solution-video{max-height:650px}.orco-solution-caption{font-size:1.125rem}
+}
+@media(min-width:1024px){
+  .orco-solution-section{padding-top:2rem;padding-bottom:2rem}.orco-solution-content{padding:0 3rem}
+  .orco-solution-visual-identity-text,.orco-solution-caption{font-size:1.25rem}
+}
+
+/* ===== orco validation ===== */
+.orco-validation-section{width:100%;padding-top:1rem;padding-bottom:1rem;background-color:#f5f5f5;overflow-y:hidden}
+.orco-validation-content{max-width:var(--page-max-width);margin:0 auto;padding:0 1.5rem}
+.orco-validation-title{font-size:.7rem;font-weight:400;text-transform:uppercase;letter-spacing:.05em;color:#666;margin:2rem 0}
+.orco-validation-intro{display:flex;flex-direction:column;gap:1rem;margin-bottom:2rem}
+.orco-validation-intro-title{font-family:"Crimson Pro",serif;font-size:2.5rem;font-weight:500;line-height:1.3;color:#0f0f0f;margin:0;letter-spacing:-.05em;text-align:left;width:100%}
+.orco-validation-intro-text{font-size:1rem;line-height:1.6;color:#0f0f0f;font-weight:300;text-align:center;max-width:36rem;margin:0 auto;width:100%}
+.orco-validation-image-container{width:100%;margin-bottom:2rem}
+.orco-validation-image{width:100%;height:auto;display:block;border-radius:8px}
+.orco-validation-video{width:100%;max-height:24rem;object-fit:cover;display:block;border-radius:8px;background-color:#0f0f0f}
+.orco-validation-results{display:flex;flex-direction:column;gap:1.5rem;margin-top:2rem}
+.orco-validation-results-title{font-family:"Crimson Pro",serif;font-size:2.5rem;font-weight:500;line-height:1.3;color:#0f0f0f;margin:0;letter-spacing:-.05em}
+.orco-results-table{width:100%;border-collapse:collapse;margin-top:1rem}
+.orco-results-table th,.orco-results-table td{text-align:left;padding:1rem 0;border-top:1px solid rgba(15,15,15,.12);vertical-align:top}
+.orco-results-table th{width:34%;font-family:"Crimson Pro",serif;font-size:1.5rem;font-weight:600;color:var(--orco-accent);letter-spacing:-.03em;padding-right:1.5rem}
+.orco-results-table td{font-size:1rem;line-height:1.5;color:#0f0f0f;font-weight:300}
+.orco-validation-results-description{font-size:1rem;line-height:1.6;color:#0f0f0f;margin:0;font-weight:300}
+.orco-validation-results-medium-bold{font-weight:600}
+@media(min-width:768px){
+  .orco-validation-section{padding-top:1.5rem;padding-bottom:1.5rem}.orco-validation-content{padding:0 2rem}
+  .orco-validation-title{font-size:.875rem}
+  .orco-validation-intro-title{font-size:3rem}.orco-validation-intro-text{font-size:1.125rem}
+  .orco-validation-results-title{font-size:3rem}
+  .orco-results-table th{font-size:1.75rem}.orco-results-table td{font-size:1.125rem}
+  .orco-validation-results-description{font-size:1.125rem}
+}
+@media(min-width:1024px){
+  .orco-validation-section{padding-top:2rem;padding-bottom:2rem}.orco-validation-content{padding:0 3rem}
+  .orco-validation-intro-title{font-size:3.5rem}.orco-validation-intro-text{font-size:1.25rem}
+  .orco-validation-results-title{font-size:3.5rem}.orco-validation-results-description{font-size:1.25rem}
+}
+
+/* ===== orco next steps ===== */
+.orco-next-steps-section{width:100%;padding-top:1rem;padding-bottom:1rem;background-color:#f5f5f5;overflow-y:hidden}
+.orco-next-steps-content{max-width:var(--page-max-width);margin:0 auto;padding:0 1.5rem}
+.orco-next-steps-title{font-size:.7rem;font-weight:400;text-transform:uppercase;letter-spacing:.05em;color:#666;margin:2rem 0}
+.orco-next-steps-list{list-style:none;padding:0;margin:0}
+.orco-next-steps-item{font-size:1rem;line-height:1.6;color:#0f0f0f;margin:0 0 1rem;padding-left:1.5rem;position:relative;font-weight:300}
+.orco-next-steps-item:before{content:"•";position:absolute;left:0;color:var(--orco-accent)}
+.orco-next-steps-item:last-child{margin-bottom:0}
+@media(min-width:768px){
+  .orco-next-steps-section{padding-top:1.5rem;padding-bottom:1.5rem}.orco-next-steps-content{padding:0 2rem}
+  .orco-next-steps-title{font-size:.875rem}.orco-next-steps-item{font-size:1.125rem}
+}
+@media(min-width:1024px){
+  .orco-next-steps-section{padding-top:2rem;padding-bottom:2rem}.orco-next-steps-content{padding:0 3rem}
+  .orco-next-steps-item{font-size:1.25rem}
+}
+
+/* ===== orco takeaways ===== */
+.orco-takeaways-section{width:100%;padding-top:1rem;padding-bottom:1rem;background-color:#f5f5f5;overflow-y:hidden}
+.orco-takeaways-content{max-width:var(--page-max-width);margin:0 auto;padding:0 1.5rem}
+.orco-takeaways-title{font-size:.7rem;font-weight:400;text-transform:uppercase;letter-spacing:.05em;color:#666;margin:2rem 0}
+.orco-takeaways-item{display:flex;flex-direction:column;gap:1rem;margin-bottom:3rem}
+.orco-takeaways-item:last-child{margin-bottom:0}
+.orco-takeaways-title-text{font-family:"Crimson Pro",serif;font-size:2.25rem;font-weight:600;color:#0f0f0f;margin:0;line-height:1.2;letter-spacing:-.05em}
+.orco-takeaways-description{font-size:1rem;line-height:1.6;color:#0f0f0f;margin:0;font-weight:300}
+@media(min-width:768px){
+  .orco-takeaways-section{padding-top:1.5rem;padding-bottom:1.5rem}.orco-takeaways-content{padding:0 2rem}
+  .orco-takeaways-title{font-size:.875rem}.orco-takeaways-title-text{font-size:3.25rem}.orco-takeaways-description{font-size:1.125rem}
+}
+@media(min-width:1024px){
+  .orco-takeaways-section{padding-top:2rem;padding-bottom:2rem}.orco-takeaways-content{padding:0 3rem}
+  .orco-takeaways-title-text{font-size:3.25rem}.orco-takeaways-description{font-size:1.25rem}
+}
+
+/* ===== placeholder media (swap in real assets later) ===== */
+.ph-img{position:relative;width:100%;aspect-ratio:4/3;background:repeating-linear-gradient(135deg,#efeeec 0 12px,#e8e6e3 12px 24px);border:1px dashed rgba(15,15,15,.22);border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.ph-img--tall{aspect-ratio:3/4}
+.ph-img--video{aspect-ratio:16/10}
+.ph-img__tag{font-family:Satoshi,sans-serif;font-size:.8rem;font-weight:500;letter-spacing:.02em;color:#6f6a64;text-align:center;padding:1.25rem;line-height:1.5;max-width:80%}
+.ph-img__tag:before{content:"⬚ ";color:var(--orco-accent);font-size:1rem}
+.orco-hero-before .ph-img{border-radius:8px}
+.orco-solution-video-container .ph-img--video{border-style:solid;border-color:rgba(154,59,44,.18)}
+/* laptop device frame for solution feature video placeholders — minimal */
+.orco-laptop{position:relative;width:100%;max-width:1140px;margin:2rem auto}
+.orco-laptop__screen{position:relative;background:#0a0a0a;border:3px solid #e0e0e0;border-radius:12px;overflow:hidden;aspect-ratio:16/10}
+.orco-laptop__screen::after{content:"";position:absolute;top:7px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:#333;z-index:10}
+.orco-laptop__screen>*{display:block;width:100%;height:100%;border:0;border-radius:0;object-fit:cover}
+.orco-laptop__screen .ph-img--video{aspect-ratio:auto;background:repeating-linear-gradient(135deg,#efeeec 0 12px,#e8e6e3 12px 24px);border:1px dashed rgba(15,15,15,.22)}
+.orco-laptop__base{height:6px;background:#e8e8e8;border-radius:0 0 8px 8px}
+/* research key finding visuals a bit smaller */
+.orco-research-finding .orco-research-image-container{max-width:46rem;margin-left:auto;margin-right:auto}
+/* finding #1 stat visual */
+.orco-stat-visual{display:grid;grid-template-columns:1fr;align-items:stretch;background:#fafaf8;border-radius:16px;border:1px solid rgba(15,15,15,.06);margin-top:1.5rem;overflow:hidden}
+.orco-stat-left{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;padding:2.5rem 2.5rem 2rem;background:var(--orco-accent);color:#fff}
+.orco-stat-main{display:flex;align-items:flex-end;gap:.15em;line-height:1}
+.orco-stat-number{font-family:"Crimson Pro",serif;font-size:6rem;font-weight:700;line-height:.85;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.orco-stat-suffix{font-family:"Crimson Pro",serif;font-size:3rem;font-weight:700;line-height:1;align-self:flex-end;margin-bottom:.2rem;margin-top:-.2rem}
+.orco-stat-tomato{width:64px;height:64px;margin-bottom:.25rem;opacity:.85}
+.orco-stat-tomato svg{width:100%;height:100%}
+.orco-stat-right{display:flex;flex-direction:column;justify-content:center;gap:1rem;padding:2.5rem 3rem}
+.orco-stat-label{font-size:1.375rem;line-height:1.45;color:#0f0f0f;font-weight:500}
+.orco-stat-badge{display:inline-flex;align-items:center;gap:.4rem;padding:.4rem 1rem;background:rgba(154,59,44,.1);color:var(--orco-accent);border-radius:999px;font-size:.8rem;font-weight:600;letter-spacing:.02em;width:fit-content}
+.orco-stat-badge svg{width:12px;height:12px}
+.orco-stat-source{font-size:.7rem;color:#999;text-decoration:none;margin-top:.25rem;transition:color .2s}
+.orco-stat-source:hover{color:var(--orco-accent)}
+@media(min-width:768px){
+  .orco-stat-visual{grid-template-columns:auto 1fr}
+  .orco-stat-left{padding:3rem 3rem 2.5rem}
+  .orco-stat-number{font-size:7.5rem}
+  .orco-stat-suffix{font-size:3.5rem}
+  .orco-stat-right{padding:3rem 3.5rem;gap:1.25rem}
+  .orco-stat-label{font-size:1.5rem}
+}
+@media(min-width:1024px){
+  .orco-stat-left{padding:3.5rem 3.5rem 3rem}
+  .orco-stat-number{font-size:8.5rem}
+  .orco-stat-suffix{font-size:4rem}
+  .orco-stat-right{padding:3.5rem 4rem}
+  .orco-stat-label{font-size:1.625rem}
+}
+/* ===== section rhythm ===== */
+.orco-context-section,.orco-research-section,.orco-solution-section,.orco-validation-section,.orco-next-steps-section,.orco-takeaways-section{border-top:1px solid rgba(15,15,15,.06)}
+
+/* ===== orco context intro video ===== */
+.orco-context-intro-video{width:100%;border-radius:10px;display:block;margin-bottom:2.5rem;background:#0a0a0a}
+
+/* ===== js reveal ===== */
+.js-reveal{opacity:0;transform:translateY(30px);transition:opacity 1s cubic-bezier(.4,0,.2,1) var(--reveal-delay,0s),transform 1s cubic-bezier(.4,0,.2,1) var(--reveal-delay,0s)}
+.js-reveal.is-visible{opacity:1;transform:translateY(0)}
+@media(prefers-reduced-motion:reduce){.js-reveal{opacity:1;transform:none;transition:none}}
+</style>
+</head>
+<body>
+
+<nav class="site-nav" id="siteNav" aria-label="Main">
+  <div class="page-content-shell">
+    
+  </div>
+</nav>
+
+<main class="orco-case-study">
+  <div class="case-study-layout">
+
+    <div class="case-study-spy-nav-slot" id="spyNavSlot">
+      <nav class="case-study-spy-nav" id="spyNav" role="navigation" aria-label="Case study sections" style="--case-study-spy-accent:var(--orco-accent)">
+        <div class="case-study-spy-nav__track">
+          <ul class="case-study-spy-nav__list" id="spyNavList">
+            <li class="case-study-spy-nav__item" style="--nav-stagger-index:0">
+              <button type="button" class="case-study-spy-nav__link" data-target="orco-context"><span class="case-study-spy-nav__dot"></span><span class="case-study-spy-nav__label">Context</span></button>
+            </li>
+            <li class="case-study-spy-nav__item" style="--nav-stagger-index:1">
+              <button type="button" class="case-study-spy-nav__link" data-target="orco-research"><span class="case-study-spy-nav__dot"></span><span class="case-study-spy-nav__label">Research</span></button>
+            </li>
+            <li class="case-study-spy-nav__item" style="--nav-stagger-index:2">
+              <button type="button" class="case-study-spy-nav__link" data-target="solution-section"><span class="case-study-spy-nav__dot"></span><span class="case-study-spy-nav__label">Solution</span></button>
+            </li>
+            <li class="case-study-spy-nav__item" style="--nav-stagger-index:3">
+              <button type="button" class="case-study-spy-nav__link" data-target="orco-validation"><span class="case-study-spy-nav__dot"></span><span class="case-study-spy-nav__label">Concept Validation</span></button>
+            </li>
+            <li class="case-study-spy-nav__item" style="--nav-stagger-index:4">
+              <button type="button" class="case-study-spy-nav__link" data-target="orco-next-steps"><span class="case-study-spy-nav__dot"></span><span class="case-study-spy-nav__label">Next Steps</span></button>
+            </li>
+            <li class="case-study-spy-nav__item" style="--nav-stagger-index:5">
+              <button type="button" class="case-study-spy-nav__link" data-target="orco-takeaways"><span class="case-study-spy-nav__dot"></span><span class="case-study-spy-nav__label">Takeaways</span></button>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+
+    <div class="case-study-layout__main">
+
+      <section class="orco-hero-section">
+        <div class="orco-hero-image-container orco-hero-before">
+          <img class="orco-hero-image" src="./hero-before.jpg" alt="ORCO — heritage Italian sauce brand">
+        </div>
+        <div class="orco-hero-content">
+          <div class="orco-hero-left">
+            <h1 class="orco-hero-title">ORCO: A Digital Culinary Ecosystem for a Heritage Italian Sauce Brand</h1>
+            <div class="orco-hero-details">
+              <div class="orco-hero-detail-item">
+                <div class="orco-hero-detail-label">ROLE</div>
+                <div class="orco-hero-detail-value">UX/UI Designer</div>
+              </div>
+              <div class="orco-hero-detail-item">
+                <div class="orco-hero-detail-label">DURATION</div>
+                <div class="orco-hero-detail-value">Feb '26 — May '26</div>
+              </div>
+              <div class="orco-hero-detail-item">
+                <div class="orco-hero-detail-label">TOOLS</div>
+                <div class="orco-hero-detail-value">Figma · FigJam · Claude Code · Photoshop · Illustrator</div>
+              </div>
+            </div>
+          </div>
+          <div class="orco-hero-right">
+            <p class="orco-hero-subtitle">Reimagining a heritage Italian sauce brand as an engaging culinary platform — where discovery, not just products, brings people into the kitchen.</p>
+            <div class="orco-hero-tags">
+              <span class="orco-hero-tag">Heritage Brand</span>
+              <span class="orco-hero-tag">Food Discovery</span>
+              <span class="orco-hero-tag">Concept Design</span>
+            </div>
+            <button class="orco-skip-to-solution-btn" id="skipToSolution" type="button">
+              <div class="orco-skip-icon-container">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="orco-skip-arrow" aria-hidden="true">
+                  <path d="M10 5V15M10 15L5 10M10 15L15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+              </div>
+              <span class="orco-skip-text">SKIP TO SOLUTION</span>
+            </button>
+          </div>
+        </div>
+        <div class="orco-hero-image-container orco-hero-after">
+        </div>
+      </section>
+
+      <section id="orco-context" class="orco-context-section">
+        <div class="orco-context-content">
+          <video class="orco-context-intro-video js-reveal" src="./Cap-2026-08-21-at-13.13.55.mp4" autoplay="" muted="" loop="" playsinline=""></video>
+          <div class="orco-context-top">
+            <div class="orco-context-item js-reveal">
+              <h2 class="orco-context-title">What is ORCO?</h2>
+              <p class="orco-context-description">ORCO is a heritage Italian sauce and condiment brand built on generations of craftsmanship and ingredient quality. This project explored how its digital experience could evolve from a traditional product-focused website into a more engaging culinary platform.</p>
+            </div>
+            <div class="orco-context-item js-reveal" style="--reveal-delay:.1s">
+              <h2 class="orco-context-title">My Role</h2>
+              <p class="orco-context-description">As UX/UI Designer, I led research and visual direction — shaping how ORCO's heritage could become something people actively explore</p>
+            </div>
+          </div>
+
+          <div class="orco-context-statement">
+            <h3 class="orco-context-statement-title js-reveal">CONTEXT</h3>
+            <div class="orco-context-image-container js-reveal">
+              <img class="orco-context-image" src="./Frame-427321294-3.png" alt="ORCO — heritage Italian sauce and condiments">
+            </div>
+            <div class="case-study-statement case-study-statement--wide js-reveal">
+              <div class="orco-context-statement-question-group">
+                <p class="case-study-statement__headline">What if a sauce brand could be <span class="orco-accent-text">explored</span>, not just bought?</p>
+              </div>
+              <p class="case-study-statement__body">ORCO's strength is its history — but most visitors only ever see a product list. The opportunity was to turn that heritage into an experience.</p>
+              <p class="case-study-statement__body">Consumers increasingly want to understand <span class="orco-context-statement-medium-bold">what they are buying, where it comes from, how it is made, and how it fits into their lifestyle.</span></p>
+            </div>
+            <div class="orco-context-image-container js-reveal">
+              <p class="orco-context-image-caption">Tracing ingredients from sourcing to bottle became a central part of the concept.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="orco-research" class="orco-research-section">
+        <div class="orco-research-content">
+          <h3 class="orco-research-title js-reveal">RESEARCH</h3>
+          <div class="orco-research-overview">
+            <div class="case-study-statement js-reveal">
+              <h4 class="case-study-statement__headline">Discovery Phase</h4>
+            </div>
+            <div class="orco-research-benchmarking">
+              <div class="orco-research-image-container js-reveal">
+                <img class="orco-research-image" src="./benchmarking.jpg" alt="Competitor digital experience benchmarking">
+              </div>
+              <div class="orco-research-benchmarking-text-container js-reveal" style="--reveal-delay:.1s">
+                <p class="orco-research-benchmarking-title">Competitive &amp; Food-Commerce Benchmarking</p>
+                <p class="orco-research-benchmarking-text">I mapped competitor digital experiences and food-commerce patterns to find where ORCO could differentiate — and where heritage could become a genuine advantage.</p>
+              </div>
+            </div>
+            <div class="orco-research-image-container js-reveal">
+              <img class="orco-research-image" src="./research-themes.jpg" alt="Research themes — heritage, sourcing, trends, recipe &amp; dietary discovery">
+            </div>
+          </div>
+
+          <div class="orco-research-finding">
+            <h4 class="orco-research-finding-title js-reveal">Key Finding #1: Shoppers want to understand, not just purchase.</h4>
+            <div class="case-study-statement js-reveal">
+              <p class="case-study-statement__headline">People increasingly ask <span class="orco-accent-text">where it comes from, how it's made, and how it fits their life.</span></p>
+            </div>
+            <div class="orco-research-image-container js-reveal">
+              <div class="orco-stat-visual">
+                <div class="orco-stat-left">
+                  <div class="orco-stat-tomato">
+                    <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <ellipse cx="60" cy="68" rx="48" ry="46" fill="#D64535"></ellipse>
+                      <ellipse cx="60" cy="68" rx="48" ry="46" fill="url(#tomato-grad)"></ellipse>
+                      <path d="M60 22C60 22 54 10 48 8C42 6 38 12 42 18C46 24 54 26 60 24" fill="#3D8B37"></path>
+                      <path d="M60 22C60 22 66 10 72 8C78 6 82 12 78 18C74 24 66 26 60 24" fill="#3D8B37"></path>
+                      <path d="M60 22C60 22 60 8 60 4C60 0 64 2 62 8C60 14 60 22 60 22" fill="#4A9E42"></path>
+                      <ellipse cx="42" cy="58" rx="10" ry="14" fill="rgba(255,255,255,.08)" transform="rotate(-15 42 58)"></ellipse>
+                      <defs>
+                        <radialGradient id="tomato-grad" cx="40%" cy="35%" r="60%">
+                          <stop offset="0%" stop-color="#E8604A" stop-opacity=".6"></stop>
+                          <stop offset="100%" stop-color="#B5302A" stop-opacity=".4"></stop>
+                        </radialGradient>
+                      </defs>
+                    </svg>
+                  </div>
+                  <div class="orco-stat-main">
+                    <span class="orco-stat-number" data-count-to="59">0</span>
+                    <span class="orco-stat-suffix">%</span>
+                  </div>
+                </div>
+                <div class="orco-stat-right">
+                  <div class="orco-stat-label">want to know where their food comes from</div>
+                  <div class="orco-stat-badge">
+                    <svg viewBox="0 0 14 14" fill="none"><path d="M7 11V3M7 3L3 7M7 3l4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                    <span>+51% since 2017</span>
+                  </div>
+                  <a href="https://www.safefoodadvocacy.eu/wp-content/uploads/2024/11/Natural-Report-XC-1.pdf?utm_source=chatgpt.com" target="_blank" rel="noopener" class="orco-stat-source">Source: safefoodadvocacy.eu</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="orco-research-finding">
+            <h4 class="orco-research-finding-title js-reveal">Key Finding #2: Recipes are the natural entry point.</h4>
+            <div class="case-study-statement js-reveal">
+              <p class="case-study-statement__headline">Users often arrive for <span class="orco-accent-text">"a 15-minute dinner"</span> — not for a specific sauce.</p>
+            </div>
+            <div class="orco-research-image-container js-reveal">
+              <img class="orco-research-image" src="./finding-2.jpg" alt="Finding #2 — recipes as the natural entry point">
+            </div>
+          </div>
+
+          <div class="orco-research-finding">
+            <h4 class="orco-research-finding-title js-reveal">Key Finding #3: Storytelling builds trust better than claims.</h4>
+            <div class="case-study-statement js-reveal">
+              <p class="case-study-statement__headline">Making craftsmanship <span class="orco-accent-text">visible</span> earned more belief than stating "quality ingredients."</p>
+            </div>
+            <div class="orco-research-image-container js-reveal">
+              <img class="orco-research-image" src="./finding-3.jpg" alt="Finding #3 — storytelling builds trust">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="solution-section" class="orco-solution-section">
+        <div class="orco-solution-content">
+          <h3 class="orco-solution-title js-reveal">SOLUTION</h3>
+          <div class="orco-solution-visual-identity">
+            <div class="orco-solution-visual-identity-content js-reveal">
+              <p class="orco-solution-visual-identity-text">I designed ORCO's visual direction to feel <span class="orco-solution-visual-identity-medium-bold">heritage yet contemporary</span> — balancing craft and warmth with a modern, appetizing digital experience.</p>
+            </div>
+            <div class="orco-solution-image-container js-reveal">
+              <img class="orco-solution-image" src="./solution-hero.jpg" alt="ORCO visual identity — heritage yet contemporary">
+            </div>
+          </div>
+
+          <div class="orco-solution-key-features">
+            <div class="orco-solution-item">
+              <h4 class="orco-solution-item-title js-reveal">Feature #1: Interactive Recipes</h4>
+              <div class="case-study-statement js-reveal">
+                <p class="case-study-statement__headline">Discover recipes through tags such as <span class="orco-accent-text">Vegan, Keto, 15 min, High Protein, Spicy, and Easy.</span></p>
+              </div>
+              <div class="orco-solution-media">
+                <div class="orco-solution-video-container js-reveal">
+                  <div class="orco-laptop">
+                    <div class="orco-laptop__screen">
+                      <video src="./Cap-2026-08-21-at-13.21.14.mp4" autoplay="" muted="" loop="" playsinline=""></video>
+                    </div>
+                    <div class="orco-laptop__base"></div>
+                  </div>
+                </div>
+                <p class="orco-solution-caption js-reveal">Recipe discovery is organised around lifestyle and dietary needs, so users find a meal first and ORCO second.</p>
+              </div>
+            </div>
+
+            <div class="orco-solution-item">
+              <h4 class="orco-solution-item-title js-reveal">Feature #2: Ingredient Journey</h4>
+              <div class="case-study-statement js-reveal">
+                <p class="case-study-statement__headline">Follow ingredients from <span class="orco-accent-text">sourcing → production → bottle → table</span> through an interactive timeline and map.</p>
+              </div>
+              <div class="orco-solution-media">
+                <div class="orco-solution-video-container js-reveal">
+                  <div class="orco-laptop">
+                    <div class="orco-laptop__screen" style="width: 550px; height: 300px;">
+                      <video src="./Cap-2026-08-21-at-13.18.19.mp4" autoplay="" muted="" loop="" playsinline=""></video>
+                    </div>
+                    <div class="orco-laptop__base"></div>
+                  </div>
+                </div>
+                <p class="orco-solution-caption js-reveal">Transparency becomes an experience: users can trace exactly where each ingredient comes from and how it becomes the final product.</p>
+              </div>
+            </div>
+
+            <div class="orco-solution-item">
+              <h4 class="orco-solution-item-title js-reveal">Feature #3: Authenticity &amp; Process</h4>
+              <div class="case-study-statement js-reveal">
+                <p class="case-study-statement__headline">Make ORCO's craftsmanship visible through <span class="orco-accent-text">the rich history of ORCO's journey showing its evolution through time </span></p>
+              </div>
+              <div class="orco-solution-media">
+                <div class="orco-solution-video-container js-reveal">
+                  <div class="orco-laptop">
+                    <div class="orco-laptop__screen" style="width: 550px; height: 300px;">
+                      <video src="./Cap-2026-08-21-at-13.23.47.mp4" autoplay="" muted="" loop="" playsinline=""></video>
+                    </div>
+                    <div class="orco-laptop__base"></div>
+                  </div>
+                </div>
+                <p class="orco-solution-caption js-reveal">Instead of claiming quality, the experience shows it — turning heritage into something users can actually explore.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="orco-validation" class="orco-validation-section">
+        <div class="orco-validation-content">
+          <h3 class="orco-validation-title js-reveal">CONCEPT VALIDATION</h3>
+          <div class="orco-validation-intro js-reveal">
+            <h4 class="orco-validation-intro-title">Does it give a reason to explore?</h4>
+            <p class="orco-validation-intro-text">The concepts were evaluated through competitive benchmarking, UX walkthroughs, information architecture testing, prototype exploration, and comparison against existing food-brand experiences.</p>
+          </div>
+
+          <div class="orco-validation-results">
+            <h4 class="orco-validation-results-title js-reveal">Impact &amp; Results</h4>
+            <table class="orco-results-table js-reveal">
+              <tbody>
+                <tr><th>Brand</th><td>More contemporary &amp; differentiated positioning</td></tr>
+                <tr><th>Trust</th><td>Greater visibility into ingredients &amp; production</td></tr>
+                <tr><th>Discovery</th><td>Recipe-first product exploration</td></tr>
+                <tr><th>Engagement</th><td>Interactive storytelling &amp; creative participation</td></tr>
+                <tr><th>Community</th><td>Foundation for UGC and social sharing</td></tr>
+                <tr><th>Growth</th><td>Opportunities for personalization &amp; repeat visits</td></tr>
+              </tbody>
+            </table>
+            <div class="orco-validation-results-text js-reveal" style="--reveal-delay:.1s">
+              <p class="orco-validation-results-description">The final concept demonstrated how ORCO could evolve from a product catalogue into a <span class="orco-validation-results-medium-bold orco-accent-text">digital culinary ecosystem</span> — connecting its products, ingredients, heritage, recipes and community in one experience.</p>
+              <p class="orco-validation-results-description">From <span class="orco-validation-results-medium-bold">"What sauce do you sell?"</span> → to <span class="orco-validation-results-medium-bold">"What can I discover, cook, and experience with ORCO?"</span></p>
+            </div>
+          </div>
+
+          <div class="orco-validation-image-container js-reveal">
+            <img class="orco-validation-image" src="./Frame-427321295.png" alt="ORCO concept validation — information architecture testing and prototype exploration">
+          </div>
+          <div class="orco-validation-image-container js-reveal">
+            <video class="orco-validation-video" src="./IMG_4909.MOV" autoplay="" muted="" loop="" playsinline=""></video>
+          </div>
+        </div>
+      </section>
+
+      <section id="orco-next-steps" class="orco-next-steps-section">
+        <div class="orco-next-steps-content">
+          <h3 class="orco-next-steps-title js-reveal">WHERE ORCO GOES FROM HERE</h3>
+          <ul class="orco-next-steps-list">
+            <li class="orco-next-steps-item js-reveal"><span style="font-weight:600">Personalize</span> the experience with CRM and preference-based touches built from recipe and dietary signals</li>
+            <li class="orco-next-steps-item js-reveal" style="--reveal-delay:.1s"><span style="font-weight:600">Extend</span> the framework into seasonal campaigns tied to ingredients and occasions</li>
+            <li class="orco-next-steps-item js-reveal" style="--reveal-delay:.2s"><span style="font-weight:600">Scale</span> the platform across ORCO's full product range and future campaigns</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="orco-takeaways" class="orco-takeaways-section">
+        <div class="orco-takeaways-content">
+          <h3 class="orco-takeaways-title js-reveal">KEY TAKEAWAYS</h3>
+          <div class="orco-takeaways-item js-reveal">
+            <h4 class="orco-takeaways-title-text">01 — Heritage can be a digital asset.</h4>
+            <p class="orco-takeaways-description">ORCO's history becomes more valuable when people can actually explore it.</p>
+          </div>
+          <div class="orco-takeaways-item js-reveal" style="--reveal-delay:.1s">
+            <h4 class="orco-takeaways-title-text">02 — Transparency can become an experience.</h4>
+            <p class="orco-takeaways-description">Instead of simply saying "quality ingredients," show users where they come from and how they become the final product.</p>
+          </div>
+          <div class="orco-takeaways-item js-reveal" style="--reveal-delay:.2s">
+            <h4 class="orco-takeaways-title-text">03 — Recipes can become the entry point.</h4>
+            <p class="orco-takeaways-description">People may not arrive looking for a sauce. They may arrive looking for "a 15-minute vegan dinner."</p>
+          </div>
+          <div class="orco-takeaways-item js-reveal" style="--reveal-delay:.3s">
+            <h4 class="orco-takeaways-title-text">04 — Brand websites can be more than storefronts.</h4>
+            <p class="orco-takeaways-description">The opportunity is to create a platform where discovery, education, cooking and community come together.</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</main>
+
+
+
+<script>
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function easeOutPower2(t) { return 1 - (1 - t) * (1 - t); }
+
+  // scroll reveals
+  var reveals = document.querySelectorAll('.js-reveal');
+  function show(el) { el.classList.add('is-visible'); }
+  if (reveals.length) {
+    if (reduce) {
+      reveals.forEach(show);
+    } else {
+      var ro = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (!en.isIntersecting) return;
+          show(en.target);
+          ro.unobserve(en.target);
+        });
+      }, { rootMargin: '0px 0px -20% 0px' });
+      reveals.forEach(function (r) { ro.observe(r); });
+    }
+  }
+
+  // skip to solution
+  var skip = document.getElementById('skipToSolution');
+  if (skip) {
+    skip.addEventListener('click', function () {
+      var t = document.getElementById('solution-section');
+      if (t) t.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    });
+  }
+
+  // count-up animation for stat numbers
+  var statNums = document.querySelectorAll('.orco-stat-number[data-count-to]');
+  if (statNums.length) {
+    var cso = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        var el = en.target;
+        var target = parseFloat(el.getAttribute('data-count-to'));
+        var duration = 1600;
+        var start = performance.now();
+        function tick(now) {
+          var t = Math.min((now - start) / duration, 1);
+          var eased = 1 - Math.pow(1 - t, 3);
+          el.textContent = Math.round(eased * target);
+          if (t < 1) requestAnimationFrame(tick);
+        }
+        if (reduce) {
+          el.textContent = target;
+        } else {
+          requestAnimationFrame(tick);
+        }
+        cso.unobserve(el);
+      });
+    }, { rootMargin: '0px 0px -20% 0px' });
+    statNums.forEach(function (n) { cso.observe(n); });
+  }
+
+  // spy nav pin + scrollspy
+  var spyNav = document.getElementById('spyNav');
+  var slot = document.getElementById('spyNavSlot');
+  var links = Array.prototype.slice.call(document.querySelectorAll('.case-study-spy-nav__link'));
+  var sections = links.map(function (l) { return document.getElementById(l.getAttribute('data-target')); }).filter(Boolean);
+  var pinned = false;
+  var navLeft = null, navWidth = null;
+
+  function setActive(id) {
+    links.forEach(function (l) {
+      l.classList.toggle('is-active', l.getAttribute('data-target') === id);
+    });
+  }
+
+  function updatePin() {
+    if (!spyNav || !slot || window.innerWidth < 1024) return;
+    var slotRect = slot.getBoundingClientRect();
+    var lastBottom = sections.length ? sections[sections.length - 1].getBoundingClientRect().bottom : 0;
+    if (slotRect.top <= 112 && lastBottom > 300) {
+      if (!pinned) {
+        if (navLeft === null) navLeft = slot.getBoundingClientRect().left;
+        if (navWidth === null) navWidth = spyNav.offsetWidth;
+        spyNav.style.position = 'fixed';
+        spyNav.style.top = '112px';
+        spyNav.style.left = navLeft + 'px';
+        spyNav.style.width = navWidth + 'px';
+        spyNav.classList.add('is-pinned');
+        pinned = true;
+      }
+    } else {
+      if (pinned) {
+        spyNav.style.position = '';
+        spyNav.style.top = '';
+        spyNav.style.left = '';
+        spyNav.style.width = '';
+        spyNav.classList.remove('is-pinned');
+        pinned = false;
+      }
+    }
+  }
+
+  function updateSpy() {
+    if (window.innerWidth < 1024 || !sections.length) return;
+    var pos = window.scrollY + 140;
+    var current = null;
+    sections.forEach(function (s) {
+      if (s.offsetTop <= pos) current = s.id;
+    });
+    if (current) setActive(current);
+  }
+
+  if (spyNav && sections.length) {
+    links.forEach(function (l) {
+      l.addEventListener('click', function (e) {
+        e.preventDefault();
+        var t = document.getElementById(l.getAttribute('data-target'));
+        if (t) {
+          var y = t.getBoundingClientRect().top + window.pageYOffset - 140;
+          window.scrollTo({ top: y, behavior: reduce ? 'auto' : 'smooth' });
+        }
+      });
+    });
+    window.addEventListener('scroll', function () { updatePin(); updateSpy(); }, { passive: true });
+    window.addEventListener('resize', function () { navLeft = null; navWidth = null; updatePin(); updateSpy(); });
+    updatePin();
+    updateSpy();
+  }
+
+})();
+</script>
+
+
+
+</body></html>

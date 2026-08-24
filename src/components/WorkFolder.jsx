@@ -249,10 +249,10 @@ export default function WorkFolder({ theme, onOpen }) {
                         padding: 0, overflow: 'hidden', transformOrigin: "bottom center",
                         background: '#0d0d0d', border: `2px solid ${theme.text}40`
                       }}>
-                        {proj.img?.endsWith('.mp4') ? (
-                          <video src={proj.img} autoPlay muted loop playsInline style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }} />
+                        {(proj.img?.endsWith('.mp4') || proj.img?.endsWith('.mov')) ? (
+                          <video src={proj.img} autoPlay muted loop playsInline style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: proj.objectPosition || 'center', opacity: 0.8 }} />
                         ) : (
-                          <img src={proj.img} alt={proj.name} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }} />
+                          <img src={proj.img} alt={proj.name} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: proj.objectPosition || 'center', opacity: 0.8 }} />
                         )}
                       </div>
                     ))}
