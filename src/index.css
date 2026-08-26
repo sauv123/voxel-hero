@@ -2870,3 +2870,9 @@ body {
   85% { opacity: 1; transform: translate(-50%, 0); }
   100% { opacity: 0; transform: translate(-50%, -10px); }
 }
+
+@media (max-width: 768px) {
+  .canvas-layer {
+    display: none !important;
+  }
+}
