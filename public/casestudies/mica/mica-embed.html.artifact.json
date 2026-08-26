@@ -1,8 +1,8 @@
 {
   "version": 1,
   "kind": "html",
-  "title": "index.html",
-  "entry": "index.html",
+  "title": "mica-embed.html",
+  "entry": "mica-embed.html",
   "renderer": "html",
   "status": "complete",
   "exports": [
@@ -10,8 +10,8 @@
     "pdf",
     "zip"
   ],
-  "createdAt": "2026-08-26T18:21:49.238Z",
-  "updatedAt": "2026-08-26T18:21:49.238Z",
+  "createdAt": "2026-08-26T19:13:25.162Z",
+  "updatedAt": "2026-08-26T19:13:25.162Z",
   "metadata": {
     "inferred": true,
     "reconciled": true

@@ -119,6 +119,13 @@ export default function BrutalistCube({ inFooter = false }) {
       };
 
     }, containerRef);
+    
+    // Crucial fix: Recalculate ScrollTrigger positions since this component is lazy-loaded
+    // and pushes WorkFolder 600vh down, causing WorkFolder's triggers to fire too early and turn the background white.
+    setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 100);
+
     return () => ctx.revert();
   }, []);
 

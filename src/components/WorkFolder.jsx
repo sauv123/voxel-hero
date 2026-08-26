@@ -20,8 +20,8 @@ export default function WorkFolder({ theme, onOpen }) {
       end: "top 20%",
       scrub: 1.5,
       onUpdate: (self) => {
-        const blendedColor = gsap.utils.interpolate('#050505', '#FFFFFF', self.progress);
-        gsap.set(document.body, { backgroundColor: blendedColor });
+        const blendedColor = gsap.utils.interpolate('#000000', '#FFFFFF', self.progress);
+        gsap.set([document.documentElement, document.body], { backgroundColor: blendedColor });
       }
     });
 

@@ -8,6 +8,7 @@ import HeaderCTA from './components/HeaderCTA';
 import InteractiveProjects from './components/InteractiveProjects';
 import Preloader from './components/Preloader';
 import CustomCursor from './components/CustomCursor';
+import HeroVideo from './components/HeroVideo';
 // Lazy loaded components
 import BottomDrawer from './components/BottomDrawer';
 import Footer from './components/Footer';
@@ -177,7 +178,7 @@ export default function App() {
     }
   });
   const theme    = THEMES[activeChar];
-  const invertedTheme = { bg: '#FFFFFF', text: '#050505', brand: theme.brand };
+  const invertedTheme = { bg: '#FFFFFF', text: '#000000', brand: theme.brand };
   const rootRef  = useRef();
   const charRef  = useRef(); // forwarded to Scene → CharacterSwitch
 
@@ -229,12 +230,12 @@ export default function App() {
       // Hero -> Brutalist Cube (#050505)
       ScrollTrigger.create({
         trigger: rootRef.current,
-        start: "bottom 90%",
-        end: "bottom 10%",
+        start: "top top",
+        end: "bottom bottom",
         scrub: 1.5,
         onUpdate: (self) => {
-          const blendedColor = gsap.utils.interpolate(theme.bg, '#050505', self.progress);
-          gsap.set([document.body, rootRef.current], { backgroundColor: blendedColor });
+          const blendedColor = gsap.utils.interpolate(theme.bg, '#000000', self.progress);
+          gsap.set([document.documentElement, document.body, rootRef.current], { backgroundColor: blendedColor });
         }
       });
 
@@ -438,7 +439,8 @@ export default function App() {
       )}
       
       {isPreloaderDone && activePage !== '404' && <HeaderCTA theme={theme} />}      
-      <div ref={rootRef} className="hero-container" style={{ backgroundColor: theme.bg }}>
+      <div ref={rootRef} className="hero-container" style={{ backgroundColor: theme.bg, height: '250vh', position: 'relative', overflow: 'visible' }}>
+        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100vh', zIndex: 2 }}>
 
         {/* ── Background text layer (behind canvas) ── */}
         <div className="text-layer" aria-hidden="true">
@@ -508,6 +510,10 @@ export default function App() {
         </div>
 
         {/* ── Custom Cursor Tooltip Character Switcher ── */}
+        </div>
+        {/* ── Interactive Video Background ── */}
+        <HeroVideo videoSrc="/0826.mp4" />
+
         {isPreloaderDone && isHoveringCharacter && (
           <div 
             style={{
