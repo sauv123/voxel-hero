@@ -32,6 +32,10 @@ export default function HeroVideo({ videoSrc = "/0826.mp4" }) {
     });
     
     const xTo = gsap.quickTo(container, "x", { duration: 0.8, ease: "power3.out" });
+    
+    // Grab the text layer to apply the parallax repulsion effect
+    const textLayer = document.querySelector('.text-layer');
+    const textXTo = textLayer ? gsap.quickTo(textLayer, "x", { duration: 0.9, ease: "power3.out" }) : null;
 
     // Function to calculate and apply the X position
     const updateXPos = () => {
@@ -39,7 +43,15 @@ export default function HeroVideo({ videoSrc = "/0826.mp4" }) {
       const safeGap = isMobile ? 20 : 40; 
       const maxTravelX = Math.max(0, (innerWidth - container.offsetWidth) / 2 - safeGap);
       const currentMult = panMultiplier.current.value;
-      xTo(lastMousePos.current.xOffset * maxTravelX * currentMult);
+      
+      const videoX = lastMousePos.current.xOffset * maxTravelX * currentMult;
+      xTo(videoX);
+      
+      // Repel the text in the opposite direction!
+      if (textXTo) {
+        // Multiplier of -0.7 means text moves 70% as much as the video, but in reverse.
+        textXTo(videoX * -0.7);
+      }
     };
 
     const tl = gsap.timeline({
