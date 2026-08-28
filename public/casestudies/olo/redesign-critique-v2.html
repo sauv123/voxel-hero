@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Case Study Redesign Critique v2 — olo (post-rebuild)</title>
+  <meta name="description" content="A second-pass, brutally honest critique of the rebuilt olo case study, evaluated from hiring manager and senior designer perspectives.">
+  <meta name="theme-color" content="#1a1a1a">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>🔍</text></svg>">
+  <style>
+    :root {
+      --bg:#ffffff; --surface:#f8f6f2; --surface-2:#f0eeed;
+      --fg:#1a1a1a; --fg-2:#4a4a4a; --fg-3:#7a7a7a;
+      --border:#e0dedb; --border-2:#d0cecb;
+      --accent:#2563eb; --accent-soft:#e8eaf2;
+      --danger:#ef4146; --danger-soft:#fef2f3;
+      --warn:#f5a623; --warn-soft:#fff4e5;
+      --success:#10a37f; --success-soft:#e8f5f0;
+      --font-display:'Playfair Display', Georgia, serif;
+      --font-body:'Inter', system-ui, sans-serif;
+      --radius-sm:6px; --radius-md:10px; --radius-lg:16px; --radius-xl:24px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;scroll-padding-top:40px}
+    body{font-family:var(--font-body);background:var(--bg);color:var(--fg);line-height:1.65;-webkit-font-smoothing:antialiased}
+    h1,h2,h3,h4{font-family:var(--font-display);line-height:1.15;letter-spacing:-0.02em}
+    h1{font-size:clamp(2rem,4vw,2.75rem);font-weight:700;margin-bottom:1rem}
+    h2{font-size:clamp(1.5rem,3vw,2rem);font-weight:600;margin:3rem 0 1.5rem;border-bottom:1px solid var(--border);padding-bottom:.75rem}
+    h3{font-size:1.25rem;font-weight:600;margin:2rem 0 1rem;color:var(--fg)}
+    h4{font-size:1rem;font-weight:600;margin:1.5rem 0 .75rem;color:var(--fg)}
+    p{margin-bottom:1rem;color:var(--fg-2)}
+    a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+    .container{max-width:880px;margin:0 auto;padding:0 24px}
+    .section{padding:60px 0} .section-sm{padding:40px 0}
+
+    header{background:var(--bg);border-bottom:1px solid var(--border);padding:24px 0;position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);background:rgba(255,255,255,.85)}
+    header .container{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+    .logo{font-family:var(--font-display);font-weight:700;font-size:1.5rem;color:var(--accent)}
+    .meta{font-size:.8125rem;color:var(--fg-3)}
+
+    .hero{background:linear-gradient(135deg,var(--surface-2) 0%,var(--surface) 100%);padding:90px 0;text-align:center;border-bottom:1px solid var(--border)}
+    .hero .section-label{font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:20px}
+    .hero-title{font-size:clamp(1.75rem,4vw,2.5rem);font-weight:700;margin-bottom:1.25rem}
+    .hero-title .accent{color:var(--success)}
+    .hero-deck{font-size:1.0625rem;color:var(--fg-2);max-width:680px;margin:0 auto;line-height:1.7}
+    .delta-strip{display:flex;justify-content:center;gap:12px;margin-top:28px;flex-wrap:wrap}
+    .delta-chip{background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:8px 18px;font-size:.8125rem;font-weight:600}
+    .delta-chip b{color:var(--success)}
+
+    .scorecard{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px;margin:32px 0}
+    .score-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;text-align:center}
+    .score-compare{font-size:.7rem;color:var(--fg-3);margin-top:2px}
+    .score-value{font-family:var(--font-display);font-size:2.25rem;font-weight:700;color:var(--accent);line-height:1}
+    .score-label{font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--fg-3);margin-top:8px}
+    .score-item.warn .score-value{color:var(--warn)} .score-item.success .score-value{color:var(--success)}
+
+    .verdict{background:var(--success-soft);border-left:4px solid var(--success);border-radius:var(--radius-lg);padding:32px;margin:40px 0}
+    .verdict h3{color:var(--success);margin-bottom:1rem}
+    .verdict ul{margin-left:1.5rem} .verdict li{margin-bottom:.5rem;color:var(--fg-2)}
+
+    .weakness-list{list-style:none;margin:24px 0}
+    .weakness-list li{padding:16px 20px;margin-bottom:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);border-left:4px solid var(--warn)}
+    .weakness-list .weakness-title{font-weight:600;margin-bottom:4px;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+    .weakness-list .weakness-impact{font-size:.8125rem;color:var(--fg-3)}
+    .badge{display:inline-block;padding:2px 10px;border-radius:100px;font-size:.75rem;font-weight:700}
+    .badge-high{background:var(--danger-soft);color:var(--danger)}
+    .badge-medium{background:var(--warn-soft);color:var(--warn)}
+    .badge-low{background:var(--success-soft);color:var(--success)}
+
+    .outline{list-style:none;margin:24px 0}
+    .outline li{padding:12px 0;border-bottom:1px solid var(--border)} .outline li:last-child{border-bottom:none}
+    .outline .step{font-weight:700;color:var(--accent)} .outline .tagnew{background:var(--success-soft);color:var(--success);font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:100px;margin-left:8px;text-transform:uppercase;letter-spacing:.04em}
+    .outline .desc{font-size:.9rem;color:var(--fg-2);margin-top:4px}
+
+    .analysis{margin:32px 0;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+    .analysis-header{background:var(--surface-2);padding:16px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+    .analysis-title{font-weight:600;font-size:1.05rem}
+    .analysis-grade{font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:100px}
+    .analysis-body{padding:24px} .analysis-body>*{margin-bottom:1rem}
+    .keep{color:var(--success);font-weight:500;margin:12px 0} .keep::before{content:"✅ "}
+    .issue{color:var(--danger);font-weight:500;margin:12px 0} .issue::before{content:"❌ "}
+    .fix{color:var(--accent);font-weight:500;margin:12px 0} .fix::before{content:"→ "}
+    .recommendation{background:var(--accent-soft);border-radius:var(--radius-md);padding:16px 20px;margin:16px 0;font-size:.9rem}
+    .recommendation strong{color:var(--accent)}
+
+    .action-table{width:100%;border-collapse:collapse;margin:24px 0;font-size:.9rem}
+    .action-table th,.action-table td{text-align:left;padding:12px 16px;border-bottom:1px solid var(--border)}
+    .action-table th{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--fg-3)}
+
+    .text-sm{font-size:.8125rem;color:var(--fg-3)} .lead{font-size:1.2rem;line-height:1.6;color:var(--fg-2);margin-bottom:2rem}
+    .quote{font-family:var(--font-display);font-size:1.4rem;font-style:italic;line-height:1.4;color:var(--fg);text-align:center;padding:32px;border-left:3px solid var(--accent);background:var(--surface);margin:32px 0}
+
+    .diagram-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0}
+    .diagram-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:18px 20px;font-size:.875rem}
+    .diagram-card strong{display:block;margin-bottom:6px;color:var(--fg)}
+
+    footer{background:var(--fg);color:#fff;padding:60px 0 40px;text-align:center;margin-top:60px}
+    footer p{opacity:.6;max-width:500px;margin:0 auto}
+    footer .logo{color:#fff;font-size:1.75rem;margin-bottom:16px;display:block}
+
+    @media (max-width:768px){.container{padding:0 16px} .hero{padding:60px 0} h2{font-size:1.5rem} .diagram-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container">
+      <a href="#" class="logo">Redesign Critique v2</a>
+      <span class="meta">olo case study · post-rebuild hiring manager review</span>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <div class="section-label">Portfolio Audit · Round 2</div>
+      <h1 class="hero-title">Second Pass: Did the Rebuild <span class="accent">Actually Fix It?</span></h1>
+      <p class="hero-deck">Same brutal standard as round one — Google/Stripe/Airbnb/Figma/Notion/Microsoft hiring bar — now applied to <code>case-study-final.html</code>, the version built from real research artifacts instead of invented statistics.</p>
+      <div class="delta-strip">
+        <div class="delta-chip">Hire Potential: 4 → <b>7</b></div>
+        <div class="delta-chip">Research: 4 → <b>8</b></div>
+        <div class="delta-chip">Seniority: 3 → <b>6</b></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+
+    <div class="section-sm">
+      <p class="lead">The first redesign attempt fixed the critique's checklist by fabricating data — invented RICE scores, a fake "78% of users," named quotes attributed to interviews that never happened. That version was rejected before shipping. This round evaluates the version that replaced it: same structural ambitions, but every number now traces back to an artifact that actually exists in the project files.</p>
+
+      <h2>Hiring Verdict</h2>
+      <div class="scorecard">
+        <div class="score-item success"><div class="score-value">7</div><div class="score-label">Storytelling</div><div class="score-compare">was 4</div></div>
+        <div class="score-item success"><div class="score-value">8</div><div class="score-label">UX Process</div><div class="score-compare">was 5</div></div>
+        <div class="score-item"><div class="score-value">7</div><div class="score-label">Product Thinking</div><div class="score-compare">was 3</div></div>
+        <div class="score-item"><div class="score-value">7</div><div class="score-label">Visual Design</div><div class="score-compare">was 6</div></div>
+        <div class="score-item success"><div class="score-value">8</div><div class="score-label">Research</div><div class="score-compare">was 4</div></div>
+        <div class="score-item"><div class="score-value">7</div><div class="score-label">Presentation</div><div class="score-compare">was 5</div></div>
+        <div class="score-item warn"><div class="score-value">6</div><div class="score-label">Seniority</div><div class="score-compare">was 3</div></div>
+        <div class="score-item"><div class="score-value">7</div><div class="score-label">Hire Potential</div><div class="score-compare">was 4</div></div>
+      </div>
+
+      <div class="verdict">
+        <h3>Would I Interview This Candidate?</h3>
+        <p><strong>Yes, comfortably — for mid-level. Borderline for a senior IC role, and here's the specific gap that decides it.</strong> The research is now real and defensible: an empathy map with verbatim quotes, a competitive SWOT with named apps, testing findings that changed an actual decision (the timer). That's no longer decoration — it's evidence. But two things still read as junior-to-mid rather than senior:</p>
+        <ul>
+          <li><strong>No individual contribution line.</strong> This is a two-person team (Cosima Wagner + Sauveer Sinha) and every section reads as "we." A senior hiring manager's first question in the interview will be "what did <em>you</em> specifically own?" — and right now the case study hasn't pre-answered it.</li>
+          <li><strong>Honesty about limitations is good, but under-leveraged.</strong> Naming the small sample size and missing accessibility audit is the right instinct — most candidates hide this. But a senior-level version would show the <em>mitigation plan already scoped</em> (who, how, by when) rather than just a bullet list at the bottom.</li>
+          <li><strong>Strength:</strong> The Naming &amp; Concept Exploration section is genuinely rare — almost no portfolio shows survey data on rejected app names. Keep this; it's memorable and differentiated in a 5-minute skim.</li>
+          <li><strong>Strength:</strong> The "3 of 4 testers hated the timer → timer removed" story is the single best beat in the whole case study. It's concrete, falsifiable, and shows research changing a real decision. Everything else should be edited toward that same standard of specificity.</li>
+        </ul>
+      </div>
+
+      <h2>Top 10 Weaknesses (Round 2)</h2>
+      <ol class="weakness-list">
+        <li><div class="weakness-title">No "my role" breakdown in a two-person project <span class="badge badge-high">HIGH</span></div><div class="weakness-impact">Every section says "we." A hiring manager evaluating an individual can't tell what Sauveer specifically drove vs. Cosima. This is the single highest-leverage fix available.</div></li>
+        <li><div class="weakness-title">No executive summary above the fold <span class="badge badge-high">HIGH</span></div><div class="weakness-impact">The hero states the concept but not the outcome. A recruiter skimming for 30 seconds should see the headline result (e.g. "testing directly removed a core mechanic and reshaped the home screen") before they ever scroll to Reflection.</div></li>
+        <li><div class="weakness-title">Limitations are disclosed but not mitigated <span class="badge badge-medium">MEDIUM</span></div><div class="weakness-impact">"No accessibility audit yet" and "small sample" are listed as known gaps — good instinct — but nothing shows a scoped plan to close them. Senior work names the gap AND the fix.</div></li>
+        <li><div class="weakness-title">No live or clickable prototype <span class="badge badge-medium">MEDIUM</span></div><div class="weakness-impact">Every screen is a static image behind a lightbox. Reviewers increasingly expect at least one tappable Figma/InVision link to judge interaction quality first-hand, not just the visual layer.</div></li>
+        <li><div class="weakness-title">Naming section is compelling but overlong <span class="badge badge-low">LOW</span></div><div class="weakness-impact">Four survey charts plus two landing-page mockups is a lot of real estate for a supporting beat. Trim to the single strongest chart and the final name reveal; move the rest to an appendix or "see more" toggle.</div></li>
+        <li><div class="weakness-title">Testing metrics are presented as goals, which reads ambiguously on a skim <span class="badge badge-medium">MEDIUM</span></div><div class="weakness-impact">The "Targets we tested against" framing is honest, but a fast reader can mistake goal thresholds for achieved results. Needs a sharper visual distinction (e.g. "TARGET" watermark or a clearly separate "Actual" column, even if "actual" says "not yet measured").</div></li>
+        <li><div class="weakness-title">No accessibility work shown, only promised <span class="badge badge-medium">MEDIUM</span></div><div class="weakness-impact">Even a partial pass — a manual contrast check on the sage/cream palette, one screen reader walkthrough — would move this from "we know we should" to "here's what we found." Right now it's a stated gap with zero evidence of effort.</div></li>
+        <li><div class="weakness-title">Videos have no caption/context card explaining what to look for <span class="badge badge-low">LOW</span></div><div class="weakness-impact">The walkthrough and brand-film videos are dropped in with only a small tag ("Product walkthrough"/"Brand film"). A reviewer who won't press play needs a one-line synopsis of what the video proves.</div></li>
+        <li><div class="weakness-title">Two-person team credit isn't visually distinguished anywhere else in the page <span class="badge badge-low">LOW</span></div><div class="weakness-impact">Cosima's name appears once, in the hero metadata, then never again — including in the concept-exploration section where her concept (Concept 2) is directly discussed. Attribution should travel with the work, not just sit in the header.</div></li>
+        <li><div class="weakness-title">Long single-page scroll with no progress/reading-time indicator <span class="badge badge-low">LOW</span></div><div class="weakness-impact">13 sections is a lot for a 5-minute reviewer. A slim progress bar or "8 min read" indicator helps someone decide how much attention to allocate before they start.</div></li>
+      </ol>
+    </div>
+
+    <h2>Redesigned Outline (Round 2)</h2>
+    <p>The structure from round one was right. These are additions and trims, not a rebuild.</p>
+    <ol class="outline">
+      <li><span class="step">1. Hero + At-a-Glance strip</span><span class="tagnew">new</span><div class="desc">Add a slim strip directly under the hero: one outcome-oriented sentence ("Testing changed 3 core decisions before this ever became a screen"), a link to a live/clickable prototype, and an estimated read time.</div></li>
+      <li><span class="step">2. My Role</span><span class="tagnew">new</span><div class="desc">3–4 lines, placed right after the hero: what Sauveer owned (research synthesis, testing, visual system) vs. what was shared/Cosima-led (concept 2, naming survey design). Turns "we" into an evaluable individual contribution.</div></li>
+      <li><span class="step">3. Problem</span><div class="desc">Keep as-is — the empathy-map evidence cards are strong and specific.</div></li>
+      <li><span class="step">4. Research</span><div class="desc">Keep. Consider trimming persona cards from 4 to 2–3 detailed ones rather than 4 thin ones, if space is needed elsewhere.</div></li>
+      <li><span class="step">5. Naming &amp; Concept Exploration</span><div class="desc">Keep the story, cut the volume — one chart, the two rejected-name cards, the final reveal. Move remaining survey detail behind a "see full data" disclosure.</div></li>
+      <li><span class="step">6. Decisions &amp; Cuts</span><div class="desc">Keep — this is where the timer story lives. Consider pulling that one finding up into the At-a-Glance strip too; it's the strongest proof point in the whole piece.</div></li>
+      <li><span class="step">7. Design System</span><div class="desc">Keep. Add one real accessibility check (contrast ratio table for the actual palette in use) even if informal — replaces a promise with evidence.</div></li>
+      <li><span class="step">8. Evolution</span><div class="desc">Keep as-is — accurately captioned, shows systemization (v4 scaling to a second challenge type), which is a senior signal.</div></li>
+      <li><span class="step">9. Solution Walkthrough</span><div class="desc">Keep. Add inline attribution where Cosima's concept elements (diary, calming sounds) show up in the shipped flow.</div></li>
+      <li><span class="step">10. Usability Testing</span><div class="desc">Keep, but visually separate "target" vs. "not yet measured" so a skimmer can't mistake one for the other.</div></li>
+      <li><span class="step">11. Final Screens</span><div class="desc">Keep the gallery. Add a single prototype link (even read-only) near this section.</div></li>
+      <li><span class="step">12. Reflection &amp; Limitations</span><div class="desc">Keep the honesty. For each limitation, add one line naming the concrete next action and rough effort (this is the fix for weakness #3).</div></li>
+      <li><span class="step">13. Next Steps</span><div class="desc">Keep, but firewall the unvalidated physical-card idea more explicitly (already partially done) — move it visually below the validated, research-backed next steps.</div></li>
+      <li><span class="step">14. Footer</span><div class="desc">Keep minimal contact info; no change needed.</div></li>
+    </ol>
+  </div>
+
+  <section class="section-sm" style="background:var(--surface)">
+    <div class="container">
+      <h2>Section-by-Section Analysis</h2>
+
+      <div class="analysis">
+        <div class="analysis-header"><span class="analysis-title">Hero + Context Card</span><span class="analysis-grade" style="background:var(--warn-soft);color:var(--warn)">B-</span></div>
+        <div class="analysis-body">
+          <p class="keep">Condensed metadata row (Role / Team / Timeline / Type) is exactly the "context card" pattern recommended in round one — correctly implemented.</p>
+          <p class="issue">Still no outcome statement. The deck sentence describes the product, not what the project proved.</p>
+          <div class="recommendation"><strong>Fix:</strong> Add one line under the deck: "Testing directly reversed three shipped decisions — including cutting a feature that scored highest on paper." Specific, falsifiable, and earns the scroll.</div>
+        </div>
+      </div>
+
+      <div class="analysis">
+        <div class="analysis-header"><span class="analysis-title">Problem</span><span class="analysis-grade" style="background:var(--success-soft);color:var(--success)">A-</span></div>
+        <div class="analysis-body">
+          <p class="keep">Verbatim empathy-map quotes ("rehearsing a sentence three times") replace last round's generic problem statement. This is real evidence, properly cited by artifact type.</p>
+          <p class="issue">The SWOT callout paragraph is still a summary of a summary — it describes the pattern without showing a single concrete example from the SWOT board itself.</p>
+          <div class="recommendation"><strong>Fix:</strong> Pull one specific labeled sticky note from the SWOT (e.g. a named weakness under BeReal) into a small inline quote, the same way the empathy map quotes are handled.</div>
+        </div>
+      </div>
+
+      <div class="analysis">
+        <div class="analysis-header"><span class="analysis-title">Research</span><span class="analysis-grade" style="background:var(--success-soft);color:var(--success)">A-</span></div>
+        <div class="analysis-body">
+          <p class="keep">Method chips (empathy mapping, affinity mapping, POV, HMW) plus four named personas with distinct archetypes is a real methodology trail, not a slide of screenshots.</p>
+          <p class="issue">Persona descriptions are one-liners with no behavioral driver or quote — thinner than the empathy map that precedes them, which is a step down in evidence quality right when the reader expects it to go up.</p>
+          <div class="recommendation"><strong>Fix:</strong> Give each persona one concrete behavioral detail pulled from the actual research board (even paraphrased), matching the specificity of the Problem section.</div>
+        </div>
+      </div>
+
+      <div class="analysis">
+        <div class="analysis-header"><span class="analysis-title">Naming &amp; Concept Exploration</span><span class="analysis-grade" style="background:var(--accent-soft);color:var(--accent)">B+</span></div>
+        <div class="analysis-body">
+          <p class="keep">This is the standout addition versus round one. Real survey percentages, two rejected landing-page concepts, an honest account of why "Bloom" and "Elo" failed. Nothing else in the portfolio proves iteration this convincingly.</p>
+          <p class="issue">It's the longest section in the case study for a supporting beat — four bar-chart blocks plus two full mockup cards risks losing the 5-minute reviewer right when momentum matters most.</p>
+          <div class="recommendation"><strong>Fix:</strong> Keep the "Bloom vs. Elo understanding" chart and the final name reveal; compress the two relevance-percentage charts into a single sentence with the key numbers inline. Move the two landing-page mockups into a single side-by-side card.</div>
+        </div>
+      </div>
+
+      <div class="analysis">
+        <div class="analysis-header"><span class="analysis-title">Decisions &amp; Strategic Cuts</span><span class="analysis-grade" style="background:var(--success-soft);color:var(--success)">A</span></div>
+        <div class="analysis-body">
+          <p class="keep">The "3 of 4 testers felt pressured by the timer → timer removed" line is the best single piece of evidence in the entire case study — concrete, sourced, and it demonstrates research overruling a shipped decision. This is exactly what round one's critique asked for and couldn't get without fabrication.</p>
+          <p class="issue">It's currently buried as one row in a six-row table. A finding this strong deserves its own visual moment, not a table cell.</p>
+          <div class="recommendation"><strong>Fix:</strong> Pull it out as a standalone callout card with before/after screen thumbnails, and cross-link it from the hero's new outcome line.</div>
+        </div>
+      </div>
+
+      <div class="analysis">
+        <div class="analysis-header"><span class="analysis-title">Design System</span><span class="analysis-grade" style="background:var(--accent-soft);color:var(--accent)">B+</span></div>
+        <div class="analysis-body">
+          <p class="keep">Citing actual studies (Akers et al. 2012, Stone 2003, Elliot &amp; Aarts 2011, Yildirim et al. 2011) for color choices, plus a real Duolingo/Headspace/Calm feature benchmark, is a genuinely senior move — design rationale backed by literature, not vibes.</p>
+          <p class="issue">The stated design-system maturity outpaces the actual accessibility evidence — contrast, color-blind safety, and screen-reader support are asserted by omission, not verified.</p>
+          <div class="recommendation"><strong>Fix:</strong> Add one real contrast-ratio table for the five core colors against the cream background — even a manual WebAIM check — so "we care about accessibility" has one piece of proof.</div>
+        </div>
+      </div>
+
+      <div class="analysis">
+        <div class="analysis-header"><span class="analysis-title">Prototype Evolution</span><span class="analysis-grade" style="background:var(--success-soft);color:var(--success)">A-</span></div>
+        <div class="analysis-body">
+          <p class="keep">Correctly re-captioned from round one (the original mismatched the actual screenshots). V4 showing the same anatomy scaled to a second challenge type is a real systems-thinking signal — most candidates only show "it got prettier," not "it got reusable."</p>
+          <p class="fix">No real issue here — this section now does what it should. Lowest-priority section to touch further.</p>
+        </div>
+      </div>
+
+      <div class="analysis">
+        <div class="analysis-header"><span class="analysis-title">Solution Walkthrough</span><span class="analysis-grade" style="background:var(--accent-soft);color:var(--accent)">B+</span></div>
+        <div class="analysis-body">
+          <p class="keep">Real microcopy ("Befriending the Mirror," the actual reflection quote from testing) makes this feel like a shipped product, not a mockup.</p>
+          <p class="issue">Cosima's Concept 2 contributions (diary, calming sounds, event radar) are visible in the final product's DNA but never explicitly reconnected here — the reader loses the thread between "who proposed this" and "what shipped."</p>
+          <div class="recommendation"><strong>Fix:</strong> One small inline note per step where relevant: "(from Concept 2)" — cheap to add, closes the individual-contribution gap partially.</div>
+        </div>
+      </div>
+
+      <div class="analysis">
+        <div class="analysis-header"><span class="analysis-title">Usability Testing</span><span class="analysis-grade" style="background:var(--accent-soft);color:var(--accent)">B</span></div>
+        <div class="analysis-body">
+          <p class="keep">Real 7-task protocol, real evaluation criteria, and findings attributed to actual test patterns (not invented percentages) — this is the section round one most needed and fabricated instead.</p>
+          <p class="issue">The "targets we tested against" metrics sit visually identical to the findings below them. A skimming reviewer could easily read a goal ("<10% report discomfort") as an achieved result.</p>
+          <div class="recommendation"><strong>Fix:</strong> Label the metrics grid explicitly as "Rubric (not yet measured against a live product)" and consider muting its color treatment relative to the real findings section.</div>
+        </div>
+      </div>
+
+      <div class="analysis">
+        <div class="analysis-header"><span class="analysis-title">Reflection &amp; Limitations</span><span class="analysis-grade" style="background:var(--accent-soft);color:var(--accent)">B+</span></div>
+        <div class="analysis-body">
+          <p class="keep">This section is the biggest philosophical win over round one. Naming the sample size, admitting there's no live-product data, and calling the physical cards "unvalidated" instead of hiding it — this is what makes the whole case study credible rather than suspicious.</p>
+          <p class="issue">Each limitation is stated but not resourced. "No accessibility audit was run" reads differently depending on whether it's followed by nothing (as now) or "— scoped for two days once a build exists."</p>
+          <div class="recommendation"><strong>Fix:</strong> Add a one-line mitigation to each of the four limitations. Costs almost nothing to write, meaningfully changes how senior the section reads.</div>
+        </div>
+      </div>
+
+      <div class="analysis">
+        <div class="analysis-header"><span class="analysis-title">Next Steps</span><span class="analysis-grade" style="background:var(--success-soft);color:var(--success)">A-</span></div>
+        <div class="analysis-body">
+          <p class="keep">Explicitly labeling the physical puzzle cards as "unvalidated idea, not a roadmap commitment" is exactly the kind of self-aware scoping a senior reviewer wants to see — most portfolios present every future idea with false confidence.</p>
+          <p class="fix">Only refinement: visually separate the validated-research-backed items (accessibility pass, wider sample, quiet connection pilot) from the speculative one, rather than one flat numbered list.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+    <h2>Visual Design Recommendations</h2>
+
+    <div class="analysis">
+      <div class="analysis-header"><span class="analysis-title">Typography &amp; Hierarchy</span></div>
+      <div class="analysis-body">
+        <p><strong>Current:</strong> Baloo Bhai 2 (display) + Nunito Sans (body), warm cream palette — thematically correct for a "calm introvert-first" product, unlike round one's colder Playfair/Inter swap which fought the product's own design system.</p>
+        <p class="fix">Add one more size step between section-title and body copy for the At-a-Glance strip and the new "My Role" callout — both need to read as more urgent/scannable than a standard paragraph.</p>
+      </div>
+    </div>
+
+    <div class="analysis">
+      <div class="analysis-header"><span class="analysis-title">Layout &amp; Composition</span></div>
+      <div class="analysis-body">
+        <p><strong>Current:</strong> Consistent 1200px container, generous section padding, card-based grids throughout. Reads as intentional, not templated.</p>
+        <p class="fix">Introduce a slim sticky "read progress" bar (a 3px accent-colored line under the nav that fills as the user scrolls) — cheap, modern, and helps a time-boxed reviewer self-pace through 13 sections.</p>
+      </div>
+    </div>
+
+    <div class="analysis">
+      <div class="analysis-header"><span class="analysis-title">Color &amp; Motion</span></div>
+      <div class="analysis-body">
+        <p><strong>Current:</strong> Sage/terracotta/periwinkle used with clear semantics (sage = primary, terracotta = warning/cut, periwinkle = informational) — the exact discipline round one's critique asked for and got.</p>
+        <p class="fix">The reveal-on-scroll animation is tasteful and not overused. One addition worth considering: a subtle color shift on the "Decisions" section background (slightly warmer) to visually flag it as the case study's strongest evidence section — visual emphasis matching narrative emphasis.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <h2>Suggested Diagrams &amp; Additions</h2>
+    <div class="diagram-grid">
+      <div class="diagram-card"><strong>At-a-Glance outcome strip</strong>One sentence + 2–3 stat chips directly under the hero, linking down to the Decisions section.</div>
+      <div class="diagram-card"><strong>My Role callout</strong>A small two-column "Sauveer led / Shared with Cosima" block placed right after the hero.</div>
+      <div class="diagram-card"><strong>Contrast-ratio mini table</strong>Five swatches × background, with pass/fail against WCAG AA — turns a promise into one piece of real evidence.</div>
+      <div class="diagram-card"><strong>Before/after callout for the timer finding</strong>Pull it out of the table into its own card with two small screen thumbnails.</div>
+      <div class="diagram-card"><strong>Reading-progress bar</strong>Thin accent-colored bar under the sticky nav, fills with scroll position.</div>
+      <div class="diagram-card"><strong>Limitation → mitigation pairing</strong>Each bullet in Reflection gets a second line: concrete next action + rough effort.</div>
+    </div>
+
+    <h2>Prioritized Action Plan</h2>
+    <table class="action-table">
+      <thead><tr><th>Priority</th><th>Action</th><th>Section</th><th>Impact</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge badge-high">HIGH</span></td><td>Add a "My Role" breakdown clarifying individual vs. shared contribution</td><td>Hero</td><td>Seniority, Hire Potential</td></tr>
+        <tr><td><span class="badge badge-high">HIGH</span></td><td>Add an outcome-focused sentence + stat chips above the fold</td><td>Hero</td><td>Storytelling, Presentation</td></tr>
+        <tr><td><span class="badge badge-medium">MEDIUM</span></td><td>Pull the timer finding into its own standalone evidence card</td><td>Decisions</td><td>Storytelling, Product Thinking</td></tr>
+        <tr><td><span class="badge badge-medium">MEDIUM</span></td><td>Pair each stated limitation with a concrete mitigation/next step</td><td>Reflection</td><td>Seniority</td></tr>
+        <tr><td><span class="badge badge-medium">MEDIUM</span></td><td>Add a real (even informal) contrast-ratio check for the core palette</td><td>Design System</td><td>Visual Design, Seniority</td></tr>
+        <tr><td><span class="badge badge-medium">MEDIUM</span></td><td>Visually separate "target" metrics from real findings in Testing</td><td>Testing</td><td>Research, Presentation</td></tr>
+        <tr><td><span class="badge badge-low">LOW</span></td><td>Trim Naming section to its single strongest chart + reveal</td><td>Naming</td><td>Presentation</td></tr>
+        <tr><td><span class="badge badge-low">LOW</span></td><td>Add a synopsis line to both embedded videos</td><td>Solution / Next Steps</td><td>Presentation</td></tr>
+        <tr><td><span class="badge badge-low">LOW</span></td><td>Add a slim scroll-progress indicator under the nav</td><td>Global</td><td>Presentation</td></tr>
+        <tr><td><span class="badge badge-low">LOW</span></td><td>Cross-reference Cosima's Concept 2 elements inline in the Solution walkthrough</td><td>Solution</td><td>Seniority</td></tr>
+      </tbody>
+    </table>
+
+    <div class="quote">"The first version needed real evidence. This version has it — what's left is making sure the reader can tell, in the first thirty seconds, exactly what you personally proved."</div>
+
+    <h2>Final Hiring Verdict</h2>
+    <p><strong>Round 1 score: 4/10.</strong> Round 2 score: <strong>7/10</strong> (Storytelling: 7, UX Process: 8, Product Thinking: 7, Visual Design: 7, Research: 8, Presentation: 7, Seniority: 6, Hire Potential: 7).</p>
+    <p><strong>Would I interview this candidate?</strong> Yes. This now reads as strong mid-level work with clear senior instincts (honest limitations, real citations, a decision that testing actually reversed). It is not yet unambiguously senior — that gap is entirely about attribution and self-scoped mitigation, not about the quality of the underlying work.</p>
+    <p><strong>What would tip this from "interview" to "fast-track"?</strong> Three cheap edits: a My Role callout, an outcome sentence in the hero, and a mitigation line under each stated limitation. None of these require new research — they require presenting the research that already exists with more confidence about what it proves.</p>
+  </div>
+
+  <footer>
+    <div class="logo">🔍</div>
+    <p>Second-pass critique of the rebuilt case study. Generated as a redesign exercise — the goal is to keep raising the bar one honest pass at a time, not to declare victory.</p>
+  </footer>
+
+</body>
+</html>

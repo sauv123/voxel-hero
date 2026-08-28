@@ -1,8 +1,8 @@
 {
   "version": 1,
   "kind": "html",
-  "title": "index.html",
-  "entry": "index.html",
+  "title": "olo-redesigned.html",
+  "entry": "olo-redesigned.html",
   "renderer": "html",
   "status": "complete",
   "exports": [
@@ -10,8 +10,8 @@
     "pdf",
     "zip"
   ],
-  "createdAt": "2026-07-23T13:23:24.925Z",
-  "updatedAt": "2026-08-28T19:18:59.228Z",
+  "createdAt": "2026-07-28T15:54:00.371Z",
+  "updatedAt": "2026-07-28T15:54:00.371Z",
   "metadata": {
     "inferred": true,
     "reconciled": true

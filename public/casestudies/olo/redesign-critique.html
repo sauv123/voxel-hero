@@ -1,0 +1,759 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Case Study Redesign Critique — olo</title>
+  <meta name="description" content="A brutally honest redesign critique of the olo case study, evaluated from hiring manager and senior designer perspectives.">
+  <meta property="og:title" content="olo Case Study Redesign Critique">
+  <meta property="og:description" content="Hiring manager + senior designer critique of the olo introvert-first design case study.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#1a1a1a">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>🔍</text></svg>">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f8f6f2;
+      --surface-2: #f0eeed;
+      --fg: #1a1a1a;
+      --fg-2: #4a4a4a;
+      --fg-3: #7a7a7a;
+      --border: #e0dedb;
+      --border-2: #d0cecb;
+      --accent: #2563eb;
+      --accent-soft: #e8eaf2;
+      --danger: #ef4146;
+      --danger-soft: #fef2f3;
+      --warn: #f5a623;
+      --warn-soft: #fff4e5;
+      --success: #10a37f;
+      --success-soft: #e8f5f0;
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body: 'Inter', system-ui, sans-serif;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; scroll-padding-top: 40px; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.15; letter-spacing: -0.02em; }
+    h1 { font-size: clamp(2rem, 4vw, 2.75rem); font-weight: 700; margin-bottom: 1rem; }
+    h2 { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 600; margin: 3rem 0 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.75rem; }
+    h3 { font-size: 1.25rem; font-weight: 600; margin: 2rem 0 1rem; color: var(--fg); }
+    h4 { font-size: 1rem; font-weight: 600; margin: 1.5rem 0 0.75rem; color: var(--fg); }
+    p { margin-bottom: 1rem; color: var(--fg-2); }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .container { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 60px 0; }
+    .section-sm { padding: 40px 0; }
+    .max-width { max-width: 880px; margin: 0 auto; }
+
+    /* Header */
+    header {
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 24px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+      background: rgba(255,255,255,0.85);
+    }
+    header .container { display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-family: var(--font-display); font-weight: 700; font-size: 1.5rem; color: var(--accent); text-decoration: none; }
+    .meta { font-size: 0.8125rem; color: var(--fg-3); }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(135deg, var(--surface-2) 0%, var(--surface) 100%);
+      padding: 100px 0;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+    .hero .section-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 24px; }
+    .hero-title { font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 700; margin-bottom: 1.5rem; }
+    .hero-title .accent { color: var(--danger); }
+    .hero-deck { font-size: 1.125rem; color: var(--fg-2); max-width: 680px; margin: 0 auto; line-height: 1.7; }
+
+    /* Scorecard */
+    .scorecard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin: 40px 0;
+    }
+    .score-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      text-align: center;
+    }
+    .score-value { font-family: var(--font-display); font-size: 2.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+    .score-label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--fg-3); margin-top: 8px; }
+    .score-item.danger .score-value { color: var(--danger); }
+    .score-item.warn .score-value { color: var(--warn); }
+    .score-item.success .score-value { color: var(--success); }
+
+    /* Verdict */
+    .verdict {
+      background: var(--danger-soft);
+      border-left: 4px solid var(--danger);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      margin: 40px 0;
+    }
+    .verdict h3 { color: var(--danger); margin-bottom: 1rem; }
+    .verdict ul { margin-left: 1.5rem; }
+    .verdict li { margin-bottom: 0.5rem; color: var(--fg-2); }
+
+    /* Weakness list */
+    .weakness-list { list-style: none; margin: 24px 0; }
+    .weakness-list li {
+      padding: 16px 20px;
+      margin-bottom: 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      border-left: 4px solid var(--warn);
+    }
+    .weakness-list .weakness-title { font-weight: 600; margin-bottom: 4px; display: flex; align-items: baseline; gap: 8px; }
+    .weakness-list .weakness-impact { font-size: 0.8125rem; color: var(--fg-3); }
+
+    /* Redesign outline */
+    .outline { list-style: none; margin: 24px 0; }
+    .outline li {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .outline li:last-child { border-bottom: none; }
+    .outline .step { font-weight: 700; color: var(--accent); }
+    .outline .desc { font-size: 0.9rem; color: var(--fg-2); margin-top: 4px; }
+
+    /* Section analysis */
+    .analysis {
+      margin: 32px 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .analysis-header {
+      background: var(--surface-2);
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .analysis-title { font-weight: 600; font-size: 1.05rem; }
+    .analysis-section { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--fg-3); }
+    .analysis-body { padding: 24px; }
+    .analysis-body > * { margin-bottom: 1rem; }
+    .issue { color: var(--danger); font-weight: 500; margin: 12px 0; }
+    .fix { color: var(--success); font-weight: 500; margin: 12px 0; }
+    .issue::before { content: "❌ "; }
+    .fix::before { content: "✅ "; }
+    .recommendation {
+      background: var(--accent-soft);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      margin: 16px 0;
+      font-size: 0.9rem;
+    }
+    .recommendation strong { color: var(--accent); }
+
+    /* Action plan table */
+    .action-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0;
+      font-size: 0.9rem;
+    }
+    .action-table th, .action-table td {
+      text-align: left;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .action-table th { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--fg-3); }
+    .badge { display: inline-block; padding: 2px 10px; border-radius: 100px; font-size: 0.75rem; font-weight: 700; }
+    .badge-high { background: var(--danger-soft); color: var(--danger); }
+    .badge-medium { background: var(--warn-soft); color: var(--warn); }
+    .badge-low { background: var(--success-soft); color: var(--success); }
+
+    /* Typography */
+    .text-sm { font-size: 0.8125rem; color: var(--fg-3); }
+    .text-lg { font-size: 1.125rem; color: var(--fg-2); }
+    .lead { font-size: 1.25rem; line-height: 1.6; color: var(--fg-2); margin-bottom: 2rem; }
+    .quote {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-style: italic;
+      line-height: 1.4;
+      color: var(--fg);
+      text-align: center;
+      padding: 32px;
+      border-left: 3px solid var(--accent);
+      background: var(--surface);
+      margin: 32px 0;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--fg);
+      color: #fff;
+      padding: 60px 0 40px;
+      text-align: center;
+      margin-top: 60px;
+      border-top: 1px solid var(--border-2);
+    }
+    footer p { opacity: 0.6; max-width: 500px; margin: 0 auto; }
+    footer .logo { color: #fff; font-size: 1.75rem; margin-bottom: 16px; display: block; }
+
+    @media (max-width: 768px) {
+      .container { padding: 0 16px; }
+      .hero { padding: 60px 0; }
+      h2 { font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container">
+      <a href="#" class="logo">Redesign Critique</a>
+      <span class="meta">olo case study · hiring manager review</span>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <div class="section-label">Portfolio Audit</div>
+      <h1 class="hero-title">Case Study Redesign <span class="accent">Critique</span></h1>
+      <p class="hero-deck">A brutally honest evaluation of the olo case study — judged from the perspective of a hiring manager reviewing portfolios for Google, Stripe, Airbnb, Figma, Notion, and Microsoft.</p>
+    </div>
+  </section>
+
+  <div class="container">
+
+    <div class="section-sm">
+      <p class="lead">This audit assumes the role of both a senior product designer (15+ years) and a hiring manager. The goal is not to make small improvements — it is to identify every element that weakens the portfolio's interview potential and propose a stronger alternative.</p>
+
+      <h2>Hiring Verdict</h2>
+
+      <div class="scorecard">
+        <div class="score-item">
+          <div class="score-value">4</div>
+          <div class="score-label">Storytelling</div>
+        </div>
+        <div class="score-item">
+          <div class="score-value">5</div>
+          <div class="score-label">UX Process</div>
+        </div>
+        <div class="score-item">
+          <div class="score-value">3</div>
+          <div class="score-label">Product Thinking</div>
+        </div>
+        <div class="score-item">
+          <div class="score-value">6</div>
+          <div class="score-label">Visual Design</div>
+        </div>
+        <div class="score-item">
+          <div class="score-value">4</div>
+          <div class="score-label">Research</div>
+        </div>
+        <div class="score-item">
+          <div class="score-value">5</div>
+          <div class="score-label">Presentation</div>
+        </div>
+        <div class="score-item">
+          <div class="score-value">3</div>
+          <div class="score-label">Seniority</div>
+        </div>
+        <div class="score-item">
+          <div class="score-value">4</div>
+          <div class="score-label">Hire Potential</div>
+        </div>
+      </div>
+
+      <div class="verdict">
+        <h3>Would I Interview This Candidate?</h3>
+        <p><strong>Yes — but with reservations.</strong> The concept is compelling and the visual execution is strong enough to earn a conversation. However, the case study reads more like a project report than a strategic design narrative. Several sections lack evidence of business impact, prioritization decisions, and systems thinking — the hallmarks of senior-level work.</p>
+        <ul>
+          <li><strong>Concern:</strong> No measurable business outcomes — only vanity metrics (87% "achievable," 92% "felt safe").</li>
+          <li><strong>Concern:</strong> Research depth is implied but not demonstrated — where are the raw interview transcripts, affinity diagrams, or usability test videos?</li>
+          <li><strong>Concern:</strong> No trade-off analysis — what was sacrificed to ship this version? What would the next iteration look like?</li>
+          <li><strong>Strength:</strong> The introvert-first framing is genuinely differentiated and well-executed.</li>
+          <li><strong>Strength:</strong> Visual design is polished and consistent — the sage palette and squircle language feel intentional.</li>
+        </ul>
+      </div>
+
+      <h2>Top 10 Weaknesses</h2>
+      <ol class="weakness-list">
+        <li>
+          <div class="weakness-title">No measurable business impact <span class="badge badge-high">HIGH</span></div>
+          <div class="weakness-impact">The "Impact" section shows user sentiment scores but no retention, engagement, or conversion metrics. A hiring manager needs to see how design decisions moved business KPIs.</div>
+        </li>
+        <li>
+          <div class="weakness-title">Research is surface-level <span class="badge badge-high">HIGH</span></div>
+          <div class="weakness-impact">The Discovery section shows gallery images of research artifacts but doesn't walk through the actual synthesis process — no affinity mapping, no journey pain points, no "How Might We" questions.</div>
+        </li>
+        <li>
+          <div class="weakness-title">Missing prioritization framework <span class="badge badge-high">HIGH</span></div>
+          <div class="weakness-impact">No RICE, Kano, or effort-impact matrix. The "Strategic Cuts" section is a good start but doesn't explain why certain features were deprioritized over others.</div>
+        </li>
+        <li>
+          <div class="weakness-title">No accessibility analysis <span class="badge badge-medium">MEDIUM</span></div>
+          <div class="weakness-impact">The prototype mentions "optimized contrast" but there's no WCAG audit, no color-blind simulation, no screen-reader testing.</div>
+        </li>
+        <li>
+          <div class="weakness-title">Weak problem framing <span class="badge badge-high">HIGH</span></div>
+          <div class="weakness-impact">The "Problem" section states a generic issue ("high engagement, forced streaks") without anchoring it in specific user data. What % of users dropped off? What was the churn rate?</div>
+        </li>
+        <li>
+          <div class="weakness-title">No competitive analysis depth <span class="badge badge-medium">MEDIUM</span></div>
+          <div class="weakness-impact">The analogy tabs compare "loud vs calm" but don't analyze specific competitors' feature sets, pricing models, or user retention strategies.</div>
+        </li>
+        <li>
+          <div class="weakness-title">Missing design system <span class="badge badge-medium">MEDIUM</span></div>
+          <div class="weakness-impact">There's a "Visual Design Research" section but no documented design system — no component library, no token specification, no contribution guidelines.</div>
+        </li>
+        <li>
+          <div class="weakness-title">No usability testing protocol <span class="badge badge-medium">MEDIUM</span></div>
+          <div class="weakness-impact">The Concept Validation section shows screenshots but doesn't describe the testing methodology — sample size, tasks, success criteria, or iteration cycles.</div>
+        </li>
+        <li>
+          <div class="weakness-title">Timeline is vague <span class="badge badge-low">LOW</span></div>
+          <div class="weakness-impact">"2 months" is stated but not broken down by phase. A hiring manager wants to see how work was sequenced and parallelized.</div>
+        </li>
+        <li>
+          <div class="weakness-title">No next steps or learnings <span class="badge badge-medium">MEDIUM</span></div>
+          <div class="weakness-impact">The case study ends with a quote and footer. There's no "What I'd do next" section, no reflection on what worked/didn't, no acknowledgment of limitations.</div>
+        </li>
+      </ol>
+    </div>
+
+    <h2>Complete Redesigned Outline</h2>
+    <p>The current case study has 10 sections. The redesigned version should have 12, with a different flow:</p>
+
+    <ol class="outline">
+      <li><span class="step">1. Hero / Context</span><div class="desc">Project overview, team, timeline, role — condensed into a skimmable header card.</div></li>
+      <li><span class="step">2. Problem & Opportunity</span><div class="desc">Data-driven problem statement with specific metrics. "43% of introverted users abandoned social apps within 2 weeks due to anxiety-inducing gamification."</div></li>
+      <li><span class="step">3. Research</span><div class="desc">Synthesis process: interview guide, affinity map, journey map, key insights. Show the actual work, not just screenshots.</div></li>
+      <li><span class="step">4. Personas & Scenarios</span><div class="desc">2-3 detailed personas with behavioral maps, not just demographic cards.</div></li>
+      <li><span class="step">5. Competitive Analysis</span><div class="desc">Feature comparison matrix + positioning map. Show where olo fits in the landscape.</div></li>
+      <li><span class="step">6. Opportunity Framework</span><div class="desc">Prioritized list of opportunities with RICE scores. This is where "Strategic Cuts" should live.</div></li>
+      <li><span class="step">7. Ideation & Concepting</span><div class="desc">Crazy 8s, concept sketches, concept testing results. Show divergent → convergent thinking.</div></li>
+      <li><span class="step">8. Design System</span><div class="desc">Color, typography, components, accessibility tokens. Show the system, not just the application.</div></li>
+      <li><span class="step">9. Prototype & Testing</span><div class="desc">Usability test protocol, findings, iteration cycles. Show how feedback shaped the design.</div></li>
+      <li><span class="step">10. Final Solution</span><div class="desc">High-fidelity screens with annotations explaining key design decisions.</div></li>
+      <li><span class="step">11. Impact & Metrics</span><div class="desc">Pre/post metrics, user feedback, business outcomes. Include limitations and caveats.</div></li>
+      <li><span class="step">12. Next Steps & Learnings</span><div class="desc">What would you do next? What did you learn? What would you do differently?</div></li>
+    </ol>
+  </div>
+
+  <section class="section-sm" style="background: var(--surface);">
+    <div class="container">
+      <h2>Section-by-Section Analysis</h2>
+
+      <div class="analysis">
+        <div class="analysis-header">
+          <span class="analysis-title">Hero Section</span>
+          <span class="analysis-section">Current</span>
+        </div>
+        <div class="analysis-body">
+          <p><strong>Current:</strong> Large title, deck, tags, two CTAs, two phone mockups with GSAP animation.</p>
+          <p class="issue">The hero tries to do too much — it establishes the concept, shows the team, presents the timeline, and offers two CTAs. This dilutes the primary message.</p>
+          <p class="issue">The phone mockup animation is visually impressive but adds load time and doesn't communicate anything about the product.</p>
+          <p class="fix">Condense the hero to a single, clear value proposition. Move team/timeline/tags to a small metadata row. Keep one primary CTA. Replace the animated mockups with a single static hero image or a short auto-playing video.</p>
+          <div class="recommendation">
+            <strong>Recommendation:</strong> Use a "context card" pattern — a small, skimmable box at the top with role, timeline, team, and tools. Let the hero focus solely on the problem and solution.
+          </div>
+        </div>
+      </div>
+
+      <div class="analysis">
+        <div class="analysis-header">
+          <span class="analysis-title">Problem Section</span>
+          <span class="analysis-section">Current</span>
+        </div>
+        <div class="analysis-body">
+          <p><strong>Current:</strong> Generic problem statement + analogy switcher (Traditional Apps / Introvert Reality / The olo Way).</p>
+          <p class="issue">The problem statement is generic: "Most social and habit-building applications are designed around high engagement, forced streaks, and constant reminders." No data, no specific user segment, no quantified impact.</p>
+          <p class="issue">The analogy switcher is a nice interactive element but it's decorative — it doesn't advance the narrative or provide evidence.</p>
+          <p class="issue">The "Introvert Reality" tab lists generic pain points ("Overthinking social outcomes," "Fear of judgment") without citing research.</p>
+          <p class="fix">Start with a specific, data-backed problem statement. "In user interviews, 78% of introverted participants reported feeling anxious when using gamified social apps. The primary driver was public leaderboard visibility, which 65% cited as a reason for app abandonment."</p>
+          <div class="recommendation">
+            <strong>Recommendation:</strong> Replace the analogy switcher with a simple 2-column layout: problem statement on the left, supporting data/evidence on the right. Use a pull quote from a user interview to make it human.
+          </div>
+        </div>
+      </div>
+
+      <div class="analysis">
+        <div class="analysis-header">
+          <span class="analysis-title">Discovery / Research</span>
+          <span class="analysis-section">Current</span>
+        </div>
+        <div class="analysis-body">
+          <p><strong>Current:</strong> 4-phase grid (Competitor Analysis, Persona Dev, Behavioral Observation, Journey Mapping) with gallery images.</p>
+          <p class="issue">The gallery images are screenshots of research artifacts, but the viewer can't read them. There's no summary of what was learned.</p>
+          <p class="issue">The phase descriptions are one-liners: "Creating deep empathy for Tushar, Zaida, and others navigating anxiety." Who are Tushar and Zaida? Why are they relevant?</p>
+          <p class="issue">No mention of research methodology — how many users? What was the interview protocol? How were personas validated?</p>
+          <p class="fix">For each phase, show the actual synthesis work: affinity maps with clear themes, journey maps with annotated pain points, personas with behavioral drivers (not just demographics).</p>
+          <div class="recommendation">
+            <strong>Recommendation:</strong> Use a "research synthesis" layout: for each phase, show 1) the raw artifact (blurred or summarized), 2) the key insight, 3) how it informed the design. Add a "Research Methods" callout with sample size, duration, and recruitment criteria.
+          </div>
+        </div>
+      </div>
+
+      <div class="analysis">
+        <div class="analysis-header">
+          <span class="analysis-title">Design Decisions Table</span>
+          <span class="analysis-section">Current</span>
+        </div>
+        <div class="analysis-body">
+          <p><strong>Current:</strong> 6-row table mapping research insights to design decisions.</p>
+          <p class="issue">This is the strongest section but it's buried in the middle. It should be more prominent.</p>
+          <p class="issue">The table is too simplistic — each row is a one-liner. Real design decisions involve trade-offs and alternatives considered.</p>
+          <p class="fix">Expand each row into a mini-case study: "Research Insight → Alternatives Considered → Decision Rationale → Outcome."</p>
+          <div class="recommendation">
+            <strong>Recommendation:</strong> Move this section to immediately after research. Frame it as "Opportunity Framework" — use a 2x2 matrix (Impact vs. Effort) to show how decisions were prioritized.
+          </div>
+        </div>
+      </div>
+
+      <div class="analysis">
+        <div class="analysis-header">
+          <span class="analysis-title">Strategic Cuts</span>
+          <span class="analysis-section">Current</span>
+        </div>
+        <div class="analysis-body">
+          <p><strong>Current:</strong> 3-card grid (Community Feed, Public Comparison, Competitive Systems) with a "Why these cuts matter" strip.</p>
+          <p class="issue">Good concept but lacks depth. Why were these three features cut and not others? What was the prioritization framework?</p>
+          <p class="issue">No mention of what was kept and why. A hiring manager wants to see the full decision matrix, not just the cuts.</p>
+          <p class="fix">Frame this as a prioritization exercise. Show a RICE or Kano matrix with all features evaluated, not just the ones that were cut.</p>
+          <div class="recommendation">
+            <strong>Recommendation:</strong> Replace the 3-card grid with a feature prioritization matrix. Include columns: Feature, Reach, Impact, Confidence, Effort, RICE Score, Decision. This demonstrates systematic thinking.
+          </div>
+        </div>
+      </div>
+
+      <div class="analysis">
+        <div class="analysis-header">
+          <span class="analysis-title">Concept Validation</span>
+          <span class="analysis-section">Current</span>
+        </div>
+        <div class="analysis-body">
+          <p><strong>Current:</strong> 4-image gallery with a paragraph of user feedback.</p>
+          <p class="issue">The feedback is generic: "Users prioritized safety and authenticity over speed." No quotes, no data, no specific user IDs.</p>
+          <p class="issue">The gallery images are unreadable screenshots — the viewer can't extract any information from them.</p>
+          <p class="fix">Show the actual usability test protocol: tasks, success criteria, key findings with user quotes, and how feedback was incorporated into the next iteration.</p>
+          <div class="recommendation">
+            <strong>Recommendation:</strong> Replace the gallery with a "Testing Report" format: Test Objective, Method, Participants, Key Findings (with quotes), Iterations Made.
+          </div>
+        </div>
+      </div>
+
+      <div class="analysis">
+        <div class="analysis-header">
+          <span class="analysis-title">Visual Design Research</span>
+          <span class="analysis-section">Current</span>
+        </div>
+        <div class="analysis-body">
+          <p><strong>Current:</strong> 4 insight cards (Approachability, Trust, Reduced Overwhelm, Emotional Comfort) + 2 image cards + a "Power of Squircles" callout.</p>
+          <p class="issue">The insights are generic and could apply to any wellness app. There's no introvert-specific visual research.</p>
+          <p class="issue">The "Power of Squircles" callout is interesting but feels like a design-system detail, not a research insight.</p>
+          <p class="fix">Show actual visual research: mood boards, color psychology studies, typography analysis, accessibility audits. Connect each visual decision back to a specific user need.</p>
+          <div class="recommendation">
+            <strong>Recommendation:</strong> Merge this section with the Design System section. Show a "Visual Language Rationale" — for each design token (color, typography, shape), explain the user need it addresses and the research behind it.
+          </div>
+        </div>
+      </div>
+
+      <div class="analysis">
+        <div class="analysis-header">
+          <span class="analysis-title">Journey / How It Works</span>
+          <span class="analysis-section">Current</span>
+        </div>
+        <div class="analysis-body">
+          <p><strong>Current:</strong> 5-step interactive journey (Check In → Receive → Act → Reflect → Grow) with phone mockup switching.</p>
+          <p class="issue">This is the best interactive element but it's placed after research, which breaks the narrative flow. It should come after the solution is presented.</p>
+          <p class="issue">The step descriptions are generic and don't explain the design rationale for each step.</p>
+          <p class="fix">Move this section to after the final solution. For each step, show the screen, the user need it addresses, and the key design decision.</p>
+          <div class="recommendation">
+            <strong>Recommendation:</strong> Rename to "Product Walkthrough" and place it after the solution screens. Add annotations to each phone screen explaining key interactions.
+          </div>
+        </div>
+      </div>
+
+      <div class="analysis">
+        <div class="analysis-header">
+          <span class="analysis-title">Prototype Development</span>
+          <span class="analysis-section">Current</span>
+        </div>
+        <div class="analysis-body">
+          <p><strong>Current:</strong> 4 evolution cards (Dense Wireframe → Streamlined Flow → Visual Hierarchy → Final Polish) with a paragraph description.</p>
+          <p class="issue">The evolution is described in prose but the cards show the actual screens. The prose doesn't match the visuals — it describes a different evolution path.</p>
+          <p class="issue">No mention of design tools, collaboration process, or stakeholder feedback loops.</p>
+          <p class="fix">Show the actual iteration process: low-fi sketches → mid-fi wireframes → hi-fi screens. For each iteration, explain what changed and why.</p>
+          <div class="recommendation">
+            <strong>Recommendation:</strong> Use a vertical timeline with 3-4 key iterations. For each: thumbnail, key change, rationale, user feedback.
+          </div>
+        </div>
+      </div>
+
+      <div class="analysis">
+        <div class="analysis-header">
+          <span class="analysis-title">Product Showcase (Mockups)</span>
+          <span class="analysis-section">Current</span>
+        </div>
+        <div class="analysis-body">
+          <p><strong>Current:</strong> 4 full-width mockup images (Daily Life, Travel, Experience, Calm Companion).</p>
+          <p class="issue">These are beautiful but serve no purpose in a case study. They're marketing materials, not design artifacts.</p>
+          <p class="issue">No context is provided — where would these appear? What user need do they address?</p>
+          <p class="fix">Either remove these entirely or integrate them into the solution section with clear annotations explaining the design decisions shown.</p>
+          <div class="recommendation">
+            <strong>Recommendation:</strong> Remove the standalone mockup section. Integrate 1-2 key mockups into the solution section with annotations.
+          </div>
+        </div>
+      </div>
+
+      <div class="analysis">
+        <div class="analysis-header">
+          <span class="analysis-title">Final Screens Gallery</span>
+          <span class="analysis-section">Current</span>
+        </div>
+        <div class="analysis-body">
+          <p><strong>Current:</strong> Horizontal scrollable gallery of 6 screens (Onboarding, Home, Profile, Quests, Components).</p>
+          <p class="issue">The gallery is well-implemented (arrows, dots, drag-scroll) but the screens are presented without context.</p>
+          <p class="issue">No annotations explaining key design decisions, no user flow connections, no accessibility considerations shown.</p>
+          <p class="fix">Present 2-3 key screens in detail with annotations. Show the user flow that connects them. Include accessibility notes (contrast ratios, touch targets, screen reader labels).</p>
+          <div class="recommendation">
+            <strong>Recommendation:</strong> Replace the gallery with a "Key Screens" section: 2-3 screens at full width with a sidebar of annotations. Include a small flow diagram showing how they connect.
+          </div>
+        </div>
+      </div>
+
+      <div class="analysis">
+        <div class="analysis-header">
+          <span class="analysis-title">Physical Puzzle Cards</span>
+          <span class="analysis-section">Current</span>
+        </div>
+        <div class="analysis-body">
+          <p><strong>Current:</strong> 4-feature grid (Creates emotional attachment, Encourages offline interaction, Makes growth personal, Transforms wins into achievements) + card design specs + mockup image.</p>
+          <p class="issue">This section feels like a separate product feature, not a case study section. It's interesting but doesn't demonstrate design process.</p>
+          <p class="issue">No user research backing the physical cards concept. No business case (cost, manufacturing, distribution).</p>
+          <p class="fix">Either integrate this into the solution section as a "Physical-Digital Bridge" feature, or move it to "Next Steps" as a future opportunity.</p>
+          <div class="recommendation">
+            <strong>Recommendation:</strong> Move to "Next Steps" section. Frame it as: "Based on user feedback, we identified an opportunity to extend the digital progress system into the physical world. This would require partnership with a print-on-demand service and additional user research."
+          </div>
+        </div>
+      </div>
+
+      <div class="analysis">
+        <div class="analysis-header">
+          <span class="analysis-title">Impact Section</span>
+          <span class="analysis-section">Current</span>
+        </div>
+        <div class="analysis-body">
+          <p><strong>Current:</strong> 3 result cards (87% Achievable, 92% Felt Safe, 64% Less Anxiety) with emoji icons.</p>
+          <p class="issue">These are vanity metrics, not business outcomes. "87% Achievable" is a survey question, not a KPI.</p>
+          <p class="issue">No baseline comparison — were these metrics better than the previous solution? What was the control group?</p>
+          <p class="issue">No sample size, no confidence intervals, no statistical significance.</p>
+          <p class="fix">Show pre/post metrics with statistical significance. Include retention rates, session duration, feature adoption. If this is a concept project, be transparent about that.</p>
+          <div class="recommendation">
+            <strong>Recommendation:</strong> Replace with a "Results & Limitations" section. Show what metrics improved, acknowledge what you don't know, and be honest about the project's scope (concept vs. shipped product).
+          </div>
+        </div>
+      </div>
+
+      <div class="analysis">
+        <div class="analysis-header">
+          <span class="analysis-title">Quote / Footer</span>
+          <span class="analysis-section">Current</span>
+        </div>
+        <div class="analysis-body">
+          <p><strong>Current:</strong> Single user quote + footer with tagline.</p>
+          <p class="issue">The quote is generic and could be fabricated. There's no attribution beyond "Early olo user."</p>
+          <p class="issue">The footer is just a tagline — no contact info, no other projects, no way to navigate to the next case study.</p>
+          <p class="fix">If including a quote, attribute it properly (with user ID if anonymized). Replace the footer with a "Next Steps" section and a proper portfolio footer with contact links.</p>
+          <div class="recommendation">
+            <strong>Recommendation:</strong> Remove the quote section. Add a "Next Steps & Learnings" section with specific, actionable insights. Include a proper footer with contact info and links to other work.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+    <h2>Prioritized Action Plan</h2>
+    <p>Ranked by impact on interview potential. Address High items before shipping.</p>
+
+    <table class="action-table">
+      <thead>
+        <tr>
+          <th>Priority</th>
+          <th>Action</th>
+          <th>Section</th>
+          <th>Impact</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="badge badge-high">HIGH</span></td>
+          <td>Add data-backed problem statement with specific metrics</td>
+          <td>Problem</td>
+          <td>Storytelling, Product Thinking</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-high">HIGH</span></td>
+          <td>Replace vanity metrics with real KPIs (retention, engagement, conversion)</td>
+          <td>Impact</td>
+          <td>Product Thinking, Seniority</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-high">HIGH</span></td>
+          <td>Add research synthesis: affinity maps, journey maps, persona details</td>
+          <td>Discovery</td>
+          <td>Research, UX Process</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-high">HIGH</span></td>
+          <td>Add feature prioritization matrix (RICE/Kano) with all features evaluated</td>
+          <td>Strategic Cuts</td>
+          <td>Product Thinking, Seniority</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-medium">MEDIUM</span></td>
+          <td>Add usability test protocol with methodology and iteration cycles</td>
+          <td>Concept Validation</td>
+          <td>UX Process, Research</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-medium">MEDIUM</span></td>
+          <td>Document design system: tokens, components, accessibility guidelines</td>
+          <td>Visual Design</td>
+          <td>Visual Design, Seniority</td>
+        </tr>
+        <tr>
+          <td><span class="badge-medium">MEDIUM</span></td>
+          <td>Add trade-off analysis: alternatives considered, why they were rejected</td>
+          <td>Design Decisions</td>
+          <td>Product Thinking, Seniority</td>
+        </tr>
+        <tr>
+          <td><span class="badge-medium">MEDIUM</span></td>
+          <td>Add accessibility audit: WCAG compliance, color-blind testing, screen-reader notes</td>
+          <td>Final Screens</td>
+          <td>Visual Design, Seniority</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-low">LOW</span></td>
+          <td>Add "Next Steps & Learnings" section with specific insights</td>
+          <td>Footer</td>
+          <td>Seniority, Presentation</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-low">LOW</span></td>
+          <td>Break down timeline into phases with durations and milestones</td>
+          <td>Hero</td>
+          <td>Presentation</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Visual Design Recommendations</h2>
+    <div class="analysis">
+      <div class="analysis-header">
+        <span class="analysis-title">Layout System</span>
+      </div>
+      <div class="analysis-body">
+        <p><strong>Current:</strong> 1200px max-width, 24px gutters, generous vertical spacing (120px sections). The layout is clean but some sections feel disconnected.</p>
+        <p class="fix">Adopt a consistent vertical rhythm. Use 80px section spacing for related content, 120px for major section breaks. Add subtle section dividers (1px hairline) to maintain flow without visual noise.</p>
+        <div class="recommendation">
+          <strong>Recommendation:</strong> Use a 12-column grid with 64px gutters on desktop. Maintain consistent horizontal padding (24px) across all sections. Add a "back to top" button that appears after scrolling 50vh.
+        </div>
+      </div>
+    </div>
+
+    <div class="analysis">
+      <div class="analysis-header">
+        <span class="analysis-title">Typography Scale</span>
+      </div>
+      <div class="analysis-body">
+        <p><strong>Current:</strong> Display (56px), H1 (40px), H2 (28px), Body (16px), Small (13px). Uses Baloo Bhai 2 (rounded display) + Nunito Sans (body). The pairing works but lacks hierarchy contrast.</p>
+        <p class="fix">Add a "Display" size (64px) for hero headlines. Tighten the H1-H2 gap (40px → 32px). Use 18px for body large (lede paragraphs). Add 11px for caption/meta.</p>
+        <div class="recommendation">
+          <strong>Recommendation:</strong> Use Playfair Display (serif) for editorial headlines, Inter for body. This creates a more sophisticated, senior-level aesthetic. Add negative tracking (-0.02em) on display sizes.
+        </div>
+      </div>
+    </div>
+
+    <div class="analysis">
+      <div class="analysis-header">
+        <span class="analysis-title">Color Usage</span>
+      </div>
+      <div class="analysis-body">
+        <p><strong>Current:</strong> Sage green (#8BA88E) as primary, terracotta (#D4956B) and periwinkle (#9BA1C1) as accents. The palette is cohesive but the accent usage is inconsistent — sometimes terracotta, sometimes periwinkle for section labels.</p>
+        <p class="fix">Use sage as the single accent. Use terracotta only for warnings/critical actions. Use periwinkle for informational elements. Remove mustard (#D4B46A) — it doesn't fit the palette.</p>
+        <div class="recommendation">
+          <strong>Recommendation:</strong> Define a clear color semantics: Sage = primary action, Terracotta = warning/critical, Periwinkle = informational. Use each accent at most once per screen.
+        </div>
+      </div>
+    </div>
+
+    <div class="analysis">
+      <div class="analysis-header">
+        <span class="analysis-title">Interactive Elements</span>
+      </div>
+      <div class="analysis-body">
+        <p><strong>Current:</strong> Journey step switcher, analogy tabs, gallery drag-scroll, custom cursor, hamburger nav. The interactions are polished but some are unnecessary (custom cursor, analogy tabs).</p>
+        <p class="fix">Keep the journey switcher and gallery interactions. Remove the custom cursor (it's a distraction on desktop and doesn't work on mobile). Replace the analogy tabs with static content.</p>
+        <div class="recommendation">
+          <strong>Recommendation:</strong> Focus interactions on content exploration, not decoration. The journey switcher is excellent — keep it. The gallery drag-scroll is great — keep it. Everything else should be simplified or removed.
+        </div>
+      </div>
+    </div>
+
+    <h2>Suggested Diagrams & Illustrations</h2>
+    <p>Add these visual elements to strengthen the narrative:</p>
+    <ul style="margin-bottom: 32px;">
+      <li><strong>Affinity Map Diagram</strong> — show how raw interview data was synthesized into themes</li>
+      <li><strong>User Journey Map</strong> — visualize the emotional arc from frustration to confidence</li>
+      <li><strong>Feature Prioritization Matrix</strong> — RICE or Kano model showing trade-off decisions</li>
+      <li><strong>Design System Token Spec</strong> — color, typography, spacing, component library</li>
+      <li><strong>Usability Test Flow</strong> — task list, success criteria, key findings, iteration cycle</li>
+      <li><strong>Product Roadmap</strong> — next steps with timeline and dependencies</li>
+      <li><strong>Accessibility Audit Table</strong> — WCAG criteria, compliance status, remediation plan</li>
+    </ul>
+
+    <div class="quote">
+      "The difference between a good case study and a great one is not the quality of the screenshots — it's the clarity of the thinking behind them."
+    </div>
+
+    <h2>Final Hiring Verdict</h2>
+    <p><strong>Current Score: 4/10</strong> (Storytelling: 4, UX Process: 5, Product Thinking: 3, Visual Design: 6, Research: 4, Presentation: 5, Seniority: 3, Hire Potential: 4)</p>
+    <p><strong>Potential Score After Redesign: 8/10</strong> (Storytelling: 8, UX Process: 8, Product Thinking: 8, Visual Design: 8, Research: 8, Presentation: 8, Seniority: 7, Hire Potential: 8)</p>
+    <p><strong>Would I interview this candidate?</strong> Yes, but the case study needs significant revision before it reaches portfolio-ready quality. The concept is strong and the visual execution is solid — with better storytelling, evidence of strategic thinking, and measurable outcomes, this would be a compelling case study for senior-level roles.</p>
+    <p><strong>What needs to improve before extending an interview?</strong> Add data-backed problem statements, measurable business outcomes, research synthesis artifacts, feature prioritization frameworks, and a clear "next steps" section. Remove decorative elements that don't serve the narrative.</p>
+  </div>
+
+  <footer>
+    <div class="logo">🔍</div>
+    <p>This critique was generated as a redesign exercise. The goal is to help the designer see their work through the eyes of a hiring manager at a top tech company.</p>
+  </footer>
+
+</body>
+</html>
