@@ -4,10 +4,11 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function HeroVideo({ videoSrc = "/orco.mp4" }) {
+export default function HeroVideo({ videoSrc = "/0826.mp4" }) {
   const stickyRef = useRef(null);
   const containerRef = useRef(null);
   const panMultiplier = useRef({ value: 1 });
+  const lastMousePos = useRef({ xOffset: 0 }); // Track last mouse position
   
   useEffect(() => {
     const sticky = stickyRef.current;
@@ -16,24 +17,42 @@ export default function HeroVideo({ videoSrc = "/orco.mp4" }) {
     
     const isMobile = window.innerWidth < 768;
     
-    // Decreased size, explicitly spaced from top border using yPercent: 0
+    // 1. Make it smaller (Initial state)
     gsap.set(container, {
-      width: isMobile ? "80vw" : "40vw",
-      height: isMobile ? "45vw" : "22.5vw", // 16:9 aspect ratio
+      width: isMobile ? "60vw" : "28vw",
+      height: isMobile ? "33.75vw" : "15.75vw", 
       borderRadius: "4px",
       xPercent: -50,
-      yPercent: 0, // Pivot is at the top edge of the container
+      yPercent: 0,
       left: "50%",
-      top: isMobile ? "15vh" : "12vh", // Strict initial spacing from the top
-      boxShadow: "none"
+      top: isMobile ? "20vh" : "15vh", 
+      boxShadow: "none",
+      x: 0,
+      y: 0
     });
     
+    const xTo = gsap.quickTo(container, "x", { duration: 0.8, ease: "power3.out" });
+
+    // Function to calculate and apply the X position
+    const updateXPos = () => {
+      const { innerWidth } = window;
+      const safeGap = isMobile ? 20 : 40; 
+      const maxTravelX = Math.max(0, (innerWidth - container.offsetWidth) / 2 - safeGap);
+      const currentMult = panMultiplier.current.value;
+      xTo(lastMousePos.current.xOffset * maxTravelX * currentMult);
+    };
+
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: sticky.parentElement,
         start: "top top",
         end: "bottom bottom",
         scrub: true,
+        onUpdate: () => {
+          // As we scroll, continually update the X position so it naturally
+          // gravitates back to 0 (center) even if the mouse is perfectly still.
+          updateXPos();
+        }
       }
     });
 
@@ -46,46 +65,22 @@ export default function HeroVideo({ videoSrc = "/orco.mp4" }) {
     }, 0)
     .to(panMultiplier.current, {
       value: 0,
-      ease: "power2.inOut"
+      ease: "power4.out" 
     }, 0);
     
-    const xTo = gsap.quickTo(container, "x", { duration: 1.2, ease: "expo.out" });
-    const yTo = gsap.quickTo(container, "y", { duration: 1.2, ease: "expo.out" });
-    
     const handleMouseMove = (e) => {
-      const { innerWidth, innerHeight } = window;
-      const xOffset = (e.clientX / innerWidth - 0.5) * 2; // -1 to 1
-      const yOffset = (e.clientY / innerHeight - 0.5) * 2; // -1 to 1
-      
-      const currentMult = panMultiplier.current.value;
-      const safeGap = isMobile ? 20 : 40; // minimum pixels away from ANY border
-      
-      // X travel: mathematically constrained to never touch side borders
-      const maxTravelX = Math.max(0, (innerWidth - container.offsetWidth) / 2 - safeGap);
-      
-      // Y travel: strictly bounded to never touch top or bottom borders
-      const initialTopPx = innerHeight * 0.12; // 12vh
-      let yPan = 0;
-      
-      if (yOffset < 0) {
-        // Panning UP: Cannot exceed the safe gap from the top border
-        const maxUp = Math.max(0, initialTopPx - safeGap);
-        yPan = yOffset * maxUp;
-      } else {
-        // Panning DOWN: Cannot exceed the safe gap from the bottom border
-        const maxDown = Math.max(0, innerHeight - (initialTopPx + container.offsetHeight) - safeGap);
-        yPan = yOffset * maxDown;
-      }
-      
-      xTo(xOffset * maxTravelX * currentMult);
-      yTo(yPan * currentMult);
+      const { innerWidth } = window;
+      lastMousePos.current.xOffset = (e.clientX / innerWidth - 0.5) * 2;
+      updateXPos();
     };
     
     window.addEventListener("mousemove", handleMouseMove);
     
     return () => {
       tl.kill();
-      ScrollTrigger.getAll().forEach(t => t.kill());
+      ScrollTrigger.getAll().forEach(t => {
+        if (t.trigger === sticky.parentElement) t.kill();
+      });
       window.removeEventListener("mousemove", handleMouseMove);
     };
   }, []);
@@ -99,7 +94,7 @@ export default function HeroVideo({ videoSrc = "/orco.mp4" }) {
         left: 0,
         width: '100%',
         height: '100vh',
-        zIndex: 1, // Sits slightly below the initial hero text wrapper (which is zIndex: 2)
+        zIndex: 1, 
         pointerEvents: 'none',
         overflow: 'hidden'
       }}
