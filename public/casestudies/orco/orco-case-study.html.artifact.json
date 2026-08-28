@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "orco/orco-case-study.html",
+  "entry": "orco/orco-case-study.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-08-27T12:51:23.623Z",
+  "updatedAt": "2026-08-27T12:51:23.623Z",
+  "metadata": {
+    "inferred": true
+  }
+}
