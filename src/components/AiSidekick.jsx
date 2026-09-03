@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useChat } from '@ai-sdk/react';
+import gsap from 'gsap';
 
 const PERSONAS = {
   RECRUITER: 'Recruiter',
@@ -32,6 +33,8 @@ export default function AiSidekick({ onProjectClick }) {
   const [isOpen, setIsOpen] = useState(false);
   const [persona, setPersona] = useState(PERSONAS.RECRUITER);
   const messagesEndRef = useRef(null);
+  const chatWindowRef = useRef(null);
+  const overlayRef = useRef(null);
 
   const { messages, append, isLoading } = useChat({
     api: '/api/chat',
@@ -45,6 +48,39 @@ export default function AiSidekick({ onProjectClick }) {
   useEffect(() => {
     if (isOpen) scrollToBottom();
   }, [messages, isOpen]);
+
+  // GSAP Message Entrance Animation
+  useEffect(() => {
+    if (messages.length > 0 && isOpen) {
+      const lastMessageEl = document.querySelector(`.ai-message:last-of-type`);
+      if (lastMessageEl) {
+        gsap.fromTo(lastMessageEl, 
+          { opacity: 0, y: 20, scale: 0.9 }, 
+          { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(1.7)" }
+        );
+      }
+    }
+  }, [messages.length, isOpen]);
+
+  // GSAP Modal Open/Close Animation
+  useEffect(() => {
+    if (isOpen) {
+      gsap.set([overlayRef.current, chatWindowRef.current], { visibility: 'visible' });
+      gsap.to(overlayRef.current, { opacity: 1, duration: 0.3 });
+      gsap.fromTo(chatWindowRef.current,
+        { opacity: 0, y: 50, scale: 0.8 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "back.out(1.5)" }
+      );
+    } else {
+      gsap.to(overlayRef.current, { opacity: 0, duration: 0.3 });
+      gsap.to(chatWindowRef.current, { 
+        opacity: 0, y: 20, scale: 0.9, duration: 0.3, ease: "power2.in",
+        onComplete: () => {
+          gsap.set([overlayRef.current, chatWindowRef.current], { visibility: 'hidden' });
+        }
+      });
+    }
+  }, [isOpen]);
 
   const handlePromptClick = (prompt) => {
     append({ role: 'user', content: prompt });
@@ -72,7 +108,7 @@ export default function AiSidekick({ onProjectClick }) {
         <button 
           key={match.index}
           onClick={() => {
-            setIsOpen(false); // Close chat when navigating
+            setIsOpen(false);
             if (onProjectClick && linkPath) onProjectClick(linkPath);
           }}
           className="chat-cta-btn"
@@ -92,30 +128,25 @@ export default function AiSidekick({ onProjectClick }) {
 
   return (
     <>
-      {/* Floating Trigger Button */}
       <button 
         className="ai-trigger-btn"
         onClick={() => setIsOpen(true)}
         style={{ opacity: isOpen ? 0 : 1, pointerEvents: isOpen ? 'none' : 'all' }}
       >
-        <span style={{ fontSize: '1.2rem' }}>🦌</span>
+        <span style={{ fontSize: '1.5rem' }}>🦌</span>
         <span>Ask Sauveer Anything</span>
       </button>
 
-      {/* Full Screen Blur Overlay */}
-      <div className={`ai-overlay ${isOpen ? 'open' : ''}`} onClick={() => setIsOpen(false)} />
+      <div ref={overlayRef} className="ai-overlay" onClick={() => setIsOpen(false)} />
 
-      {/* Centered Brutalist Chat Window */}
-      <div className={`ai-chat-window ${isOpen ? 'open' : ''}`}>
-        {/* Header */}
+      <div ref={chatWindowRef} className="ai-chat-window">
         <div className="ai-chat-header">
           <div className="ai-chat-title">
-            SAUVEER'S AI SIDEKICK
+            <span>🦌</span> SAUVEER'S AI SIDEKICK
           </div>
-          <button className="ai-chat-close" onClick={() => setIsOpen(false)}>[ Close ]</button>
+          <button className="ai-chat-close" onClick={() => setIsOpen(false)}>✕</button>
         </div>
 
-        {/* Persona Toggle */}
         <div className="ai-persona-toggle">
           {Object.values(PERSONAS).map(p => (
             <button 
@@ -123,15 +154,14 @@ export default function AiSidekick({ onProjectClick }) {
               className={persona === p ? 'active' : ''}
               onClick={() => setPersona(p)}
             >
-              [ {p} ]
+              {p}
             </button>
           ))}
         </div>
 
-        {/* Messages Area */}
         <div className="ai-chat-messages">
           {messages.length === 0 && (
-            <div className="ai-welcome">
+            <div className="ai-welcome" style={{ opacity: 1, transform: 'none' }}>
               <div className="ai-welcome-deer">🦌</div>
               <div className="ai-welcome-text">
                 <h3>What are you curious about?</h3>
@@ -154,7 +184,6 @@ export default function AiSidekick({ onProjectClick }) {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Prompts Area */}
         <div className="ai-chat-prompts">
           {PROMPTS[persona].map((prompt, i) => (
             <button 
