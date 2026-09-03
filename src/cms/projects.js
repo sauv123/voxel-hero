@@ -56,7 +56,7 @@ export const PROJECTS = [
     cursorCta: "See how I visualised luxury",
     link: "/casestudies/krizia/index.html"
   },
-  {
+  /* {
     id: "03",
     name: "ELI5",
     title: "ELI5",
@@ -69,5 +69,5 @@ export const PROJECTS = [
     cta: "Transforms complexity into visual clarity instantly.",
     cursorCta: "See the visual clarity process",
     link: "/casestudies/eli5/index.html"
-  }
+  } */
 ];
