@@ -43,8 +43,8 @@ export default function AiSidekick({ onProjectClick }) {
   };
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+    if (isOpen) scrollToBottom();
+  }, [messages, isOpen]);
 
   const handlePromptClick = (prompt) => {
     append({ role: 'user', content: prompt });
@@ -72,11 +72,12 @@ export default function AiSidekick({ onProjectClick }) {
         <button 
           key={match.index}
           onClick={() => {
+            setIsOpen(false); // Close chat when navigating
             if (onProjectClick && linkPath) onProjectClick(linkPath);
           }}
           className="chat-cta-btn"
         >
-          Read {projectName} case study →
+          Read {projectName} Case Study →
         </button>
       );
       lastIndex = linkRegex.lastIndex;
@@ -95,77 +96,78 @@ export default function AiSidekick({ onProjectClick }) {
       <button 
         className="ai-trigger-btn"
         onClick={() => setIsOpen(true)}
-        style={{ display: isOpen ? 'none' : 'flex' }}
+        style={{ opacity: isOpen ? 0 : 1, pointerEvents: isOpen ? 'none' : 'all' }}
       >
         <span style={{ fontSize: '1.2rem' }}>🦌</span>
-        <span>Ask my digital twin →</span>
+        <span>Ask Sauveer Anything</span>
       </button>
 
-      {/* Chat Window */}
-      {isOpen && (
-        <div className="ai-chat-window">
-          {/* Header */}
-          <div className="ai-chat-header">
-            <div className="ai-chat-title">
-              <span>🦌</span> SAUVEER'S AI SIDEKICK
-            </div>
-            <button className="ai-chat-close" onClick={() => setIsOpen(false)}>✕</button>
-          </div>
+      {/* Full Screen Blur Overlay */}
+      <div className={`ai-overlay ${isOpen ? 'open' : ''}`} onClick={() => setIsOpen(false)} />
 
-          {/* Persona Toggle */}
-          <div className="ai-persona-toggle">
-            {Object.values(PERSONAS).map(p => (
-              <button 
-                key={p}
-                className={persona === p ? 'active' : ''}
-                onClick={() => setPersona(p)}
-              >
-                {p}
-              </button>
-            ))}
+      {/* Centered Brutalist Chat Window */}
+      <div className={`ai-chat-window ${isOpen ? 'open' : ''}`}>
+        {/* Header */}
+        <div className="ai-chat-header">
+          <div className="ai-chat-title">
+            SAUVEER'S AI SIDEKICK
           </div>
-
-          {/* Messages Area */}
-          <div className="ai-chat-messages">
-            {messages.length === 0 && (
-              <div className="ai-welcome">
-                <p>Hey 👋 I'm Sauveer's AI sidekick.</p>
-                <p>I know his work, his process, and probably more about his projects than his friends do.</p>
-                <p><strong>What are you curious about?</strong></p>
-              </div>
-            )}
-            
-            {messages.map(m => (
-              <div key={m.id} className={`ai-message ${m.role}`}>
-                <div className="ai-message-content">
-                  {parseMessage(m.content)}
-                </div>
-              </div>
-            ))}
-            
-            {isLoading && (
-              <div className="ai-message assistant loading">
-                <div className="dot-typing"></div>
-              </div>
-            )}
-            <div ref={messagesEndRef} />
-          </div>
-
-          {/* Prompts Area */}
-          <div className="ai-chat-prompts">
-            {PROMPTS[persona].map((prompt, i) => (
-              <button 
-                key={i} 
-                className="ai-prompt-btn"
-                onClick={() => handlePromptClick(prompt)}
-                disabled={isLoading}
-              >
-                {prompt}
-              </button>
-            ))}
-          </div>
+          <button className="ai-chat-close" onClick={() => setIsOpen(false)}>[ Close ]</button>
         </div>
-      )}
+
+        {/* Persona Toggle */}
+        <div className="ai-persona-toggle">
+          {Object.values(PERSONAS).map(p => (
+            <button 
+              key={p}
+              className={persona === p ? 'active' : ''}
+              onClick={() => setPersona(p)}
+            >
+              [ {p} ]
+            </button>
+          ))}
+        </div>
+
+        {/* Messages Area */}
+        <div className="ai-chat-messages">
+          {messages.length === 0 && (
+            <div className="ai-welcome">
+              <div className="ai-welcome-deer">🦌</div>
+              <div className="ai-welcome-text">
+                <h3>What are you curious about?</h3>
+                <p>I can give you the quick version—or we can go down the rabbit hole.</p>
+              </div>
+            </div>
+          )}
+          
+          {messages.map(m => (
+            <div key={m.id} className={`ai-message ${m.role}`}>
+              {parseMessage(m.content)}
+            </div>
+          ))}
+          
+          {isLoading && (
+            <div className="ai-message assistant">
+              <div className="dot-typing" style={{ margin: '10px 0 10px 15px' }}></div>
+            </div>
+          )}
+          <div ref={messagesEndRef} />
+        </div>
+
+        {/* Prompts Area */}
+        <div className="ai-chat-prompts">
+          {PROMPTS[persona].map((prompt, i) => (
+            <button 
+              key={i} 
+              className="ai-prompt-btn"
+              onClick={() => handlePromptClick(prompt)}
+              disabled={isLoading}
+            >
+              {prompt}
+            </button>
+          ))}
+        </div>
+      </div>
     </>
   );
 }
