@@ -7,7 +7,9 @@ import { AdaptiveDpr, Environment, PerformanceMonitor } from '@react-three/drei'
 import HeaderCTA from './components/HeaderCTA';
 import InteractiveProjects from './components/InteractiveProjects';
 import Preloader from './components/Preloader';
+
 import CustomCursor from './components/CustomCursor';
+import AiSidekick from './components/AiSidekick';
 import HeroVideo from './components/HeroVideo';
 // Lazy loaded components
 import BottomDrawer from './components/BottomDrawer';
@@ -399,6 +401,10 @@ export default function App() {
 
   return (
     <>
+      <AiSidekick onProjectClick={(path) => {
+        const projectIndex = PROJECTS.findIndex(p => p.link === path);
+        if (projectIndex !== -1) openCaseStudy(projectIndex);
+      }} />
       <Helmet>
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
@@ -443,7 +449,7 @@ export default function App() {
         <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100vh', zIndex: 2 }}>
 
         {/* ── Background text layer (behind canvas) ── */}
-        <div className="text-layer" aria-hidden="true">
+        <div className="text-layer" style={{ paddingTop: "22vh" }} aria-hidden="true">
           {/* Eyebrow with optimized visual hierarchy and enhanced readability */}
           <div className="hero-text-header" style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '3rem' }}>
             <span style={{ 
@@ -473,16 +479,16 @@ export default function App() {
           {/* Main large headline (now holding the product statement) */}
           <h1 className="hero-title" style={{ fontFamily: "var(--font-body)", color: theme.text, textTransform: 'none' }}>
             <span className="line-wrap" style={{ fontWeight: 400, opacity: 0.8, display: 'block' }}>
-              <SplitChars text="I help people" />
+              <SplitChars text="Designing" />
             </span>
             <span className="line-wrap" style={{ fontWeight: 400, opacity: 0.8, display: 'block' }}>
-              <SplitChars text="understand & trust AI" />
+              <SplitChars text="human-centered interfaces" />
             </span>
             <span className="line-wrap" style={{ fontWeight: 400, opacity: 0.8, display: 'block' }}>
-              <SplitChars text="through" />
+              <SplitChars text="for next-gen" />
             </span>
             <span className="line-wrap" style={{ fontWeight: 900, textTransform: 'uppercase', letterSpacing: '-0.06em', color: theme.brand, display: 'block', margin: '0.15rem 0' }}>
-              <SplitChars text="thoughtful design." />
+              <SplitChars text="AI products." />
             </span>
           </h1>
         </div>
