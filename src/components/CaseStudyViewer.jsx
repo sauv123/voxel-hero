@@ -215,7 +215,7 @@ export default function CaseStudyViewer({ startIndex, onClose }) {
           {proj.link ? (
             <iframe 
               src={proj.link} 
-              title={proj.title}
+              title={proj.title} allow="autoplay; fullscreen"
               style={{ width: '100%', height: '100%', border: 'none' }}
             />
           ) : (
