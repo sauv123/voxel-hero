@@ -4,7 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function HeroVideo({ videoSrc = "/0826.mp4" }) {
+export default function HeroVideo({ videoSrc = "/0826.mp4", isPreloading }) {
   const stickyRef = useRef(null);
   const containerRef = useRef(null);
   const panMultiplier = useRef({ value: 1 });
@@ -99,7 +99,7 @@ export default function HeroVideo({ videoSrc = "/0826.mp4" }) {
         left: 0,
         width: '100%',
         height: '100vh',
-        zIndex: 1, 
+        zIndex: isPreloading ? 1000000 : 1, 
         pointerEvents: 'none',
         overflow: 'hidden'
       }}

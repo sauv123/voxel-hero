@@ -18,6 +18,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-top: 25vh;
 }
 
 /* Kinetic Masking Plane: Cuts off text outside this window */

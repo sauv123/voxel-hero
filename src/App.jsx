@@ -518,7 +518,7 @@ export default function App() {
         {/* ── Custom Cursor Tooltip Character Switcher ── */}
         </div>
         {/* ── Interactive Video Background ── */}
-        <HeroVideo videoSrc="/0826.mp4" />
+        <HeroVideo videoSrc="/0826.mp4" isPreloading={!isPreloaderDone} />
 
         {isPreloaderDone && isHoveringCharacter && (
           <div 
