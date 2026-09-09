@@ -9,7 +9,6 @@ import InteractiveProjects from './components/InteractiveProjects';
 import Preloader from './components/Preloader';
 
 import CustomCursor from './components/CustomCursor';
-import AiSidekick from './components/AiSidekick';
 import HeroVideo from './components/HeroVideo';
 // Lazy loaded components
 import BottomDrawer from './components/BottomDrawer';
@@ -402,10 +401,6 @@ export default function App() {
 
   return (
     <>
-      <AiSidekick onProjectClick={(path) => {
-        const projectIndex = PROJECTS.findIndex(p => p.link === path);
-        if (projectIndex !== -1) openCaseStudy(projectIndex);
-      }} />
       <Helmet>
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
