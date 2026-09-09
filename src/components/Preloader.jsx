@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import './preloader.css';
 
-export default function Preloader({ onComplete, onStartReveal }) {
+export default function Preloader({ onComplete, onStartReveal, isVideoReady }) {
   const loaderRef = useRef();
   const greetingRef = useRef();
   const progressLineRef = useRef();
@@ -10,11 +10,13 @@ export default function Preloader({ onComplete, onStartReveal }) {
 
   const onCompleteRef = useRef(onComplete);
   const onStartRevealRef = useRef(onStartReveal);
+  const isVideoReadyRef = useRef(isVideoReady);
 
   useEffect(() => {
     onCompleteRef.current = onComplete;
     onStartRevealRef.current = onStartReveal;
-  }, [onComplete, onStartReveal]);
+    isVideoReadyRef.current = isVideoReady;
+  }, [onComplete, onStartReveal, isVideoReady]);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -38,14 +40,9 @@ export default function Preloader({ onComplete, onStartReveal }) {
     // Hard safety timeout fallback (2 seconds max) to prevent hanging
     const safetyTimer = setTimeout(() => {
       completeLoader();
-    }, 2000);
+    }, 6000);
 
-    const tl = gsap.timeline({
-      onComplete: () => {
-        clearTimeout(safetyTimer);
-        completeLoader();
-      }
-    });
+    const tl = gsap.timeline();
 
     // 1. Continuous Linear Progress Bar
     tl.to(progressLineRef.current, {
@@ -88,15 +85,30 @@ export default function Preloader({ onComplete, onStartReveal }) {
       );
     });
 
-    // 4. Clean End Screen Exit
-    tl.to(loaderRef.current, {
-      yPercent: -100,
-      duration: 0.6, 
-      ease: "expo.inOut",
-      onStart: () => {
-        if (onStartRevealRef.current) onStartRevealRef.current();
-      }
-    }, totalLoopDuration - durationOut - holdTime);
+    // 4. Wait for video, then exit
+    tl.call(() => {
+      const checkAndExit = () => {
+        if (isVideoReadyRef.current) {
+           // We add a tiny fallback just in case
+           gsap.to(loaderRef.current, {
+             yPercent: -100,
+             duration: 0.6,
+             ease: "expo.inOut",
+             onStart: () => {
+               if (onStartRevealRef.current) onStartRevealRef.current();
+             },
+             onComplete: () => {
+                completeLoader();
+             }
+           });
+        } else {
+           setTimeout(checkAndExit, 100);
+        }
+      };
+      // For safety, force exit after 4s total if video still not ready
+      setTimeout(() => { isVideoReadyRef.current = true; }, 4000);
+      checkAndExit();
+    }, null, totalLoopDuration - durationOut - holdTime);
 
     const handleSkip = () => {
       clearTimeout(safetyTimer);

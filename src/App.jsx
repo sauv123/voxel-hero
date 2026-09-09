@@ -168,6 +168,7 @@ export default function App() {
   const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
   const transitionRef = useRef(null);
   const isSwitchingRef = useRef(false);
+  const [isVideoReady, setIsVideoReady] = useState(false);
   const [isPreloaderDone, setIsPreloaderDone] = useState(() => {
     if (typeof window !== 'undefined') {
       return sessionStorage.getItem('visited') === 'true';
@@ -196,13 +197,13 @@ export default function App() {
     if (!isHeroActive) {
       gsap.set('.char', { y: '110%', opacity: 0 });
       gsap.set('.eyebrow-text', { opacity: 0, y: 18 });
-      gsap.set(rootRef.current, { scale: 1.03, opacity: 0 });
+      gsap.set(['.text-layer', '.canvas-layer'], { scale: 1.03, opacity: 0 });
       return;
     }
 
     const tl = gsap.timeline();
 
-    tl.to(rootRef.current, {
+    tl.to(['.text-layer', '.canvas-layer'], {
       opacity: 1,
       scale: 1,
       duration: 0.6,
@@ -438,7 +439,7 @@ export default function App() {
       <main>
 
       {!isPreloaderDone && (
-        <Preloader 
+        <Preloader isVideoReady={isVideoReady} 
           onStartReveal={() => setIsHeroActive(true)}
           onComplete={() => setIsPreloaderDone(true)} 
         />
@@ -518,7 +519,7 @@ export default function App() {
         {/* ── Custom Cursor Tooltip Character Switcher ── */}
         </div>
         {/* ── Interactive Video Background ── */}
-        <HeroVideo videoSrc="/0826.mp4" isPreloading={!isPreloaderDone} />
+        <HeroVideo videoSrc="/0826.mp4" isPreloading={!isPreloaderDone} onVideoReady={() => setIsVideoReady(true)} />
 
         {isPreloaderDone && isHoveringCharacter && (
           <div 
