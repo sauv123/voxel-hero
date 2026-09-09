@@ -118,7 +118,7 @@ export default function HeroVideo({ videoSrc = "/0826.mp4", isPreloading, onVide
           muted
           loop
           playsInline
-          onLoadedData={() => onVideoReady playsInlineplaysInline onVideoReady()}
+          onLoadedData={() => onVideoReady && onVideoReady()}
           style={{
             width: '100%',
             height: '100%',
