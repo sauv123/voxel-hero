@@ -551,14 +551,6 @@ export default function App() {
       {/* ── Work Section ── */}
       {!isGalleryOpen && <WorkFolder theme={invertedTheme} onOpen={() => navigateWithTransition('work')} />}
 
-      {/* ── Products I've Built Section ── */}
-      {!isGalleryOpen && !isAboutOpen && !isPlaygroundOpen && activeCaseStudyIndex === null && (
-        <Suspense fallback={null}>
-          <TextLabShowcase theme={theme} onSelectProject={() => {}} />
-          <ExperimentsGrid theme={theme} />
-        </Suspense>
-      )}
-
 
       <Suspense fallback={null}>
         {/* ── Work Gallery Overlay ── */}
