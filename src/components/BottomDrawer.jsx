@@ -259,21 +259,7 @@ export default function BottomDrawer({ theme, activeNav, navigateWithTransition 
             {activeNav === 'about' && <span className="drawer-item-active-dot" style={{ background: theme.brand, width: 8, height: 8, borderRadius: '50%', marginLeft: 'auto', marginRight: 16 }} />}
           </button>
 
-          {/* PLAYGROUND */}
-          <button className={`drawer-item ${activeNav === 'playground' ? 'active-page' : ''}`} onClick={(e) => handleItemClick(e, 'playground')} aria-current={activeNav === 'playground' ? 'page' : undefined}>
-            <div className="drawer-item-icon" style={{ background: activeNav === 'playground' ? theme.brand : '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)' }}>
-              <svg viewBox="0 0 24 24" fill={activeNav === 'playground' ? '#0d0d0d' : '#FCFAF2'} className="di-icon-svg">
-                <path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm3-3c-.83 0-1.5-.67-1.5-1.5S17.67 9 18.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
-              </svg>
-            </div>
-            <div className="drawer-item-text">
-              <div className="drawer-item-text-inner">
-                <span className="label-original" style={{ color: activeNav === 'playground' ? theme.brand : '#FCFAF2' }}>Labs</span>
-                <span className="label-copy" style={{ color: theme.brand }}>Labs</span>
-              </div>
-            </div>
-            {activeNav === 'playground' && <span className="drawer-item-active-dot" style={{ background: theme.brand, width: 8, height: 8, borderRadius: '50%', marginLeft: 'auto', marginRight: 16 }} />}
-          </button>
+
 
         </div>
 
@@ -401,7 +387,7 @@ export default function BottomDrawer({ theme, activeNav, navigateWithTransition 
 
           {/* Inline Links on Hover (Desktop) */}
           <div ref={linksRef} style={{ display: 'flex', gap: '32px', overflow: 'hidden', width: 0, opacity: 0, alignItems: 'center' }}>
-            {['home', 'work', 'about', 'playground'].map(page => (
+            {['home', 'work', 'about'].map(page => (
               <div 
                 key={page} 
                 role="button"
