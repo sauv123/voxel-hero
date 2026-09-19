@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { PROJECTS } from '../cms/projects';
+import LazyVideo from './LazyVideo';
 
 export default function WorkGallery({ onClose, navigate }) {
   const containerRef = useRef(null);
@@ -318,11 +319,7 @@ export default function WorkGallery({ onClose, navigate }) {
               <div style={{ flex: 1, position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
                 {proj.img ? (
                   (proj.img.endsWith('.mp4') || proj.img.endsWith('.mov')) ? (
-                    <video 
-                      src={proj.img} 
-                      autoPlay loop muted playsInline 
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: proj.objectPosition || 'center' }} 
-                    />
+                    <LazyVideo src={proj.img} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: proj.objectPosition || 'center' }} />
                   ) : (
                     <img 
                       src={proj.img} 

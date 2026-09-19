@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { PROJECTS } from '../cms/projects';
+import LazyVideo from './LazyVideo';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -250,7 +251,7 @@ export default function WorkFolder({ theme, onOpen }) {
                         background: '#0d0d0d', border: `2px solid ${theme.text}40`
                       }}>
                         {(proj.img?.endsWith('.mp4') || proj.img?.endsWith('.mov')) ? (
-                          <video src={proj.img} autoPlay muted loop playsInline style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: proj.objectPosition || 'center', opacity: 0.8 }} />
+                          <LazyVideo src={proj.img} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: proj.objectPosition || 'center', opacity: 0.8 }} />
                         ) : (
                           <img src={proj.img} alt={proj.name} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: proj.objectPosition || 'center', opacity: 0.8 }} />
                         )}
