@@ -157,9 +157,9 @@ function Timeline({ theme }) {
       
       <div ref={listRef} style={{ position: "relative", paddingLeft: "48px", paddingRight: "24px" }}>
         {/* Vertical line background */}
-        <div className="timeline-line-bg" style={{ position: "absolute", left: "30px", top: 0, bottom: "24px", width: "2px", background: "rgba(255,255,255,0.1)" }} />
+        <div className="timeline-line-bg" style={{ position: "absolute", left: "32px", top: 0, bottom: "24px", width: "2px", background: "rgba(255,255,255,0.1)" }} />
         {/* Vertical line fill (animates on scroll) */}
-        <div className="timeline-line-fill" style={{ position: "absolute", left: "30px", top: 0, bottom: "24px", width: "2px", background: theme.brand, transformOrigin: "top", transform: "scaleY(0)" }} />
+        <div className="timeline-line-fill" style={{ position: "absolute", left: "32px", top: 0, bottom: "24px", width: "2px", background: theme.brand, transformOrigin: "top", transform: "scaleY(0)" }} />
         
         {TIMELINE.map((entry, idx) => (
           <div key={entry.id} className="timeline-entry" style={{ position: "relative", marginBottom: "32px", willChange: "transform, opacity" }}>
@@ -173,7 +173,7 @@ function Timeline({ theme }) {
               <div className="custom-scroll" style={{ display: "flex", gap: "12px", overflowX: "auto", paddingBottom: "8px" }}>
               {entry.photos.map((ph, i) => (
                 <div key={i} style={{
-                  width: "120px", height: "150px", flexShrink: 0, borderRadius: "6px", overflow: "hidden", position: "relative", background: ph.bg, border: "1px solid rgba(255,255,255,0.1)"
+                  width: "120px", height: "148px", flexShrink: 0, borderRadius: "6px", overflow: "hidden", position: "relative", background: ph.bg, border: "1px solid rgba(255,255,255,0.1)"
                 }}>
                   {ph.videoSrc ? (
                     <video src={ph.videoSrc} autoPlay loop muted playsInline style={{ width: "100%", height: "100%", objectFit: "cover" }} />

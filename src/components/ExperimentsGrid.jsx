@@ -445,7 +445,7 @@ const ContextDrawer = ({ item, onClose, theme }) => {
           borderLeft: '1px solid rgba(0,0,0,0.05)',
           zIndex: 200,
           padding: '40px 32px',
-          boxShadow: '-10px 0 30px rgba(0,0,0,0.05)',
+          boxShadow: '-10px 0 32px rgba(0,0,0,0.05)',
           display: 'flex', flexDirection: 'column',
           overflowY: 'auto'
         }}

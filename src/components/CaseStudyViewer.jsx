@@ -43,6 +43,16 @@ export default function CaseStudyViewer({ startIndex, onClose }) {
     }
   };
 
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        handleClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   const handleClose = () => {
     gsap.to(containerRef.current, {
       opacity: 0, 

@@ -207,9 +207,9 @@ export default function WorkGallery({ onClose, navigate }) {
         {/* Floating Top Back/Exit Header */}
         <div style={{
           position: 'absolute',
-          top: '30px',
-          left: '30px',
-          right: '30px',
+          top: '32px',
+          left: '32px',
+          right: '32px',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'flex-start',
@@ -313,7 +313,7 @@ export default function WorkGallery({ onClose, navigate }) {
                 border: 'none',
                 overflow: 'hidden',
                 scrollSnapAlign: isMobile ? 'center' : 'none',
-                boxShadow: '0 20px 50px rgba(0,0,0,0.3)'
+                boxShadow: '0 20px 48px rgba(0,0,0,0.3)'
               }}
             >
               <div style={{ flex: 1, position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
@@ -337,7 +337,7 @@ export default function WorkGallery({ onClose, navigate }) {
               <div style={{
                 position: 'absolute',
                 bottom: 0, left: 0, right: 0,
-                padding: isMobile ? '30px 24px 24px' : '50px 40px 40px',
+                padding: isMobile ? '32px 24px 24px' : '48px 40px 40px',
                 background: `linear-gradient(to top, ${proj.bgColor}f2 30%, ${proj.bgColor}99 75%, transparent)`,
                 display: 'flex',
                 flexDirection: isMobile ? 'column' : 'row',

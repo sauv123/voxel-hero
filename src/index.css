@@ -17,6 +17,28 @@ body {
 
 #root { width: 100%; min-height: 100%; }
 
+
+/* ─── Elite Typography & A11y ─────────────────────── */
+p {
+  max-width: 65ch;
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+/* Custom Focus Ring for Keyboard Navigation */
+*:focus {
+  outline: none; /* Remove default browser outline */
+}
+*:focus-visible {
+  outline: 2px solid #39FF14;
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
 /* ─── Layout ─────────────────────────────────────── */
 .hero-container {
   position: relative;
@@ -460,11 +482,11 @@ body {
 
 @media (hover: hover) {
 
-.voxel-folder:hover .file-card.proj-preview-0, .voxel-folder.is-open .file-card.proj-preview-0 { transform: translate(-60px, -50px) rotate(-15deg) scale(1.1); z-index: 10; } }
+.voxel-folder:hover .file-card.proj-preview-0, .voxel-folder.is-open .file-card.proj-preview-0 { transform: translate(-60px, -48px) rotate(-15deg) scale(1.1); z-index: 10; } }
 @media (hover: hover) {
 .voxel-folder:hover .file-card.proj-preview-1, .voxel-folder.is-open .file-card.proj-preview-1 { transform: translate(0px, -80px) rotate(0deg) scale(1.15); z-index: 15; } }
 @media (hover: hover) {
-.voxel-folder:hover .file-card.proj-preview-2, .voxel-folder.is-open .file-card.proj-preview-2 { transform: translate(60px, -50px) rotate(15deg) scale(1.1); z-index: 10; } }
+.voxel-folder:hover .file-card.proj-preview-2, .voxel-folder.is-open .file-card.proj-preview-2 { transform: translate(60px, -48px) rotate(15deg) scale(1.1); z-index: 10; } }
 
 @media (hover: hover) {
 
@@ -598,7 +620,7 @@ body {
     .word-char { font-size: clamp(3rem, 15vw, 6rem); }
     .voxel-folder { width: clamp(160px, 45vw, 280px); height: clamp(120px, 35vw, 210px); margin: 0 10px; }
     .folder-ss { font-size: 0.6rem; bottom: 8px; right: 10px; }
-    .file-card-header { height: 30px; }
+    .file-card-header { height: 32px; }
     .file-card-header svg { width: 14px; height: 14px; }
     .file-card-title { font-size: 0.45rem; }
     .curious-text { font-size: 1rem; margin-bottom: 1.5rem; text-align: center; width: 100%; }
@@ -899,7 +921,7 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 24px;
-    transform: scale(0.9) translateY(30px);
+    transform: scale(0.9) translateY(32px);
     opacity: 0;
     position: relative;
 }
@@ -1356,7 +1378,7 @@ body {
 
 .glass-island-menu {
   position: fixed;
-  bottom: 30px;
+  bottom: 32px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 999999;
@@ -1412,7 +1434,7 @@ body {
   bottom: 24px;
   left: 50%;
   transform: translateX(-50%);
-  height: 50px;
+  height: 48px;
   background: rgba(17, 17, 17, 0.88);
   
   
@@ -2014,7 +2036,7 @@ body {
 .about-fade-up-4 { animation-delay: 0.32s; }
 
 .photo-card {
-  transform-style: preserve-3d;
+  transform-style: preserve-3d; -webkit-transform-style: preserve-3d;
   transition: box-shadow 0.4s ease;
   will-change: transform;
 }
@@ -2033,7 +2055,7 @@ body {
   cursor: grab;
 }
 @media (hover: hover) {
-.cd-disc:hover { transform: translateY(-8px) scale(1.06) !important; box-shadow: 0 20px 50px rgba(0,0,0,0.8) !important; } }
+.cd-disc:hover { transform: translateY(-8px) scale(1.06) !important; box-shadow: 0 20px 48px rgba(0,0,0,0.8) !important; } }
 .cd-disc:active { cursor: grabbing; }
 
 .hobby-pill {
@@ -2269,7 +2291,7 @@ body {
 
 .dock-label {
   position: absolute;
-  top: -30px;
+  top: -32px;
   background: rgba(0,0,0,0.8);
   color: #fff;
   padding: 4px 10px;
@@ -2307,7 +2329,7 @@ body {
 
 .timeline-photo-interactive {
   transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), z-index 0s, box-shadow 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
-  transform-style: preserve-3d;
+  transform-style: preserve-3d; -webkit-transform-style: preserve-3d;
   cursor: pointer;
 }
 @media (hover: hover) {
@@ -2353,7 +2375,7 @@ body {
   text-transform: uppercase;
   
   
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 32px rgba(0,0,0,0.1);
   border: 1px solid rgba(255,255,255,0.05);
 }
 
@@ -2448,7 +2470,7 @@ body {
   }
   .text-layer {
     position: relative !important;
-    padding-top: 150px !important;
+    padding-top: 148px !important;
     flex-shrink: 0;
   }
   .canvas-layer {
@@ -2468,7 +2490,7 @@ body {
 /* ── Work Folder Tap Fix ── */
 .folder-hitbox {
   position: absolute;
-  inset: -30px;
+  inset: -32px;
   z-index: 100;
   cursor: pointer;
 }
@@ -2530,7 +2552,7 @@ body {
   --safe-right: env(safe-area-inset-right, 0px);
   
   --mobile-card-radius: 20px;
-  --mobile-card-shadow: 0 8px 30px rgba(0,0,0,0.12);
+  --mobile-card-shadow: 0 8px 32px rgba(0,0,0,0.12);
 }
 
 @media (max-width: 768px) {
@@ -3156,7 +3178,7 @@ body {
   color: #000;
   border: none;
   padding: 12px 20px;
-  border-radius: 30px;
+  border-radius: 32px;
   font-family: var(--font-heading), sans-serif;
   font-size: 0.95rem;
   font-weight: 500;
@@ -3170,7 +3192,7 @@ body {
 }
 .ai-trigger-minimal:hover {
   transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
   background: #fff;
 }
 .ai-trigger-icon {
