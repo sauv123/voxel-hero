@@ -475,16 +475,16 @@ export default function App() {
           {/* Main large headline (now holding the product statement) */}
           <h1 className="hero-title" style={{ fontFamily: "var(--font-body)", color: theme.text, textTransform: 'none' }}>
             <span className="line-wrap" style={{ fontWeight: 400, opacity: 0.8, display: 'block' }}>
-              <SplitChars text="I design high-craft" />
+              <SplitChars text="Designing" />
             </span>
             <span className="line-wrap" style={{ fontWeight: 400, opacity: 0.8, display: 'block' }}>
-              <SplitChars text="consumer applications" />
+              <SplitChars text="human-centered interfaces" />
             </span>
             <span className="line-wrap" style={{ fontWeight: 400, opacity: 0.8, display: 'block' }}>
-              <SplitChars text="and intelligent" />
+              <SplitChars text="for next-gen" />
             </span>
             <span className="line-wrap" style={{ fontWeight: 900, textTransform: 'uppercase', letterSpacing: '-0.06em', color: theme.brand, display: 'block', margin: '0.15rem 0' }}>
-              <SplitChars text="Fintech interfaces." />
+              <SplitChars text="AI products." />
             </span>
           </h1>
         </div>
