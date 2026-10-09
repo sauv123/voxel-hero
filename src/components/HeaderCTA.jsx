@@ -317,7 +317,7 @@ export default function HeaderCTA({ theme }) {
                             <div className="card-header">
                                 <div className="card-name" style={{ color: '#fff' }}>Sauveer</div>
                                 <div className="card-role" style={{ color: safeTheme.text }}>Product Designer</div>
-                                <div className="card-bio" style={{ color: '#888' }}>Designing thoughtful interfaces that balance sophistication with personality.</div>
+                                <div className="card-bio" style={{ color: '#888' }}>Designing high-craft B2C and Fintech interfaces powered by Generative AI.</div>
                             </div>
 
                             <div className="divider" style={{ background: '#222' }}></div>

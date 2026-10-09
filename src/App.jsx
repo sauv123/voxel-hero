@@ -457,7 +457,7 @@ export default function App() {
               color: theme.text,
               opacity: 1
             }}>
-              HI, I'M SAUVEER
+              SAUVEER SINHA • PRODUCT DESIGNER
             </span>
             <span style={{ 
               fontFamily: "var(--font-body)",
@@ -468,23 +468,23 @@ export default function App() {
               opacity: 0.75,
               lineHeight: 1.4
             }}>
-              UX • AI • Currently based in Milan.
+              B2C Consumer • Fintech • Generative AI • Milan, IT
             </span>
           </div>
 
           {/* Main large headline (now holding the product statement) */}
           <h1 className="hero-title" style={{ fontFamily: "var(--font-body)", color: theme.text, textTransform: 'none' }}>
             <span className="line-wrap" style={{ fontWeight: 400, opacity: 0.8, display: 'block' }}>
-              <SplitChars text="Designing" />
+              <SplitChars text="I design high-craft" />
             </span>
             <span className="line-wrap" style={{ fontWeight: 400, opacity: 0.8, display: 'block' }}>
-              <SplitChars text="human-centered interfaces" />
+              <SplitChars text="consumer applications" />
             </span>
             <span className="line-wrap" style={{ fontWeight: 400, opacity: 0.8, display: 'block' }}>
-              <SplitChars text="for next-gen" />
+              <SplitChars text="and intelligent" />
             </span>
             <span className="line-wrap" style={{ fontWeight: 900, textTransform: 'uppercase', letterSpacing: '-0.06em', color: theme.brand, display: 'block', margin: '0.15rem 0' }}>
-              <SplitChars text="AI products." />
+              <SplitChars text="Fintech interfaces." />
             </span>
           </h1>
         </div>
