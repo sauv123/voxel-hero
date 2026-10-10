@@ -7,16 +7,13 @@ import LazyVideo from './LazyVideo';
 gsap.registerPlugin(ScrollTrigger);
 
 export default function WorkFolder({ theme, onOpen }) {
-  const wordChars = useRef([]);
-  const curiousText = useRef();
-  const voxelFolder = useRef();
-  const workSection = useRef();
-  const wordRow = useRef();
+  const sectionRef = useRef();
+  const cardsRef = useRef([]);
 
   useEffect(() => {
     // Background scrub to white for this section
     ScrollTrigger.create({
-      trigger: workSection.current,
+      trigger: sectionRef.current,
       start: "top 100%",
       end: "top 20%",
       scrub: 1.5,
@@ -26,256 +23,142 @@ export default function WorkFolder({ theme, onOpen }) {
       }
     });
 
-    // Scroll Entrance
-    gsap.fromTo(wordChars.current, 
-      { y: "100%", skewY: 8, opacity: 0 },
+    // Hanging string animation
+    gsap.fromTo(cardsRef.current, 
+      { y: 150, opacity: 0, rotation: 10, transformOrigin: 'top center' },
       {
-        y: "0%", 
-        skewY: 0, 
+        y: 0,
         opacity: 1,
-        duration: 1.2,
-        ease: "power3.out",
-        stagger: 0.08,
+        rotation: 0,
+        duration: 1.5,
+        ease: 'elastic.out(1, 0.5)',
+        stagger: 0.2,
         scrollTrigger: {
-          trigger: workSection.current,
-          start: "top 75%",
-          toggleActions: "play reverse play reverse"
+          trigger: sectionRef.current,
+          start: 'top 70%',
+          toggleActions: 'play none none reverse'
         }
       }
     );
 
-    // Opacity snap
-    wordChars.current.forEach((char, i) => {
-      if (char) {
-        gsap.to(char, {
-          opacity: 1,
-          duration: 0.2,
-          delay: (i * 0.08) + 0.65,
-          ease: "steps(1)"
-        });
-      }
-    });
+  }, []);
 
-    // Curious text
-    gsap.to(curiousText.current, {
-      opacity: 1, 
-      y: 0, 
-      duration: 0.9, 
-      ease: "power2.out",
-      scrollTrigger: { trigger: workSection.current, start: "top 65%" }
-    });
-
-    // Mobile Work Header Scroll Animation
-    gsap.fromTo('.mobile-work-header',
-      { opacity: 0, scale: 0.8, y: 30 },
-      {
-        opacity: 1, scale: 1, y: 0,
-        duration: 1.0,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: workSection.current,
-          start: "top 80%",
-          toggleActions: "play none none reverse"
-        }
-      }
-    );
-
-    // Folder entrance
-    gsap.fromTo(voxelFolder.current,
-      { opacity: 0, y: 60, scale: 0.94 },
-      {
-        opacity: 1, y: 0, scale: 1,
-        duration: 1.1, 
-        ease: "back.out(1.6)", 
-        delay: 0.2,
-        scrollTrigger: { trigger: workSection.current, start: "top 60%" }
-      }
-    );
-
-    // Hover Animation for "Work"
-    let wordHoverTl = gsap.timeline({ paused: true });
-    wordHoverTl.to(wordChars.current, {
-      color: theme.text,
-      stagger: {
-        each: 0.1,
-        from: "center"
-      },
-      ease: "power2.inOut",
-      duration: 0.5
-    });
-
-    const folderEl = voxelFolder.current;
-    
-    const handleMouseEnter = () => { wordHoverTl.play(); folderEl.classList.add("is-open"); };
-    const handleMouseLeave = () => { wordHoverTl.reverse(); folderEl.classList.remove("is-open"); };
-    
-    // Folder 3D Tilt
-    const handleMouseMove = (e) => {
-      const rect = folderEl.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width - 0.5;
-      const y = (e.clientY - rect.top) / rect.height - 0.5;
-
-      gsap.to(folderEl, {
-        rotationY: x * 4,
-        rotationX: y * -2,
-        duration: 0.3, 
-        ease: "power2.out"
-      });
-    };
-
-    const handleTiltLeave = () => {
-      gsap.to(folderEl, {
-        rotationY: 0, 
-        rotationX: 0,
-        duration: 0.4, 
-        ease: "power2.out"
-      });
-    };
-
-    if (folderEl) {
-      folderEl.addEventListener('mouseenter', handleMouseEnter);
-      folderEl.addEventListener('mouseleave', handleMouseLeave);
-      folderEl.addEventListener('mousemove', handleMouseMove);
-      folderEl.addEventListener('mouseleave', handleTiltLeave);
-    }
-
-    // Mobile: open folder on scroll via scrub instead of class toggles
-    const isMobile = window.matchMedia("(max-width: 768px)").matches;
-    if (isMobile && folderEl) {
-      const folderFront = folderEl.querySelector('.folder-front');
-      const fileCards = folderEl.querySelectorAll('.file-card');
-      const folderSs = folderEl.querySelector('.folder-ss');
-
-      // Create a GSAP timeline for opening the folder
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: folderEl,
-          start: "top 65%",
-          toggleActions: "play reverse play reverse"
-        }
-      });
-
-      // Animate folder front opening
-      if (folderFront) {
-        tl.to(folderFront, {
-          rotationX: -45,
-          duration: 0.5,
-          ease: "power2.out"
-        }, 0);
-      }
-      
-      // Animate file cards spreading out
-      if (fileCards.length >= 3) {
-        tl.to(fileCards[0], { opacity: 1, x: -60, y: -50, rotation: -15, scale: 1.1, duration: 0.5, ease: "back.out(1.4)" }, 0);
-        tl.to(fileCards[1], { opacity: 1, x: 0, y: -80, rotation: 0, scale: 1.15, duration: 0.5, ease: "back.out(1.4)" }, 0);
-        tl.to(fileCards[2], { opacity: 1, x: 60, y: -50, rotation: 15, scale: 1.1, duration: 0.5, ease: "back.out(1.4)" }, 0);
-      }
-      
-      // Animate text reveal via scroll trigger rather than play()
-      ScrollTrigger.create({
-        trigger: folderEl,
-        start: "top 65%",
-        onEnter: () => wordHoverTl.play(),
-        onLeaveBack: () => wordHoverTl.reverse(),
-        onEnterBack: () => wordHoverTl.play(),
-        onLeave: () => wordHoverTl.reverse()
-      });
-    }
-
-    return () => {
-      if (folderEl) {
-        folderEl.removeEventListener('mouseenter', handleMouseEnter);
-        folderEl.removeEventListener('mouseleave', handleMouseLeave);
-        folderEl.removeEventListener('mousemove', handleMouseMove);
-        folderEl.removeEventListener('mouseleave', handleTiltLeave);
-      }
-    };
-  }, [theme]);
-
-  // Handle click on the folder
-  const handleFolderClick = () => {
-    // Play burst exit animation
-    const tl = gsap.timeline({
-      onComplete: () => {
-        if (onOpen) onOpen();
-        // Restore elements after open
-        gsap.set([wordChars.current, curiousText.current, voxelFolder.current], { clearProps: "all" });
-      }
-    });
-
-    // Zoom out the whole row a bit
-    tl.to(wordRow.current, { scale: 0.8, opacity: 0, duration: 0.6, ease: "power3.in" }, 0);
-    tl.to(curiousText.current, { opacity: 0, y: -20, duration: 0.4 }, 0);
-  };
-
-  // Handle individual file card hover
-  const handleCardEnter = (e) => {
-    gsap.to(e.currentTarget, { y: -4, scale: 1.03, duration: 0.22, ease: "power2.out" });
-  };
-  
-  const handleCardLeave = (e) => {
-    gsap.to(e.currentTarget, { y: 0, scale: 1, duration: 0.22, ease: "power2.out" });
-  };
-
-  const addToRefs = (el) => {
-    if (el && !wordChars.current.includes(el)) {
-      wordChars.current.push(el);
-    }
-  };
+  const topProjects = [PROJECTS[1], PROJECTS[0], PROJECTS[2]];
 
   return (
-    <>
-      <section className="work-section" id="workSection" ref={workSection}>
-          <div className="curious-text" id="curiousText" ref={curiousText} style={{ color: theme.text }}>Curious?... Check out my</div>
-          
-          <div className="word-row" id="wordRow" ref={wordRow}>
-              <span className="word-char desktop-char" ref={addToRefs} style={{ color: `${theme.text}20` }}>W</span>
+    <section 
+      ref={sectionRef} 
+      style={{ 
+        width: '100vw', 
+        minHeight: '100vh', 
+        display: 'flex', 
+        flexDirection: 'column', 
+        alignItems: 'center', 
+        justifyContent: 'center',
+        padding: '120px 4vw',
+        position: 'relative'
+      }}
+    >
+      <div style={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap: '4vw',
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+        marginBottom: '80px',
+        width: '100%'
+      }}>
+        {topProjects.map((proj, idx) => (
+          <div 
+            key={proj.id} 
+            ref={el => cardsRef.current[idx] = el}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              width: 'clamp(280px, 25vw, 400px)',
+              position: 'relative'
+            }}
+          >
+            {/* The String */}
+            <div style={{
+              width: '2px',
+              height: '80px',
+              backgroundColor: theme.text,
+              opacity: 0.2,
+              marginBottom: '-2px'
+            }}></div>
+
+            {/* The Card */}
+            <div 
+              style={{
+                width: '100%',
+                aspectRatio: '4/5',
+                borderRadius: '16px',
+                overflow: 'hidden',
+                backgroundColor: '#0d0d0d',
+                border: `1px solid ${theme.text}30`,
+                boxShadow: '0 20px 40px rgba(0,0,0,0.2)',
+                position: 'relative',
+                cursor: 'pointer'
+              }}
+              onMouseEnter={(e) => {
+                gsap.to(e.currentTarget, { y: -10, scale: 1.02, rotation: -2, duration: 0.4, ease: 'power3.out' });
+              }}
+              onMouseLeave={(e) => {
+                gsap.to(e.currentTarget, { y: 0, scale: 1, rotation: 0, duration: 0.4, ease: 'power3.out' });
+              }}
+            >
+              {(proj.img?.endsWith('.mp4') || proj.img?.endsWith('.mov')) ? (
+                <LazyVideo src={proj.img} style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }} />
+              ) : (
+                <img src={proj.img} alt={proj.name} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }} />
+              )}
               
-              <div className="mobile-work-header" style={{ color: `${theme.text}90` }}>WORK</div>
-
-              <div className="voxel-folder" id="voxelFolder" ref={voxelFolder} onClick={handleFolderClick}>
-                  <div className="folder-hitbox"></div>
-                  {/* Back panel */}
-                  <div className="folder-back" style={{ background: theme.text, opacity: 0.8 }}>
-                      <div className="folder-back-tab" style={{ background: theme.text, opacity: 0.9 }}>
-                          <span className="tab-text" style={{ color: theme.bg }}>Portfolio</span>
-                      </div>
-                  </div>
-
-                  {/* Files inside */}
-                  <div className="files-container">
-                    {[PROJECTS[1], PROJECTS[0], PROJECTS[2]].map((proj, idx) => (
-                      <div key={proj.id} className={`file-card proj-preview-${idx}`} style={{ 
-                        position: "absolute", bottom: "10%", left: "10%", width: "80%", height: "120%",
-                        padding: 0, overflow: 'hidden', transformOrigin: "bottom center",
-                        background: '#0d0d0d', border: `2px solid ${theme.text}40`
-                      }}>
-                        {(proj.img?.endsWith('.mp4') || proj.img?.endsWith('.mov')) ? (
-                          <LazyVideo src={proj.img} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: proj.objectPosition || 'center', opacity: 0.8 }} />
-                        ) : (
-                          <img src={proj.img} alt={proj.name} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: proj.objectPosition || 'center', opacity: 0.8 }} />
-                        )}
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Front panel */}
-                  <div className="folder-front" style={{ background: theme.text }}>
-                      <div className="folder-front-tab" style={{ background: theme.text, opacity: 0.9 }}>
-                          <span className="tab-text" style={{ color: theme.bg }}>Portfolio</span>
-                      </div>
-                      <div className="folder-ss">SS</div>
-                  </div>
-                  {/* Removed Mobile Call To Action */}
+              {/* Card Label */}
+              <div style={{
+                position: 'absolute',
+                bottom: '24px',
+                left: '24px',
+                color: '#fff'
+              }}>
+                <h3 style={{ fontSize: '24px', fontWeight: 700, margin: 0, letterSpacing: '-0.02em' }}>{proj.name}</h3>
+                <span style={{ fontSize: '14px', opacity: 0.7, textTransform: 'uppercase', letterSpacing: '0.1em' }}>{proj.role}</span>
               </div>
-              
-              <span className="word-char desktop-char" ref={addToRefs} style={{ color: `${theme.text}20` }}>r</span>
-              <span className="word-char desktop-char" ref={addToRefs} style={{ color: `${theme.text}20` }}>k</span>
+            </div>
           </div>
-      </section>
-      
-      
+        ))}
+      </div>
 
-    </>
+      {/* Call to Action */}
+      <button 
+        onClick={onOpen}
+        style={{
+          padding: '20px 48px',
+          borderRadius: '100px',
+          border: `1px solid ${theme.text}40`,
+          backgroundColor: 'transparent',
+          color: theme.text,
+          fontSize: '18px',
+          fontWeight: 600,
+          fontFamily: 'var(--font-heading)',
+          letterSpacing: '0.05em',
+          cursor: 'pointer',
+          transition: 'all 0.3s ease',
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.backgroundColor = theme.text;
+          e.currentTarget.style.color = theme.bg;
+          e.currentTarget.style.transform = 'scale(1.05)';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.backgroundColor = 'transparent';
+          e.currentTarget.style.color = theme.text;
+          e.currentTarget.style.transform = 'scale(1)';
+        }}
+      >
+        VIEW WORK →
+      </button>
+    </section>
   );
 }

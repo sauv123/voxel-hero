@@ -468,7 +468,7 @@ export default function App() {
               opacity: 0.75,
               lineHeight: 1.4
             }}>
-              B2C Consumer • Fintech • Generative AI • Milan, IT
+              B2C Consumer • Fintech • Milan, IT
             </span>
           </div>
 
@@ -516,31 +516,7 @@ export default function App() {
         {/* ── Interactive Video Background ── */}
         <HeroVideo videoSrc="/0826.mp4" isPreloading={!isPreloaderDone} onVideoReady={() => setIsVideoReady(true)} />
 
-        {isPreloaderDone && isHoveringCharacter && (
-          <div 
-            style={{
-              position: "absolute",
-              left: tooltipPos.x + 20,
-              top: tooltipPos.y + 20,
-              pointerEvents: "none",
-              backgroundColor: "#0d0d0d",
-              color: theme.brand,
-              border: `1px solid ${theme.brand}50`,
-              padding: "6px 12px",
-              borderRadius: "4px",
-              fontFamily: "Space Mono, monospace",
-              fontSize: "10px",
-              fontWeight: 700,
-              textTransform: "uppercase",
-              letterSpacing: "0.1em",
-              zIndex: 100,
-              boxShadow: "0 4px 12px rgba(0,0,0,0.5)",
-              whiteSpace: "nowrap"
-            }}
-          >
-            Click to switch character ↺
-          </div>
-        )}
+        
       </div>
 
       {/* ── Brutalist Dynamic Sculpture ── */}
