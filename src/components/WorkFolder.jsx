@@ -8,8 +8,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function WorkFolder({ theme, onOpen }) {
   const sectionRef = useRef();
-  const pendulumsRef = useRef([]);
-  const rotationTo = useRef([]);
+  const cardsRef = useRef([]);
 
   useEffect(() => {
     // Background scrub
@@ -24,16 +23,15 @@ export default function WorkFolder({ theme, onOpen }) {
       }
     });
 
-    // Hanging pendulum drop animation
-    gsap.fromTo(pendulumsRef.current, 
-      { y: -300, rotation: () => Math.random() * 15 - 7.5, opacity: 0 },
+    // Entrance animation
+    gsap.fromTo(cardsRef.current, 
+      { y: 150, opacity: 0 },
       {
         y: 0,
         opacity: 1,
-        rotation: 0,
-        duration: 2,
-        ease: 'power3.out',
-        stagger: 0.1,
+        duration: 1.5,
+        ease: 'power4.out',
+        stagger: 0.2,
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top 60%',
@@ -41,28 +39,41 @@ export default function WorkFolder({ theme, onOpen }) {
         }
       }
     );
-
-    // Setup real-time physics (quickTo) for minimal sway
-    pendulumsRef.current.forEach((el, i) => {
-      rotationTo.current[i] = gsap.quickTo(el, "rotation", { duration: 1.2, ease: "power3.out" });
-    });
-
-    const handleGlobalMouseMove = (e) => {
-      // Calculate mouse position relative to screen center (-0.5 to 0.5)
-      const normalizedX = (e.clientX / window.innerWidth) - 0.5;
-      
-      pendulumsRef.current.forEach((el, i) => {
-        if (!el) return;
-        // The sway is very subtle and feels like gentle wind/physics
-        // Each card has slightly different weight for organic feel
-        const maxTilt = 8 + (i * 2); 
-        rotationTo.current[i](normalizedX * maxTilt);
-      });
-    };
-
-    window.addEventListener('mousemove', handleGlobalMouseMove);
-    return () => window.removeEventListener('mousemove', handleGlobalMouseMove);
   }, []);
+
+  // Premium 3D Tilt Physics
+  const handleMouseMove = (e, index) => {
+    const el = cardsRef.current[index];
+    if (!el) return;
+    
+    const rect = el.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    
+    gsap.to(el, {
+      rotationY: x * 15,
+      rotationX: -y * 15,
+      transformPerspective: 1000,
+      scale: 1.05,
+      duration: 0.6,
+      ease: 'power3.out',
+      overwrite: 'auto'
+    });
+  };
+
+  const handleMouseLeave = (e, index) => {
+    const el = cardsRef.current[index];
+    if (!el) return;
+    
+    gsap.to(el, {
+      rotationY: 0,
+      rotationX: 0,
+      scale: 1,
+      duration: 1.2,
+      ease: 'elastic.out(1, 0.4)',
+      overwrite: 'auto'
+    });
+  };
 
   const topProjects = [PROJECTS[1], PROJECTS[0], PROJECTS[2]];
 
@@ -77,7 +88,8 @@ export default function WorkFolder({ theme, onOpen }) {
         alignItems: 'center', 
         justifyContent: 'center',
         padding: '120px 4vw',
-        position: 'relative'
+        position: 'relative',
+        perspective: '2000px'
       }}
     >
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '1px', backgroundColor: theme.text, opacity: 0.1 }}></div>
@@ -95,42 +107,37 @@ export default function WorkFolder({ theme, onOpen }) {
         {topProjects.map((proj, idx) => (
           <div 
             key={proj.id} 
-            ref={el => pendulumsRef.current[idx] = el}
             style={{
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              width: 'clamp(280px, 26vw, 420px)',
+              width: 'clamp(320px, 28vw, 480px)', // Made cards significantly bigger
               position: 'relative',
-              transformOrigin: 'top center',
-              cursor: 'pointer'
             }}
           >
-            {/* The Minimal String */}
+            {/* The String Visual */}
             <div style={{
               width: '1px',
-              height: '140px',
+              height: '100px',
               backgroundColor: theme.text,
               opacity: 0.4
             }}></div>
 
-            {/* The Minimal Card */}
+            {/* The Interactive 3D Card */}
             <div 
+              ref={el => cardsRef.current[idx] = el}
+              onMouseMove={(e) => handleMouseMove(e, idx)}
+              onMouseLeave={(e) => handleMouseLeave(e, idx)}
               style={{
                 width: '100%',
                 aspectRatio: '4/5',
-                borderRadius: '12px',
+                borderRadius: '16px',
                 overflow: 'hidden',
                 backgroundColor: '#000',
                 position: 'relative',
-                transformOrigin: 'top center',
-                transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'scale(1.03) translateY(-8px)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'scale(1) translateY(0)';
+                transformStyle: 'preserve-3d',
+                cursor: 'pointer',
+                boxShadow: '0 30px 60px rgba(0,0,0,0.2)'
               }}
             >
               {(proj.img?.endsWith('.mp4') || proj.img?.endsWith('.mov')) ? (
@@ -139,32 +146,50 @@ export default function WorkFolder({ theme, onOpen }) {
                 <img src={proj.img} alt={proj.name} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }} />
               )}
               
-              {/* Card Label & Subheading (Minimal) */}
+              {/* Card Content Overlay */}
               <div style={{
                 position: 'absolute',
                 inset: 0,
-                background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 60%, transparent 100%)',
+                background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 50%, transparent 100%)',
                 padding: '40px 32px',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'flex-end',
-                pointerEvents: 'none'
+                pointerEvents: 'none',
+                transform: 'translateZ(30px)' // Pushes text out in 3D space
               }}>
                 <h3 style={{ 
                   fontFamily: 'var(--font-heading)', 
-                  fontSize: '2.25rem', 
-                  fontWeight: 700, 
+                  fontSize: '2.5rem', 
+                  fontWeight: 800, 
                   margin: '0 0 12px 0', 
                   color: '#ffffff',
                   lineHeight: 1.1,
                   letterSpacing: '-0.02em'
                 }}>{proj.name}</h3>
                 
+                {/* Tags Restored */}
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '16px' }}>
+                  {proj.tags && proj.tags.map(tag => (
+                    <span key={tag} style={{ 
+                      fontFamily: 'var(--font-body)', 
+                      fontSize: '0.7rem', 
+                      fontWeight: 700,
+                      color: '#ffffff', 
+                      border: '1px solid rgba(255,255,255,0.3)', 
+                      padding: '6px 12px', 
+                      borderRadius: '100px',
+                      letterSpacing: '0.05em'
+                    }}>{tag}</span>
+                  ))}
+                </div>
+
+                {/* Subheading Context */}
                 <p style={{
                   fontFamily: 'var(--font-body)',
-                  fontSize: '1rem',
+                  fontSize: '1.05rem',
                   fontWeight: 400,
-                  color: 'rgba(255,255,255,0.75)',
+                  color: 'rgba(255,255,255,0.85)',
                   margin: 0,
                   lineHeight: 1.5
                 }}>
