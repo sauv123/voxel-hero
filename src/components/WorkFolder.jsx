@@ -8,10 +8,10 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function WorkFolder({ theme, onOpen }) {
   const sectionRef = useRef();
-  const cardsRef = useRef([]);
+  const pendulumsRef = useRef([]);
 
   useEffect(() => {
-    // Background scrub to white for this section
+    // Background scrub
     ScrollTrigger.create({
       trigger: sectionRef.current,
       start: "top 100%",
@@ -23,25 +23,57 @@ export default function WorkFolder({ theme, onOpen }) {
       }
     });
 
-    // Hanging string animation
-    gsap.fromTo(cardsRef.current, 
-      { y: 150, opacity: 0, rotation: 10, transformOrigin: 'top center' },
+    // Hanging pendulum drop animation
+    gsap.fromTo(pendulumsRef.current, 
+      { y: -300, rotation: () => Math.random() * 30 - 15, opacity: 0 },
       {
         y: 0,
         opacity: 1,
         rotation: 0,
-        duration: 1.5,
-        ease: 'elastic.out(1, 0.5)',
-        stagger: 0.2,
+        duration: 2.5,
+        ease: 'elastic.out(1, 0.2)', // Intense pendulum swing on load
+        stagger: 0.15,
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top 70%',
+          start: 'top 60%',
           toggleActions: 'play none none reverse'
         }
       }
     );
-
   }, []);
+
+  const handleMouseMove = (e, index) => {
+    const el = pendulumsRef.current[index];
+    if (!el) return;
+    
+    const rect = el.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const distanceX = e.clientX - centerX;
+    
+    // Rotate based on mouse position (magnetic push)
+    const maxRotation = 12;
+    const rotation = (distanceX / (rect.width / 2)) * maxRotation;
+    
+    gsap.to(el, {
+      rotation: rotation,
+      duration: 0.5,
+      ease: 'power2.out',
+      overwrite: 'auto'
+    });
+  };
+
+  const handleMouseLeave = (e, index) => {
+    const el = pendulumsRef.current[index];
+    if (!el) return;
+    
+    // Swing back and forth elastically (real physics feel)
+    gsap.to(el, {
+      rotation: 0,
+      duration: 2.5,
+      ease: 'elastic.out(1.5, 0.15)', // Extremely bouncy swing
+      overwrite: 'auto'
+    });
+  };
 
   const topProjects = [PROJECTS[1], PROJECTS[0], PROJECTS[2]];
 
@@ -59,34 +91,42 @@ export default function WorkFolder({ theme, onOpen }) {
         position: 'relative'
       }}
     >
+      {/* Invisible anchor bar at the top */}
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '1px', backgroundColor: theme.text, opacity: 0.1 }}></div>
+
       <div style={{
         display: 'flex',
         flexWrap: 'wrap',
-        gap: '4vw',
+        gap: '6vw',
         justifyContent: 'center',
         alignItems: 'flex-start',
-        marginBottom: '80px',
-        width: '100%'
+        marginBottom: '100px',
+        width: '100%',
+        marginTop: '-120px' // Pull up to connect strings to the top
       }}>
         {topProjects.map((proj, idx) => (
           <div 
             key={proj.id} 
-            ref={el => cardsRef.current[idx] = el}
+            ref={el => pendulumsRef.current[idx] = el}
+            onMouseMove={(e) => handleMouseMove(e, idx)}
+            onMouseLeave={(e) => handleMouseLeave(e, idx)}
             style={{
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              width: 'clamp(280px, 25vw, 400px)',
-              position: 'relative'
+              width: 'clamp(280px, 25vw, 360px)',
+              position: 'relative',
+              transformOrigin: 'top center',
+              cursor: 'pointer'
             }}
           >
-            {/* The String */}
+            {/* The String (Thicker, more visible) */}
             <div style={{
               width: '2px',
-              height: '80px',
+              height: '180px', // Long string extending to the top
               backgroundColor: theme.text,
-              opacity: 0.2,
-              marginBottom: '-2px'
+              opacity: 0.8,
+              boxShadow: `0 0 8px ${theme.text}40`
             }}></div>
 
             {/* The Card */}
@@ -96,34 +136,55 @@ export default function WorkFolder({ theme, onOpen }) {
                 aspectRatio: '4/5',
                 borderRadius: '16px',
                 overflow: 'hidden',
-                backgroundColor: '#0d0d0d',
+                backgroundColor: '#000',
                 border: `1px solid ${theme.text}30`,
-                boxShadow: '0 20px 40px rgba(0,0,0,0.2)',
+                boxShadow: '0 30px 60px rgba(0,0,0,0.3)',
                 position: 'relative',
-                cursor: 'pointer'
-              }}
-              onMouseEnter={(e) => {
-                gsap.to(e.currentTarget, { y: -10, scale: 1.02, rotation: -2, duration: 0.4, ease: 'power3.out' });
-              }}
-              onMouseLeave={(e) => {
-                gsap.to(e.currentTarget, { y: 0, scale: 1, rotation: 0, duration: 0.4, ease: 'power3.out' });
+                transformOrigin: 'top center'
               }}
             >
               {(proj.img?.endsWith('.mp4') || proj.img?.endsWith('.mov')) ? (
-                <LazyVideo src={proj.img} style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }} />
+                <LazyVideo src={proj.img} style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.9 }} />
               ) : (
-                <img src={proj.img} alt={proj.name} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }} />
+                <img src={proj.img} alt={proj.name} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.9 }} />
               )}
               
-              {/* Card Label */}
+              {/* Card Label & Tags */}
               <div style={{
                 position: 'absolute',
-                bottom: '24px',
-                left: '24px',
-                color: '#fff'
+                inset: 0,
+                background: 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 50%, transparent 100%)',
+                padding: '32px 24px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'flex-end',
+                pointerEvents: 'none'
               }}>
-                <h3 style={{ fontSize: '24px', fontWeight: 700, margin: 0, letterSpacing: '-0.02em' }}>{proj.name}</h3>
-                <span style={{ fontSize: '14px', opacity: 0.7, textTransform: 'uppercase', letterSpacing: '0.1em' }}>{proj.role}</span>
+                <h3 style={{ 
+                  fontFamily: 'var(--font-heading)', 
+                  fontSize: '1.75rem', 
+                  fontWeight: 800, 
+                  margin: '0 0 16px 0', 
+                  color: '#ffffff',
+                  lineHeight: 1.1
+                }}>{proj.name}</h3>
+                
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                  {proj.tags && proj.tags.map(tag => (
+                    <span key={tag} style={{ 
+                      fontFamily: 'var(--font-body)', 
+                      fontSize: '0.7rem', 
+                      fontWeight: 600,
+                      color: '#ffffff', 
+                      border: '1px solid rgba(255,255,255,0.4)', 
+                      backgroundColor: 'rgba(255,255,255,0.1)',
+                      backdropFilter: 'blur(4px)',
+                      padding: '6px 10px', 
+                      borderRadius: '100px',
+                      letterSpacing: '0.05em'
+                    }}>{tag}</span>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -134,30 +195,30 @@ export default function WorkFolder({ theme, onOpen }) {
       <button 
         onClick={onOpen}
         style={{
-          padding: '20px 48px',
+          padding: '24px 64px',
           borderRadius: '100px',
-          border: `1px solid ${theme.text}40`,
+          border: `2px solid ${theme.text}`,
           backgroundColor: 'transparent',
           color: theme.text,
-          fontSize: '18px',
-          fontWeight: 600,
+          fontSize: '1.125rem',
+          fontWeight: 700,
           fontFamily: 'var(--font-heading)',
           letterSpacing: '0.05em',
           cursor: 'pointer',
-          transition: 'all 0.3s ease',
+          transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
         }}
         onMouseEnter={(e) => {
           e.currentTarget.style.backgroundColor = theme.text;
           e.currentTarget.style.color = theme.bg;
-          e.currentTarget.style.transform = 'scale(1.05)';
+          e.currentTarget.style.transform = 'scale(1.05) translateY(-4px)';
         }}
         onMouseLeave={(e) => {
           e.currentTarget.style.backgroundColor = 'transparent';
           e.currentTarget.style.color = theme.text;
-          e.currentTarget.style.transform = 'scale(1)';
+          e.currentTarget.style.transform = 'scale(1) translateY(0)';
         }}
       >
-        VIEW WORK →
+        VIEW WORK &rarr;
       </button>
     </section>
   );
