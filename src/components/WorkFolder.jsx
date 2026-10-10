@@ -9,6 +9,7 @@ gsap.registerPlugin(ScrollTrigger);
 export default function WorkFolder({ theme, onOpen }) {
   const sectionRef = useRef();
   const pendulumsRef = useRef([]);
+  const rotationTo = useRef([]);
 
   useEffect(() => {
     // Background scrub
@@ -25,14 +26,14 @@ export default function WorkFolder({ theme, onOpen }) {
 
     // Hanging pendulum drop animation
     gsap.fromTo(pendulumsRef.current, 
-      { y: -300, rotation: () => Math.random() * 30 - 15, opacity: 0 },
+      { y: -300, rotation: () => Math.random() * 15 - 7.5, opacity: 0 },
       {
         y: 0,
         opacity: 1,
         rotation: 0,
-        duration: 2.5,
-        ease: 'elastic.out(1, 0.2)', // Intense pendulum swing on load
-        stagger: 0.15,
+        duration: 2,
+        ease: 'power3.out',
+        stagger: 0.1,
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top 60%',
@@ -40,40 +41,28 @@ export default function WorkFolder({ theme, onOpen }) {
         }
       }
     );
+
+    // Setup real-time physics (quickTo) for minimal sway
+    pendulumsRef.current.forEach((el, i) => {
+      rotationTo.current[i] = gsap.quickTo(el, "rotation", { duration: 1.2, ease: "power3.out" });
+    });
+
+    const handleGlobalMouseMove = (e) => {
+      // Calculate mouse position relative to screen center (-0.5 to 0.5)
+      const normalizedX = (e.clientX / window.innerWidth) - 0.5;
+      
+      pendulumsRef.current.forEach((el, i) => {
+        if (!el) return;
+        // The sway is very subtle and feels like gentle wind/physics
+        // Each card has slightly different weight for organic feel
+        const maxTilt = 8 + (i * 2); 
+        rotationTo.current[i](normalizedX * maxTilt);
+      });
+    };
+
+    window.addEventListener('mousemove', handleGlobalMouseMove);
+    return () => window.removeEventListener('mousemove', handleGlobalMouseMove);
   }, []);
-
-  const handleMouseMove = (e, index) => {
-    const el = pendulumsRef.current[index];
-    if (!el) return;
-    
-    const rect = el.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const distanceX = e.clientX - centerX;
-    
-    // Rotate based on mouse position (magnetic push)
-    const maxRotation = 12;
-    const rotation = (distanceX / (rect.width / 2)) * maxRotation;
-    
-    gsap.to(el, {
-      rotation: rotation,
-      duration: 0.5,
-      ease: 'power2.out',
-      overwrite: 'auto'
-    });
-  };
-
-  const handleMouseLeave = (e, index) => {
-    const el = pendulumsRef.current[index];
-    if (!el) return;
-    
-    // Swing back and forth elastically (real physics feel)
-    gsap.to(el, {
-      rotation: 0,
-      duration: 2.5,
-      ease: 'elastic.out(1.5, 0.15)', // Extremely bouncy swing
-      overwrite: 'auto'
-    });
-  };
 
   const topProjects = [PROJECTS[1], PROJECTS[0], PROJECTS[2]];
 
@@ -91,70 +80,71 @@ export default function WorkFolder({ theme, onOpen }) {
         position: 'relative'
       }}
     >
-      {/* Invisible anchor bar at the top */}
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '1px', backgroundColor: theme.text, opacity: 0.1 }}></div>
 
       <div style={{
         display: 'flex',
         flexWrap: 'wrap',
-        gap: '6vw',
+        gap: '4vw',
         justifyContent: 'center',
         alignItems: 'flex-start',
         marginBottom: '100px',
         width: '100%',
-        marginTop: '-120px' // Pull up to connect strings to the top
+        marginTop: '-120px'
       }}>
         {topProjects.map((proj, idx) => (
           <div 
             key={proj.id} 
             ref={el => pendulumsRef.current[idx] = el}
-            onMouseMove={(e) => handleMouseMove(e, idx)}
-            onMouseLeave={(e) => handleMouseLeave(e, idx)}
             style={{
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              width: 'clamp(280px, 25vw, 360px)',
+              width: 'clamp(280px, 26vw, 420px)',
               position: 'relative',
               transformOrigin: 'top center',
               cursor: 'pointer'
             }}
           >
-            {/* The String (Thicker, more visible) */}
+            {/* The Minimal String */}
             <div style={{
-              width: '2px',
-              height: '180px', // Long string extending to the top
+              width: '1px',
+              height: '140px',
               backgroundColor: theme.text,
-              opacity: 0.8,
-              boxShadow: `0 0 8px ${theme.text}40`
+              opacity: 0.4
             }}></div>
 
-            {/* The Card */}
+            {/* The Minimal Card */}
             <div 
               style={{
                 width: '100%',
                 aspectRatio: '4/5',
-                borderRadius: '16px',
+                borderRadius: '12px',
                 overflow: 'hidden',
                 backgroundColor: '#000',
-                border: `1px solid ${theme.text}30`,
-                boxShadow: '0 30px 60px rgba(0,0,0,0.3)',
                 position: 'relative',
-                transformOrigin: 'top center'
+                transformOrigin: 'top center',
+                transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'scale(1.03) translateY(-8px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'scale(1) translateY(0)';
               }}
             >
               {(proj.img?.endsWith('.mp4') || proj.img?.endsWith('.mov')) ? (
-                <LazyVideo src={proj.img} style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.9 }} />
+                <LazyVideo src={proj.img} style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }} />
               ) : (
-                <img src={proj.img} alt={proj.name} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.9 }} />
+                <img src={proj.img} alt={proj.name} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }} />
               )}
               
-              {/* Card Label & Tags */}
+              {/* Card Label & Subheading (Minimal) */}
               <div style={{
                 position: 'absolute',
                 inset: 0,
-                background: 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 50%, transparent 100%)',
-                padding: '32px 24px',
+                background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 60%, transparent 100%)',
+                padding: '40px 32px',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'flex-end',
@@ -162,63 +152,56 @@ export default function WorkFolder({ theme, onOpen }) {
               }}>
                 <h3 style={{ 
                   fontFamily: 'var(--font-heading)', 
-                  fontSize: '1.75rem', 
-                  fontWeight: 800, 
-                  margin: '0 0 16px 0', 
+                  fontSize: '2.25rem', 
+                  fontWeight: 700, 
+                  margin: '0 0 12px 0', 
                   color: '#ffffff',
-                  lineHeight: 1.1
+                  lineHeight: 1.1,
+                  letterSpacing: '-0.02em'
                 }}>{proj.name}</h3>
                 
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                  {proj.tags && proj.tags.map(tag => (
-                    <span key={tag} style={{ 
-                      fontFamily: 'var(--font-body)', 
-                      fontSize: '0.7rem', 
-                      fontWeight: 600,
-                      color: '#ffffff', 
-                      border: '1px solid rgba(255,255,255,0.4)', 
-                      backgroundColor: 'rgba(255,255,255,0.1)',
-                      backdropFilter: 'blur(4px)',
-                      padding: '6px 10px', 
-                      borderRadius: '100px',
-                      letterSpacing: '0.05em'
-                    }}>{tag}</span>
-                  ))}
-                </div>
+                <p style={{
+                  fontFamily: 'var(--font-body)',
+                  fontSize: '1rem',
+                  fontWeight: 400,
+                  color: 'rgba(255,255,255,0.75)',
+                  margin: 0,
+                  lineHeight: 1.5
+                }}>
+                  {proj.cta}
+                </p>
               </div>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Call to Action */}
       <button 
         onClick={onOpen}
         style={{
           padding: '24px 64px',
           borderRadius: '100px',
-          border: `2px solid ${theme.text}`,
+          border: `1px solid ${theme.text}40`,
           backgroundColor: 'transparent',
           color: theme.text,
           fontSize: '1.125rem',
-          fontWeight: 700,
-          fontFamily: 'var(--font-heading)',
-          letterSpacing: '0.05em',
+          fontWeight: 500,
+          fontFamily: 'var(--font-body)',
           cursor: 'pointer',
           transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
         }}
         onMouseEnter={(e) => {
           e.currentTarget.style.backgroundColor = theme.text;
           e.currentTarget.style.color = theme.bg;
-          e.currentTarget.style.transform = 'scale(1.05) translateY(-4px)';
+          e.currentTarget.style.transform = 'scale(1.05)';
         }}
         onMouseLeave={(e) => {
           e.currentTarget.style.backgroundColor = 'transparent';
           e.currentTarget.style.color = theme.text;
-          e.currentTarget.style.transform = 'scale(1) translateY(0)';
+          e.currentTarget.style.transform = 'scale(1)';
         }}
       >
-        VIEW WORK &rarr;
+        View all work
       </button>
     </section>
   );
