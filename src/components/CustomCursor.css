@@ -23,7 +23,7 @@
   border: 1.25px solid rgba(255, 255, 255, 0.35);
   background-color: transparent;
   mix-blend-mode: difference;
-  box-shadow: 0 0 12px rgba(255, 255, 255, 0.08);
+  box-shadow: none;
 }
 
 /* Razor-Sharp Core Dot */
@@ -76,7 +76,7 @@
   white-space: nowrap;
   opacity: 0;
   scale: 0;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  box-shadow: none;
   display: flex;
   align-items: center;
   gap: 6px;

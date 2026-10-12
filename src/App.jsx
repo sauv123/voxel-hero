@@ -445,7 +445,7 @@ export default function App() {
         <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100vh', zIndex: 2 }}>
 
         {/* ── Background text layer (behind canvas) ── */}
-        <div className="text-layer" style={{ paddingTop: "18vh", zIndex: 12, pointerEvents: "none" }} aria-hidden="true">
+        <div className="text-layer" style={{ paddingTop: "26vh", zIndex: 12, pointerEvents: "none" }} aria-hidden="true">
           {/* Eyebrow with optimized visual hierarchy and enhanced readability */}
           <div className="hero-text-header" style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '3rem' }}>
             <span style={{ 

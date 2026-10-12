@@ -300,7 +300,7 @@ export default function WorkFolder({ theme, onOpen }) {
             letterSpacing: '0.1em',
             textTransform: 'uppercase',
             cursor: 'pointer',
-            boxShadow: '0 16px 40px rgba(0,0,0,0.18)', // Cast shadow as requested
+            boxShadow: 'none',
             transition: 'background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease',
             display: 'inline-flex',
             alignItems: 'center',
@@ -309,17 +309,16 @@ export default function WorkFolder({ theme, onOpen }) {
           onMouseEnter={(e) => {
             e.currentTarget.style.backgroundColor = theme.text;
             e.currentTarget.style.color = theme.bg;
-            e.currentTarget.style.boxShadow = '0 24px 50px rgba(0,0,0,0.28)';
+            
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.backgroundColor = theme.bg;
             e.currentTarget.style.color = theme.text;
-            e.currentTarget.style.boxShadow = '0 16px 40px rgba(0,0,0,0.18)';
+            
           }}
         >
           <span>View All Work</span>
-          {/* Minimal accent replacement for arrow mark */}
-          <span style={{ fontSize: '10px', opacity: 0.6 }}>•</span>
+          <span style={{ fontSize: '1.2rem', lineHeight: 1, display: 'inline-block', transition: 'transform 0.3s ease' }}>➔</span>
         </button>
       </div>
 

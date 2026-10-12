@@ -68,13 +68,13 @@
 }
 
 .experiments-title-main {
-  font-family: var(--font-heading);
-  font-size: clamp(3rem, 7.5vw, 6.5rem);
-  font-weight: 500;
-  line-height: 0.95;
-  letter-spacing: -0.04em;
+  font-family: var(--font-body), sans-serif;
+  font-size: clamp(1.2rem, 2vw, 1.8rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.2rem;
 }
 
 .experiments-title-line {
@@ -303,7 +303,7 @@ video.bento-media-asset {
   }
   
   .experiments-title-main {
-    font-size: clamp(2.4rem, 10vw, 4.5rem);
+    font-size: clamp(1.2rem, 2vw, 1.8rem);
   }
 
   .modern-bento-grid {
