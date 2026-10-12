@@ -7,6 +7,8 @@ export default function CustomCursor() {
   const cursorRef = useRef(null);
   const dotRef = useRef(null);
   const rippleRef = useRef(null);
+  const pillRef = useRef(null);
+  const [cursorText, setCursorText] = useState("");
   const hoveredTarget = useRef(null);
 
   const mouse = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
@@ -55,6 +57,9 @@ export default function CustomCursor() {
       // 1:1 Instant Tracking for Micro-Dot
       if (dotRef.current) {
         gsap.set(dotRef.current, { x: mouse.current.x, y: mouse.current.y });
+      }
+      if (pillRef.current) {
+        gsap.set(pillRef.current, { x: mouse.current.x, y: mouse.current.y });
       }
 
       // Smooth Outer Ring Tracking
@@ -132,6 +137,15 @@ export default function CustomCursor() {
     if (isMobile) return;
 
     const handleMouseOver = (e) => {
+      const textTarget = e.target.closest('[data-cursor-text]');
+      if (textTarget) {
+        const text = textTarget.getAttribute('data-cursor-text') || 'VIEW CASE STUDY ↗';
+        setCursorText(text);
+        gsap.to(cursorRef.current, { scale: 0, opacity: 0, duration: 0.2 });
+        gsap.to(dotRef.current, { scale: 0, opacity: 0, duration: 0.2 });
+        gsap.to(pillRef.current, { scale: 1, opacity: 1, duration: 0.25, ease: 'back.out(1.5)' });
+      }
+
       const target = e.target.closest('.magnetic, a, button');
       if (target) {
         hoveredTarget.current = target;
@@ -152,6 +166,13 @@ export default function CustomCursor() {
     };
 
     const handleMouseOut = (e) => {
+      const textTarget = e.target.closest('[data-cursor-text]');
+      if (textTarget) {
+        gsap.to(pillRef.current, { scale: 0, opacity: 0, duration: 0.2 });
+        gsap.to(cursorRef.current, { scale: 1, opacity: 1, duration: 0.2 });
+        gsap.to(dotRef.current, { scale: 1, opacity: 1, duration: 0.2 });
+      }
+
       const target = e.target.closest('.magnetic, a, button');
       if (target) {
         // Reset magnetic position of the element
@@ -195,6 +216,9 @@ export default function CustomCursor() {
         <div ref={rippleRef} className="sotd-cursor-ripple"></div>
         <div ref={cursorRef} className="sotd-cursor-outer"></div>
         <div ref={dotRef} className="sotd-cursor-dot"></div>
+        <div ref={pillRef} className="sotd-cursor-pill">
+          {cursorText}
+        </div>
       </div>
     </>
   );

@@ -11,25 +11,30 @@ const FEATURED = [
     ...PROJECTS[0], // OLO
     index: "01",
     displayName: "OLO",
+    description: "An introvert-first mobile habit experience built around micro-actions and private reflection.",
     tags: PROJECTS[0].tags || ["EMOTIONAL DESIGN", "UX", "UI"]
   },
   {
     ...PROJECTS[1], // ORCO
     index: "02",
     displayName: "REDESIGNING ORCO",
+    description: "Transforming a heritage Italian food brand into an interactive culinary experience.",
     tags: PROJECTS[1].tags || ["UX DESIGN", "WEB DESIGN", "BRANDING"]
   },
   {
     ...PROJECTS[2], // MICA
     index: "03",
     displayName: "MICA",
+    description: "Designing belonging through emotionally intelligent co-living housing experiences.",
     tags: PROJECTS[2].tags || ["UX DESIGN", "CO-LIVING DESIGN"]
   }
 ];
 
 export default function WorkFolder({ theme, onOpen }) {
   const sectionRef = useRef(null);
-  const [activeCard, setActiveCard] = useState(0);
+  const magneticBtnRef = useRef(null);
+  // Default to Orco (index 1) as requested
+  const [activeCard, setActiveCard] = useState(1);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -53,6 +58,28 @@ export default function WorkFolder({ theme, onOpen }) {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+  // Magnetic button physics
+  const handleBtnMouseMove = (e) => {
+    const btn = magneticBtnRef.current;
+    if (!btn) return;
+    const rect = btn.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const dist = Math.hypot(e.clientX - cx, e.clientY - cy);
+
+    if (dist < 140) {
+      const pullX = (e.clientX - cx) * 0.35;
+      const pullY = (e.clientY - cy) * 0.35;
+      gsap.to(btn, { x: pullX, y: pullY, duration: 0.25, ease: 'power2.out' });
+    }
+  };
+
+  const handleBtnMouseLeave = () => {
+    const btn = magneticBtnRef.current;
+    if (!btn) return;
+    gsap.to(btn, { x: 0, y: 0, duration: 0.7, ease: 'elastic.out(1.2, 0.3)' });
+  };
+
   return (
     <section 
       ref={sectionRef} 
@@ -60,8 +87,9 @@ export default function WorkFolder({ theme, onOpen }) {
         width: '100vw',
         minHeight: isMobile ? 'auto' : '100vh',
         height: isMobile ? 'auto' : '100vh',
-        maxHeight: isMobile ? 'none' : '1020px',
-        padding: isMobile ? '60px 5vw' : '40px 5vw 40px 5vw',
+        maxHeight: isMobile ? 'none' : '1040px',
+        padding: isMobile ? '60px 5vw 120px 5vw' : '40px 5vw 160px 5vw',
+        marginBottom: '100px', // Generous space before Products I've built
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
@@ -70,63 +98,25 @@ export default function WorkFolder({ theme, onOpen }) {
         overflow: 'hidden'
       }}
     >
-      {/* ── Top Bar ── */}
+      {/* ── Top Bar: Just Selected Works ── */}
       <div style={{
         display: 'flex',
-        justifyContent: 'space-between',
         alignItems: 'center',
         borderBottom: `1px solid ${theme.text}20`,
         paddingBottom: '16px',
-        marginBottom: isMobile ? '24px' : '20px'
+        marginBottom: isMobile ? '24px' : '24px'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-          <span style={{
-            fontFamily: 'var(--font-heading)',
-            fontSize: '11px',
-            fontWeight: 800,
-            letterSpacing: '0.2em',
-            textTransform: 'uppercase',
-            color: theme.text,
-            opacity: 0.6
-          }}>
-            Selected Works
-          </span>
-          <span style={{ color: theme.text, opacity: 0.3 }}>/</span>
-          <span style={{
-            fontFamily: 'var(--font-heading)',
-            fontSize: '11px',
-            fontWeight: 800,
-            letterSpacing: '0.15em',
-            color: theme.text
-          }}>
-            01 — 03
-          </span>
-        </div>
-
-        <button 
-          onClick={() => onOpen('work')}
-          style={{
-            background: 'none',
-            border: 'none',
-            fontFamily: 'var(--font-heading)',
-            fontSize: '12px',
-            fontWeight: 700,
-            letterSpacing: '0.08em',
-            textTransform: 'uppercase',
-            color: theme.text,
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            opacity: 0.75,
-            transition: 'opacity 0.2s ease'
-          }}
-          onMouseEnter={e => e.currentTarget.style.opacity = '1'}
-          onMouseLeave={e => e.currentTarget.style.opacity = '0.75'}
-        >
-          <span>View Archive (12+)</span>
-          <span style={{ fontSize: '13px' }}>↗</span>
-        </button>
+        <span style={{
+          fontFamily: 'var(--font-heading)',
+          fontSize: '11px',
+          fontWeight: 800,
+          letterSpacing: '0.2em',
+          textTransform: 'uppercase',
+          color: theme.text,
+          opacity: 0.6
+        }}>
+          Selected Works
+        </span>
       </div>
 
       {/* ── 3-Column Expandable Triptych ── */}
@@ -141,23 +131,24 @@ export default function WorkFolder({ theme, onOpen }) {
       }}>
         {FEATURED.map((proj, idx) => {
           const isActive = activeCard === idx;
-          const flexValue = isMobile ? '1' : (isActive ? 2.4 : 0.85);
+          const flexValue = isMobile ? '1' : (isActive ? 2.5 : 0.85);
 
           return (
             <div
               key={proj.id}
+              data-cursor-text="VIEW CASE STUDY ↗"
               onMouseEnter={() => !isMobile && setActiveCard(idx)}
               onClick={() => onOpen(proj.slug)}
               style={{
                 flex: flexValue,
-                height: isMobile ? '360px' : '100%',
+                height: isMobile ? '380px' : '100%',
                 borderRadius: '16px',
                 overflow: 'hidden',
                 position: 'relative',
                 cursor: 'pointer',
                 backgroundColor: '#111111',
-                border: isActive ? `1px solid ${theme.text}40` : `1px solid ${theme.text}15`,
-                boxShadow: isActive ? '0 30px 70px rgba(0,0,0,0.3)' : '0 10px 30px rgba(0,0,0,0.12)',
+                border: 'none', // No stroke as requested
+                boxShadow: 'none', // No shadow as requested
                 transition: 'all 0.55s cubic-bezier(0.16, 1, 0.3, 1)',
                 display: 'flex',
                 flexDirection: 'column',
@@ -165,7 +156,7 @@ export default function WorkFolder({ theme, onOpen }) {
                 padding: isMobile ? '24px' : '32px'
               }}
             >
-              {/* Background Media — Crisp, Bright, Vibrant (No dark gloomy wash) */}
+              {/* Background Media — Crisp, Bright, Vibrant */}
               <div style={{
                 position: 'absolute',
                 inset: 0,
@@ -202,23 +193,15 @@ export default function WorkFolder({ theme, onOpen }) {
                   />
                 )}
 
-                {/* Subtle Text Contrast Shield (Only at bottom & top, leaving the rest vibrant) */}
+                {/* Subtle text gradient strictly at bottom for legibility */}
                 <div style={{
                   position: 'absolute',
                   inset: 0,
-                  background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 35%, transparent 60%)'
-                }}></div>
-                <div style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  height: '120px',
-                  background: 'linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, transparent 100%)'
+                  background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.25) 45%, transparent 70%)'
                 }}></div>
               </div>
 
-              {/* ── Top Info Layer ── */}
+              {/* ── Top Info Layer: Index ── */}
               <div style={{
                 position: 'relative',
                 zIndex: 2,
@@ -232,44 +215,26 @@ export default function WorkFolder({ theme, onOpen }) {
                   fontWeight: 900,
                   color: '#ffffff',
                   letterSpacing: '0.05em',
-                  opacity: isActive ? 1 : 0.7
+                  opacity: isActive ? 1 : 0.6
                 }}>
                   {proj.index}
                 </span>
-
-                {/* On-Hover CTA: VIEW CASE STUDY (Smoothly appears on active) */}
-                <div style={{
-                  fontFamily: 'var(--font-heading)',
-                  fontSize: '11px',
-                  fontWeight: 800,
-                  color: '#ffffff',
-                  letterSpacing: '0.1em',
-                  textTransform: 'uppercase',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  opacity: (isActive || isMobile) ? 1 : 0,
-                  transform: (isActive || isMobile) ? 'translateX(0)' : 'translateX(8px)',
-                  transition: 'all 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
-                  backgroundColor: 'rgba(0,0,0,0.65)',
-                  backdropFilter: 'blur(10px)',
-                  padding: '6px 14px',
-                  borderRadius: '100px',
-                  border: '1px solid rgba(255,255,255,0.25)'
-                }}>
-                  <span>View Case Study</span>
-                  <span style={{ fontSize: '13px' }}>↗</span>
-                </div>
               </div>
 
               {/* ── Bottom Content Layer ── */}
               <div style={{ position: 'relative', zIndex: 2 }}>
-                {/* Project Tags */}
+                
+                {/* Project Tags — ONLY SHOW ON HOVER / ACTIVE */}
                 <div style={{
                   display: 'flex',
                   flexWrap: 'wrap',
                   gap: '6px',
-                  marginBottom: '12px'
+                  marginBottom: '10px',
+                  opacity: (isActive || isMobile) ? 1 : 0,
+                  transform: (isActive || isMobile) ? 'translateY(0)' : 'translateY(10px)',
+                  transition: 'all 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
+                  height: (isActive || isMobile) ? 'auto' : '0px',
+                  overflow: 'hidden'
                 }}>
                   {proj.tags.map(tag => (
                     <span 
@@ -281,7 +246,7 @@ export default function WorkFolder({ theme, onOpen }) {
                         letterSpacing: '0.06em',
                         textTransform: 'uppercase',
                         color: 'rgba(255,255,255,0.9)',
-                        backgroundColor: 'rgba(0,0,0,0.45)',
+                        backgroundColor: 'rgba(0,0,0,0.5)',
                         backdropFilter: 'blur(6px)',
                         padding: '4px 10px',
                         borderRadius: '4px',
@@ -299,7 +264,7 @@ export default function WorkFolder({ theme, onOpen }) {
                   fontSize: isMobile ? '2rem' : (isActive ? 'clamp(2.2rem, 3.8vw, 3.4rem)' : '1.8rem'),
                   fontWeight: 900,
                   color: '#ffffff',
-                  margin: 0,
+                  margin: '0 0 8px 0',
                   lineHeight: 1.05,
                   letterSpacing: '-0.03em',
                   transition: 'font-size 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -307,41 +272,72 @@ export default function WorkFolder({ theme, onOpen }) {
                 }}>
                   {proj.displayName}
                 </h3>
+
+                {/* Project Description — Always present on active card */}
+                <p style={{
+                  fontFamily: 'var(--font-body)',
+                  fontSize: '13px',
+                  lineHeight: 1.5,
+                  color: 'rgba(255,255,255,0.85)',
+                  margin: 0,
+                  maxWidth: '480px',
+                  opacity: (isActive || isMobile) ? 1 : 0,
+                  maxHeight: (isActive || isMobile) ? '80px' : '0px',
+                  overflow: 'hidden',
+                  transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
+                }}>
+                  {proj.description}
+                </p>
+
               </div>
             </div>
           );
         })}
       </div>
 
-      {/* ── Minimal Bottom Footer ── */}
-      <div style={{
-        marginTop: isMobile ? '20px' : '16px',
-        paddingTop: '14px',
-        borderTop: `1px solid ${theme.text}15`,
-        display: 'flex',
-        justifyContent: 'flex-end',
-        alignItems: 'center'
-      }}>
+      {/* ── Bottom Section: Big Magnetic CTA Button with Generous Space ── */}
+      <div 
+        style={{
+          marginTop: isMobile ? '40px' : '50px',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '100%'
+        }}
+      >
         <button 
+          ref={magneticBtnRef}
           onClick={() => onOpen('work')}
+          onMouseMove={handleBtnMouseMove}
+          onMouseLeave={handleBtnMouseLeave}
           style={{
-            background: 'none',
-            border: 'none',
+            padding: '22px 60px',
+            borderRadius: '100px',
+            border: `1px solid ${theme.text}40`,
+            backgroundColor: 'transparent',
             color: theme.text,
+            fontSize: '1rem',
+            fontWeight: 700,
             fontFamily: 'var(--font-heading)',
-            fontSize: '11px',
-            fontWeight: 800,
-            letterSpacing: '0.1em',
+            letterSpacing: '0.08em',
             textTransform: 'uppercase',
             cursor: 'pointer',
-            opacity: 0.7,
-            transition: 'opacity 0.2s ease',
-            padding: '4px 0'
+            transition: 'background-color 0.3s ease, color 0.3s ease',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '12px'
           }}
-          onMouseEnter={e => e.currentTarget.style.opacity = '1'}
-          onMouseLeave={e => e.currentTarget.style.opacity = '0.7'}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = theme.text;
+            e.currentTarget.style.color = theme.bg;
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = 'transparent';
+            e.currentTarget.style.color = theme.text;
+          }}
         >
-          Explore All 12+ Projects in Full Gallery →
+          <span>View All Work</span>
+          <span style={{ fontSize: '15px' }}>→</span>
         </button>
       </div>
 
