@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ProfileIntroduction from "./ProfileIntroduction";
+import ValuePillars from "./ValuePillars";
 
 import manipalImg from "../assets/PXL_20230613_050806226.webp";
 import founditImg from "../assets/IMG_128640.webp";
@@ -944,8 +945,18 @@ export default function AboutMe({ theme, onClose }) {
           <span style={{ color: "#4ade80", fontSize: "clamp(2rem, 5vw, 40px)" }}>✦</span> About Me
         </h1>
         
-        {/* Profile Introduction Section */}
-        <div className="about-section-reveal" style={{ marginBottom: "80px" }}>
+        {/* ── Employer Value Engine (4-Pillar Bento Grid) ── */}
+        <div className="about-section-reveal">
+          <ValuePillars theme={invertedTheme} />
+        </div>
+
+        {/* ── Brand Logos Bar ── */}
+        <div className="about-section-reveal" style={{ marginTop: "10px", marginBottom: "48px" }}>
+          <BrandsSection theme={theme} />
+        </div>
+
+        {/* ── Profile Video Reel ── */}
+        <div className="about-section-reveal" style={{ marginBottom: "60px" }}>
           <ProfileIntroduction theme={invertedTheme} />
         </div>
 
@@ -1001,9 +1012,15 @@ export default function AboutMe({ theme, onClose }) {
           <VinylPlayer theme={invertedTheme} />
         </div>
 
-        {/* Brands Section */}
-        <div className="about-section-reveal" style={{ marginTop: "20px", marginBottom: "40px" }}>
-          <BrandsSection theme={theme} />
+        {/* Culture Section Header */}
+        <div className="about-section-reveal" style={{ marginTop: "60px", marginBottom: "24px", display: "flex", alignItems: "center", gap: "12px" }}>
+          <span style={{ fontFamily: "var(--font-heading)", fontSize: "11px", fontWeight: 800, letterSpacing: "0.2em", textTransform: "uppercase", color: "#4ade80" }}>
+            Beyond The Screen
+          </span>
+          <span style={{ color: "#FCFAF2", opacity: 0.2 }}>•</span>
+          <span style={{ fontFamily: "var(--font-body)", fontSize: "12px", color: "#FCFAF2", opacity: 0.6 }}>
+            Personal curiosities, music, and experiments
+          </span>
         </div>
 
       </div>
