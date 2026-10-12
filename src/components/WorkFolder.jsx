@@ -10,35 +10,25 @@ const FEATURED = [
   {
     ...PROJECTS[0], // OLO
     index: "01",
-    shortName: "OLO",
-    badge: "B2C • EMOTIONAL UX",
-    headline: "Designing for the Quiet",
-    roleText: "Product Designer (0 to 1)",
-    oneLiner: "An introvert-first mobile habit system built around micro-actions and private reflection.",
+    displayName: "OLO",
+    tags: PROJECTS[0].tags || ["EMOTIONAL DESIGN", "UX", "UI"]
   },
   {
     ...PROJECTS[1], // ORCO
     index: "02",
-    shortName: "ORCO",
-    badge: "HERITAGE • E-COMMERCE",
-    headline: "Italian Culinary Reimagined",
-    roleText: "Lead UX Designer & Strategist",
-    oneLiner: "Transforming a historic Italian food brand into an immersive digital culinary journey.",
+    displayName: "REDESIGNING ORCO",
+    tags: PROJECTS[1].tags || ["UX DESIGN", "WEB DESIGN", "BRANDING"]
   },
   {
     ...PROJECTS[2], // MICA
     index: "03",
-    shortName: "MICA",
-    badge: "SPATIAL UX • HOUSING",
-    headline: "Belonging in Shared Living",
-    roleText: "Lead UX Designer",
-    oneLiner: "Combating urban loneliness in co-living spaces through emotionally intelligent service design.",
+    displayName: "MICA",
+    tags: PROJECTS[2].tags || ["UX DESIGN", "CO-LIVING DESIGN"]
   }
 ];
 
 export default function WorkFolder({ theme, onOpen }) {
   const sectionRef = useRef(null);
-  // Default to the first card active, or null
   const [activeCard, setActiveCard] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -47,7 +37,6 @@ export default function WorkFolder({ theme, onOpen }) {
     checkMobile();
     window.addEventListener('resize', checkMobile);
 
-    // Background color scrub to match theme cleanly
     if (sectionRef.current) {
       ScrollTrigger.create({
         trigger: sectionRef.current,
@@ -71,8 +60,8 @@ export default function WorkFolder({ theme, onOpen }) {
         width: '100vw',
         minHeight: isMobile ? 'auto' : '100vh',
         height: isMobile ? 'auto' : '100vh',
-        maxHeight: isMobile ? 'none' : '1000px',
-        padding: isMobile ? '80px 5vw' : '40px 5vw 60px 5vw',
+        maxHeight: isMobile ? 'none' : '1020px',
+        padding: isMobile ? '60px 5vw' : '40px 5vw 40px 5vw',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
@@ -81,16 +70,16 @@ export default function WorkFolder({ theme, onOpen }) {
         overflow: 'hidden'
       }}
     >
-      {/* ── Top Bar: Title & Global CTA ── */}
+      {/* ── Top Bar ── */}
       <div style={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
         borderBottom: `1px solid ${theme.text}20`,
-        paddingBottom: '20px',
-        marginBottom: isMobile ? '32px' : '24px'
+        paddingBottom: '16px',
+        marginBottom: isMobile ? '24px' : '20px'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
           <span style={{
             fontFamily: 'var(--font-heading)',
             fontSize: '11px',
@@ -100,9 +89,9 @@ export default function WorkFolder({ theme, onOpen }) {
             color: theme.text,
             opacity: 0.6
           }}>
-            Featured Case Studies
+            Selected Works
           </span>
-          <span style={{ color: theme.text, opacity: 0.3 }}>•</span>
+          <span style={{ color: theme.text, opacity: 0.3 }}>/</span>
           <span style={{
             fontFamily: 'var(--font-heading)',
             fontSize: '11px',
@@ -129,14 +118,14 @@ export default function WorkFolder({ theme, onOpen }) {
             display: 'flex',
             alignItems: 'center',
             gap: '8px',
-            transition: 'opacity 0.2s ease',
-            opacity: 0.8
+            opacity: 0.75,
+            transition: 'opacity 0.2s ease'
           }}
           onMouseEnter={e => e.currentTarget.style.opacity = '1'}
-          onMouseLeave={e => e.currentTarget.style.opacity = '0.8'}
+          onMouseLeave={e => e.currentTarget.style.opacity = '0.75'}
         >
           <span>View Archive (12+)</span>
-          <span style={{ fontSize: '14px' }}>→</span>
+          <span style={{ fontSize: '13px' }}>↗</span>
         </button>
       </div>
 
@@ -147,13 +136,12 @@ export default function WorkFolder({ theme, onOpen }) {
         gap: isMobile ? '20px' : '16px',
         flex: 1,
         width: '100%',
-        minHeight: isMobile ? 'auto' : '480px',
+        minHeight: isMobile ? 'auto' : '520px',
         position: 'relative'
       }}>
         {FEATURED.map((proj, idx) => {
           const isActive = activeCard === idx;
-          // Desktop flex ratio: active card gets 56%, non-active get 22% each
-          const flexValue = isMobile ? '1' : (isActive ? 2.5 : 0.85);
+          const flexValue = isMobile ? '1' : (isActive ? 2.4 : 0.85);
 
           return (
             <div
@@ -162,22 +150,22 @@ export default function WorkFolder({ theme, onOpen }) {
               onClick={() => onOpen(proj.slug)}
               style={{
                 flex: flexValue,
-                height: isMobile ? '380px' : '100%',
-                borderRadius: '20px',
+                height: isMobile ? '360px' : '100%',
+                borderRadius: '16px',
                 overflow: 'hidden',
                 position: 'relative',
                 cursor: 'pointer',
-                backgroundColor: '#0a0a0a',
+                backgroundColor: '#111111',
                 border: isActive ? `1px solid ${theme.text}40` : `1px solid ${theme.text}15`,
-                boxShadow: isActive ? '0 25px 60px rgba(0,0,0,0.3)' : '0 10px 30px rgba(0,0,0,0.15)',
+                boxShadow: isActive ? '0 30px 70px rgba(0,0,0,0.3)' : '0 10px 30px rgba(0,0,0,0.12)',
                 transition: 'all 0.55s cubic-bezier(0.16, 1, 0.3, 1)',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
-                padding: '32px'
+                padding: isMobile ? '24px' : '32px'
               }}
             >
-              {/* Background Media */}
+              {/* Background Media — Crisp, Bright, Vibrant (No dark gloomy wash) */}
               <div style={{
                 position: 'absolute',
                 inset: 0,
@@ -192,10 +180,9 @@ export default function WorkFolder({ theme, onOpen }) {
                       height: '100%', 
                       objectFit: 'cover', 
                       objectPosition: proj.objectPosition || 'center',
-                      opacity: isActive ? 0.75 : 0.35,
-                      filter: isActive ? 'none' : 'grayscale(40%)',
-                      transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-                      transform: isActive ? 'scale(1.02)' : 'scale(1)'
+                      opacity: 1,
+                      transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                      transform: isActive ? 'scale(1.03)' : 'scale(1)'
                     }} 
                   />
                 ) : (
@@ -208,201 +195,153 @@ export default function WorkFolder({ theme, onOpen }) {
                       height: '100%', 
                       objectFit: 'cover', 
                       objectPosition: proj.objectPosition || 'center',
-                      opacity: isActive ? 0.75 : 0.35,
-                      filter: isActive ? 'none' : 'grayscale(40%)',
-                      transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-                      transform: isActive ? 'scale(1.02)' : 'scale(1)'
+                      opacity: 1,
+                      transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                      transform: isActive ? 'scale(1.03)' : 'scale(1)'
                     }} 
                   />
                 )}
 
-                {/* Dark Vignette Overlay for Readability */}
+                {/* Subtle Text Contrast Shield (Only at bottom & top, leaving the rest vibrant) */}
                 <div style={{
                   position: 'absolute',
                   inset: 0,
-                  background: 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.7) 100%)'
+                  background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 35%, transparent 60%)'
+                }}></div>
+                <div style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: '120px',
+                  background: 'linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, transparent 100%)'
                 }}></div>
               </div>
 
               {/* ── Top Info Layer ── */}
-              <div style={{ position: 'relative', zIndex: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+              <div style={{
+                position: 'relative',
+                zIndex: 2,
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+              }}>
                 <span style={{
                   fontFamily: 'var(--font-heading)',
-                  fontSize: '18px',
+                  fontSize: '16px',
                   fontWeight: 900,
                   color: '#ffffff',
-                  opacity: isActive ? 1 : 0.5,
                   letterSpacing: '0.05em',
-                  transition: 'opacity 0.3s'
+                  opacity: isActive ? 1 : 0.7
                 }}>
                   {proj.index}
                 </span>
 
-                <span style={{
+                {/* On-Hover CTA: VIEW CASE STUDY (Smoothly appears on active) */}
+                <div style={{
                   fontFamily: 'var(--font-heading)',
-                  fontSize: '10px',
-                  fontWeight: 700,
+                  fontSize: '11px',
+                  fontWeight: 800,
                   color: '#ffffff',
-                  backgroundColor: 'rgba(255,255,255,0.12)',
-                  backdropFilter: 'blur(8px)',
-                  padding: '5px 12px',
-                  borderRadius: '100px',
-                  letterSpacing: '0.08em',
+                  letterSpacing: '0.1em',
                   textTransform: 'uppercase',
-                  border: '1px solid rgba(255,255,255,0.2)',
-                  whiteSpace: 'nowrap'
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  opacity: (isActive || isMobile) ? 1 : 0,
+                  transform: (isActive || isMobile) ? 'translateX(0)' : 'translateX(8px)',
+                  transition: 'all 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
+                  backgroundColor: 'rgba(0,0,0,0.65)',
+                  backdropFilter: 'blur(10px)',
+                  padding: '6px 14px',
+                  borderRadius: '100px',
+                  border: '1px solid rgba(255,255,255,0.25)'
                 }}>
-                  {proj.badge}
-                </span>
+                  <span>View Case Study</span>
+                  <span style={{ fontSize: '13px' }}>↗</span>
+                </div>
               </div>
 
               {/* ── Bottom Content Layer ── */}
               <div style={{ position: 'relative', zIndex: 2 }}>
-                {/* Project Title */}
+                {/* Project Tags */}
+                <div style={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: '6px',
+                  marginBottom: '12px'
+                }}>
+                  {proj.tags.map(tag => (
+                    <span 
+                      key={tag}
+                      style={{
+                        fontFamily: 'var(--font-body)',
+                        fontSize: '10px',
+                        fontWeight: 700,
+                        letterSpacing: '0.06em',
+                        textTransform: 'uppercase',
+                        color: 'rgba(255,255,255,0.9)',
+                        backgroundColor: 'rgba(0,0,0,0.45)',
+                        backdropFilter: 'blur(6px)',
+                        padding: '4px 10px',
+                        borderRadius: '4px',
+                        border: '1px solid rgba(255,255,255,0.2)'
+                      }}
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Project Name */}
                 <h3 style={{
                   fontFamily: 'var(--font-heading)',
-                  fontSize: isMobile ? '2.2rem' : (isActive ? 'clamp(2.4rem, 4vw, 3.8rem)' : '1.8rem'),
+                  fontSize: isMobile ? '2rem' : (isActive ? 'clamp(2.2rem, 3.8vw, 3.4rem)' : '1.8rem'),
                   fontWeight: 900,
                   color: '#ffffff',
-                  margin: '0 0 10px 0',
-                  lineHeight: 1,
+                  margin: 0,
+                  lineHeight: 1.05,
                   letterSpacing: '-0.03em',
-                  transition: 'font-size 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
+                  transition: 'font-size 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                  textShadow: '0 2px 10px rgba(0,0,0,0.6)'
                 }}>
-                  {proj.shortName}
+                  {proj.displayName}
                 </h3>
-
-                {/* Headline */}
-                <div style={{
-                  fontFamily: 'var(--font-heading)',
-                  fontSize: isActive ? '1.15rem' : '0.95rem',
-                  fontWeight: 600,
-                  color: 'rgba(255,255,255,0.9)',
-                  marginBottom: isActive ? '12px' : '4px',
-                  lineHeight: 1.3,
-                  transition: 'all 0.3s'
-                }}>
-                  {proj.headline}
-                </div>
-
-                {/* Expanded Details: Role & Summary (Fade in smoothly on active) */}
-                <div style={{
-                  maxHeight: (isActive || isMobile) ? '200px' : '0px',
-                  opacity: (isActive || isMobile) ? 1 : 0,
-                  overflow: 'hidden',
-                  transition: 'all 0.45s cubic-bezier(0.16, 1, 0.3, 1)'
-                }}>
-                  <div style={{
-                    fontFamily: 'var(--font-heading)',
-                    fontSize: '11px',
-                    fontWeight: 700,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.1em',
-                    color: '#39FF14',
-                    marginBottom: '8px'
-                  }}>
-                    {proj.roleText}
-                  </div>
-
-                  <p style={{
-                    fontFamily: 'var(--font-body)',
-                    fontSize: '13px',
-                    lineHeight: 1.6,
-                    color: 'rgba(255,255,255,0.75)',
-                    margin: '0 0 20px 0',
-                    maxWidth: '440px'
-                  }}>
-                    {proj.oneLiner}
-                  </p>
-
-                  {/* Direct Case Study CTA */}
-                  <div style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    backgroundColor: '#ffffff',
-                    color: '#000000',
-                    padding: '12px 24px',
-                    borderRadius: '100px',
-                    fontFamily: 'var(--font-heading)',
-                    fontSize: '11px',
-                    fontWeight: 800,
-                    letterSpacing: '0.08em',
-                    textTransform: 'uppercase',
-                    boxShadow: '0 8px 20px rgba(0,0,0,0.3)',
-                    transition: 'transform 0.2s ease'
-                  }}>
-                    <span>Explore Case Study</span>
-                    <span style={{ fontSize: '13px' }}>↗</span>
-                  </div>
-                </div>
-
-                {/* Collapsed state prompt (shows when not active on desktop) */}
-                {!isActive && !isMobile && (
-                  <div style={{
-                    fontFamily: 'var(--font-heading)',
-                    fontSize: '11px',
-                    fontWeight: 700,
-                    color: 'rgba(255,255,255,0.4)',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.1em',
-                    marginTop: '8px'
-                  }}>
-                    Hover to expand →
-                  </div>
-                )}
               </div>
             </div>
           );
         })}
       </div>
 
-      {/* ── Bottom Bar: Direct Summary & Quick Access ── */}
+      {/* ── Minimal Bottom Footer ── */}
       <div style={{
-        marginTop: isMobile ? '24px' : '20px',
-        paddingTop: '16px',
+        marginTop: isMobile ? '20px' : '16px',
+        paddingTop: '14px',
         borderTop: `1px solid ${theme.text}15`,
         display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        flexWrap: 'wrap',
-        gap: '12px'
+        justifyContent: 'flex-end',
+        alignItems: 'center'
       }}>
-        <div style={{
-          fontFamily: 'var(--font-body)',
-          fontSize: '12px',
-          color: theme.text,
-          opacity: 0.6
-        }}>
-          Hover or tap any project to reveal design rationale, deliverables, and interactive prototype.
-        </div>
-
         <button 
           onClick={() => onOpen('work')}
           style={{
             background: 'none',
-            border: `1px solid ${theme.text}30`,
+            border: 'none',
             color: theme.text,
-            padding: '8px 20px',
-            borderRadius: '100px',
             fontFamily: 'var(--font-heading)',
             fontSize: '11px',
-            fontWeight: 700,
-            letterSpacing: '0.08em',
+            fontWeight: 800,
+            letterSpacing: '0.1em',
             textTransform: 'uppercase',
             cursor: 'pointer',
-            transition: 'all 0.2s ease'
+            opacity: 0.7,
+            transition: 'opacity 0.2s ease',
+            padding: '4px 0'
           }}
-          onMouseEnter={e => {
-            e.currentTarget.style.backgroundColor = theme.text;
-            e.currentTarget.style.color = theme.bg;
-          }}
-          onMouseLeave={e => {
-            e.currentTarget.style.backgroundColor = 'transparent';
-            e.currentTarget.style.color = theme.text;
-          }}
+          onMouseEnter={e => e.currentTarget.style.opacity = '1'}
+          onMouseLeave={e => e.currentTarget.style.opacity = '0.7'}
         >
-          Browse Full Gallery (12 Projects) →
+          Explore All 12+ Projects in Full Gallery →
         </button>
       </div>
 
