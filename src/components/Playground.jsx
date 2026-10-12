@@ -68,11 +68,11 @@ export default function PlaygroundGallery({ onClose, theme, activeChar, onSwitch
   // Visitor logs state
   const [visitorLogs, setVisitorLogs] = useState(() => {
     const defaultLogs = [
-      { name: 'Sauveer', char: 'dino', desc: 'Building the next generation of voxel portals.', time: '2 mins ago' },
-      { name: 'Aria', char: 'duck', desc: 'Creative technologist chasing pixel shader math.', time: '2 hrs ago' },
+      { name: 'Sauveer', char: 'deer', desc: 'Building the next generation of voxel portals.', time: '2 mins ago' },
+      { name: 'Aria', char: 'deer', desc: 'Creative technologist chasing pixel shader math.', time: '2 hrs ago' },
       { name: 'Kenji', char: 'deer', desc: 'Sound artist capturing forest field recordings.', time: '5 hrs ago' },
-      { name: 'Elena', char: 'dino', desc: 'Illustrator sketching isometric micro-worlds.', time: '1 day ago' },
-      { name: 'Tariq', char: 'duck', desc: 'UX researcher analyzing spatial focus zones.', time: '2 days ago' }
+      { name: 'Elena', char: 'deer', desc: 'Illustrator sketching isometric micro-worlds.', time: '1 day ago' },
+      { name: 'Tariq', char: 'deer', desc: 'UX researcher analyzing spatial focus zones.', time: '2 days ago' }
     ];
     if (typeof window !== 'undefined') {
       const savedLogs = localStorage.getItem('sauveer_playground_logs');
@@ -278,7 +278,7 @@ export default function PlaygroundGallery({ onClose, theme, activeChar, onSwitch
                       <div>
                         <div style={{ fontSize: '11px', fontFamily: 'var(--font-heading)', textTransform: 'uppercase', marginBottom: '6px', fontWeight: 800 }}>Your character will visually capture this personality:</div>
                         <div style={{ display: 'flex', gap: '8px' }}>
-                          {['deer', 'duck', 'dino'].map(char => (
+                          {['deer'].map(char => (
                             <button
                               key={char}
                               type="button"

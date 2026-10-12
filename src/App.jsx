@@ -37,7 +37,7 @@ const THEMES = {
   duck: { bg: '#FFD700', text: '#1a0d00', subtitle: '#2a1a00', ctaBg: '#1a0d00', ctaText: '#FFD700', label: '🦆 Duck', brand: '#FFD700' },
   dino: { bg: '#0e0e0e', text: '#2e2bc4', subtitle: '#2e2bc4', ctaBg: '#2e2bc4', ctaText: '#0e0e0e', label: '🦖 Dino', brand: '#2e2bc4' },
 };
-const CHARS = ['deer', 'duck', 'dino'];
+const CHARS = ['deer'];
 
 // ─── Magnetic CTA ────────────────────────────────────────────────────────────
 // ─── Minimalist Scroll Indicator ────────────────────────────────────────────────────────────
