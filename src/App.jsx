@@ -525,7 +525,7 @@ export default function App() {
       </Suspense>
 
       {/* ── Work Section ── */}
-      {!isGalleryOpen && <WorkFolder theme={invertedTheme} onOpen={() => navigateWithTransition('work')} />}
+      {!isGalleryOpen && <WorkFolder theme={invertedTheme} onOpen={(slug) => navigateWithTransition(slug || 'work')} />}
 
       {/* ── Products I've Built Section ── */}
       {!isGalleryOpen && !isAboutOpen && !isPlaygroundOpen && activeCaseStudyIndex === null && (
