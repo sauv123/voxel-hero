@@ -9,21 +9,18 @@ gsap.registerPlugin(ScrollTrigger);
 const FEATURED = [
   {
     ...PROJECTS[0], // OLO
-    index: "01",
     displayName: "OLO",
     description: "An introvert-first mobile habit experience built around micro-actions and private reflection.",
     tags: PROJECTS[0].tags || ["EMOTIONAL DESIGN", "UX", "UI"]
   },
   {
     ...PROJECTS[1], // ORCO
-    index: "02",
     displayName: "REDESIGNING ORCO",
-    description: "Transforming a heritage Italian food brand into an interactive culinary experience.",
+    description: "Transforming a heritage Italian food brand into an interactive digital culinary experience.",
     tags: PROJECTS[1].tags || ["UX DESIGN", "WEB DESIGN", "BRANDING"]
   },
   {
     ...PROJECTS[2], // MICA
-    index: "03",
     displayName: "MICA",
     description: "Designing belonging through emotionally intelligent co-living housing experiences.",
     tags: PROJECTS[2].tags || ["UX DESIGN", "CO-LIVING DESIGN"]
@@ -67,7 +64,7 @@ export default function WorkFolder({ theme, onOpen }) {
     const cy = rect.top + rect.height / 2;
     const dist = Math.hypot(e.clientX - cx, e.clientY - cy);
 
-    if (dist < 140) {
+    if (dist < 150) {
       const pullX = (e.clientX - cx) * 0.35;
       const pullY = (e.clientY - cy) * 0.35;
       gsap.to(btn, { x: pullX, y: pullY, duration: 0.25, ease: 'power2.out' });
@@ -88,8 +85,8 @@ export default function WorkFolder({ theme, onOpen }) {
         minHeight: isMobile ? 'auto' : '100vh',
         height: isMobile ? 'auto' : '100vh',
         maxHeight: isMobile ? 'none' : '1040px',
-        padding: isMobile ? '60px 5vw 120px 5vw' : '40px 5vw 160px 5vw',
-        marginBottom: '100px', // Generous space before Products I've built
+        padding: isMobile ? '60px 5vw 120px 5vw' : '50px 6vw 160px 6vw',
+        marginBottom: isMobile ? '80px' : '160px', // Extensive breathing room before Products I've Built
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
@@ -98,35 +95,36 @@ export default function WorkFolder({ theme, onOpen }) {
         overflow: 'hidden'
       }}
     >
-      {/* ── Top Bar: Just Selected Works ── */}
+      {/* ── Top Bar: Matching Typography of 'Products I've Built' ── */}
       <div style={{
         display: 'flex',
         alignItems: 'center',
         borderBottom: `1px solid ${theme.text}20`,
-        paddingBottom: '16px',
-        marginBottom: isMobile ? '24px' : '24px'
+        paddingBottom: '20px',
+        marginBottom: isMobile ? '28px' : '32px'
       }}>
-        <span style={{
-          fontFamily: 'var(--font-heading)',
-          fontSize: '11px',
-          fontWeight: 800,
-          letterSpacing: '0.2em',
+        <h2 style={{
+          fontFamily: 'var(--font-body), sans-serif',
+          fontSize: 'clamp(1.2rem, 2vw, 1.8rem)',
+          fontWeight: 700,
+          letterSpacing: '0.05em',
           textTransform: 'uppercase',
           color: theme.text,
-          opacity: 0.6
+          margin: 0,
+          lineHeight: 1.2
         }}>
           Selected Works
-        </span>
+        </h2>
       </div>
 
       {/* ── 3-Column Expandable Triptych ── */}
       <div style={{
         display: 'flex',
         flexDirection: isMobile ? 'column' : 'row',
-        gap: isMobile ? '20px' : '16px',
+        gap: isMobile ? '24px' : '18px',
         flex: 1,
         width: '100%',
-        minHeight: isMobile ? 'auto' : '520px',
+        minHeight: isMobile ? 'auto' : '500px',
         position: 'relative'
       }}>
         {FEATURED.map((proj, idx) => {
@@ -136,7 +134,7 @@ export default function WorkFolder({ theme, onOpen }) {
           return (
             <div
               key={proj.id}
-              data-cursor-text="VIEW CASE STUDY ↗"
+              data-cursor-text="VIEW CASE STUDY"
               onMouseEnter={() => !isMobile && setActiveCard(idx)}
               onClick={() => onOpen(proj.slug)}
               style={{
@@ -147,16 +145,16 @@ export default function WorkFolder({ theme, onOpen }) {
                 position: 'relative',
                 cursor: 'pointer',
                 backgroundColor: '#111111',
-                border: 'none', // No stroke as requested
-                boxShadow: 'none', // No shadow as requested
+                border: 'none',       // No stroke as requested
+                boxShadow: 'none',    // No shadow as requested
                 transition: 'all 0.55s cubic-bezier(0.16, 1, 0.3, 1)',
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'space-between',
-                padding: isMobile ? '24px' : '32px'
+                justifyContent: 'flex-end',
+                padding: isMobile ? '28px 24px' : '36px 32px'
               }}
             >
-              {/* Background Media — Crisp, Bright, Vibrant */}
+              {/* Background Media — Crisp & Vibrant */}
               <div style={{
                 position: 'absolute',
                 inset: 0,
@@ -193,45 +191,25 @@ export default function WorkFolder({ theme, onOpen }) {
                   />
                 )}
 
-                {/* Subtle text gradient strictly at bottom for legibility */}
+                {/* Bottom text legibility gradient shield */}
                 <div style={{
                   position: 'absolute',
                   inset: 0,
-                  background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.25) 45%, transparent 70%)'
+                  background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 45%, transparent 70%)'
                 }}></div>
               </div>
 
-              {/* ── Top Info Layer: Index ── */}
-              <div style={{
-                position: 'relative',
-                zIndex: 2,
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center'
-              }}>
-                <span style={{
-                  fontFamily: 'var(--font-heading)',
-                  fontSize: '16px',
-                  fontWeight: 900,
-                  color: '#ffffff',
-                  letterSpacing: '0.05em',
-                  opacity: isActive ? 1 : 0.6
-                }}>
-                  {proj.index}
-                </span>
-              </div>
-
-              {/* ── Bottom Content Layer ── */}
+              {/* ── Content Layer: Name, Tags on hover, Description ── */}
               <div style={{ position: 'relative', zIndex: 2 }}>
                 
-                {/* Project Tags — ONLY SHOW ON HOVER / ACTIVE */}
+                {/* Project Tags — ONLY REVEAL ON HOVER / ACTIVE */}
                 <div style={{
                   display: 'flex',
                   flexWrap: 'wrap',
                   gap: '6px',
-                  marginBottom: '10px',
+                  marginBottom: '12px',
                   opacity: (isActive || isMobile) ? 1 : 0,
-                  transform: (isActive || isMobile) ? 'translateY(0)' : 'translateY(10px)',
+                  transform: (isActive || isMobile) ? 'translateY(0)' : 'translateY(12px)',
                   transition: 'all 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
                   height: (isActive || isMobile) ? 'auto' : '0px',
                   overflow: 'hidden'
@@ -245,9 +223,9 @@ export default function WorkFolder({ theme, onOpen }) {
                         fontWeight: 700,
                         letterSpacing: '0.06em',
                         textTransform: 'uppercase',
-                        color: 'rgba(255,255,255,0.9)',
+                        color: 'rgba(255,255,255,0.95)',
                         backgroundColor: 'rgba(0,0,0,0.5)',
-                        backdropFilter: 'blur(6px)',
+                        backdropFilter: 'blur(8px)',
                         padding: '4px 10px',
                         borderRadius: '4px',
                         border: '1px solid rgba(255,255,255,0.2)'
@@ -261,7 +239,7 @@ export default function WorkFolder({ theme, onOpen }) {
                 {/* Project Name */}
                 <h3 style={{
                   fontFamily: 'var(--font-heading)',
-                  fontSize: isMobile ? '2rem' : (isActive ? 'clamp(2.2rem, 3.8vw, 3.4rem)' : '1.8rem'),
+                  fontSize: isMobile ? '2.1rem' : (isActive ? 'clamp(2.4rem, 4vw, 3.6rem)' : '1.8rem'),
                   fontWeight: 900,
                   color: '#ffffff',
                   margin: '0 0 8px 0',
@@ -273,14 +251,14 @@ export default function WorkFolder({ theme, onOpen }) {
                   {proj.displayName}
                 </h3>
 
-                {/* Project Description — Always present on active card */}
+                {/* Project Description — Visible on active/hovered card */}
                 <p style={{
                   fontFamily: 'var(--font-body)',
                   fontSize: '13px',
                   lineHeight: 1.5,
                   color: 'rgba(255,255,255,0.85)',
                   margin: 0,
-                  maxWidth: '480px',
+                  maxWidth: '520px',
                   opacity: (isActive || isMobile) ? 1 : 0,
                   maxHeight: (isActive || isMobile) ? '80px' : '0px',
                   overflow: 'hidden',
@@ -295,10 +273,10 @@ export default function WorkFolder({ theme, onOpen }) {
         })}
       </div>
 
-      {/* ── Bottom Section: Big Magnetic CTA Button with Generous Space ── */}
+      {/* ── Bottom Section: Big Magnetic CTA Button with Shadow & Minimal Dot ── */}
       <div 
         style={{
-          marginTop: isMobile ? '40px' : '50px',
+          marginTop: isMobile ? '40px' : '56px',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
@@ -311,33 +289,37 @@ export default function WorkFolder({ theme, onOpen }) {
           onMouseMove={handleBtnMouseMove}
           onMouseLeave={handleBtnMouseLeave}
           style={{
-            padding: '22px 60px',
+            padding: '22px 56px',
             borderRadius: '100px',
-            border: `1px solid ${theme.text}40`,
-            backgroundColor: 'transparent',
+            border: `1px solid ${theme.text}35`,
+            backgroundColor: theme.bg,
             color: theme.text,
-            fontSize: '1rem',
-            fontWeight: 700,
+            fontSize: '0.95rem',
+            fontWeight: 800,
             fontFamily: 'var(--font-heading)',
-            letterSpacing: '0.08em',
+            letterSpacing: '0.1em',
             textTransform: 'uppercase',
             cursor: 'pointer',
-            transition: 'background-color 0.3s ease, color 0.3s ease',
+            boxShadow: '0 16px 40px rgba(0,0,0,0.18)', // Cast shadow as requested
+            transition: 'background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease',
             display: 'inline-flex',
             alignItems: 'center',
-            gap: '12px'
+            gap: '10px'
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.backgroundColor = theme.text;
             e.currentTarget.style.color = theme.bg;
+            e.currentTarget.style.boxShadow = '0 24px 50px rgba(0,0,0,0.28)';
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = 'transparent';
+            e.currentTarget.style.backgroundColor = theme.bg;
             e.currentTarget.style.color = theme.text;
+            e.currentTarget.style.boxShadow = '0 16px 40px rgba(0,0,0,0.18)';
           }}
         >
           <span>View All Work</span>
-          <span style={{ fontSize: '15px' }}>→</span>
+          {/* Minimal accent replacement for arrow mark */}
+          <span style={{ fontSize: '10px', opacity: 0.6 }}>•</span>
         </button>
       </div>
 

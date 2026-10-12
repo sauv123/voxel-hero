@@ -98,6 +98,12 @@ export default function CustomCursor() {
     // Tactile Click Response (Whisper-Quiet Audio + Micro Implosion)
     const handleGlobalClick = (e) => {
       audioManager.playClickSound();
+      if (pillRef.current) {
+        gsap.to(pillRef.current, { scale: 0, opacity: 0, duration: 0.15 });
+      }
+      if (cursorRef.current) {
+        gsap.to(cursorRef.current, { scale: 1, opacity: 1, duration: 0.2 });
+      }
 
       if (rippleRef.current) {
         gsap.killTweensOf(rippleRef.current);
@@ -137,13 +143,24 @@ export default function CustomCursor() {
     if (isMobile) return;
 
     const handleMouseOver = (e) => {
-      const textTarget = e.target.closest('[data-cursor-text]');
-      if (textTarget) {
-        const text = textTarget.getAttribute('data-cursor-text') || 'VIEW CASE STUDY ↗';
-        setCursorText(text);
-        gsap.to(cursorRef.current, { scale: 0, opacity: 0, duration: 0.2 });
-        gsap.to(dotRef.current, { scale: 0, opacity: 0, duration: 0.2 });
-        gsap.to(pillRef.current, { scale: 1, opacity: 1, duration: 0.25, ease: 'back.out(1.5)' });
+      // If hovering a button, link or magnetic element, do NOT show the case study pill!
+      const isInteractiveBtn = e.target.closest('button, a, .magnetic-btn');
+      if (isInteractiveBtn) {
+        if (pillRef.current) {
+          gsap.to(pillRef.current, { scale: 0, opacity: 0, duration: 0.15 });
+        }
+        if (cursorRef.current) {
+          gsap.to(cursorRef.current, { scale: 1.4, opacity: 1, duration: 0.2 });
+        }
+      } else {
+        const textTarget = e.target.closest('[data-cursor-text]');
+        if (textTarget) {
+          const text = textTarget.getAttribute('data-cursor-text') || 'VIEW CASE STUDY';
+          setCursorText(text);
+          gsap.to(cursorRef.current, { scale: 0, opacity: 0, duration: 0.18 });
+          gsap.to(dotRef.current, { scale: 0, opacity: 0, duration: 0.18 });
+          gsap.to(pillRef.current, { scale: 1, opacity: 1, duration: 0.25, ease: 'back.out(1.4)' });
+        }
       }
 
       const target = e.target.closest('.magnetic, a, button');

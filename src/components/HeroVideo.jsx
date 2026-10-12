@@ -19,14 +19,14 @@ export default function HeroVideo({ videoSrc = "/0826.mp4", isPreloading, onVide
     
     // 1. Make it smaller (Initial state)
     gsap.set(container, {
-      width: isMobile ? "60vw" : "28vw",
-      height: isMobile ? "33.75vw" : "15.75vw", 
-      borderRadius: "4px",
+      width: isMobile ? "75vw" : "26vw",
+      height: isMobile ? "42vw" : "14.6vw", 
+      borderRadius: "8px",
       xPercent: -50,
       yPercent: 0,
-      left: "50%",
-      top: isMobile ? "20vh" : "15vh", 
-      boxShadow: "none",
+      left: isMobile ? "50%" : "72%",  // Right-aligned on desktop: zero overlap with left text
+      top: isMobile ? "56vh" : "18vh",   // Below headline on mobile: zero overlap
+      boxShadow: "0 20px 50px rgba(0,0,0,0.3)",
       x: 0,
       y: 0
     });
@@ -64,6 +64,7 @@ export default function HeroVideo({ videoSrc = "/0826.mp4", isPreloading, onVide
     tl.to(container, {
       width: isMobile ? "calc(100vw - 40px)" : "calc(100vw - 80px)",
       height: isMobile ? "calc(100vh - 40px)" : "calc(100vh - 80px)",
+      left: "50%",
       top: isMobile ? "20px" : "40px",
       borderRadius: isMobile ? "12px" : "16px",
       ease: "power2.inOut" 
