@@ -6,137 +6,89 @@ import LazyVideo from './LazyVideo';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const FEATURED_PROJECTS = [
+const FEATURED = [
   {
     ...PROJECTS[0], // OLO
     index: "01",
-    label: "OLO",
-    category: "B2C Consumer • Habit Systems",
-    roleText: "Product Designer (End-to-End)",
-    timeline: "5 Months (0-to-1)",
-    tagline: "Designing for the Quiet.",
-    summary: "Traditional habit apps rely on streaks, leaderboards, and anxiety-driven urgency. I designed an introvert-first mobile experience where calm micro-actions and private reflective journaling compound into durable real-world confidence.",
-    deliverables: ["Product Architecture", "React Prototype", "Brand Launch Film"]
+    shortName: "OLO",
+    badge: "B2C • EMOTIONAL UX",
+    headline: "Designing for the Quiet",
+    roleText: "Product Designer (0 to 1)",
+    oneLiner: "An introvert-first mobile habit system built around micro-actions and private reflection.",
   },
   {
     ...PROJECTS[1], // ORCO
     index: "02",
-    label: "ORCO",
-    category: "Heritage Brand • Digital Commerce",
+    shortName: "ORCO",
+    badge: "HERITAGE • E-COMMERCE",
+    headline: "Italian Culinary Reimagined",
     roleText: "Lead UX Designer & Strategist",
-    timeline: "3 Months",
-    tagline: "A Century of Italian Gastronomy, Digitized.",
-    summary: "Transforming an iconic Italian pantry brand into an interactive digital culinary experience. Preserved decades of tangible supermarket packaging equity while modernizing recipe discovery and interactive web commerce.",
-    deliverables: ["Interactive E-Commerce", "Motion Systems", "Design System"]
+    oneLiner: "Transforming a historic Italian food brand into an immersive digital culinary journey.",
   },
   {
     ...PROJECTS[2], // MICA
     index: "03",
-    label: "MICA",
-    category: "Spatial UX • Co-Living Systems",
+    shortName: "MICA",
+    badge: "SPATIAL UX • HOUSING",
+    headline: "Belonging in Shared Living",
     roleText: "Lead UX Designer",
-    timeline: "4 Months",
-    tagline: "Designing Belonging in Shared Urban Living.",
-    summary: "Combating urban isolation through emotionally intelligent co-living software. Engineered flatmate compatibility matching, quiet conflict-resolution interfaces, and community rituals to turn temporary spaces into genuine homes.",
-    deliverables: ["Service Blueprint", "Mobile App UX", "User Research"]
+    oneLiner: "Combating urban loneliness in co-living spaces through emotionally intelligent service design.",
   }
 ];
 
 export default function WorkFolder({ theme, onOpen }) {
   const sectionRef = useRef(null);
-  const leftColRef = useRef(null);
-  const cardRefs = useRef([]);
-  const textDossierRef = useRef(null);
-  const [activeIndex, setActiveIndex] = useState(0);
+  // Default to the first card active, or null
+  const [activeCard, setActiveCard] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
+    const checkMobile = () => setIsMobile(window.innerWidth < 860);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
 
-    // Background color scrub to match theme smoothly
-    ScrollTrigger.create({
-      trigger: section,
-      start: "top 95%",
-      end: "top 15%",
-      scrub: 1.2,
-      onUpdate: (self) => {
-        const blendedColor = gsap.utils.interpolate('#000000', '#FFFFFF', self.progress);
-        gsap.set([document.documentElement, document.body], { backgroundColor: blendedColor });
-      }
-    });
-
-    // Mobile check
-    const isDesktop = window.innerWidth >= 960;
-
-    let pinTrigger;
-    if (isDesktop && leftColRef.current) {
-      // Pin the left column while the right column scrolls
-      pinTrigger = ScrollTrigger.create({
-        trigger: section,
-        start: "top top",
-        end: "bottom bottom",
-        pin: leftColRef.current,
-        pinSpacing: false,
+    // Background color scrub to match theme cleanly
+    if (sectionRef.current) {
+      ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: "top 90%",
+        end: "top 20%",
+        scrub: 1.2,
+        onUpdate: (self) => {
+          const blendedColor = gsap.utils.interpolate('#000000', '#FFFFFF', self.progress);
+          gsap.set([document.documentElement, document.body], { backgroundColor: blendedColor });
+        }
       });
     }
 
-    // ScrollTriggers for updating active project as each card enters the center
-    const cardTriggers = cardRefs.current.map((card, idx) => {
-      if (!card) return null;
-      return ScrollTrigger.create({
-        trigger: card,
-        start: "top 55%",
-        end: "bottom 45%",
-        onEnter: () => setActiveIndex(idx),
-        onEnterBack: () => setActiveIndex(idx)
-      });
-    });
-
-    return () => {
-      if (pinTrigger) pinTrigger.kill();
-      cardTriggers.forEach(t => t && t.kill());
-    };
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
-
-  // Animate the left text whenever activeIndex changes
-  useEffect(() => {
-    if (!textDossierRef.current) return;
-    gsap.fromTo(textDossierRef.current,
-      { opacity: 0, y: 15 },
-      { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }
-    );
-  }, [activeIndex]);
-
-  const activeProj = FEATURED_PROJECTS[activeIndex] || FEATURED_PROJECTS[0];
-
-  const scrollToCard = (index) => {
-    const card = cardRefs.current[index];
-    if (card) {
-      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-  };
 
   return (
     <section 
       ref={sectionRef} 
-      className="work-dossier-section"
       style={{
         width: '100vw',
-        minHeight: '220vh',
-        position: 'relative',
-        padding: '120px 6vw',
+        minHeight: isMobile ? 'auto' : '100vh',
+        height: isMobile ? 'auto' : '100vh',
+        maxHeight: isMobile ? 'none' : '1000px',
+        padding: isMobile ? '80px 5vw' : '40px 5vw 60px 5vw',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
         boxSizing: 'border-box',
-        overflow: 'visible'
+        position: 'relative',
+        overflow: 'hidden'
       }}
     >
-      {/* ── Section Header / Breadcrumb ── */}
+      {/* ── Top Bar: Title & Global CTA ── */}
       <div style={{
         display: 'flex',
-        alignItems: 'center',
         justifyContent: 'space-between',
+        alignItems: 'center',
         borderBottom: `1px solid ${theme.text}20`,
-        paddingBottom: '24px',
-        marginBottom: '60px'
+        paddingBottom: '20px',
+        marginBottom: isMobile ? '32px' : '24px'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <span style={{
@@ -148,9 +100,9 @@ export default function WorkFolder({ theme, onOpen }) {
             color: theme.text,
             opacity: 0.6
           }}>
-            Selected Works
+            Featured Case Studies
           </span>
-          <span style={{ color: theme.text, opacity: 0.2 }}>/</span>
+          <span style={{ color: theme.text, opacity: 0.3 }}>•</span>
           <span style={{
             fontFamily: 'var(--font-heading)',
             fontSize: '11px',
@@ -170,240 +122,67 @@ export default function WorkFolder({ theme, onOpen }) {
             fontFamily: 'var(--font-heading)',
             fontSize: '12px',
             fontWeight: 700,
-            letterSpacing: '0.1em',
+            letterSpacing: '0.08em',
             textTransform: 'uppercase',
             color: theme.text,
             cursor: 'pointer',
-            opacity: 0.7,
-            transition: 'opacity 0.2s ease'
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            transition: 'opacity 0.2s ease',
+            opacity: 0.8
           }}
           onMouseEnter={e => e.currentTarget.style.opacity = '1'}
-          onMouseLeave={e => e.currentTarget.style.opacity = '0.7'}
+          onMouseLeave={e => e.currentTarget.style.opacity = '0.8'}
         >
-          View Full Archive (12+) ↗
+          <span>View Archive (12+)</span>
+          <span style={{ fontSize: '14px' }}>→</span>
         </button>
       </div>
 
-      {/* ── 50/50 Split Grid ── */}
-      <div className="dossier-grid" style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-        gap: '6vw',
-        alignItems: 'start',
+      {/* ── 3-Column Expandable Triptych ── */}
+      <div style={{
+        display: 'flex',
+        flexDirection: isMobile ? 'column' : 'row',
+        gap: isMobile ? '20px' : '16px',
+        flex: 1,
+        width: '100%',
+        minHeight: isMobile ? 'auto' : '480px',
         position: 'relative'
       }}>
-        
-        {/* ── LEFT COLUMN: Sticky Dossier ── */}
-        <div 
-          ref={leftColRef} 
-          className="dossier-sticky-col"
-          style={{
-            position: 'relative',
-            zIndex: 10,
-            paddingTop: '20px'
-          }}
-        >
-          {/* Project Tab Selector */}
-          <div style={{ display: 'flex', gap: '12px', marginBottom: '36px' }}>
-            {FEATURED_PROJECTS.map((proj, idx) => (
-              <button
-                key={proj.id}
-                onClick={() => scrollToCard(idx)}
-                style={{
-                  background: activeIndex === idx ? theme.text : 'transparent',
-                  color: activeIndex === idx ? theme.bg : theme.text,
-                  border: `1px solid ${activeIndex === idx ? theme.text : theme.text + '30'}`,
-                  padding: '8px 16px',
-                  borderRadius: '100px',
-                  fontFamily: 'var(--font-heading)',
-                  fontSize: '11px',
-                  fontWeight: 700,
-                  letterSpacing: '0.08em',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px'
-                }}
-              >
-                <span>{proj.index}</span>
-                <span>{proj.label}</span>
-              </button>
-            ))}
-          </div>
+        {FEATURED.map((proj, idx) => {
+          const isActive = activeCard === idx;
+          // Desktop flex ratio: active card gets 56%, non-active get 22% each
+          const flexValue = isMobile ? '1' : (isActive ? 2.5 : 0.85);
 
-          {/* Dossier Content Card */}
-          <div ref={textDossierRef} style={{ maxWidth: '520px' }}>
-            {/* Category Eyebrow */}
-            <div style={{
-              fontFamily: 'var(--font-heading)',
-              fontSize: '12px',
-              fontWeight: 800,
-              textTransform: 'uppercase',
-              letterSpacing: '0.15em',
-              color: theme.text,
-              opacity: 0.6,
-              marginBottom: '12px'
-            }}>
-              {activeProj.category}
-            </div>
-
-            {/* Giant Title */}
-            <h2 style={{
-              fontFamily: 'var(--font-heading)',
-              fontSize: 'clamp(2.5rem, 5vw, 4.2rem)',
-              fontWeight: 900,
-              letterSpacing: '-0.04em',
-              color: theme.text,
-              margin: '0 0 16px 0',
-              lineHeight: 1
-            }}>
-              {activeProj.name}
-            </h2>
-
-            {/* Tagline / Subheading */}
-            <div style={{
-              fontFamily: 'var(--font-heading)',
-              fontSize: '1.25rem',
-              fontWeight: 600,
-              color: theme.text,
-              lineHeight: 1.4,
-              marginBottom: '24px'
-            }}>
-              {activeProj.tagline}
-            </div>
-
-            {/* Executive Summary Paragraph */}
-            <p style={{
-              fontFamily: 'var(--font-body)',
-              fontSize: '1.05rem',
-              lineHeight: 1.7,
-              color: theme.text,
-              opacity: 0.8,
-              marginBottom: '32px'
-            }}>
-              {activeProj.summary}
-            </p>
-
-            {/* Metadata Grid (Role, Timeline) */}
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
-              gap: '20px',
-              borderTop: `1px solid ${theme.text}15`,
-              borderBottom: `1px solid ${theme.text}15`,
-              padding: '20px 0',
-              marginBottom: '36px'
-            }}>
-              <div>
-                <div style={{ fontFamily: 'var(--font-heading)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', opacity: 0.5, color: theme.text, marginBottom: '6px' }}>My Role</div>
-                <div style={{ fontFamily: 'var(--font-body)', fontSize: '14px', fontWeight: 600, color: theme.text }}>{activeProj.roleText}</div>
-              </div>
-              <div>
-                <div style={{ fontFamily: 'var(--font-heading)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', opacity: 0.5, color: theme.text, marginBottom: '6px' }}>Timeline & Scope</div>
-                <div style={{ fontFamily: 'var(--font-body)', fontSize: '14px', fontWeight: 600, color: theme.text }}>{activeProj.timeline}</div>
-              </div>
-            </div>
-
-            {/* Deliverables / Tags Pills */}
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '40px' }}>
-              {activeProj.deliverables.map((item) => (
-                <span 
-                  key={item} 
-                  style={{
-                    fontFamily: 'var(--font-body)',
-                    fontSize: '11px',
-                    fontWeight: 600,
-                    letterSpacing: '0.04em',
-                    color: theme.text,
-                    backgroundColor: `${theme.text}08`,
-                    border: `1px solid ${theme.text}15`,
-                    padding: '6px 14px',
-                    borderRadius: '100px'
-                  }}
-                >
-                  {item}
-                </span>
-              ))}
-            </div>
-
-            {/* Primary Action Button */}
-            <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-              <button
-                onClick={() => onOpen(activeProj.slug)}
-                style={{
-                  padding: '18px 40px',
-                  borderRadius: '100px',
-                  backgroundColor: theme.text,
-                  color: theme.bg,
-                  border: 'none',
-                  fontFamily: 'var(--font-heading)',
-                  fontSize: '13px',
-                  fontWeight: 800,
-                  letterSpacing: '0.08em',
-                  textTransform: 'uppercase',
-                  cursor: 'pointer',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '10px',
-                  boxShadow: '0 10px 25px rgba(0,0,0,0.15)',
-                  transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)'
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.transform = 'translateY(-3px) scale(1.02)';
-                  e.currentTarget.style.boxShadow = '0 16px 35px rgba(0,0,0,0.22)';
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                  e.currentTarget.style.boxShadow = '0 10px 25px rgba(0,0,0,0.15)';
-                }}
-              >
-                <span>Read Full Case Study</span>
-                <span style={{ fontSize: '15px' }}>↗</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* ── RIGHT COLUMN: Scrolling Media Showcases ── */}
-        <div className="dossier-scroll-col" style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '120px',
-          paddingTop: '20px'
-        }}>
-          {FEATURED_PROJECTS.map((proj, idx) => (
+          return (
             <div
               key={proj.id}
-              ref={el => cardRefs.current[idx] = el}
+              onMouseEnter={() => !isMobile && setActiveCard(idx)}
               onClick={() => onOpen(proj.slug)}
               style={{
-                width: '100%',
-                borderRadius: '24px',
+                flex: flexValue,
+                height: isMobile ? '380px' : '100%',
+                borderRadius: '20px',
                 overflow: 'hidden',
-                backgroundColor: '#0a0a0a',
-                border: `1px solid ${theme.text}20`,
-                boxShadow: '0 30px 80px rgba(0,0,0,0.25)',
-                cursor: 'pointer',
                 position: 'relative',
-                transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)'
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.transform = 'scale(1.02) translateY(-6px)';
-                e.currentTarget.style.boxShadow = '0 40px 100px rgba(0,0,0,0.35)';
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.transform = 'scale(1) translateY(0)';
-                e.currentTarget.style.boxShadow = '0 30px 80px rgba(0,0,0,0.25)';
+                cursor: 'pointer',
+                backgroundColor: '#0a0a0a',
+                border: isActive ? `1px solid ${theme.text}40` : `1px solid ${theme.text}15`,
+                boxShadow: isActive ? '0 25px 60px rgba(0,0,0,0.3)' : '0 10px 30px rgba(0,0,0,0.15)',
+                transition: 'all 0.55s cubic-bezier(0.16, 1, 0.3, 1)',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                padding: '32px'
               }}
             >
-              {/* Media Container */}
+              {/* Background Media */}
               <div style={{
-                width: '100%',
-                aspectRatio: '16/11',
-                overflow: 'hidden',
-                position: 'relative',
-                backgroundColor: '#0d0d0d'
+                position: 'absolute',
+                inset: 0,
+                zIndex: 1,
+                overflow: 'hidden'
               }}>
                 {(proj.img?.endsWith('.mp4') || proj.img?.endsWith('.mov')) ? (
                   <LazyVideo 
@@ -412,7 +191,11 @@ export default function WorkFolder({ theme, onOpen }) {
                       width: '100%', 
                       height: '100%', 
                       objectFit: 'cover', 
-                      objectPosition: proj.objectPosition || 'center' 
+                      objectPosition: proj.objectPosition || 'center',
+                      opacity: isActive ? 0.75 : 0.35,
+                      filter: isActive ? 'none' : 'grayscale(40%)',
+                      transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                      transform: isActive ? 'scale(1.02)' : 'scale(1)'
                     }} 
                   />
                 ) : (
@@ -424,112 +207,202 @@ export default function WorkFolder({ theme, onOpen }) {
                       width: '100%', 
                       height: '100%', 
                       objectFit: 'cover', 
-                      objectPosition: proj.objectPosition || 'center' 
+                      objectPosition: proj.objectPosition || 'center',
+                      opacity: isActive ? 0.75 : 0.35,
+                      filter: isActive ? 'none' : 'grayscale(40%)',
+                      transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                      transform: isActive ? 'scale(1.02)' : 'scale(1)'
                     }} 
                   />
                 )}
 
-                {/* Subtle Hover Pill */}
+                {/* Dark Vignette Overlay for Readability */}
                 <div style={{
                   position: 'absolute',
-                  top: '20px',
-                  right: '20px',
-                  backgroundColor: 'rgba(0,0,0,0.7)',
-                  backdropFilter: 'blur(10px)',
-                  color: '#ffffff',
-                  padding: '8px 16px',
-                  borderRadius: '100px',
-                  fontSize: '11px',
+                  inset: 0,
+                  background: 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.7) 100%)'
+                }}></div>
+              </div>
+
+              {/* ── Top Info Layer ── */}
+              <div style={{ position: 'relative', zIndex: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                <span style={{
                   fontFamily: 'var(--font-heading)',
+                  fontSize: '18px',
+                  fontWeight: 900,
+                  color: '#ffffff',
+                  opacity: isActive ? 1 : 0.5,
+                  letterSpacing: '0.05em',
+                  transition: 'opacity 0.3s'
+                }}>
+                  {proj.index}
+                </span>
+
+                <span style={{
+                  fontFamily: 'var(--font-heading)',
+                  fontSize: '10px',
                   fontWeight: 700,
+                  color: '#ffffff',
+                  backgroundColor: 'rgba(255,255,255,0.12)',
+                  backdropFilter: 'blur(8px)',
+                  padding: '5px 12px',
+                  borderRadius: '100px',
                   letterSpacing: '0.08em',
                   textTransform: 'uppercase',
-                  border: '1px solid rgba(255,255,255,0.2)'
+                  border: '1px solid rgba(255,255,255,0.2)',
+                  whiteSpace: 'nowrap'
                 }}>
-                  {proj.index} • Click to open
-                </div>
+                  {proj.badge}
+                </span>
               </div>
 
-              {/* Bottom Card Footer Banner */}
-              <div style={{
-                padding: '24px 32px',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                backgroundColor: '#111111',
-                borderTop: '1px solid rgba(255,255,255,0.08)'
-              }}>
-                <div>
-                  <div style={{ color: '#ffffff', fontFamily: 'var(--font-heading)', fontSize: '18px', fontWeight: 800 }}>{proj.name}</div>
-                  <div style={{ color: 'rgba(255,255,255,0.6)', fontFamily: 'var(--font-body)', fontSize: '13px', marginTop: '4px' }}>{proj.roleText}</div>
-                </div>
-                <div style={{
-                  width: '40px',
-                  height: '40px',
-                  borderRadius: '50%',
-                  backgroundColor: 'rgba(255,255,255,0.1)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
+              {/* ── Bottom Content Layer ── */}
+              <div style={{ position: 'relative', zIndex: 2 }}>
+                {/* Project Title */}
+                <h3 style={{
+                  fontFamily: 'var(--font-heading)',
+                  fontSize: isMobile ? '2.2rem' : (isActive ? 'clamp(2.4rem, 4vw, 3.8rem)' : '1.8rem'),
+                  fontWeight: 900,
                   color: '#ffffff',
-                  fontSize: '16px'
+                  margin: '0 0 10px 0',
+                  lineHeight: 1,
+                  letterSpacing: '-0.03em',
+                  transition: 'font-size 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
                 }}>
-                  ↗
+                  {proj.shortName}
+                </h3>
+
+                {/* Headline */}
+                <div style={{
+                  fontFamily: 'var(--font-heading)',
+                  fontSize: isActive ? '1.15rem' : '0.95rem',
+                  fontWeight: 600,
+                  color: 'rgba(255,255,255,0.9)',
+                  marginBottom: isActive ? '12px' : '4px',
+                  lineHeight: 1.3,
+                  transition: 'all 0.3s'
+                }}>
+                  {proj.headline}
                 </div>
+
+                {/* Expanded Details: Role & Summary (Fade in smoothly on active) */}
+                <div style={{
+                  maxHeight: (isActive || isMobile) ? '200px' : '0px',
+                  opacity: (isActive || isMobile) ? 1 : 0,
+                  overflow: 'hidden',
+                  transition: 'all 0.45s cubic-bezier(0.16, 1, 0.3, 1)'
+                }}>
+                  <div style={{
+                    fontFamily: 'var(--font-heading)',
+                    fontSize: '11px',
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.1em',
+                    color: '#39FF14',
+                    marginBottom: '8px'
+                  }}>
+                    {proj.roleText}
+                  </div>
+
+                  <p style={{
+                    fontFamily: 'var(--font-body)',
+                    fontSize: '13px',
+                    lineHeight: 1.6,
+                    color: 'rgba(255,255,255,0.75)',
+                    margin: '0 0 20px 0',
+                    maxWidth: '440px'
+                  }}>
+                    {proj.oneLiner}
+                  </p>
+
+                  {/* Direct Case Study CTA */}
+                  <div style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    backgroundColor: '#ffffff',
+                    color: '#000000',
+                    padding: '12px 24px',
+                    borderRadius: '100px',
+                    fontFamily: 'var(--font-heading)',
+                    fontSize: '11px',
+                    fontWeight: 800,
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                    boxShadow: '0 8px 20px rgba(0,0,0,0.3)',
+                    transition: 'transform 0.2s ease'
+                  }}>
+                    <span>Explore Case Study</span>
+                    <span style={{ fontSize: '13px' }}>↗</span>
+                  </div>
+                </div>
+
+                {/* Collapsed state prompt (shows when not active on desktop) */}
+                {!isActive && !isMobile && (
+                  <div style={{
+                    fontFamily: 'var(--font-heading)',
+                    fontSize: '11px',
+                    fontWeight: 700,
+                    color: 'rgba(255,255,255,0.4)',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.1em',
+                    marginTop: '8px'
+                  }}>
+                    Hover to expand →
+                  </div>
+                )}
               </div>
             </div>
-          ))}
-        </div>
-
+          );
+        })}
       </div>
 
-      {/* ── Bottom Section CTA ── */}
+      {/* ── Bottom Bar: Direct Summary & Quick Access ── */}
       <div style={{
-        marginTop: '120px',
-        textAlign: 'center',
-        padding: '60px 0',
-        borderTop: `1px solid ${theme.text}15`
+        marginTop: isMobile ? '24px' : '20px',
+        paddingTop: '16px',
+        borderTop: `1px solid ${theme.text}15`,
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        gap: '12px'
       }}>
         <div style={{
-          fontFamily: 'var(--font-heading)',
+          fontFamily: 'var(--font-body)',
           fontSize: '12px',
-          fontWeight: 800,
-          textTransform: 'uppercase',
-          letterSpacing: '0.15em',
           color: theme.text,
-          opacity: 0.5,
-          marginBottom: '16px'
+          opacity: 0.6
         }}>
-          Curious to explore more experiments, prototypes & client work?
+          Hover or tap any project to reveal design rationale, deliverables, and interactive prototype.
         </div>
-        <button
+
+        <button 
           onClick={() => onOpen('work')}
           style={{
-            padding: '22px 56px',
-            borderRadius: '100px',
-            border: `2px solid ${theme.text}`,
-            backgroundColor: 'transparent',
+            background: 'none',
+            border: `1px solid ${theme.text}30`,
             color: theme.text,
+            padding: '8px 20px',
+            borderRadius: '100px',
             fontFamily: 'var(--font-heading)',
-            fontSize: '14px',
-            fontWeight: 800,
-            letterSpacing: '0.1em',
+            fontSize: '11px',
+            fontWeight: 700,
+            letterSpacing: '0.08em',
             textTransform: 'uppercase',
             cursor: 'pointer',
-            transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)'
+            transition: 'all 0.2s ease'
           }}
           onMouseEnter={e => {
             e.currentTarget.style.backgroundColor = theme.text;
             e.currentTarget.style.color = theme.bg;
-            e.currentTarget.style.transform = 'scale(1.04)';
           }}
           onMouseLeave={e => {
             e.currentTarget.style.backgroundColor = 'transparent';
             e.currentTarget.style.color = theme.text;
-            e.currentTarget.style.transform = 'scale(1)';
           }}
         >
-          View Complete Portfolio Archive (12 Projects) →
+          Browse Full Gallery (12 Projects) →
         </button>
       </div>
 
