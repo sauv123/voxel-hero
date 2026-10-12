@@ -1,306 +1,267 @@
 import React from 'react';
 
 export default function ValuePillars({ theme }) {
-  const cardStyle = {
-    background: '#111111',
-    borderRadius: 8,
-    padding: '28px 24px',
+  const columnStyle = {
+    padding: '32px 28px',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    border: '1px solid rgba(255,255,255,0.06)',
     position: 'relative',
-    overflow: 'hidden',
-    transition: 'border-color 0.3s ease, transform 0.3s ease',
+    boxSizing: 'border-box'
   };
 
-  const badgeStyle = {
-    fontSize: '10px',
+  const tagStyle = {
     fontFamily: 'var(--font-heading)',
+    fontSize: '10px',
     fontWeight: 700,
-    textTransform: 'uppercase',
     letterSpacing: '0.08em',
-    padding: '4px 10px',
+    textTransform: 'uppercase',
+    padding: '5px 12px',
     borderRadius: '4px',
-    background: 'rgba(255,255,255,0.05)',
-    border: '1px solid rgba(255,255,255,0.1)',
-    color: '#FCFAF2'
+    backgroundColor: 'rgba(255,255,255,0.06)',
+    color: '#FCFAF2',
+    border: '1px solid rgba(255,255,255,0.12)'
   };
 
   return (
-    <div style={{ width: '100%', marginBottom: '40px' }}>
+    <div style={{ width: '100%', marginTop: '36px', marginBottom: '60px' }}>
       
-      {/* ── Section Label ── */}
-      <div style={{ 
-        display: 'flex', 
-        alignItems: 'center', 
-        gap: '12px', 
-        marginBottom: '20px' 
-      }}>
-        <span style={{ 
-          fontFamily: 'var(--font-heading)', 
-          fontSize: '11px', 
-          fontWeight: 800, 
-          letterSpacing: '0.2em', 
-          textTransform: 'uppercase', 
-          color: '#4ade80' 
-        }}>
-          Employer Value Engine
-        </span>
-        <span style={{ color: '#FCFAF2', opacity: 0.2 }}>•</span>
-        <span style={{ 
-          fontFamily: 'var(--font-body)', 
-          fontSize: '12px', 
-          color: '#FCFAF2', 
-          opacity: 0.6 
-        }}>
-          How I create leverage on product teams
-        </span>
-      </div>
-
-      {/* ── 4-Pillar Bento Grid (2x2 on Desktop, 1-col on Mobile) ── */}
+      {/* ── Main Editorial Ledger ── */}
       <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-        gap: '16px',
-        width: '100%'
+        backgroundColor: '#111111',
+        borderRadius: '8px',
+        border: '1px solid rgba(255,255,255,0.1)',
+        overflow: 'hidden'
       }}>
         
-        {/* ── Pillar 1: Role Focus & 0-to-1 Scope ── */}
-        <div style={cardStyle}>
+        {/* Top Header Bar */}
+        <div style={{
+          padding: '24px 32px',
+          borderBottom: '1px solid rgba(255,255,255,0.08)',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'baseline',
+          flexWrap: 'wrap',
+          gap: '12px'
+        }}>
           <div>
-            <div style={{ 
-              display: 'flex', 
-              justifyContent: 'space-between', 
-              alignItems: 'center', 
-              marginBottom: '16px' 
+            <div style={{
+              fontFamily: 'var(--font-heading)',
+              fontSize: '11px',
+              fontWeight: 800,
+              letterSpacing: '0.18em',
+              textTransform: 'uppercase',
+              color: '#4ade80',
+              marginBottom: '6px'
             }}>
-              <span style={{ 
-                fontFamily: 'var(--font-heading)', 
-                fontSize: '10px', 
-                fontWeight: 800, 
-                letterSpacing: '0.15em', 
-                textTransform: 'uppercase', 
-                color: '#4ade80' 
-              }}>
-                01 • Role Focus
-              </span>
-              <span style={{ fontSize: '11px', color: '#FCFAF2', opacity: 0.4, fontFamily: 'var(--font-heading)' }}>
-                Target Scope
-              </span>
+              Product Designer • Craft & Philosophy
             </div>
-
-            <h3 style={{ 
-              fontFamily: 'var(--font-heading)', 
-              fontSize: '1.4rem', 
-              fontWeight: 700, 
-              color: '#FCFAF2', 
-              margin: '0 0 12px 0',
+            <div style={{
+              fontFamily: 'var(--font-heading)',
+              fontSize: 'clamp(1.2rem, 2.5vw, 1.8rem)',
+              fontWeight: 700,
+              color: '#ffffff',
+              letterSpacing: '-0.02em',
               lineHeight: 1.2
             }}>
-              Product Designer • 0-to-1 Systems
-            </h3>
-
-            <p style={{ 
-              fontFamily: 'var(--font-body)', 
-              fontSize: '13.5px', 
-              lineHeight: 1.6, 
-              color: 'rgba(252,250,242,0.78)', 
-              margin: '0 0 20px 0' 
-            }}>
-              I specialize in taking 0-to-1 ambiguity and structuring it into shipped, scalable products. My sweet spot is consumer applications (B2C), fintech, and generative AI interfaces where human trust and simplicity are critical.
-            </p>
+              Designing human-centered consumer systems from zero-to-one.
+            </div>
           </div>
 
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-            <span style={badgeStyle}>B2C Consumer</span>
-            <span style={badgeStyle}>Fintech Systems</span>
-            <span style={badgeStyle}>Generative AI UX</span>
-            <span style={badgeStyle}>0-to-1 Architecture</span>
+          <div style={{
+            fontFamily: 'var(--font-body)',
+            fontSize: '12px',
+            color: 'rgba(252,250,242,0.5)',
+            letterSpacing: '0.04em'
+          }}>
+            Milan, Italy • Available for select roles
           </div>
         </div>
 
-        {/* ── Pillar 2: Problems Solved & Outcomes ── */}
-        <div style={cardStyle}>
-          <div>
-            <div style={{ 
-              display: 'flex', 
-              justifyContent: 'space-between', 
-              alignItems: 'center', 
-              marginBottom: '16px' 
-            }}>
-              <span style={{ 
-                fontFamily: 'var(--font-heading)', 
-                fontSize: '10px', 
-                fontWeight: 800, 
-                letterSpacing: '0.15em', 
-                textTransform: 'uppercase', 
-                color: '#4ade80' 
+        {/* 3-Column Editorial Grid */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+          divideX: '1px solid rgba(255,255,255,0.08)'
+        }}>
+          
+          {/* Column 01: Role Focus & Problem Solving */}
+          <div style={{ ...columnStyle, borderRight: '1px solid rgba(255,255,255,0.08)' }}>
+            <div>
+              <div style={{
+                fontFamily: 'var(--font-heading)',
+                fontSize: '10px',
+                fontWeight: 800,
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                color: 'rgba(255,255,255,0.4)',
+                marginBottom: '12px'
               }}>
-                02 • Outcomes & Impact
-              </span>
-              <span style={{ fontSize: '11px', color: '#FCFAF2', opacity: 0.4, fontFamily: 'var(--font-heading)' }}>
-                Metrics That Matter
-              </span>
+                01 / Role Focus & Ambiguity
+              </div>
+
+              <h4 style={{
+                fontFamily: 'var(--font-heading)',
+                fontSize: '1.25rem',
+                fontWeight: 700,
+                color: '#ffffff',
+                margin: '0 0 12px 0',
+                letterSpacing: '-0.02em',
+                lineHeight: 1.25
+              }}>
+                Navigating 0-to-1 Product Reality
+              </h4>
+
+              <p style={{
+                fontFamily: 'var(--font-body)',
+                fontSize: '13.5px',
+                lineHeight: 1.65,
+                color: 'rgba(252,250,242,0.75)',
+                margin: '0 0 24px 0'
+              }}>
+                I take raw concepts and technical capabilities and structure them into calm, high-agency consumer applications. Whether architecting introvert-first habit loops (Olo), modernizing legacy Italian culinary commerce (Orco), or structuring co-living spatial UX (MICA), I eliminate friction without relying on toxic gamification.
+              </p>
             </div>
 
-            <h3 style={{ 
-              fontFamily: 'var(--font-heading)', 
-              fontSize: '1.4rem', 
-              fontWeight: 700, 
-              color: '#FCFAF2', 
-              margin: '0 0 12px 0',
-              lineHeight: 1.2
-            }}>
-              Calm Experience Over Toxic Urgency
-            </h3>
-
-            <p style={{ 
-              fontFamily: 'var(--font-body)', 
-              fontSize: '13.5px', 
-              lineHeight: 1.6, 
-              color: 'rgba(252,250,242,0.78)', 
-              margin: '0 0 20px 0' 
-            }}>
-              I design for sustained user retention and task completion speed rather than shallow gamification tricks. I deconstruct high-friction user journeys into low-cognitive-load interactions that compound into long-term product engagement.
-            </p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+              <span style={tagStyle}>B2C Consumer</span>
+              <span style={tagStyle}>Fintech Systems</span>
+              <span style={tagStyle}>Generative AI UX</span>
+            </div>
           </div>
 
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-            <span style={badgeStyle}>Day-30 Retention</span>
-            <span style={badgeStyle}>Low Cognitive Load</span>
-            <span style={badgeStyle}>Onboarding Velocity</span>
-            <span style={badgeStyle}>Human Agency</span>
+          {/* Column 02: Cross-Functional & Code Advantage */}
+          <div style={{ ...columnStyle, borderRight: '1px solid rgba(255,255,255,0.08)' }}>
+            <div>
+              <div style={{
+                fontFamily: 'var(--font-heading)',
+                fontSize: '10px',
+                fontWeight: 800,
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                color: 'rgba(255,255,255,0.4)',
+                marginBottom: '12px'
+              }}>
+                02 / Team Collaboration
+              </div>
+
+              <h4 style={{
+                fontFamily: 'var(--font-heading)',
+                fontSize: '1.25rem',
+                fontWeight: 700,
+                color: '#ffffff',
+                margin: '0 0 12px 0',
+                letterSpacing: '-0.02em',
+                lineHeight: 1.25
+              }}>
+                Designing with Engineering Reality
+              </h4>
+
+              <p style={{
+                fontFamily: 'var(--font-body)',
+                fontSize: '13.5px',
+                lineHeight: 1.65,
+                color: 'rgba(252,250,242,0.75)',
+                margin: '0 0 24px 0'
+              }}>
+                Coming from an engineering background at MIT Manipal, I don't toss static Figma mockups over the wall. I prototype directly in React and GSAP, stress-testing animation physics, responsive layouts, and edge cases before engineering commits code. PMs get predictable scopes; developers get friction-free handoffs.
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+              <span style={tagStyle}>React & GSAP</span>
+              <span style={tagStyle}>Dev Handoffs</span>
+              <span style={tagStyle}>Design Tokens</span>
+            </div>
           </div>
+
+          {/* Column 03: Outcomes & Philosophy */}
+          <div style={columnStyle}>
+            <div>
+              <div style={{
+                fontFamily: 'var(--font-heading)',
+                fontSize: '10px',
+                fontWeight: 800,
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                color: 'rgba(255,255,255,0.4)',
+                marginBottom: '12px'
+              }}>
+                03 / Business Outcomes
+              </div>
+
+              <h4 style={{
+                fontFamily: 'var(--font-heading)',
+                fontSize: '1.25rem',
+                fontWeight: 700,
+                color: '#ffffff',
+                margin: '0 0 12px 0',
+                letterSpacing: '-0.02em',
+                lineHeight: 1.25
+              }}>
+                Durable Retention Over Vanity Hype
+              </h4>
+
+              <p style={{
+                fontFamily: 'var(--font-body)',
+                fontSize: '13.5px',
+                lineHeight: 1.65,
+                color: 'rgba(252,250,242,0.75)',
+                margin: '0 0 24px 0'
+              }}>
+                A design only works if it moves the company's core metrics: Day-30 retention, onboarding completion velocity, and user autonomy. I prioritize human focus and clarity over anxiety-inducing notification loops. Good design compounds value over years, not just Dribbble likes.
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+              <span style={tagStyle}>Day-30 Retention</span>
+              <span style={tagStyle}>Low Cognitive Load</span>
+              <span style={tagStyle}>Task Velocity</span>
+            </div>
+          </div>
+
         </div>
 
-        {/* ── Pillar 3: Team Collaboration & The Code Advantage ── */}
-        <div style={cardStyle}>
-          <div>
-            <div style={{ 
-              display: 'flex', 
-              justifyContent: 'space-between', 
-              alignItems: 'center', 
-              marginBottom: '16px' 
-            }}>
-              <span style={{ 
-                fontFamily: 'var(--font-heading)', 
-                fontSize: '10px', 
-                fontWeight: 800, 
-                letterSpacing: '0.15em', 
-                textTransform: 'uppercase', 
-                color: '#4ade80' 
-              }}>
-                03 • Team Collaboration
-              </span>
-              <span style={{ fontSize: '11px', color: '#FCFAF2', opacity: 0.4, fontFamily: 'var(--font-heading)' }}>
-                The Code Advantage
-              </span>
-            </div>
-
-            <h3 style={{ 
-              fontFamily: 'var(--font-heading)', 
-              fontSize: '1.4rem', 
-              fontWeight: 700, 
-              color: '#FCFAF2', 
-              margin: '0 0 12px 0',
-              lineHeight: 1.2
-            }}>
-              Designing with Engineering Reality
-            </h3>
-
-            <p style={{ 
-              fontFamily: 'var(--font-body)', 
-              fontSize: '13.5px', 
-              lineHeight: 1.6, 
-              color: 'rgba(252,250,242,0.78)', 
-              margin: '0 0 20px 0' 
-            }}>
-              With an engineering background from MIT Manipal, I prototype directly in React and GSAP. I stress-test responsive breakpoints, animation physics, and API states before engineers write production code. PMs get feasible scopes; engineers get zero-friction handoffs.
-            </p>
+        {/* Bottom Credibility Strip */}
+        <div style={{
+          padding: '20px 32px',
+          backgroundColor: 'rgba(255,255,255,0.02)',
+          borderTop: '1px solid rgba(255,255,255,0.08)',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: '16px'
+        }}>
+          <div style={{
+            fontFamily: 'var(--font-heading)',
+            fontSize: '10px',
+            fontWeight: 800,
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            color: 'rgba(255,255,255,0.5)'
+          }}>
+            Track Record & Credentials
           </div>
 
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-            <span style={badgeStyle}>React & GSAP</span>
-            <span style={badgeStyle}>Frictionless Handoff</span>
-            <span style={badgeStyle}>Pragmatic Scoping</span>
-            <span style={badgeStyle}>Design Tokens</span>
-          </div>
-        </div>
-
-        {/* ── Pillar 4: Credibility & Proven Track Record ── */}
-        <div style={cardStyle}>
-          <div>
-            <div style={{ 
-              display: 'flex', 
-              justifyContent: 'space-between', 
-              alignItems: 'center', 
-              marginBottom: '16px' 
-            }}>
-              <span style={{ 
-                fontFamily: 'var(--font-heading)', 
-                fontSize: '10px', 
-                fontWeight: 800, 
-                letterSpacing: '0.15em', 
-                textTransform: 'uppercase', 
-                color: '#4ade80' 
-              }}>
-                04 • Credibility & Track Record
-              </span>
-              <span style={{ fontSize: '11px', color: '#FCFAF2', opacity: 0.4, fontFamily: 'var(--font-heading)' }}>
-                Verified Proof
-              </span>
-            </div>
-
-            <h3 style={{ 
-              fontFamily: 'var(--font-heading)', 
-              fontSize: '1.4rem', 
-              fontWeight: 700, 
-              color: '#FCFAF2', 
-              margin: '0 0 12px 0',
-              lineHeight: 1.2
-            }}>
-              Proven Craft Across Companies
-            </h3>
-
-            <div style={{ 
-              display: 'flex', 
-              flexDirection: 'column', 
-              gap: '10px', 
-              marginBottom: '20px' 
-            }}>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-                <span style={{ color: '#4ade80', fontSize: '12px' }}>✓</span>
-                <span style={{ fontFamily: 'var(--font-body)', fontSize: '13px', color: 'rgba(252,250,242,0.85)' }}>
-                  <strong>4+ Years Shipping:</strong> Scaled digital products in India & Europe.
-                </span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-                <span style={{ color: '#4ade80', fontSize: '12px' }}>✓</span>
-                <span style={{ fontFamily: 'var(--font-body)', fontSize: '13px', color: 'rgba(252,250,242,0.85)' }}>
-                  <strong>foundit (Monster.com APAC):</strong> Enterprise and consumer product workflows.
-                </span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-                <span style={{ color: '#4ade80', fontSize: '12px' }}>✓</span>
-                <span style={{ fontFamily: 'var(--font-body)', fontSize: '13px', color: 'rgba(252,250,242,0.85)' }}>
-                  <strong>MIT Manipal + Milan Master's:</strong> Systems engineering + European craft.
-                </span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-                <span style={{ color: '#4ade80', fontSize: '12px' }}>✓</span>
-                <span style={{ fontFamily: 'var(--font-body)', fontSize: '13px', color: 'rgba(252,250,242,0.85)' }}>
-                  <strong>NCA Design Award:</strong> 3rd Place recognized design innovation.
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-            <span style={badgeStyle}>foundit APAC</span>
-            <span style={badgeStyle}>B.Tech Manipal</span>
-            <span style={badgeStyle}>Master's Milan</span>
-            <span style={badgeStyle}>Design Award 🥉</span>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '18px',
+            flexWrap: 'wrap',
+            fontFamily: 'var(--font-body)',
+            fontSize: '12.5px',
+            color: '#FCFAF2'
+          }}>
+            <span><strong>4+ Years</strong> Shipping Software</span>
+            <span style={{ opacity: 0.3 }}>•</span>
+            <span><strong>foundit</strong> (Monster.com APAC)</span>
+            <span style={{ opacity: 0.3 }}>•</span>
+            <span><strong>B.Tech</strong> MIT Manipal</span>
+            <span style={{ opacity: 0.3 }}>•</span>
+            <span><strong>Master's in Design</strong> Milan</span>
+            <span style={{ opacity: 0.3 }}>•</span>
+            <span><strong>NCA Design Award</strong> 🥉</span>
           </div>
         </div>
 

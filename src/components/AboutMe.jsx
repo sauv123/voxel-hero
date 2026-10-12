@@ -945,19 +945,19 @@ export default function AboutMe({ theme, onClose }) {
           <span style={{ color: "#4ade80", fontSize: "clamp(2rem, 5vw, 40px)" }}>✦</span> About Me
         </h1>
         
-        {/* ── Employer Value Engine (4-Pillar Bento Grid) ── */}
+        {/* ── 01. Profile Video Reel (Starts First As Premier Hero) ── */}
+        <div className="about-section-reveal" style={{ marginBottom: "24px" }}>
+          <ProfileIntroduction theme={invertedTheme} />
+        </div>
+
+        {/* ── 02. Editorial Value Dossier (Sits Cleanly Below Video) ── */}
         <div className="about-section-reveal">
           <ValuePillars theme={invertedTheme} />
         </div>
 
-        {/* ── Brand Logos Bar ── */}
-        <div className="about-section-reveal" style={{ marginTop: "10px", marginBottom: "48px" }}>
+        {/* ── 03. Brand Logos Bar ── */}
+        <div className="about-section-reveal" style={{ marginTop: "0px", marginBottom: "48px" }}>
           <BrandsSection theme={theme} />
-        </div>
-
-        {/* ── Profile Video Reel ── */}
-        <div className="about-section-reveal" style={{ marginBottom: "60px" }}>
-          <ProfileIntroduction theme={invertedTheme} />
         </div>
 
         {/* Primary Dashboard Grid (Top Row) */}
