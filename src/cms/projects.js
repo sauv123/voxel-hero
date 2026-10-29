@@ -1,20 +1,6 @@
 export const PROJECTS = [
   {
     id: "01",
-    name: "OLO",
-    title: "Olo",
-    slug: "olocasestudy",
-    tags: ["EMOTIONAL DESIGN", "UX", "UI"],
-    role: "Product Designer",
-    bgColor: "#000000",
-    textColor: "#FFFFFF",
-    img: "/olo.webp",
-    cta: "Turning small hellos into meaningful growth through introverted design.",
-    cursorCta: "Discover introverted design",
-    link: "/casestudies/olo/index.html"
-  },
-  {
-    id: "05",
     name: "Redesigning Orco",
     title: "Redesigning Orco",
     slug: "orco",
@@ -28,22 +14,36 @@ export const PROJECTS = [
     link: "/casestudies/orco/orco-case-study.html"
   },
   {
-    id: "04",
-    name: "MICA",
-    title: "MICA",
-    slug: "mica",
-    tags: ["UX DESIGN", "CO-LIVING DESIGN"],
-    role: "Lead UX Designer",
+    id: "02",
+    name: "OLO",
+    title: "Olo",
+    slug: "olocasestudy",
+    tags: ["EMOTIONAL DESIGN", "UX", "UI"],
+    role: "Product Designer",
     bgColor: "#000000",
     textColor: "#FFFFFF",
-    img: "/mica.mp4", 
-    objectPosition: "left",
-    cta: "Designing belonging through emotionally intelligent housing experiences.",
-    cursorCta: "See how I designed belonging",
-    link: "/casestudies/mica/index.html"
+    img: "/olo.webp",
+    cta: "Turning small hellos into meaningful growth through introverted design.",
+    cursorCta: "Discover introverted design",
+    link: "/casestudies/olo/index.html"
   },
   {
-    id: "02",
+    id: "03",
+    name: "/trace",
+    title: "/trace",
+    slug: "trace",
+    awardBadge: "Selected for Milano Digital Week 2026",
+    tags: ["SELECTED FOR MILANO DIGITAL WEEK 2026", "UX RESEARCH", "UX & INTERACTION DESIGN", "DATA VIZ"],
+    role: "Product & Interaction Designer",
+    bgColor: "#000000",
+    textColor: "#FFFFFF",
+    img: "/trace.mp4",
+    cta: "A live generative artwork that turns Ethereum activity into a visual, audible, and explorable experience.",
+    cursorCta: "Explore the generative experience",
+    link: "/casestudies/trace/index.html"
+  },
+  {
+    id: "04",
     name: "KRIZIA",
     title: "Krizia",
     slug: "krizia",
@@ -56,18 +56,19 @@ export const PROJECTS = [
     cursorCta: "See how I visualised luxury",
     link: "/casestudies/krizia/index.html"
   },
-  /* {
-    id: "03",
-    name: "ELI5",
-    title: "ELI5",
-    slug: "eli5",
-    tags: ["UX DESIGN", "INTERACTION & UX SYSTEMS"],
-    role: "UX Researcher & Designer",
+  {
+    id: "05",
+    name: "MICA",
+    title: "MICA",
+    slug: "mica",
+    tags: ["UX DESIGN", "CO-LIVING DESIGN"],
+    role: "Lead UX Designer",
     bgColor: "#000000",
     textColor: "#FFFFFF",
-    img: "/works/media__1777587436505.webp",
-    cta: "Transforms complexity into visual clarity instantly.",
-    cursorCta: "See the visual clarity process",
-    link: "/casestudies/eli5/index.html"
-  } */
+    img: "/mica.mp4", 
+    objectPosition: "left",
+    cta: "Designing belonging through emotionally intelligent housing experiences.",
+    cursorCta: "See how I designed belonging",
+    link: "/casestudies/mica/index.html"
+  }
 ];

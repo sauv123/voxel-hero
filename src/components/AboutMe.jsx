@@ -2,7 +2,10 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ProfileIntroduction from "./ProfileIntroduction";
-import ValuePillars from "./ValuePillars";
+import HowIGotHereSection from "./HowIGotHereSection";
+import HumanStickersSection from "./HumanStickersSection";
+import WhereIveBeenSection from "./WhereIveBeenSection";
+import AboutStudio from "./AboutStudio";
 
 import manipalImg from "../assets/PXL_20230613_050806226.webp";
 import founditImg from "../assets/IMG_128640.webp";
@@ -51,12 +54,54 @@ const ALBUMS = [
 ];
 
 const TIMELINE = [
-  { id: 1, text: "Graduated from MIT Manipal.", photos: [{ src: ncaImg, bg: "#0d1a28", e: "🏫" }] },
-  { id: 2, text: "Started my career in Bengaluru at foundit.", photos: [{ src: founditImg, bg: "#281a0d", e: "🚀" }] },
-  { id: 3, text: "Moved to Mumbai in search of bigger opportunities.", photos: [{ src: manipalImg, bg: "#0d1428", e: "🎨" }] },
-  { id: 4, text: "Launched my first product as a designer.", photos: [{ videoSrc: "/product.mp4", bg: "#28100d", e: "🏆", caption: "PRODUCT_V1" }] },
-  { id: 5, text: "Took a leap of faith and moved to Milan for my Master's.", photos: [{ src: mumbaiImg, bg: "#0d1a28", e: "✈️" }] },
-  { id: 6, text: "Came 3rd in NCA(design awards).", photos: [{ src: milanImg, bg: "#28280d", e: "🥉" }] },
+  { 
+    id: 1, 
+    year: "2019 – 2023",
+    role: "B.Tech Print & Media Engineering",
+    place: "MIT Manipal",
+    text: "Studied engineering foundations, visual communication, typography, and color science.", 
+    photos: [{ src: manipalImg, bg: "#0d1428", caption: "MANIPAL" }] 
+  },
+  { 
+    id: 2, 
+    year: "2023",
+    role: "Associate Product Designer",
+    place: "foundit · Bengaluru",
+    text: "Started design career in Bengaluru, shipping candidate discovery features across APAC.", 
+    photos: [{ src: founditImg, bg: "#281a0d", caption: "FOUNDIT" }] 
+  },
+  { 
+    id: 3, 
+    year: "2023 – 2024",
+    role: "Product Designer",
+    place: "Mumbai (Hobbytribe & e-tailize)",
+    text: "Moved to Mumbai. Shipped 0→1 consumer app (2.5× growth) and multi-brand B2B design systems.", 
+    photos: [{ src: mumbaiImg, bg: "#0d1a28", caption: "MUMBAI" }] 
+  },
+  { 
+    id: 4, 
+    year: "2024",
+    role: "Product Creator",
+    place: "Independent Shipping",
+    text: "Launched first end-to-end digital product as solo designer & creative developer.", 
+    photos: [{ videoSrc: "/product.mp4", bg: "#28100d", caption: "SHIPPED_V1" }] 
+  },
+  { 
+    id: 5, 
+    year: "2024 – 2026",
+    role: "MA User Experience Design",
+    place: "NABA · Milan, Italy",
+    text: "Moved to Milan for Master's. Appointed to AI Academic Integrity Committee.", 
+    photos: [{ src: milanImg, bg: "#0d1a28", caption: "MILAN" }] 
+  },
+  { 
+    id: 6, 
+    year: "2024",
+    role: "Bronze Winner 🥉",
+    place: "NCA Design Awards",
+    text: "Awarded 3rd Place internationally in Digital & Interaction Design category.", 
+    photos: [{ src: ncaImg, bg: "#28280d", caption: "NCA_AWARD" }] 
+  },
 ];
 
 function Timeline({ theme }) {
@@ -167,7 +212,32 @@ function Timeline({ theme }) {
             <div className="timeline-dot" style={{ position: "absolute", left: "-22px", top: "4px", width: "10px", height: "10px", borderRadius: "50%", background: "rgba(255,255,255,0.3)" }} />
             
             <div className="timeline-content">
-              <div style={{ fontSize: "14px", fontWeight: 700, fontFamily: "var(--font-body)", marginBottom: "12px", lineHeight: 1.4 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
+                <span style={{ 
+                  fontFamily: "Space Mono, monospace", 
+                  fontSize: "10px", 
+                  fontWeight: 700, 
+                  color: "#4ade80", 
+                  letterSpacing: "0.08em" 
+                }}>
+                  {entry.year}
+                </span>
+                <span style={{ color: "rgba(255,255,255,0.2)", fontSize: "10px" }}>•</span>
+                <span style={{ 
+                  fontFamily: "Space Mono, monospace", 
+                  fontSize: "10px", 
+                  color: "rgba(255,255,255,0.5)", 
+                  textTransform: "uppercase" 
+                }}>
+                  {entry.place}
+                </span>
+              </div>
+
+              <div style={{ fontSize: "15px", fontWeight: 700, fontFamily: "var(--font-heading)", color: "#ffffff", marginBottom: "4px", lineHeight: 1.25 }}>
+                {entry.role}
+              </div>
+
+              <div style={{ fontSize: "12.5px", color: "rgba(255,255,255,0.7)", fontFamily: "var(--font-body)", marginBottom: "12px", lineHeight: 1.45 }}>
                 {entry.text}
               </div>
               
@@ -179,12 +249,12 @@ function Timeline({ theme }) {
                   {ph.videoSrc ? (
                     <video src={ph.videoSrc} autoPlay loop muted playsInline style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                   ) : ph.src ? (
-                    <img src={ph.src} alt="Timeline" loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    <img src={ph.src} alt={ph.caption || "Timeline"} loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                   ) : (
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%", height: "100%", fontSize: "32px" }}>{ph.e}</div>
                   )}
                   {ph.caption && (
-                    <div style={{ position: "absolute", bottom: "4px", right: "6px", fontSize: "8px", fontFamily: "var(--font-body)", color: "#ffffff", opacity: 0.8, background: "rgba(0,0,0,0.5)", padding: "2px 4px", borderRadius: 2 }}>
+                    <div style={{ position: "absolute", bottom: "4px", right: "6px", fontSize: "8px", fontFamily: "Space Mono, monospace", color: "#ffffff", opacity: 0.9, background: "rgba(0,0,0,0.6)", padding: "2px 5px", borderRadius: 2 }}>
                       {ph.caption}
                     </div>
                   )}
@@ -200,7 +270,7 @@ function Timeline({ theme }) {
 }
 
 // ─── Two Truths and a Lie ────────────────────────────────────────────
-function TruthsGame({ theme }) {
+export function TruthsGame({ theme }) {
   const [phase, setPhase] = useState("intro");
   const [round, setRound] = useState(0);
   const [picked, setPicked] = useState(null);
@@ -423,7 +493,7 @@ function TruthsGame({ theme }) {
 }
 
 // ─── Languages ─────────────────────────────────────────────────────────
-function LanguagesToggle({ theme }) {
+export function LanguagesToggle({ theme }) {
   const [lang, setLang] = useState("EN");
   
   return (
@@ -486,7 +556,7 @@ function LanguagesToggle({ theme }) {
 }
 
 // ─── Quote Card ────────────────────────────────────────────────────────
-function QuoteCard({ theme }) {
+export function QuoteCard({ theme }) {
   const [pull, setPull] = useState(0);
   const dragging = useRef(false);
   const [isDragging, setIsDragging] = useState(false);
@@ -691,7 +761,8 @@ function ToolboxSection({ theme }) {
 }
 
 // ─── Vinyl Player ────────────────────────────────────────────────────
-function VinylPlayer({ theme }) {
+// ─── Vinyl Player ────────────────────────────────────────────────────────
+export function VinylPlayer({ theme }) {
   const [loaded, setLoaded] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [angle, setAngle] = useState(0);
@@ -880,22 +951,15 @@ function VinylPlayer({ theme }) {
   );
 }
 
-// ─── Main Component ───────────────────────────────────────────────────
+// ─── Main About Page ───────────────────────────────────────────────────
 export default function AboutMe({ theme, onClose }) {
   const containerRef = useRef(null);
-  const invertedTheme = { ...theme, bg: '#0a0a0a', text: '#FCFAF2' };
 
   useEffect(() => {
     // Entrance animation
     gsap.fromTo(containerRef.current,
       { opacity: 0, y: '100vh' },
-      { opacity: 1, y: '0vh', duration: 1, ease: 'power4.out', clearProps: 'transform' }
-    );
-
-    // Staggered entrance for sections
-    gsap.fromTo('.about-section-reveal', 
-      { opacity: 0, y: 30 }, 
-      { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'power2.out', delay: 0.3 }
+      { opacity: 1, y: '0vh', duration: 0.8, ease: 'power4.out', clearProps: 'transform' }
     );
   }, []);
 
@@ -909,124 +973,28 @@ export default function AboutMe({ theme, onClose }) {
 
   return (
     <div 
-      ref={containerRef} 
-      role="dialog"
-      aria-modal="true"
+      ref={containerRef}
+      role="dialog" 
+      aria-modal="true" 
       aria-label="About Me"
       style={{
-        position: 'fixed',
-        top: 0, left: 0, width: '100vw', height: '100vh',
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100vw",
+        height: "100vh",
         zIndex: 180,
-        backgroundColor: '#0a0a0a',
-        color: '#FCFAF2',
+        backgroundColor: "#fafafa",
+        color: "#1e1e1e",
         overflowX: "hidden",
-        overflowY: "auto"
+        overflowY: "auto",
       }}
       className="scroll-container"
     >
-
-      <div style={{ 
-        paddingTop: 40, 
-        paddingBottom: 100, 
-        width: "100%",
-        margin: "0 auto", 
-        paddingLeft: "24px", 
-        paddingRight: "24px",
-        boxSizing: "border-box"
-      }}>
-        
-        {/* Title */}
-        <h1 className="about-section-reveal section-header" style={{ 
-          marginBottom: "40px", 
-          display: "flex",
-          alignItems: "center",
-          gap: "16px"
-        }}>
-          <span style={{ color: "#4ade80", fontSize: "clamp(2rem, 5vw, 40px)" }}>✦</span> About Me
-        </h1>
-        
-        {/* ── 01. Profile Video Reel (Starts First As Premier Hero) ── */}
-        <div className="about-section-reveal" style={{ marginBottom: "24px" }}>
-          <ProfileIntroduction theme={invertedTheme} />
-        </div>
-
-        {/* ── 02. Editorial Value Dossier (Sits Cleanly Below Video) ── */}
-        <div className="about-section-reveal">
-          <ValuePillars theme={invertedTheme} />
-        </div>
-
-        {/* ── 03. Brand Logos Bar ── */}
-        <div className="about-section-reveal" style={{ marginTop: "0px", marginBottom: "48px" }}>
-          <BrandsSection theme={theme} />
-        </div>
-
-        {/* Primary Dashboard Grid (Top Row) */}
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(290px, 1fr))",
-          gap: "16px",
-          width: "100%",
-          marginBottom: "16px"
-        }}>
-          <div className="about-section-reveal">
-            <Timeline theme={invertedTheme} />
-          </div>
-          <div className="about-section-reveal">
-            <ToolboxSection theme={invertedTheme} />
-          </div>
-        </div>
-
-        {/* Secondary Dashboard Grid (Bottom Row) */}
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(290px, 1fr))",
-          gap: "16px",
-          width: "100%",
-          marginBottom: "16px"
-        }}>
-          <div className="about-section-reveal">
-            <TruthsGame theme={invertedTheme} />
-          </div>
-          <div className="about-section-reveal">
-            <VisualGalleryCard theme={invertedTheme} />
-          </div>
-        </div>
-
-        {/* Tertiary Dashboard Grid (Third Row) */}
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(290px, 1fr))",
-          gap: "16px",
-          width: "100%"
-        }}>
-          <div className="about-section-reveal">
-            <LanguagesToggle theme={invertedTheme} />
-          </div>
-          <div className="about-section-reveal">
-            <QuoteCard theme={invertedTheme} />
-          </div>
-        </div>
-
-        {/* Platter component taking full width */}
-        <div className="about-section-reveal" style={{ marginTop: "16px" }}>
-          <VinylPlayer theme={invertedTheme} />
-        </div>
-
-        {/* Culture Section Header */}
-        <div className="about-section-reveal" style={{ marginTop: "60px", marginBottom: "24px", display: "flex", alignItems: "center", gap: "12px" }}>
-          <span style={{ fontFamily: "var(--font-heading)", fontSize: "11px", fontWeight: 800, letterSpacing: "0.2em", textTransform: "uppercase", color: "#4ade80" }}>
-            Beyond The Screen
-          </span>
-          <span style={{ color: "#FCFAF2", opacity: 0.2 }}>•</span>
-          <span style={{ fontFamily: "var(--font-body)", fontSize: "12px", color: "#FCFAF2", opacity: 0.6 }}>
-            Personal curiosities, music, and experiments
-          </span>
-        </div>
-
-      </div>
-      
-      {/* Global Footer */}
-      <Footer theme={invertedTheme} activeChar="deer" />
+      <AboutStudio 
+        theme={theme} 
+        onClose={onClose} 
+      />
     </div>
   );
 }

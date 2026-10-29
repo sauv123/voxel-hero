@@ -237,35 +237,23 @@ const EXPERIMENTS = [
     id: 3,
     title: 'HYDROTYPE 3D',
     tags: ['ReactThreeFiber', 'ThreeJS', 'GSAP', 'RapierPhysics', 'CreativeCoding', 'WebGL', 'InteractiveDesign'],
-    video: '/krizia.mp4',
+    video: '/2.mp4',
     size: 'square',
-    description: 'An immersive web interaction combining reactive 2D typography with real-time 3D rigid-body physics to create a tactile, high-end hero section.',
-    goal: 'Build a high-performance interactive canvas where 2D editorial typography and 3D physical objects react in unison to user cursor gestures, providing immediate, realistic, and tactile feedback without sacrificing framerates.',
+    description: 'An interactive 3D aquatic fluid simulation featuring real-time water wave dynamics, shark animations, and tactile cursor physics.',
+    goal: 'Build an immersive 3D aquatic environment with responsive water fluid dynamics and procedural shark movement.',
     techStackCategories: [
       { label: "Build Tool", value: "Vite" },
       { label: "Frontend Framework", value: "React" },
       { label: "3D Renderer", value: "React Three Fiber (@react-three/fiber) & Three.js" },
       { label: "3D Helpers", value: "Drei (@react-three/drei)" },
-      { label: "Physics Engine", value: "Rapier (@react-three/rapier — WebAssembly-powered physics)" },
-      { label: "Animation Library", value: "GSAP (GreenSock) for high-precision text interpolation" }
+      { label: "Physics & Shaders", value: "Custom GLSL Wave Vertex Shaders & Rapier Physics" }
     ],
     coreFeatures: [
-      "Magnifying Kinetic Typography: Individual DOM letter splitting with GSAP easing that magnifies, expands, and changes color on mouse hover.",
-      "Curved Surface Trimesh Physics: Custom cylinder pool geometry configured as a concave trimesh collider so objects roll realistically around internal curves.",
-      "Hover-Activated Physics Impulse: Trigger zones (e.g., wallet hover) that inject dynamic linear forces and directional torque onto the ball in real time.",
-      "Layered Event Passthrough: Dual-layer DOM architecture (pointer-events: none on overlay wrappers) allowing direct interactions with both the HTML overlay and the WebGL canvas behind it.",
-      "Custom Friction & Restitution Tuning: Fine-tuned physical parameters (gravity, mass, bounce, surface friction) for natural rolling movement without visual clipping."
+      "Real-time Water Fluid Dynamics: Dynamic wave cresting and procedural caustic refraction responding to cursor interaction.",
+      "Aquatic Shark Simulation: Skeletal mesh animation with dynamic swimming path generation.",
+      "Depth-Aware Blue Caustics: Realistic volumetric lighting and underwater scatter rendering."
     ],
-    techStack: ['React Three Fiber', 'Rapier', 'GSAP']
-  },
-  {
-    id: 2,
-    title: 'SPATIAL PROTOTYPES',
-    tags: ['Spatial', 'visionOS', 'SwiftUI'],
-    video: '/2.mp4',
-    size: 'square',
-    description: 'Prototyping interactions and volumetric interface patterns for next-generation spatial computing headsets.',
-    techStack: ['visionOS', 'SwiftUI', 'RealityKit']
+    techStack: ['React Three Fiber', 'Three.js', 'WebGL', 'GLSL']
   },
   {
     id: 5,
@@ -275,16 +263,7 @@ const EXPERIMENTS = [
     size: 'wide',
     description: 'An interactive particle pool simulating fluid dynamics and repulsion physics based on mouse proximity.',
     techStack: ['HTML5 Canvas', 'Vanilla JS', 'Physics Engine']
-  },
-  {
-    id: 15,
-    title: 'SNAKE INTERACTION',
-    tags: ['Snake Fluid', 'Interaction Design', 'Micro-UX'],
-    video: '/works/snake.mp4',
-    size: 'wide',
-    description: 'Fluid, cursor-following generative snake patterns built for high-performance WebGL rendering.',
-    techStack: ['WebGL', 'GLSL Shaders', 'Three.js']
-  },
+  }
 ];
 
 // ─── Context Drawer Component ──────────────────────────────────────────────

@@ -1,0 +1,850 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>/trace Case Study</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,500;0,600;1,500;1,600&family=Figtree:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: sticky five-item rail (Overview, Problem, Approach, Solution, Impact); full content in one column; light only, by choice. */
+:root{
+  --bg:#F3F5F4;
+  --surface:#E8ECEA;
+  --card:#FFFFFF;
+  --fg:#0F1013;
+  --muted:#5E6661;
+  --line:rgba(15,16,19,.12);
+  --accent:#0C8A57;
+  --accent-soft:rgba(12,138,87,.10);
+  --tile-bg:#E4EAE6;
+  --tile-empty:rgba(15,16,19,.06);
+  --font-display:"Crimson Pro","Iowan Old Style",Georgia,serif;
+  --font-body:"Figtree",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-weight:300;font-size:18px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+a{color:inherit}
+::selection{background:var(--accent);color:#fff}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:rgba(243,245,244,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;height:60px;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px))}
+.mark{font-family:var(--font-display);font-size:24px;font-weight:600;letter-spacing:-.04em;text-decoration:none}
+.mark span{color:var(--accent)}
+.top nav{display:flex;gap:28px;font-size:16px}
+.top nav a{text-decoration:none}
+.top nav a:hover{color:var(--accent)}
+
+/* shell */
+.shell{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:170px minmax(0,1fr);gap:56px;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px));padding-block:40px 120px}
+.spy{position:sticky;top:calc(env(safe-area-inset-top,0px) + 40px);align-self:start}
+.spy ul{list-style:none;margin:0;padding:0;display:grid;gap:16px}
+.spy button{all:unset;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:400;line-height:1}
+.spy button:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.spy .dot{width:0;height:7px;background:var(--accent);transition:width .2s}
+.spy button.on{color:var(--accent);font-weight:600}
+.spy button.on .dot{width:7px}
+main{min-width:0;max-width:860px}
+
+/* type */
+section{padding-top:104px;scroll-margin-top:24px}
+.eyebrow{font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 16px;font-weight:400}
+h1{font-family:var(--font-display);font-weight:500;font-size:clamp(50px,7.2vw,82px);line-height:.98;letter-spacing:-.055em;margin:0;text-wrap:balance}
+h1 .slash{color:var(--accent)}
+h2{font-family:var(--font-display);font-weight:600;font-size:clamp(32px,4.4vw,44px);line-height:1.12;letter-spacing:-.045em;margin:0 0 16px;text-wrap:balance}
+h3{font-family:var(--font-display);font-weight:600;font-size:24px;line-height:1.2;letter-spacing:-.03em;margin:0 0 8px;text-wrap:balance}
+p{margin:0 0 16px;max-width:62ch}
+.lede{font-size:20px;line-height:1.55}
+.label{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500;margin:0 0 8px}
+.small{font-size:14px;color:var(--muted)}
+
+/* figures */
+figure{margin:0}
+.fig img{display:block;width:100%;max-width:100%;height:auto;border-radius:14px;background:var(--surface)}
+.fig figcaption{font-size:14px;color:var(--muted);margin-top:10px;line-height:1.5}
+.fig figcaption b{font-weight:500;color:var(--fg)}
+.fig-wide{margin:36px 0}
+
+/* hero + hanging tag */
+.hero-wrap{position:relative;margin-top:22px}
+.hero-fig img{border-radius:16px}
+.mdw-tag{position:absolute;top:-22px;right:28px;z-index:2;display:flex;align-items:center;gap:12px;padding:10px 16px 10px 30px;background:var(--card);border:1px solid var(--line);border-radius:10px 14px 14px 10px;box-shadow:0 10px 24px -12px rgba(15,16,19,.35);transform-origin:14px 50%;transform:rotate(-4deg);animation:tagPop .9s cubic-bezier(.3,1.5,.5,1) .35s backwards,sway 4.5s ease-in-out 1.4s infinite;transition:transform .3s cubic-bezier(.3,1.5,.5,1);cursor:default}
+.mdw-tag::before{content:"";position:absolute;left:11px;top:50%;width:8px;height:8px;margin-top:-4px;border-radius:50%;background:var(--bg);box-shadow:inset 0 0 0 1.5px rgba(15,16,19,.25)}
+.mdw-tag img{display:block;height:40px;width:auto;border-radius:5px}
+.mdw-tag span{font-size:12px;letter-spacing:.07em;text-transform:uppercase;line-height:1.3;color:var(--muted);white-space:nowrap}
+.mdw-tag span b{display:block;color:var(--fg);font-weight:600;font-size:13px}
+.mdw-tag:hover{animation:none;transform:rotate(0deg) scale(1.05)}
+@keyframes tagPop{0%{transform:translateY(-30px) scale(.4) rotate(-22deg)}60%{transform:scale(1.08) rotate(3deg)}82%{transform:scale(.97) rotate(-6deg)}100%{transform:rotate(-4deg)}}
+@keyframes sway{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(-1.5deg)}}
+@media (prefers-reduced-motion: reduce){.mdw-tag{animation:none}.mdw-tag:hover{transform:rotate(-4deg)}}
+
+/* draft markers: anything Claude wrote that needs Sauveer's confirmation */
+.draft{display:inline-block;font-family:var(--font-mono);font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border:1px dashed #C98A1A;color:#8A5A00;background:#FFF5E2;border-radius:999px;vertical-align:middle;margin-left:8px;line-height:1.5}
+.draft-block{position:relative;outline:1px dashed #E2A848;outline-offset:10px;border-radius:4px}
+
+/* hero */
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:48px;margin-top:44px;align-items:start}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.tag{font-size:14px;font-weight:400;padding:4px 12px;border-radius:999px;background:rgba(15,16,19,.07)}
+.skip{display:inline-flex;align-items:center;gap:12px;font-size:15px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:var(--accent);text-decoration:none;border:1px solid var(--accent);border-radius:999px;padding:6px 18px 6px 6px}
+.skip span{width:30px;height:30px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:16px}
+.skip:hover{background:var(--accent-soft)}
+.skip:focus-visible,.cta:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.meta{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;margin-top:52px;padding-top:24px;border-top:1px solid var(--line)}
+.meta dt{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.meta dd{margin:0;font-size:16px;font-weight:400;line-height:1.45}
+
+.tools{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:20px}
+.tools-label{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-right:8px}
+.tool{font-size:14px;font-weight:400;padding:4px 12px;border-radius:8px;background:var(--card);border:1px solid var(--line)}
+
+/* tl;dr */
+.tldr{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:44px;border-top:2px solid var(--fg)}
+.tldr div{padding:18px 24px 0 0;min-width:0}
+.tldr div + div{padding-left:24px;border-left:1px solid var(--line)}
+.tldr p{font-size:17px;margin:0;line-height:1.5}
+
+/* problem */
+.statement{font-family:var(--font-display);font-weight:500;font-size:clamp(30px,4.2vw,42px);line-height:1.18;letter-spacing:-.045em;max-width:24ch;margin:0 0 28px;text-wrap:balance}
+.statement em{color:var(--accent);font-weight:600}
+.split{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin:28px 0}
+.split > *{min-width:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px 24px}
+.card p{font-size:16px;margin:0}
+.question{border-left:2px solid var(--accent);padding:2px 0 2px 22px;margin:32px 0 0}
+.question .label{color:var(--accent);font-weight:600}
+.question p{font-family:var(--font-display);font-size:27px;line-height:1.25;letter-spacing:-.03em;font-weight:500;margin:0;max-width:30ch}
+
+/* audience */
+.persona{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.persona .who{display:flex;align-items:center;gap:12px}
+.persona .who h3,.persona .who p{margin:0}
+.avatar{width:72px;height:72px;flex:none;border-radius:12px;display:grid;grid-template-columns:repeat(16,1fr);padding:6px;background:var(--tile-bg);image-rendering:pixelated}
+.avatar i{display:block;aspect-ratio:1}
+.persona > p{font-size:16px;margin:0}
+.needs{display:flex;flex-wrap:wrap;gap:6px}
+.needs span{font-size:13px;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-weight:500}
+.context{display:flex;flex-wrap:wrap;gap:8px 28px;margin-top:4px;font-size:15px;color:var(--muted)}
+.context b{color:var(--fg);font-weight:500}
+
+/* decisions */
+.decision{padding:28px 0;border-top:1px solid var(--line)}
+.decision:last-child{border-bottom:1px solid var(--line)}
+.dwt{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:14px}
+.dwt div{min-width:0}
+.dwt p{font-size:16px;margin:0;line-height:1.5}
+
+/* journey */
+.journey{list-style:none;padding:0;margin:32px 0 0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));counter-reset:j}
+.journey li{position:relative;padding:0 16px 0 0;min-width:0;counter-increment:j}
+.journey li::before{content:counter(j);display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--accent);color:#fff;font-weight:600;font-size:14px;position:relative;z-index:1;margin-bottom:14px}
+.journey li::after{content:"";position:absolute;top:15px;left:30px;right:0;height:2px;background:var(--accent-soft)}
+.journey li:last-child::after{display:none}
+.journey h3{font-size:21px;margin:0 0 6px}
+.journey p{font-size:15px;margin:0 0 10px;line-height:1.45}
+.journey .feel{font-family:var(--font-display);font-style:italic;font-size:17px;color:var(--muted);margin:0 0 10px}
+.journey .via{font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--accent);font-weight:600}
+
+/* IA */
+.ia{margin-top:28px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--card)}
+.ia-row{display:grid;grid-template-columns:180px minmax(0,1fr);border-top:1px solid var(--line)}
+.ia-row:first-child{border-top:0}
+.ia-tier{padding:18px 20px;background:var(--surface);display:flex;flex-direction:column;gap:2px}
+.ia-tier b{font-weight:600;font-size:15px}
+.ia-tier span{font-size:13px;color:var(--muted)}
+.ia-items{padding:16px 20px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;min-width:0}
+.node{font-size:14px;padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:var(--bg);line-height:1.3}
+.node small{display:block;font-size:12px;color:var(--muted)}
+.node.root{background:var(--fg);color:#fff;border-color:var(--fg);font-weight:500}
+
+/* constraints */
+.con{display:grid;margin-top:24px;border-top:1px solid var(--line)}
+.con div{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:28px;padding:18px 0;border-bottom:1px solid var(--line)}
+.con h3{font-size:21px;margin:0}
+.con h3 small{display:block;font-family:var(--font-body);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:4px}
+.con p{font-size:16px;margin:0}
+.con p b{color:var(--accent);font-weight:600}
+
+/* solution */
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:20px 0 28px;font-family:var(--font-mono);font-size:13px;letter-spacing:.06em}
+.flow span{padding:7px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card)}
+.flow span:last-child{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.flow i{font-style:normal;color:var(--muted)}
+.stage{--fg:#E6F2EC;--muted:#8FA399;--line:rgba(230,242,236,.12);--tile-bg:#121915;--tile-empty:rgba(230,242,236,.06);--accent:#3DDC97;background:#0A0F0D;color:var(--fg)}
+.demo{position:relative;border-radius:14px;overflow:hidden;aspect-ratio:16/8.5;max-width:100%}
+.demo canvas{display:block;width:100%;height:100%;cursor:crosshair}
+.readout{position:absolute;left:16px;right:16px;bottom:14px;display:flex;flex-wrap:wrap;gap:6px 18px;font-family:var(--font-mono);font-size:12px;color:var(--muted);letter-spacing:.02em;pointer-events:none}
+.readout b{color:var(--fg);font-weight:500}
+.sim-tag{position:absolute;top:14px;left:16px;font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:8px}
+.sim-tag i{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:blink 1.6s infinite}
+@keyframes blink{50%{opacity:.25}}
+@media (prefers-reduced-motion: reduce){.sim-tag i{animation:none}}
+
+/* laptop video */
+.laptop{margin:8px 0 12px}
+.laptop .screen{width:88%;margin:0 auto;background:#141617;border-radius:16px 16px 4px 4px;padding:2.4% 2.4% 2.8%;position:relative;box-shadow:inset 0 0 0 1px #2B2F2E}
+.laptop .screen::before{content:"";position:absolute;top:1%;left:50%;width:6px;height:6px;margin-left:-3px;border-radius:50%;background:#2B2F2E}
+.laptop video{display:block;width:100%;aspect-ratio:3024/1700;border-radius:3px;background:#000;object-fit:cover}
+.laptop .base{height:16px;background:linear-gradient(#DDE1DF,#B4B9B7);border-radius:2px 2px 16px 16px;position:relative;box-shadow:0 18px 30px -18px rgba(15,16,19,.45)}
+.laptop .base::before{content:"";position:absolute;left:41%;right:41%;top:0;height:5px;background:#A3A8A6;border-radius:0 0 6px 6px}
+.vid-btn{position:absolute;right:calc(2.4% + 10px);bottom:calc(2.8% + 10px);display:inline-flex;align-items:center;gap:6px;font:500 12px/1 var(--font-body);color:#fff;background:rgba(15,16,19,.7);border:0;border-radius:999px;padding:7px 12px;cursor:pointer}
+.vid-btn:focus-visible{outline:2px solid #3DDC97;outline-offset:2px}
+.laptop-cap{font-size:14px;color:var(--muted);margin:14px 0 0;text-align:center;max-width:none}
+.laptop-cap b{color:var(--fg);font-weight:500}
+.lap-step{margin:64px 0 20px}
+.lap-step h3{font-size:28px}
+.lap-step p{font-size:17px;margin:0 0 12px}
+.lap-step p b{font-weight:600}
+.weather{list-style:none;padding:0;margin:18px 0 0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.weather li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:14px;color:var(--muted);line-height:1.45;min-width:0}
+.weather b{display:block;color:var(--fg);font-weight:600;font-size:15px;margin-bottom:2px}
+.wx{display:block;font-size:22px;line-height:1;margin-bottom:8px;color:var(--accent)}
+.days{position:relative;aspect-ratio:3024/1700;border-radius:3px;overflow:hidden;background:#111410}
+.days img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;transform:scale(1.03)}
+.days img.on{opacity:1;transform:none;transition:opacity .25s steps(3),transform 1.6s ease-out}
+.day-chip{position:absolute;left:12px;top:12px;font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;color:#E6F2EC;background:rgba(15,16,19,.7);border:1px solid rgba(230,242,236,.18);border-radius:999px;padding:4px 10px}
+
+/* evidence: photo + proof */
+.evidence{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:28px;margin-top:40px;align-items:start}
+.evidence > *{min-width:0}
+.evidence .fig img{aspect-ratio:3/4.3;object-fit:cover;object-position:50% 40%}
+.evidence .stats{margin-top:0}
+.evidence .quotes{grid-template-columns:minmax(0,1fr);margin-top:24px;gap:12px}
+
+/* visual system spec sheet */
+.spec{border-radius:16px;padding:28px;margin-top:28px;display:grid;gap:28px}
+.spec-head{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line);padding-bottom:14px}
+.spec h4{font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500;margin:0 0 14px}
+.spec-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px}
+.spec-grid > *{min-width:0}
+.anatomy{display:grid;grid-template-columns:auto minmax(0,1fr);gap:22px;align-items:center}
+.tile{display:grid;grid-template-columns:repeat(8,1fr);gap:2px;padding:6px;border-radius:6px;background:var(--tile-bg)}
+.tile i{aspect-ratio:1;border-radius:1px;background:var(--tile-empty);display:block}
+.tile.big{width:168px;max-width:100%}
+.tile.sm{width:72px;padding:4px;gap:1px}
+.tile .w{background:#fff;box-shadow:0 0 7px rgba(120,255,190,.9)}
+.callouts{list-style:none;margin:0;padding:0;display:grid;gap:10px;font-size:14px}
+.callouts li{display:grid;grid-template-columns:14px minmax(0,1fr);gap:10px;align-items:start;line-height:1.4}
+.callouts li b{font-weight:600}
+.callouts li::before{content:"";width:10px;height:10px;margin-top:4px;border:1px solid var(--muted);border-radius:2px}
+.callouts li.c-whale::before{background:#fff;border-color:#fff;box-shadow:0 0 6px rgba(120,255,190,.9)}
+.callouts li.c-px::before{background:#22B865;border-color:#22B865}
+.swatches{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.sw{display:grid;gap:6px;font-size:13px}
+.sw i{height:36px;border-radius:6px;display:block;border:1px solid var(--line)}
+.sw code{font-family:var(--font-mono);font-size:11px;color:var(--muted)}
+.scale{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+.scale figure{display:grid;gap:6px;justify-items:center;font-family:var(--font-mono);font-size:11px;color:var(--muted)}
+.states{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.states figure{display:grid;gap:8px;justify-items:start;font-size:13px}
+.states .tile.sm{width:100%;max-width:84px}
+.tile.sent{box-shadow:0 0 0 2px #F07A2A,0 0 10px rgba(240,122,42,.5)}
+.tile.recv{box-shadow:0 0 0 2px #1FB8D8,0 0 10px rgba(31,184,216,.5)}
+.palettes{display:flex;flex-wrap:wrap;gap:8px}
+.palettes span{font-size:13px;padding:4px 12px;border-radius:999px;border:1px solid var(--line)}
+.rules{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:14px}
+.rules li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px}
+.rules li span{font-family:var(--font-mono);font-size:11px;color:var(--accent);padding-top:3px}
+
+/* observations */
+.arc{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:28px}
+.arc > div{border-top:2px solid var(--line);padding-top:16px;min-width:0}
+.arc > div:last-child{border-top-color:var(--accent)}
+.arc ul{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.arc li{font-family:var(--font-display);font-size:23px;line-height:1.2;letter-spacing:-.025em;font-weight:500}
+.arc li span{display:block;font-family:var(--font-body);font-size:15px;letter-spacing:0;font-weight:300;color:var(--muted);margin-top:4px;line-height:1.45}
+.note{margin-top:24px;font-size:14px;color:var(--muted)}
+
+/* outcome */
+.mdw{display:grid;grid-template-columns:minmax(0,240px) minmax(0,1fr);gap:28px;align-items:center;margin:24px 0}
+.mdw img{display:block;width:100%;height:auto;border-radius:10px}
+.venue{display:grid;gap:14px}
+.venue div{border-top:2px solid var(--accent);padding-top:12px}
+.venue small{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.venue p{font-family:var(--font-display);font-size:24px;letter-spacing:-.03em;line-height:1.2;font-weight:500;margin:4px 0 0}
+.gallery{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);grid-template-rows:auto auto;gap:20px;margin-top:32px}
+.gallery figure{display:flex;flex-direction:column;min-width:0}
+.gallery .tall{grid-row:span 2}
+.gallery img{width:100%;height:100%;object-fit:cover;flex:1;min-height:0}
+.gallery .tall img{aspect-ratio:auto;height:100%;min-height:560px;object-position:50% 22%}
+.gallery .wide img{aspect-ratio:16/10.5}
+.tension{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;margin:28px 0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card)}
+.tension div{padding:20px 22px;min-width:0}
+.tension div + div{border-left:1px solid var(--line)}
+.tension h3{font-size:21px}
+.tension p{font-size:15px;margin:0;color:var(--muted)}
+.tension-line{font-family:var(--font-display);font-size:24px;letter-spacing:-.03em;line-height:1.25;font-weight:500;margin:0 0 6px}
+.own{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:20px}
+.own div{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;min-width:0}
+.own b{display:block;font-weight:600;font-size:15px;margin-bottom:4px}
+.own p{font-size:14px;margin:0;color:var(--muted)}
+.options{margin-top:16px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.opt{border:1px solid var(--line);border-radius:10px;padding:14px 16px;font-size:14px;min-width:0;background:var(--card)}
+.opt b{display:block;font-weight:600;margin-bottom:4px;font-size:15px}
+.opt span{color:var(--muted)}
+.opt.chosen{border-color:var(--accent);background:var(--accent-soft)}
+.opt.chosen b{color:var(--accent)}
+.iter{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin-top:24px;border-top:1px solid var(--line)}
+.iter div{padding:16px 18px 0 0;min-width:0}
+.iter div + div{padding-left:18px;border-left:1px solid var(--line)}
+.iter p{font-size:15px;margin:0}
+.quotes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:28px}
+.quotes blockquote{margin:0;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;font-family:var(--font-display);font-size:21px;line-height:1.3;letter-spacing:-.02em;font-weight:500;min-width:0}
+.quotes cite{display:block;font-family:var(--font-body);font-style:normal;font-size:13px;color:var(--muted);margin-top:10px;font-weight:400;letter-spacing:0}
+.stats{display:flex;flex-wrap:wrap;gap:12px 36px;margin-top:24px}
+.stats div{display:flex;flex-direction:column}
+.stats b{font-family:var(--font-display);font-size:40px;letter-spacing:-.04em;line-height:1;font-weight:600;color:var(--accent)}
+.stats span{font-size:14px;color:var(--muted);margin-top:4px}
+
+/* takeaways */
+.take{display:grid;margin-top:20px;border-top:1px solid var(--line)}
+.take div{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:28px;padding:20px 0;border-bottom:1px solid var(--line)}
+.take h3{margin:0}
+.take p{margin:0;font-size:16px}
+.closing{text-align:center;padding-top:112px}
+.closing p.line{font-family:var(--font-display);font-size:clamp(34px,5vw,52px);line-height:1.1;letter-spacing:-.05em;font-weight:500;margin:0 auto 32px;max-width:18ch;text-wrap:balance}
+.closing p.line em{color:var(--accent)}
+.cta{display:inline-flex;align-items:center;gap:12px;background:var(--fg);color:#fff;text-decoration:none;font-size:16px;font-weight:500;padding:14px 26px;border-radius:999px}
+.cta:hover{background:var(--accent)}
+footer{border-top:1px solid var(--line);font-size:14px;color:var(--muted)}
+footer div{max-width:1180px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;padding-block:28px;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px))}
+
+@media (max-width:1000px){
+  .shell{grid-template-columns:minmax(0,1fr);gap:0}
+  .spy{display:none}
+  .journey{grid-template-columns:minmax(0,1fr);gap:22px}
+  .journey li{padding:0 0 0 46px}
+  .journey li::before{position:absolute;left:0;top:0;margin:0}
+  .journey li::after{top:30px;bottom:-22px;left:14px;right:auto;width:2px;height:auto}
+}
+@media (max-width:720px){
+  body{font-size:17px}
+  .top-in,.shell,footer div{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+  .top nav{gap:18px;font-size:15px}
+  .laptop .screen{width:100%}
+  .evidence{grid-template-columns:minmax(0,1fr)}
+  .weather{grid-template-columns:minmax(0,1fr)}
+  .hero-grid,.split,.dwt,.spec-grid,.con div,.arc,.take div,.mdw,.gallery,.tldr,.tension,.own,.options,.iter,.quotes{grid-template-columns:minmax(0,1fr)}
+  .tension div + div,.iter div + div{border-left:0;border-top:1px solid var(--line);padding-left:0}
+  .tension div + div{padding-left:22px}
+  .iter div{padding-right:0}
+  .gallery .tall{grid-row:auto}
+  .gallery .tall img{min-height:0;aspect-ratio:4/5}
+  .mdw-tag{right:12px;top:-18px;padding:8px 12px 8px 26px}
+  .mdw-tag img{height:30px}
+  .mdw-tag span{font-size:10px}.mdw-tag span b{font-size:11px}
+  .tldr div,.tldr div + div{padding:16px 0 0;border-left:0}
+  .hero-grid{gap:24px}
+  .meta{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .ia-row{grid-template-columns:minmax(0,1fr)}
+  .anatomy{grid-template-columns:minmax(0,1fr)}
+  .states,.swatches{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .demo{aspect-ratio:4/3.4}
+  .spec{padding:20px}
+  .con div,.take div{gap:6px}
+  .mdw img{max-width:220px}
+  section{padding-top:80px}
+}
+</style>
+
+
+<div class="shell">
+  <aside class="spy" aria-label="Case study sections"><ul id="spy"></ul></aside>
+
+  <main>
+    <!-- ================= OVERVIEW ================= -->
+    <section id="overview" data-label="Overview" style="padding-top:0">
+      <div class="hero-wrap">
+        <figure class="fig hero-fig">
+          <img src="img/stage-trace.jpg" width="1600" height="1200" alt="Sauveer presenting on stage beside a six-panel LED wall showing the green /trace mosaic with the title /trace and his name.">
+          <figcaption><b>Presenting /trace</b> at STEP FuturAbility District, Milano Digital Week 2026.</figcaption>
+        </figure>
+        <div class="mdw-tag" role="note">
+          <img src="img/mdw-logo.jpg" width="1000" height="563" alt="Milano Digital Week logo">
+          <span>Selected for<b>Milano Digital Week 2026</b></span>
+        </div>
+      </div>
+
+      <div class="hero-grid">
+        <div>
+          <h1><span class="slash">/</span>trace: A Living Portrait of Ethereum</h1>
+        </div>
+        <div>
+          <p class="lede">A live mosaic that lets anyone see how a blockchain works, no jargon required.</p>
+          <div class="tags">
+            <span class="tag">UX design</span>
+            <span class="tag">Interaction design</span>
+            <span class="tag">Data visualisation</span>
+            <span class="tag">Live prototype</span>
+          </div>
+          <a class="skip" href="#solution"><span aria-hidden="true">↓</span>Skip to the solution</a>
+        </div>
+      </div>
+
+      <dl class="meta">
+        <div><dt>My role</dt><dd>End to end: UX, interaction, visual system, prototype</dd></div>
+        <div><dt>Context</dt><dd>Independent project, NABA Milan</dd></div>
+        <div><dt>Platforms</dt><dd>Web prototype, nine-screen video wall</dd></div>
+        <div><dt>Shown at</dt><dd>STEP FuturAbility District, Milan, 2026</dd></div>
+      </dl>
+      <div class="tools"><span class="tools-label">Tools</span><span class="tool">Figma</span><span class="tool">Illustrator</span><span class="tool">Antigravity</span><span class="tool">Gemini</span><span class="tool">OpenCode</span><span class="tool">Miro</span></div>
+
+      <div class="tldr">
+        <div><p class="label">Problem</p><p>Blockchain data is public, but you can only read it one row at a time. Most people never see the bigger picture.</p></div>
+        <div><p class="label">Solution</p><p>A live mosaic: every block is a tile, every transaction a pixel. It reads in seconds.</p></div>
+        <div><p class="label">Outcome</p><p>Shown live at Milano Digital Week. Visitors new to blockchain left understanding how it works.</p></div>
+      </div>
+
+      <p class="eyebrow" style="margin-top:56px">What I owned</p>
+      <div class="own">
+        <div><b>Problem &amp; concept</b><p>Framed the problem, defined the audience and the portrait concept.</p></div>
+        <div><b>UX &amp; interaction</b><p>Journey, information architecture and the exploration features.</p></div>
+        <div><b>Visual system</b><p>The data-to-visual mapping, colour, states and palettes.</p></div>
+        <div><b>Screen &amp; wall</b><p>Designed for the browser and the nine-screen installation.</p></div>
+        <div><b>Prototype</b><p>Built the live web prototype and presented it at STEP.</p></div>
+        <div><b>Engineering</b><p>Built solo: live Ethereum data feed, rendering and procedural sound.</p></div>
+      </div>
+    </section>
+
+    <!-- ================= PROBLEM ================= -->
+    <section id="problem" data-label="Problem">
+      <p class="eyebrow">The challenge</p>
+      <p class="statement">A new block lands on Ethereum <em>roughly every 12 seconds</em>. Almost nobody can see it happen.</p>
+      <figure class="fig">
+        <img src="img/stage-explorer.jpg" width="1600" height="1200" alt="Sauveer on stage with a microphone, pointing at a projected list of Ethereum transactions showing addresses, token names and ETH amounts.">
+      </figure>
+      <div class="split">
+        <div class="card"><p class="label">For newcomers</p><p>The terminology and raw records are a wall. There's no way in.</p></div>
+        <div class="card"><p class="label">For everyone</p><p>Even with every record available, the network's overall rhythm stays invisible.</p></div>
+      </div>
+      <p>Why it matters: blockchains already move money, art and ownership, yet most people only meet them as headlines.</p>
+      <div class="tension">
+        <div><p class="label">The tension</p><p class="tension-line">Simplify too much and the analogy misleads.</p><p>A pretty picture that says nothing true about the network.</p></div>
+        <div><p class="label">&nbsp;</p><p class="tension-line">Explain too much and newcomers leave.</p><p>Accurate, but back to the wall of jargon.</p></div>
+      </div>
+      <div class="question">
+        <p class="label">Design question</p>
+        <p>How might we make blockchain activity interactive and understandable, in simple language?</p>
+      </div>
+    </section>
+
+    <section id="audience">
+      <p class="eyebrow">Who it's for</p>
+      <h2>Designed for the newcomer first.</h2>
+      <p>The piece had to work for someone who has never heard the word blockchain, and still reward someone who has.</p>
+      <div class="split">
+        <div class="persona">
+          <div class="who"><span class="avatar" data-avatar="new" role="img" aria-label="Pixel illustration of a curious newcomer with a question mark"></span><div><h3>The newcomer</h3><p class="small">Primary audience</p></div></div>
+          <p>New to blockchain and doesn't know what it is. Curious, but finds the topic intimidating.</p>
+          <div class="needs"><span>Read it in seconds</span><span>No jargon</span><span>A reason to stay</span></div>
+        </div>
+        <div class="persona">
+          <div class="who"><span class="avatar" data-avatar="ins" role="img" aria-label="Pixel illustration of a crypto insider with glasses holding a phone"></span><div><h3>The curious insider</h3><p class="small">Secondary audience</p></div></div>
+          <p>Knows the basics, maybe holds some crypto. Wants to see what the network is actually doing.</p>
+          <div class="needs"><span>Real, live data</span><span>Find their wallet</span><span>Go deeper</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= APPROACH ================= -->
+    <section id="approach" data-label="Approach">
+      <p class="eyebrow">Key decisions</p>
+      <h2>Not more data. A better way to meet it.</h2>
+      <div class="decision">
+        <h3>A portrait, not a dashboard</h3>
+        <div class="dwt">
+          <div><p class="label">Decision</p><p>Show the network as a generative composition.</p></div>
+          <div><p class="label">Why</p><p>People perceive the whole first, then choose to look closer.</p></div>
+          <div><p class="label">Trade-off</p><p>Less precise than a chart, so inspection tools had to exist.</p></div>
+        </div>
+        <p class="label" style="margin-top:22px">Options considered</p>
+        <div class="options">
+          <div class="opt"><b>Simpler dashboard</b><span>Precise, but another explorer. Newcomers bounce.</span></div>
+          <div class="opt"><b>Explainer animation</b><span>Clear, but not live. Loses the proof that it's real.</span></div>
+          <div class="opt chosen"><b>Generative portrait ✓</b><span>Reads in seconds, stays live, rewards a closer look.</span></div>
+        </div>
+      </div>
+      <div class="decision">
+        <h3>Every transaction becomes a trace</h3>
+        <div class="dwt">
+          <div><p class="label">Decision</p><p>One pixel per transaction, styled by its data.</p></div>
+          <div><p class="label">Why</p><p>It links a single action to the network it belongs to.</p></div>
+          <div><p class="label">Trade-off</p><p>No visual property may imply a metric the mapping doesn't define.</p></div>
+        </div>
+        <p class="label" style="margin-top:22px">Options considered</p>
+        <div class="options">
+          <div class="opt"><b>One shape per block</b><span>Clean, but transactions disappear inside it.</span></div>
+          <div class="opt"><b>Size by value</b><span>Whales swallow the canvas; everyday activity vanishes.</span></div>
+          <div class="opt chosen"><b>Pixel per transaction ✓</b><span>Colour for type, glow for whales. Every action stays visible.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="journey">
+      <p class="eyebrow">User journey</p>
+      <h2>From "what is this?" to "so that's how it works."</h2>
+      <ol class="journey">
+        <li>
+          <h3>Arrive</h3>
+          <p class="feel">"What am I looking at?"</p>
+          <p>A wall of glowing tiles that keeps changing.</p>
+          <span class="via">Live mosaic</span>
+        </li>
+        <li>
+          <h3>Notice</h3>
+          <p class="feel">"Something just happened."</p>
+          <p>A new tile lands. A white pixel pulses. The sound shifts.</p>
+          <span class="via">Whale pulse · sound</span>
+        </li>
+        <li>
+          <h3>Ask</h3>
+          <p class="feel">"What does a tile mean?"</p>
+          <p>The analogy is explained in plain language.</p>
+          <span class="via">Guide · header stats</span>
+        </li>
+        <li>
+          <h3>Explore</h3>
+          <p class="feel">"Show me more."</p>
+          <p>Open a block, scrub back in time, track a wallet.</p>
+          <span class="via">Block detail · timeline</span>
+        </li>
+        <li>
+          <h3>Understand</h3>
+          <p class="feel">"So that's a blockchain."</p>
+          <p>Blocks, transactions and fees now have a picture.</p>
+          <span class="via">Daily portrait</span>
+        </li>
+      </ol>
+    </section>
+
+    <section id="ia">
+      <p class="eyebrow">Information architecture</p>
+      <h2>The more you engage, the deeper it goes.</h2>
+      <p>I layered the prototype by attention. Nothing on the first layer needs explaining.</p>
+      <div class="ia" role="list">
+        <div class="ia-row" role="listitem">
+          <div class="ia-tier"><b>Glance</b><span>Always visible</span></div>
+          <div class="ia-items"><span class="node root">Mosaic canvas</span><span class="node">Header stats<small>block, fee, trend</small></span><span class="node">Timeline<small>scrub, play, live</small></span></div>
+        </div>
+        <div class="ia-row" role="listitem">
+          <div class="ia-tier"><b>Explore</b><span>One click away</span></div>
+          <div class="ia-items"><span class="node">Block detail<small>overview, flow graph, hourly</small></span><span class="node">Wallet tracker</span><span class="node">Focus mode</span></div>
+        </div>
+        <div class="ia-row" role="listitem">
+          <div class="ia-tier"><b>Learn</b><span>When curious</span></div>
+          <div class="ia-items"><span class="node">Guide<small>8 plain-language steps</small></span></div>
+        </div>
+        <div class="ia-row" role="listitem">
+          <div class="ia-tier"><b>Keep</b><span>Settings &amp; archives</span></div>
+          <div class="ia-items"><span class="node">Daily portraits</span><span class="node">Export SVG</span><span class="node">Chain</span><span class="node">Palette</span><span class="node">Sound</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="constraints">
+      <p class="eyebrow">Constraints</p>
+      <h2>What the design had to work within.</h2>
+      <div class="con">
+        <div><h3><small>Data</small>The chain sets the tempo</h3><p>One block every ~12 s. <b>So</b> whale pulses, sound and the timeline hold attention in between.</p></div>
+        <div><h3><small>Data</small>Behaviour, not people</h3><p>Records show addresses, never identities. <b>So</b> the portrait shows activity, and wallet tracking needs an address.</p></div>
+        <div><h3><small>Complexity</small>Jargon on every layer</h3><p>Hashes, gas, gwei, smart contracts. Most people don't know what a blockchain is. <b>So</b> no term appears without a plain-language name, like "direct payments" or "trading coins".</p></div>
+        <div><h3><small>Ledger</small>A list that never ends</h3><p>The ledger only grows; nothing is edited or deleted. <b>So</b> the canvas fills, then saves as a daily portrait you can scrub back through.</p></div>
+      </div>
+    </section>
+
+    <section id="iteration">
+      <p class="eyebrow">What changed along the way</p>
+      <h2>The first version was beautiful. And silent.</h2>
+      <div class="iter">
+        <div><p class="label">Before</p><p>Just the mosaic, no words. It looked striking.</p></div>
+        <div><p class="label">Feedback</p><p>In a crit, people asked "what am I looking at?" and stopped there.</p></div>
+        <div><p class="label">Change</p><p>Added live header stats and a plain-language guide that explains tiles, pixels and fees.</p></div>
+        <div><p class="label">Result</p><p>At STEP, visitors could answer "what's a tile?" on their own.</p></div>
+      </div>
+    </section>
+
+    <!-- ================= SOLUTION ================= -->
+    <section id="solution" data-label="Solution">
+      <p class="eyebrow">How it works</p>
+      <h2>From transaction to portrait.</h2>
+      <div class="flow" aria-label="Pipeline">
+        <span>TRANSACTION</span><i>→</i><span>TRACE</span><i>→</i><span>PATTERN</span><i>→</i><span>PORTRAIT</span><i>→</i><span>ARCHIVE</span>
+      </div>
+      <figure class="laptop">
+        <div class="screen">
+          <video id="proto-video" class="proto-vid" src="img/prototype.mp4" poster="img/prototype-poster.jpg" muted loop playsinline preload="metadata" aria-label="Screen recording of the live /trace prototype: the mosaic updates, a tile is opened, and the same block is shown on Etherscan."></video>
+          <button class="vid-btn" type="button" aria-pressed="false">❚❚ Pause</button>
+        </div>
+        <div class="base" aria-hidden="true"></div>
+        <figcaption class="laptop-cap"><b>The live prototype.</b> The mosaic reads the network in real time. Open any tile to verify that block on Etherscan.</figcaption>
+      </figure>
+
+      <div class="lap-step"><p class="label">Daily portraits</p><h3>Every 24 hours, a new artwork.</h3>
+        <p>Think of it as a <b>weather report for money</b>. Some days the network is calm and cheap, other days it's busy and expensive. The mosaic paints that day's weather as it happens, and at midnight it saves itself as a finished portrait. Then the canvas clears and a new day begins, so no two days ever look the same.</p>
+        <ul class="weather">
+          <li><span class="wx" aria-hidden="true">☁</span><b>Calm day</b>Few tiles, soft colours. Not much money moving.</li>
+          <li><span class="wx" aria-hidden="true">☀</span><b>Busy day</b>Dense, bright tiles. Lots of people sending and trading.</li>
+          <li><span class="wx" aria-hidden="true">⚡</span><b>Big moves</b>White sparks. Someone just moved a large amount.</li>
+        </ul>
+      </div>
+      <figure class="laptop laptop-more">
+        <div class="screen">
+          <div class="days" id="days" role="img" aria-label="Four daily portraits cycling like a GIF: two blue mosaics in different shapes and two green mosaics, one with a tooltip reading: This block was mostly filled with Direct Payments. Network traffic was Quiet and Cheap.">
+            <img src="img/day-1.jpg" alt="" class="on">
+            <img src="img/day-2.jpg" alt="">
+            <img src="img/day-3.jpg" alt="">
+            <img src="img/day-4.jpg" alt="">
+            <span class="day-chip" id="day-chip">Day 01</span>
+          </div>
+          <button class="vid-btn" type="button" aria-pressed="false">❚❚ Pause</button>
+        </div>
+        <div class="base" aria-hidden="true"></div>
+        <figcaption class="laptop-cap"><b>Four days, four portraits.</b> Same rules, different weather.</figcaption>
+      </figure>
+
+      <div class="lap-step"><p class="label">Focus mode</p><h3>Or just let it be art.</h3>
+        <p>You don't have to click anything. In focus mode, the interface disappears and /trace becomes a living painting for a wall or a second screen.</p>
+        <p>It works like watching the sea: you don't need to know how waves work to notice when the water gets rough. Leave it on and you start to read the trends by feel. When the tiles crowd in, the network is busy. When one colour takes over, most people are doing the same thing. When white sparks appear, big money is on the move.</p>
+      </div>
+      <figure class="laptop laptop-more">
+        <div class="screen">
+          <video id="proto-focus" class="proto-vid" src="img/proto-focus.mp4" poster="img/proto-focus-poster.jpg" muted loop playsinline preload="metadata" aria-label="Screen recording of focus mode: a full-width green mosaic slowly fills row by row with no interface around it."></video>
+          <button class="vid-btn" type="button" aria-pressed="false">❚❚ Pause</button>
+        </div>
+        <div class="base" aria-hidden="true"></div>
+        <figcaption class="laptop-cap"><b>Focus mode.</b> Nothing to learn. Just watch the network breathe.</figcaption>
+      </figure>
+    </section>
+
+    <section id="visual-system">
+      <p class="eyebrow">Visual system</p>
+      <h2>Every visual rule points back to the data.</h2>
+      <div class="spec stage" aria-label="Visual system specification">
+        <div class="spec-head"><span>/trace · visual system</span><span>v1 · 2026</span></div>
+        <div class="spec-grid">
+          <div>
+            <h4>01 · Tile anatomy</h4>
+            <div class="anatomy">
+              <div class="tile big" id="anat"></div>
+              <ul class="callouts">
+                <li><span><b>1 tile = 1 block.</b> Fills left to right, then starts a new canvas.</span></li>
+                <li class="c-px"><span><b>1 pixel = 1 transaction.</b> Colour shows its type.</span></li>
+                <li class="c-whale"><span><b>Glow = whale.</b> Over $50k. Adds sub-bass.</span></li>
+              </ul>
+            </div>
+          </div>
+          <div>
+            <h4>02 · Transaction colours</h4>
+            <div class="swatches">
+              <div class="sw"><i style="background:#22B865"></i>Transfer<code>#22B865</code></div>
+              <div class="sw"><i style="background:#2FD6C8"></i>DeFi swap<code>#2FD6C8</code></div>
+              <div class="sw"><i style="background:#C2E54A"></i>NFT mint<code>#C2E54A</code></div>
+              <div class="sw"><i style="background:#86E8A8"></i>Contract call<code>#86E8A8</code></div>
+              <div class="sw"><i style="background:#0F6B47"></i>Staking<code>#0F6B47</code></div>
+              <div class="sw"><i style="background:#FFFFFF;box-shadow:0 0 8px rgba(120,255,190,.9)"></i>Whale<code>#FFFFFF</code></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h4>03 · Gas fee → saturation</h4>
+          <div class="scale" id="scale"></div>
+        </div>
+        <div>
+          <h4>04 · States</h4>
+          <div class="states" id="states"></div>
+        </div>
+        <div class="spec-grid">
+          <div>
+            <h4>05 · Rules</h4>
+            <ul class="rules">
+              <li><span>R1</span>Every visual property maps to real data, or it isn't used.</li>
+              <li><span>R2</span>Colour shows type. Saturation shows cost. Glow shows size.</li>
+              <li><span>R3</span>The whole must read before any label is needed.</li>
+            </ul>
+          </div>
+          <div>
+            <h4>06 · Palettes</h4>
+            <div class="palettes"><span>Classic Electric Blue</span><span>Forest Meadow</span><span>Cyberpunk Sunset</span><span>Multicolor Spectrum</span></div>
+          </div>
+        </div>
+      </div>
+
+      <figure class="fig fig-wide">
+        <img src="img/installation-concept.jpg" width="1672" height="941" alt="A visitor sits on a bench facing a wall-sized grid of tiles glowing green, cyan and yellow, each tile made of small lit squares.">
+      </figure>
+    </section>
+
+    <!-- ================= IMPACT ================= -->
+    <section id="impact" data-label="Impact">
+      <p class="eyebrow">What I saw at STEP</p>
+      <h2>Intrigued at first. Then it clicked.</h2>
+      <p>I spent the event talking with visitors as they used the piece. The same arc came up again and again.</p>
+      <div class="arc">
+        <div>
+          <p class="label">Before</p>
+          <ul>
+            <li>Most had never heard of blockchain.<span>Many arrived with no idea what it was.</span></li>
+            <li>Many were intrigued from the start.<span>The glowing wall made them stop and ask what it was.</span></li>
+          </ul>
+        </div>
+        <div>
+          <p class="label">During</p>
+          <ul>
+            <li>The analogy made it simpler.<span>Tiles and pixels gave them something to hold on to.</span></li>
+            <li>Live was the hook.<span>People loved watching the real network as it happened.</span></li>
+          </ul>
+        </div>
+        <div>
+          <p class="label">After</p>
+          <ul>
+            <li>They understood it better.<span>Visitors said they now got how a blockchain works.</span></li>
+            <li>They wanted to know more.<span>Many left genuinely interested in blockchain.</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="evidence">
+        <figure class="fig">
+          <img src="img/visitor-guide.jpg" width="1000" height="1500" alt="Sauveer talking a visitor through the piece at the STEP stand, with the green mosaic on a monitor behind them.">
+          <figcaption><b>At the stand.</b> Talking visitors through the piece, one question at a time.</figcaption>
+        </figure>
+        <div>
+      <div class="stats">
+        <div><b>~48</b><span>visitors at the stand</span></div>
+        <div><b>1 evening</b><span>live at STEP, 30.09.2026</span></div>
+        <div><b>∞ ☕</b><span>espressos spent explaining gas fees</span></div>
+      </div>
+      <div class="quotes">
+        <blockquote>"I've heard 'blockchain' for years and never got it. This, I get."<cite>Visitor at STEP</cite></blockquote>
+        <blockquote>"Wait, this is happening right now? Every square?"<cite>Visitor at STEP</cite></blockquote>
+        <blockquote>"The tiles made it simple. I'd actually read more about this now."<cite>Visitor at STEP</cite></blockquote>
+      </div>
+        </div>
+      </div>
+      <p class="note">Gathered from conversations at the event, not a formal study. Next, I'd run structured sessions with first-time users to see which parts of the analogy carry the understanding.</p>
+    </section>
+
+    <section id="outcome">
+      <p class="eyebrow">Outcome</p>
+      <h2>From a student project to a public audience.</h2>
+      <div class="mdw">
+        <img src="img/mdw-logo.jpg" width="1000" height="563" alt="Milano Digital Week logo">
+        <div class="venue">
+          <div><small>Selected for</small><p>Milano Digital Week 2026</p></div>
+          <div><small>Presented at</small><p>STEP FuturAbility District, Milan</p></div>
+        </div>
+      </div>
+      <div class="gallery">
+        <figure class="fig tall">
+          <img src="img/speaker.jpg" width="1000" height="1500" alt="Sauveer speaking into a microphone with a clicker in hand, in front of a screen showing a blue pixel mosaic.">
+        </figure>
+        <figure class="fig wide">
+          <img src="img/installation-wall.jpg" width="1345" height="1169" alt="A three-by-three video wall on a concrete wall displaying the green /trace mosaic, next to a NABA banner.">
+        </figure>
+        <figure class="fig wide">
+          <img src="img/booklet.jpg" width="1400" height="933" alt="Event booklet titled Envisioning Future Citizenships, 30.09.2026, STEP FuturAbility District, with Milano Digital Week and NABA logos.">
+        </figure>
+      </div>
+    </section>
+
+    <section id="takeaways">
+      <p class="eyebrow">Takeaways</p>
+      <h2>Complexity doesn't always need another interface.</h2>
+      <div class="take">
+        <div><h3>Representation shapes understanding.</h3><p>How data looks decides how people meet it, before they read a number.</p></div>
+        <div><h3>Every visual needs a real link.</h3><p>A striking image isn't enough. Each rule has to point back to the data.</p></div>
+      </div>
+    </section>
+
+    <div class="closing">
+      <p class="line">One action is almost invisible. <em>Together, they become a portrait.</em></p>
+      <a class="cta" href="https://mosaichain.netlify.app/" target="_blank" rel="noopener">Explore the live prototype <span aria-hidden="true">↗</span></a>
+    </div>
+  </main>
+</div>
+
+
+<script>
+(function(){
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* scroll-spy: only the five labelled sections appear in the rail */
+  const secs=[...document.querySelectorAll('section[data-label]')];
+  const ul=document.getElementById('spy');
+  const btns=secs.map(s=>{
+    const li=document.createElement('li');const b=document.createElement('button');
+    b.type='button';b.innerHTML='<span class="dot"></span>'+s.dataset.label;
+    b.addEventListener('click',()=>s.scrollIntoView({behavior:reduce?'auto':'smooth'}));
+    li.appendChild(b);ul.appendChild(li);return b;
+  });
+  function spy(){let idx=0;const y=innerHeight*.35;secs.forEach((s,i)=>{if(s.getBoundingClientRect().top<y)idx=i});btns.forEach((b,i)=>b.classList.toggle('on',i===idx))}
+  addEventListener('scroll',spy,{passive:true});spy();
+
+
+  /* prototype videos: play muted while on screen (not with reduced motion); each has a pause control */
+  document.querySelectorAll('.laptop').forEach(fig=>{
+    const vb=fig.querySelector('.vid-btn'),vid=fig.querySelector('video'),days=fig.querySelector('.days');
+    let userPaused=false,visible=false;
+    if(vid){
+      const setBtn=()=>{const on=!vid.paused;vb.textContent=on?'❚❚ Pause':'▶ Play';vb.setAttribute('aria-pressed',String(!on))};
+      vid.addEventListener('play',setBtn);vid.addEventListener('pause',setBtn);
+      vb.addEventListener('click',()=>{if(vid.paused){userPaused=false;vid.play().catch(()=>{})}else{userPaused=true;vid.pause()}});
+      setBtn();
+      if(reduce)return;
+      new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){if(!userPaused)vid.play().catch(()=>{})}else vid.pause()}),{threshold:.35}).observe(vid);
+    }else if(days){
+      /* daily portraits: GIF-like cycle */
+      const imgs=[...days.querySelectorAll('img')],chip=days.querySelector('.day-chip');let i=0,timer=null;
+      const show=k=>{imgs.forEach((im,j)=>im.classList.toggle('on',j===k));chip.textContent='Day 0'+(k+1)};
+      const playing=()=>timer!==null;
+      const setBtn=()=>{vb.textContent=playing()?'❚❚ Pause':'▶ Play';vb.setAttribute('aria-pressed',String(!playing()))};
+      const start=()=>{if(timer)return;timer=setInterval(()=>{i=(i+1)%imgs.length;show(i)},1700);setBtn()};
+      const stop=()=>{clearInterval(timer);timer=null;setBtn()};
+      vb.addEventListener('click',()=>{if(playing()){userPaused=true;stop()}else{userPaused=false;start()}});
+      show(0);setBtn();
+      if(reduce)return;
+      new IntersectionObserver(es=>es.forEach(e=>{visible=e.isIntersecting;if(visible){if(!userPaused)start()}else stop()}),{threshold:.35}).observe(days);
+    }
+  });
+
+  /* shared data */
+  const TYPES=[
+    {name:'Transfers',c:[34,184,101],w:.34},
+    {name:'DeFi swaps',c:[47,214,200],w:.26},
+    {name:'NFT mints',c:[194,229,74],w:.14},
+    {name:'Contract calls',c:[134,232,168],w:.18},
+    {name:'Staking',c:[15,107,71],w:.08}
+  ];
+  function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+  /* desaturate toward the colour's own grey, so quiet blocks look muted on the dark stage */
+  function tint(c,sat){const g=(c[0]+c[1]+c[2])/3*.7;return `rgb(${(g+(c[0]-g)*sat)|0},${(g+(c[1]-g)*sat)|0},${(g+(c[2]-g)*sat)|0})`}
+
+  function fillTile(el,seed,n,sat,whale){
+    const r=mulberry(seed);el.innerHTML='';
+    const cells=[...Array(64).keys()].sort(()=>r()-.5).slice(0,n);const set=new Map();
+    cells.forEach(i=>{let t=0,x=r(),acc=0;for(let k=0;k<5;k++){acc+=TYPES[k].w;if(x<acc){t=k;break}}set.set(i,t)});
+    const w=whale?cells[0]:-1;
+    for(let i=0;i<64;i++){const p=document.createElement('i');if(i===w)p.className='w';else if(set.has(i))p.style.background=tint(TYPES[set.get(i)].c,sat);el.appendChild(p)}
+  }
+  fillTile(document.getElementById('anat'),11,40,1,true);
+  const scale=document.getElementById('scale');
+  [['< 10 gwei',.2],['20',.45],['35',.7],['50',.88],['> 50 gwei',1]].forEach(([l,s],k)=>{
+    const f=document.createElement('figure');const t=document.createElement('div');t.className='tile sm';fillTile(t,30+k,38,s,false);
+    f.appendChild(t);const c=document.createElement('figcaption');c.textContent=l;f.appendChild(c);scale.appendChild(f);
+  });
+  const states=document.getElementById('states');
+  [['Block','',false],['Whale inside','',true],['Wallet sent','sent',false],['Wallet received','recv',false]].forEach(([l,cls,wh],k)=>{
+    const f=document.createElement('figure');const t=document.createElement('div');t.className='tile sm '+cls;fillTile(t,50+k,34,.95,wh);
+    f.appendChild(t);const c=document.createElement('figcaption');c.textContent=l;f.appendChild(c);states.appendChild(f);
+  });
+  /* persona pixel illustrations */
+  const AV={"new": ["...........qqq..", "..........q...q.", ".............q..", "....hhhhhh..q...", "...hhhhhhhh.....", "...hhhhhhhh.q...", "...hsssssssh....", "...skssssks.....", "...swkssswks....", "...sssssssss....", "...rssskssr.....", ".....sssss......", "...ccccscccc....", "..ccccccccccc...", "..ccccccccccc...", "..ccccccccccc..."], "ins": ["................", "....bbbbbbb.....", "...bbbbbbbbbb...", "...bbbbbbbbbb...", "...bsssssssb....", "...sgggsgggs....", "...sgwgggwgs....", "...sgggsgggs....", "...sssssssss....", "....sskkkss.....", ".....sssss......", "......sss.......", "...ddddsdddd....", "..dddddddppppp..", "..dddddddpeeep..", "..ddddddspeeep.."]},PAL={"h": "rgb(40,30,25)", "s": "rgb(233,190,150)", "k": "rgb(20,20,20)", "c": "rgb(34,184,101)", "q": "rgb(12,138,87)", "g": "rgb(20,20,20)", "p": "rgb(40,44,48)", "e": "rgb(61,220,151)", "w": "rgb(255,255,255)", "d": "rgb(15,107,71)", "b": "rgb(110,70,40)", "r": "rgb(214,140,120)"};
+  document.querySelectorAll('[data-avatar]').forEach(a=>{(AV[a.dataset.avatar]||[]).forEach(row=>{for(let x=0;x<16;x++){const p=document.createElement('i');const ch=row[x];if(PAL[ch])p.style.background=PAL[ch];a.appendChild(p)}})});
+
+})();
+</script>
+
+</body></html>

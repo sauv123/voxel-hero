@@ -773,10 +773,11 @@
   justify-content: space-between;
 }
 
-/* 3. SOCIAL BATTERY STYLING */
+/* 3. COLORDOCK STYLING */
+.card-theme-colordock,
 .card-theme-social_battery {
-  background: #121212;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: #14151a;
+  border: 1px solid rgba(255, 255, 255, 0.18);
   color: #FFFFFF;
 }
 

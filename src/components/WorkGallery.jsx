@@ -250,8 +250,6 @@ export default function WorkGallery({ onClose, navigate }) {
               </div>
             </div>
           </div>
-          
-
         </div>
 
         <div 
@@ -263,13 +261,14 @@ export default function WorkGallery({ onClose, navigate }) {
             alignItems: 'center',
             gap: isMobile ? '24px' : '10vw',
             padding: isMobile ? '0 24px' : '0 20vw',
-            cursor: isHoveringCard && !isMobile ? 'none' : 'grab',
+            cursor: isHoveringCard && !isMobile ? 'pointer' : 'grab',
             willChange: 'transform'
           }}
         >
           {PROJECTS.map((proj, i) => (
             <div 
               key={proj.id}
+              data-cursor-text="VIEW CASE STUDY"
               role="button"
               tabIndex={0}
               aria-label={`View project: ${proj.title}`}
@@ -286,15 +285,13 @@ export default function WorkGallery({ onClose, navigate }) {
               }}
               onMouseEnter={() => {
                 setHoveredProjectTitle(proj.cursorCta || proj.title);
-                if (customCursorRef.current && !isMobile) {
+                if (!isMobile) {
                   setIsHoveringCard(true);
-                  gsap.to(customCursorRef.current, { scale: 1, opacity: 1, duration: 0.3, ease: 'back.out(1.5)' });
                 }
               }}
               onMouseLeave={() => {
                 if (!isMobile) {
                   setIsHoveringCard(false);
-                  gsap.to(customCursorRef.current, { scale: 0, opacity: 0, duration: 0.2 });
                 }
               }}
               className="work-gallery-card"
@@ -372,18 +369,32 @@ export default function WorkGallery({ onClose, navigate }) {
                   gap: 8, 
                   flexWrap: 'wrap', 
                   justifyContent: isMobile ? 'flex-start' : 'flex-end',
+                  alignItems: 'center',
                   maxWidth: isMobile ? '100%' : '40%'
                 }}>
-                  {proj.tags.map(tag => (
-                    <span key={tag} style={{
-                      fontSize: '10px', fontWeight: 600, fontFamily: "var(--font-body)",
-                      padding: '6px 14px', border: `1px solid ${proj.textColor}30`, borderRadius: 100,
-                      letterSpacing: '0.05em', textTransform: 'uppercase', background: `${proj.bgColor}80`, backdropFilter: 'blur(8px)',
-                      color: proj.textColor
-                    }}>
-                      {tag}
-                    </span>
-                  ))}
+                  {proj.tags.map(tag => {
+                    if (tag === 'SELECTED FOR MILANO DIGITAL WEEK 2026') {
+                      return (
+                        <div key={tag} className="mdw-case-study-tag" style={{ transform: 'rotate(-2deg) scale(0.92)' }}>
+                          <img src="/mdw-logo.jpg" alt="Milano Digital Week logo" />
+                          <span className="mdw-tag-text">
+                            <span className="mdw-tag-eyebrow">Selected for</span>
+                            <b className="mdw-tag-title">Milano Digital Week 2026</b>
+                          </span>
+                        </div>
+                      );
+                    }
+                    return (
+                      <span key={tag} style={{
+                        fontSize: '10px', fontWeight: 600, fontFamily: "var(--font-body)",
+                        padding: '6px 14px', border: `1px solid ${proj.textColor}30`, borderRadius: 100,
+                        letterSpacing: '0.05em', textTransform: 'uppercase', background: `${proj.bgColor}80`, backdropFilter: 'blur(8px)',
+                        color: proj.textColor
+                      }}>
+                        {tag}
+                      </span>
+                    );
+                  })}
                 </div>
               </div>
             </div>

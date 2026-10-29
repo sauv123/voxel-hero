@@ -24,14 +24,14 @@ export const TEXT_PROJECTS = [
   },
   {
     id: '02',
-    key: 'blockchain',
-    title: 'THE BLOCKCHAIN MOSAIC',
-    subtitle: 'Real-time Ethereum block matrix and WebAudio sonification engine.',
-    tags: ['Web3', 'WebAudio API', 'Canvas 2D'],
+    key: 'trace',
+    title: '/trace',
+    subtitle: 'A live generative artwork and interactive Ethereum activity visualizer.',
+    tags: ['Selected for Milano Digital Week 2026', 'UX RESEARCH', 'UX & INTERACTION DESIGN', 'DATA VIZ'],
     link: 'https://mosaichain.netlify.app',
-    liveCta: '⚡ LAUNCH LIVE MOSAIC',
+    liveCta: '⚡ LAUNCH LIVE /TRACE EXPERIENCE',
     experimentId: 14,
-    description: 'A live, generative art painting and audio engine that visualizes real-time Ethereum blockchain transaction patterns, block congestion, and whale alerts.',
+    description: 'A live generative artwork that turns Ethereum activity into a visual, audible, and explorable experience. Selected for Milano Digital Week 2026.',
     whoItsFor: 'Web3 builders, crypto collectors, and digital galleries looking for the live pulse of decentralized finance.',
     problem: 'Blockchain transactions are invisible data hashes on Etherscan rather than visual, sensory experiences.',
     goal: 'Map raw block data to visual saturation and physical WebAudio string plucks (Karplus-Strong).',
@@ -43,38 +43,24 @@ export const TEXT_PROJECTS = [
   },
   {
     id: '03',
-    key: 'social_battery',
-    title: 'SOCIAL BATTERY APP',
-    subtitle: 'Spatial focus meter and emotional energy tracking interface.',
-    tags: ['UX System', 'Micro-Interactions', 'GSAP Physics'],
-    link: null,
+    key: 'colordock',
+    title: 'COLORDOCK',
+    subtitle: 'Floating macOS dock of everyday design tools: palette generator, contrast checker & asset board.',
+    tags: ['macOS App', 'SwiftUI', 'Design Systems', 'Micro-Tools'],
+    link: 'https://colordock.netlify.app',
+    liveCta: '⚡ DOWNLOAD COLORDOCK FOR MAC',
     experimentId: 102,
-    description: 'An intuitive emotional health and social capacity tracking widget. Designed to help introverts and creative workers manage daily energy boundaries with visual clarity.',
-    whoItsFor: 'Introverts, high-output creatives, and remote teams managing burnout and focus boundaries.',
-    problem: 'Traditional productivity apps ignore personal energy levels, treating human capacity like an endless conveyor belt.',
-    goal: 'Provide a quick, visual 5-second check-in widget that visually communicates current battery levels and suggests optimal focus modes.',
+    video: '/works/colordock.mp4',
+    poster: '/works/colordock.webp',
+    description: 'ColorDock is a native macOS dock of everyday design tools that floats on top of whatever you’re working in. Pick colors, check WCAG contrast ratios, manage reusable assets, and measure tap-targets without leaving your active canvas.',
+    whoItsFor: 'Designers, engineers, and creators who need fast, zero-friction utilities without switching between browser tabs.',
+    problem: 'Every small job is a detour. Checking contrast, sampling colors, or testing typography requires leaving your canvas and juggling 5 different web apps.',
+    goal: 'Bring 17 essential micro-tools into a persistent desktop dock with native drag-and-drop interop directly into Figma, Sketch, and code editors.',
     coreFeatures: [
-      'Fluid Battery Charge Gauge: Dynamic drag-to-set energy level.',
-      'Focus Boundary Signals: Auto-set Slack status based on battery level.',
-      'Daily Energy Wave: Visual chart tracking weekly drain vs recovery patterns.'
-    ]
-  },
-  {
-    id: '04',
-    key: 'orion',
-    title: 'ORION AI ASSISTANT',
-    subtitle: 'Native macOS desktop voice assistant with Three.js particle orb.',
-    tags: ['Python', 'Three.js', 'Groq Llama-3'],
-    link: null,
-    experimentId: 9,
-    description: 'A lightweight, ultra-fast native macOS AI voice assistant built with a pure Python backend and interactive 3D particle orb.',
-    whoItsFor: 'Power users looking for sub-second desktop voice automation without heavy Electron overhead.',
-    problem: 'Existing AI voice tools suffer from latency, browser tabs, or bloated resource usage.',
-    goal: 'Sub-second response latency with native AppleScript OS hardware integration.',
-    coreFeatures: [
-      '3D Particle Orb: Real-time audio-reactive particle sphere.',
-      'macOS System Control: Adjust brightness, launch apps, manage files via speech.',
-      'Resilient Tool Parsing: Regex-backed JSON recovery for 100% reliable execution.'
+      'Generate & Sample: 5 color harmony modes, spacebar shuffle, and a native pixel sampler.',
+      'WCAG Contrast Checker: Real-time AA/AAA compliance audit for text and UI elements.',
+      'Drag & Drop Interop: Drag colors, gradients, and fonts straight into Figma, Slack, or Xcode.',
+      'Asset Board & Pinned Items: Pin swatches, typography scales, and assets for instant reuse.'
     ]
   }
 ];
@@ -152,7 +138,7 @@ export default function TextLabShowcase({ theme, onSelectProject }) {
       interval = setInterval(() => {
         setBlockCount(prev => prev + 1);
       }, 1800);
-    } else if (activeProject.key === 'social_battery') {
+    } else if (activeProject.key === 'colordock' || activeProject.key === 'social_battery') {
       interval = setInterval(() => {
         setBatteryPercent(prev => (prev >= 95 ? 45 : prev + 11));
       }, 1500);
@@ -296,48 +282,21 @@ export default function TextLabShowcase({ theme, onSelectProject }) {
               </div>
             )}
 
-            {/* 3. SOCIAL BATTERY PREVIEW CARD */}
-            {activeProject.key === 'social_battery' && (
+            {/* 3. COLORDOCK PREVIEW CARD */}
+            {(activeProject.key === 'colordock' || activeProject.key === 'social_battery') && (
               <div className="battery-card-content">
                 <div className="card-top-bar">
-                  <span className="card-badge">🔋 SOCIAL BATTERY METER</span>
-                  <span className="battery-percent">{batteryPercent}%</span>
+                  <span className="card-badge">🎨 COLORDOCK FOR MAC</span>
+                  <span className="battery-percent" style={{ color: '#0A84FF' }}>macOS 14+</span>
                 </div>
-                <div className="battery-meter-container">
-                  <div
-                    className="battery-fill"
-                    style={{
-                      width: `${batteryPercent}%`,
-                      background: batteryPercent > 70 ? '#39FF14' : batteryPercent > 40 ? '#FFD700' : '#FF4136'
-                    }}
-                  />
+                <div style={{ borderRadius: '8px', overflow: 'hidden', margin: '8px 0', border: '1px solid rgba(255,255,255,0.1)' }}>
+                  <img src="/works/colordock.webp" alt="ColorDock" style={{ width: '100%', height: 'auto', display: 'block' }} />
                 </div>
-                <div className="battery-status-text">
-                  STATUS: {batteryPercent > 70 ? 'OPTIMAL FOCUS CAPACITY' : 'RECHARGE RECOMMENDED'}
+                <div className="battery-status-text" style={{ fontSize: '11px', opacity: 0.8 }}>
+                  17 MICRO-TOOLS · PALETTES · CONTRAST · ASSETS
                 </div>
-                <div className="card-footer-prompt">
-                  CLICK TO VIEW UX SYSTEM ➔
-                </div>
-              </div>
-            )}
-
-            {/* 4. ORION AI PREVIEW CARD */}
-            {activeProject.key === 'orion' && (
-              <div className="orion-card-content">
-                <div className="card-top-bar">
-                  <span className="card-badge">🤖 ORION NATIVE ORB</span>
-                  <span className="orion-latency">42ms LATENCY</span>
-                </div>
-                <div className="orion-orb-preview">
-                  <div className="orb-ring ring-1"></div>
-                  <div className="orb-ring ring-2"></div>
-                  <div className="orb-core"></div>
-                </div>
-                <div className="orion-subtitle">
-                  "Orion: Adjusting system focus mode to 100%..."
-                </div>
-                <div className="card-footer-prompt">
-                  CLICK FOR ARCHITECTURE SPECS ➔
+                <div className="card-footer-prompt" style={{ marginTop: '10px' }}>
+                  CLICK TO LAUNCH COLORDOCK SITE ➔
                 </div>
               </div>
             )}

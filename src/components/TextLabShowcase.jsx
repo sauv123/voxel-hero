@@ -28,45 +28,47 @@ export const TEXT_PROJECTS = [
   },
   {
     id: '02',
-    key: 'blockchain',
-    title: 'BLOCKCHAIN MOSAIC',
-    subtitle: 'Generative art painting and interactive WebAudio sonification engine.',
-    tags: ['WebAudio API', 'Canvas 2D', 'Generative Art'],
+    key: 'trace',
+    title: '/trace',
+    subtitle: 'A live generative artwork and interactive Ethereum activity visualizer.',
+    tags: ['Selected for Milano Digital Week 2026', 'UX RESEARCH', 'UX & INTERACTION DESIGN', 'DATA VIZ'],
     techStack: ['HTML5 Canvas', 'Web Audio API', 'Node.js', 'Ethers.js'],
     link: 'https://mosaichain.netlify.app',
-    liveCta: '⚡ LAUNCH LIVE BLOCKCHAIN MOSAIC',
+    liveCta: '⚡ LAUNCH LIVE /TRACE EXPERIENCE',
     experimentId: 14,
-    video: '/works/mosaic.mp4',
+    video: '/trace.mp4',
     poster: '/olo.webp',
-    description: 'A live, generative art painting and audio engine that visualizes real-time Ethereum blockchain transaction patterns, block congestion, and whale alerts.',
+    description: 'A live generative artwork that turns Ethereum activity into a visual, audible, and explorable experience. Selected for Milano Digital Week 2026.',
     whoItsFor: 'Web3 builders, crypto collectors, and digital galleries looking for the live pulse of decentralized finance.',
-    problem: 'Blockchain transactions are invisible data hashes on Etherscan rather than visual, sensory experiences.',
-    goal: 'Map raw block data to visual saturation and physical WebAudio string plucks (Karplus-Strong).',
+    problem: 'Blockchain activity is completely invisible to the naked eye. Users must look at dry hash blocks on Etherscan rather than experiencing the kinetic energy.',
+    goal: 'Map raw block data to visual saturation and physical WebAudio string plucks (Karplus-Strong) for zero-jargon public exploration.',
     coreFeatures: [
-      'Generative Block Matrix: Color-coded transaction tiles.',
-      'Live WebAudio Sonification: String plucks and 808 kicks triggered per transaction.',
-      'Whale Movement Alert: Visual glow on large transfers.'
+      'Generative Block Matrix: Color-coded transaction tiles in real-time.',
+      'Live WebAudio Sonification: String plucks and sub-bass kicks per transaction.',
+      'Whale Movement Alert: Visual ripples and audio triggers on large transfers.'
     ]
   },
   {
     id: '03',
-    key: 'social_battery',
-    title: 'SOCIAL BATTERY APP',
-    subtitle: 'Spatial focus meter and emotional energy tracking interface.',
-    tags: ['UX System', 'Micro-Interactions', 'GSAP Physics'],
-    techStack: ['React', 'GSAP Physics', 'UX System', 'Micro-Interactions'],
-    link: null,
+    key: 'colordock',
+    title: 'COLORDOCK',
+    subtitle: 'Floating macOS dock of everyday design tools: palette generator, contrast checker & asset board.',
+    tags: ['macOS App', 'SwiftUI', 'Design Systems', 'Micro-Tools'],
+    techStack: ['Swift', 'SwiftUI', 'AppKit', 'Vision API', 'macOS Universal'],
+    link: 'https://colordock.netlify.app',
+    liveCta: '⚡ DOWNLOAD COLORDOCK FOR MAC',
     experimentId: 102,
-    video: '/2.mp4',
-    poster: '/mica.webp',
-    description: 'An intuitive emotional health and social capacity tracking widget. Designed to help introverts and creative workers manage daily energy boundaries with visual clarity.',
-    whoItsFor: 'Introverts, high-output creatives, and remote teams managing burnout and focus boundaries.',
-    problem: 'Traditional productivity apps ignore personal energy levels, treating human capacity like an endless conveyor belt.',
-    goal: 'Provide an intuitive emotional health and social capacity tracking widget. Designed to help introverts and creative workers manage daily energy boundaries with visual clarity.',
+    video: '/works/colordock.mp4',
+    poster: '/works/colordock.webp',
+    description: 'ColorDock is a native macOS dock of everyday design tools that floats on top of whatever you’re working in. Pick colors, check WCAG contrast ratios, manage reusable assets, and measure tap-targets without leaving your active canvas.',
+    whoItsFor: 'Designers, engineers, and creators who need fast, zero-friction utilities without switching between browser tabs.',
+    problem: 'Every small job is a detour. Checking contrast, sampling colors, or testing typography requires leaving your canvas and juggling 5 different web apps.',
+    goal: 'Bring 17 essential micro-tools into a persistent desktop dock with native drag-and-drop interop directly into Figma, Sketch, and code editors.',
     coreFeatures: [
-      'Spatial Focus Meter: Real-time boundary visualization.',
-      'Micro-Interactions: Fluid physics-based UI elements.',
-      'Local-First: Privacy-focused personal logging.'
+      'Generate & Sample: 5 color harmony modes, spacebar shuffle, and a native pixel sampler.',
+      'WCAG Contrast Checker: Real-time AA/AAA compliance audit for text and UI elements.',
+      'Drag & Drop Interop: Drag colors, gradients, and fonts straight into Figma, Slack, or Xcode.',
+      'Asset Board & Pinned Items: Pin swatches, typography scales, and assets for instant reuse.'
     ]
   }
 ];
@@ -240,11 +242,24 @@ export default function TextLabShowcase({ theme, onSelectProject, projects = TEX
 
             <div className="text-lab-row-right">
               <div className="text-lab-tags">
-                {proj.tags.map(t => (
-                  <span key={t} className="text-lab-tag-chip">
-                    {t}
-                  </span>
-                ))}
+                {proj.tags.map(t => {
+                  if (t.toLowerCase().includes('milano digital week')) {
+                    return (
+                      <span key={t} className="mdw-case-study-tag" style={{ transform: 'rotate(-2deg) scale(0.9)', margin: '0 4px' }}>
+                        <img src="/mdw-logo.jpg" alt="Milano Digital Week logo" />
+                        <span className="mdw-tag-text">
+                          <span className="mdw-tag-eyebrow">Selected for</span>
+                          <b className="mdw-tag-title">Milano Digital Week 2026</b>
+                        </span>
+                      </span>
+                    );
+                  }
+                  return (
+                    <span key={t} className="text-lab-tag-chip">
+                      {t}
+                    </span>
+                  );
+                })}
               </div>
               <span className="text-lab-arrow">➔</span>
             </div>

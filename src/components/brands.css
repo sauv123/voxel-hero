@@ -119,3 +119,32 @@
         padding: 15px;
     }
 }
+
+/* ── Black theme mode for Brands I've worked with ── */
+.brands-section.is-black,
+.brands-section-black {
+    background: #000000 !important;
+    border-radius: 20px;
+    padding: 64px 32px;
+    margin: 40px auto;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 24px 56px rgba(0, 0, 0, 0.5);
+}
+
+.brands-section.is-black .section-header h2,
+.brands-section-black .section-header h2 {
+    color: #ffffff !important;
+}
+
+.brands-section.is-black .logo-item,
+.brands-section-black .logo-item {
+    background: #121214 !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.brands-section.is-black .brand-image,
+.brands-section-black .brand-image {
+    filter: invert(1) brightness(1.2);
+    mix-blend-mode: screen;
+}

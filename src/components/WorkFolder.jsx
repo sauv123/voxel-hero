@@ -8,30 +8,30 @@ gsap.registerPlugin(ScrollTrigger);
 
 const FEATURED = [
   {
-    ...PROJECTS[0], // OLO
-    displayName: "OLO",
-    description: "An introvert-first mobile habit experience built around micro-actions and private reflection.",
-    tags: PROJECTS[0].tags || ["EMOTIONAL DESIGN", "UX", "UI"]
-  },
-  {
-    ...PROJECTS[1], // ORCO
+    ...PROJECTS[0], // ORCO
     displayName: "REDESIGNING ORCO",
     description: "Transforming a heritage Italian food brand into an interactive digital culinary experience.",
-    tags: PROJECTS[1].tags || ["UX DESIGN", "WEB DESIGN", "BRANDING"]
+    tags: PROJECTS[0].tags || ["UX DESIGN", "WEB DESIGN", "BRANDING"]
   },
   {
-    ...PROJECTS[2], // MICA
-    displayName: "MICA",
-    description: "Designing belonging through emotionally intelligent co-living housing experiences.",
-    tags: PROJECTS[2].tags || ["UX DESIGN", "CO-LIVING DESIGN"]
+    ...PROJECTS[1], // OLO
+    displayName: "OLO",
+    description: "An introvert-first mobile habit experience built around micro-actions and private reflection.",
+    tags: PROJECTS[1].tags || ["EMOTIONAL DESIGN", "UX", "UI"]
+  },
+  {
+    ...PROJECTS[2], // /trace
+    displayName: "/trace",
+    description: "A live generative artwork that turns Ethereum activity into a visual, audible, and explorable experience.",
+    tags: ["SELECTED FOR MILANO DIGITAL WEEK 2026", "UX RESEARCH", "UX & INTERACTION DESIGN", "DATA VIZ"]
   }
 ];
 
 export default function WorkFolder({ theme, onOpen }) {
   const sectionRef = useRef(null);
   const magneticBtnRef = useRef(null);
-  // Default to Orco (index 1) as requested
-  const [activeCard, setActiveCard] = useState(1);
+  // Default to Orco (index 0) as requested
+  const [activeCard, setActiveCard] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -206,6 +206,7 @@ export default function WorkFolder({ theme, onOpen }) {
                 <div style={{
                   display: 'flex',
                   flexWrap: 'wrap',
+                  alignItems: 'center',
                   gap: '6px',
                   marginBottom: '12px',
                   opacity: (isActive || isMobile) ? 1 : 0,
@@ -214,32 +215,54 @@ export default function WorkFolder({ theme, onOpen }) {
                   height: (isActive || isMobile) ? 'auto' : '0px',
                   overflow: 'hidden'
                 }}>
-                  {proj.tags.map(tag => (
-                    <span 
-                      key={tag}
-                      style={{
-                        fontFamily: 'var(--font-body)',
-                        fontSize: '10px',
-                        fontWeight: 700,
-                        letterSpacing: '0.06em',
-                        textTransform: 'uppercase',
-                        color: 'rgba(255,255,255,0.95)',
-                        backgroundColor: 'rgba(0,0,0,0.5)',
-                        backdropFilter: 'blur(8px)',
-                        padding: '4px 10px',
-                        borderRadius: '4px',
-                        border: '1px solid rgba(255,255,255,0.2)'
-                      }}
-                    >
-                      {tag}
-                    </span>
-                  ))}
+                  {proj.tags.map(tag => {
+                    if (tag === 'SELECTED FOR MILANO DIGITAL WEEK 2026') {
+                      return (
+                        <div 
+                          key={tag}
+                          className="mdw-case-study-tag"
+                          style={{
+                            marginRight: '6px',
+                            transform: 'rotate(-2deg) scale(0.92)',
+                            transformOrigin: 'left center',
+                            boxShadow: '0 8px 18px rgba(0,0,0,0.35)'
+                          }}
+                        >
+                          <img src="/mdw-logo.jpg" alt="Milano Digital Week logo" />
+                          <span className="mdw-tag-text">
+                            <span className="mdw-tag-eyebrow">Selected for</span>
+                            <b className="mdw-tag-title">Milano Digital Week 2026</b>
+                          </span>
+                        </div>
+                      );
+                    }
+                    return (
+                      <span 
+                        key={tag}
+                        style={{
+                          fontFamily: 'var(--font-body)',
+                          fontSize: '10px',
+                          fontWeight: 700,
+                          letterSpacing: '0.06em',
+                          textTransform: 'uppercase',
+                          color: 'rgba(255,255,255,0.95)',
+                          backgroundColor: 'rgba(0,0,0,0.5)',
+                          backdropFilter: 'blur(8px)',
+                          padding: '4px 10px',
+                          borderRadius: '4px',
+                          border: '1px solid rgba(255,255,255,0.2)'
+                        }}
+                      >
+                        {tag}
+                      </span>
+                    );
+                  })}
                 </div>
 
                 {/* Project Name */}
                 <h3 style={{
                   fontFamily: 'var(--font-heading)',
-                  fontSize: isMobile ? '2.1rem' : (isActive ? 'clamp(2.4rem, 4vw, 3.6rem)' : '1.8rem'),
+                  fontSize: isMobile ? '2.1rem' : (isActive ? 'clamp(2.4rem, 4vw, 3.6rem)' : 'clamp(1.35rem, 2.2vw, 1.85rem)'),
                   fontWeight: 900,
                   color: '#ffffff',
                   margin: '0 0 8px 0',
@@ -266,6 +289,25 @@ export default function WorkFolder({ theme, onOpen }) {
                 }}>
                   {proj.description}
                 </p>
+
+                {/* Mobile 1-Tap Affordance Pill */}
+                {isMobile && (
+                  <div style={{
+                    marginTop: '14px',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    fontFamily: 'var(--font-heading)',
+                    fontSize: '11px',
+                    fontWeight: 800,
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                    color: '#2ECC40'
+                  }}>
+                    <span>View Case Study</span>
+                    <span>➔</span>
+                  </div>
+                )}
 
               </div>
             </div>

@@ -1,0 +1,1790 @@
+/* ═══════════════════════════════════════════════════════════════════
+   INTERACTIVE STUDIO VIEW DESIGN SYSTEM (Sauveer Sinha)
+   Clean Editorial Layout, Off-White (#fafafa), Tactile Hardware Modules
+   ═══════════════════════════════════════════════════════════════════ */
+
+.studio-about-page {
+  background-color: #fafafa;
+  color: #1e1e1e;
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  overflow-x: hidden;
+  font-family: var(--font-body, 'Elms Sans', sans-serif);
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.studio-about-page img {
+  max-width: 100%;
+}
+
+.studio-about-shell {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ── Top Floating Close Action (Permanent About Page, Switcher Removed) ── */
+.studio-top-actions {
+  position: sticky;
+  top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  padding: 12px 32px 0 0;
+  z-index: 999;
+  pointer-events: none;
+}
+
+.studio-close-circle-btn {
+  pointer-events: auto;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1e1e1e;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+}
+
+.studio-close-circle-btn:hover {
+  background: #1e1e1e;
+  color: #ffffff;
+  transform: scale(1.08);
+}
+
+/* ── Hero Typography ── */
+.studio-hero-section {
+  padding: 40px 0 20px;
+  position: relative;
+}
+
+/* ── Polaroids Fan Stack Under How I Got Here ── */
+.studio-polaroid-under-narrative {
+  margin-top: 48px;
+  padding: 10px 0 20px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.studio-polaroid-stack-container {
+  position: relative;
+  width: 100%;
+  max-width: 620px;
+  height: 380px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.studio-polaroid-card {
+  position: absolute;
+  background: #ffffff;
+  padding: 12px 12px 36px 12px;
+  border-radius: 8px;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, z-index 0s;
+  width: 250px;
+  overflow: hidden;
+}
+
+.studio-polaroid-card:hover {
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.2), 0 6px 12px rgba(0, 0, 0, 0.08);
+  z-index: 50 !important;
+}
+
+.studio-polaroid-img-wrapper {
+  width: 100%;
+  height: 220px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #f0f0f0;
+}
+
+.studio-polaroid-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.studio-polaroid-caption {
+  font-family: var(--font-body, 'Elms Sans', sans-serif);
+  font-size: 12px;
+  font-weight: 600;
+  color: #4b5563;
+  margin-top: 12px;
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+/* ── Section Titles: Design System Heading ── */
+.studio-section-title {
+  font-family: var(--font-heading, 'Elms Sans', sans-serif);
+  font-size: clamp(2.2rem, 4.5vw, 3.6rem);
+  font-weight: 500;
+  color: #1e1e1e;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  margin: 0 0 2rem;
+  text-align: left;
+}
+
+/* ── 02. How I Got Here Section ── */
+.studio-how-section {
+  padding: 40px 0 80px;
+}
+
+.studio-how-section {
+  padding: 110px 24px 90px;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+}
+
+.studio-how-inner {
+  max-width: 840px;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.studio-how-inner .studio-section-title {
+  text-align: center;
+  font-family: var(--font-heading, 'Elms Sans', sans-serif);
+  font-size: clamp(34px, 5.5vw, 56px);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  color: #0d0d0d;
+  margin-bottom: 44px;
+  text-transform: uppercase;
+}
+
+.studio-how-center-narrative {
+  text-align: center;
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+.studio-narrative-text,
+.studio-narrative-prose {
+  font-size: clamp(1.1rem, 1.45vw, 1.28rem);
+  line-height: 1.9;
+  color: #2a2a30;
+  font-weight: 350;
+  margin: 0 auto 34px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  font-family: var(--font-body, 'Elms Sans', sans-serif);
+  letter-spacing: -0.006em;
+}
+
+.studio-how-polaroids-centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 56px;
+  width: 100%;
+}
+
+/* Kinetic Interactive Component Push and Pull on Hover */
+.kinetic-interactive-pull {
+  display: inline-flex;
+  vertical-align: middle;
+  position: relative;
+  will-change: transform, margin, box-shadow;
+  transition: transform 0.26s cubic-bezier(0.16, 1, 0.3, 1),
+              margin 0.26s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.26s ease;
+}
+
+.kinetic-interactive-pull:hover {
+  transform: translateY(-3px) scale(1.05) !important;
+  margin-left: 8px !important;
+  margin-right: 8px !important;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12) !important;
+  z-index: 20;
+}
+
+.studio-paragraph-wrapper {
+  position: relative;
+  margin-bottom: 56px;
+}
+
+/* GSAP Animated Pull-Out Text & Micro-Spring Hover */
+.gsap-pull-text {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), color 0.25s ease;
+  transform-origin: left center;
+}
+
+.gsap-pull-text:hover {
+  transform: translateY(-2px) scale(1.008);
+  color: #111111;
+}
+
+.studio-narrative-subtitle {
+  display: block;
+  font-family: var(--font-heading, 'Elms Sans', sans-serif);
+  font-size: clamp(1.25rem, 1.8vw, 1.55rem);
+  font-weight: 600;
+  color: #1e1e1e;
+  line-height: 1.3;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+
+.studio-narrative-accent {
+  color: #111111;
+  font-weight: 600;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.15);
+}
+
+.studio-link-institution {
+  color: #111111;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(0, 0, 0, 0.3);
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
+}
+
+.studio-link-institution:hover {
+  color: #0071e3;
+  text-decoration-color: #0071e3;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   INLINE INTERACTIVE WIDGETS
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* 1. Inline Figma Selection Frame */
+.inline-figma-frame {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  border: 1.5px dashed #0d99ff;
+  background: rgba(13, 153, 255, 0.06);
+  padding: 2px 10px;
+  border-radius: 4px;
+  margin: 0 4px;
+  cursor: pointer;
+  user-select: none;
+  vertical-align: middle;
+  line-height: 1.3;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.inline-figma-frame:hover {
+  background: rgba(13, 153, 255, 0.12);
+  border-color: #0077cc;
+}
+
+.inline-figma-label {
+  position: absolute;
+  top: -15px;
+  left: -1px;
+  background: #0d99ff;
+  color: #ffffff;
+  font-size: 8.5px;
+  font-weight: 700;
+  font-family: var(--font-mono, monospace);
+  padding: 1px 5px;
+  border-radius: 3px 3px 0 0;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  pointer-events: none;
+}
+
+.inline-figma-handle {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background: #0d99ff;
+  border: 1px solid #ffffff;
+  pointer-events: none;
+}
+
+.handle-tl { top: -3px; left: -3px; }
+.handle-tr { top: -3px; right: -3px; }
+.handle-bl { bottom: -3px; left: -3px; }
+.handle-br { bottom: -3px; right: -3px; }
+
+.inline-figma-text {
+  font-family: var(--font-mono, monospace);
+  font-size: 13px;
+  font-weight: 700;
+  color: #0b78c9;
+}
+
+.inline-figma-tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111113;
+  color: #ffffff;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 11px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 50;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  animation: figmaTooltipIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.inline-figma-tooltip .tooltip-tag {
+  font-size: 9px;
+  font-family: var(--font-mono, monospace);
+  color: #0d99ff;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.inline-figma-tooltip .tooltip-body {
+  font-size: 11.5px;
+  font-weight: 450;
+  color: #e5e7eb;
+}
+
+@keyframes figmaTooltipIn {
+  from { opacity: 0; transform: translate(-50%, 6px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* 2. Inline CMYK Ink Rheology Swatch */
+.inline-cmyk-swatch {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 10px;
+  background: #f8fafc;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 999px;
+  margin: 0 3px;
+  cursor: pointer;
+  position: relative;
+  vertical-align: middle;
+  font-weight: 500;
+  color: #1e1e1e;
+  transition: all 0.2s ease;
+}
+
+.inline-cmyk-swatch:hover {
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.cmyk-dots-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.cmyk-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.cmyk-dot.cyan { background: #00e5ff; }
+.cmyk-dot.magenta { background: #ff007f; }
+.cmyk-dot.yellow { background: #ffd600; }
+.cmyk-dot.black { background: #111111; }
+
+.cmyk-text {
+  font-family: var(--font-body, 'Elms Sans', sans-serif);
+  font-size: 13.5px;
+  font-weight: 550;
+  color: #1f2937;
+}
+
+/* 3. Inline Company / Team Token */
+.inline-team-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 3px 12px;
+  background: #18181b;
+  color: #ffffff;
+  border-radius: 999px;
+  margin: 0 4px;
+  cursor: pointer;
+  position: relative;
+  vertical-align: middle;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.14);
+  user-select: none;
+}
+
+.inline-team-avatar-stack {
+  display: inline-flex;
+  align-items: center;
+  margin-right: -2px;
+}
+
+.avatar-dot {
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9.5px;
+  font-weight: 700;
+  color: #ffffff;
+  border: 1.5px solid #18181b;
+  margin-left: -5px;
+}
+
+.avatar-dot:first-child {
+  margin-left: 0;
+}
+
+.avatar-h { background: #3b82f6; }
+.avatar-e { background: #10b981; }
+
+.inline-team-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #f3f4f6;
+  font-family: var(--font-body, 'Elms Sans', sans-serif);
+}
+
+.inline-team-years {
+  font-size: 10px;
+  color: #9ca3af;
+  font-family: var(--font-mono, monospace);
+  font-weight: 500;
+}
+
+.inline-team-popover {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ffffff;
+  color: #111111;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 10px 14px;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.16);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  white-space: nowrap;
+  animation: figmaTooltipIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.popover-eyebrow {
+  font-size: 9.5px;
+  font-family: var(--font-mono, monospace);
+  text-transform: uppercase;
+  color: #6b7280;
+  font-weight: 700;
+}
+
+.popover-title {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.popover-metrics {
+  font-size: 11px;
+  color: #16a34a;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+/* 4. Inline Institution Pill */
+.inline-institution-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 11px;
+  background: #f3f4f6;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 999px;
+  margin: 0 3px;
+  font-weight: 600;
+  font-size: 13.5px;
+  color: #111827;
+  text-decoration: none;
+  cursor: pointer;
+  position: relative;
+  vertical-align: middle;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.inline-institution-pill:hover {
+  background: #e5e7eb;
+  border-color: rgba(0, 0, 0, 0.15);
+  color: #000000;
+}
+
+.institution-pill-icon {
+  font-size: 12px;
+}
+
+.inline-institution-popover {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111113;
+  color: #ffffff;
+  padding: 6px 12px;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  z-index: 50;
+  white-space: nowrap;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  animation: figmaTooltipIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.inline-institution-popover .popover-eyebrow {
+  color: #9ca3af;
+}
+
+.inline-institution-popover .popover-title {
+  color: #f9fafb;
+}
+
+/* 5. Inline Claude & AI Sparkle Badge */
+.inline-ai-spark-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 10px;
+  background: linear-gradient(135deg, rgba(217, 119, 87, 0.12) 0%, rgba(200, 90, 50, 0.06) 100%);
+  border: 1px solid rgba(217, 119, 87, 0.35);
+  border-radius: 999px;
+  margin: 0 3px;
+  cursor: pointer;
+  position: relative;
+  vertical-align: middle;
+  font-weight: 600;
+  color: #c85a32;
+  transition: all 0.2s ease;
+}
+
+.inline-ai-spark-badge:hover {
+  background: linear-gradient(135deg, rgba(217, 119, 87, 0.2) 0%, rgba(200, 90, 50, 0.12) 100%);
+  box-shadow: 0 0 16px rgba(217, 119, 87, 0.28);
+}
+
+.ai-spark-mark {
+  font-size: 13px;
+  color: #d97757;
+  display: inline-block;
+  line-height: 1;
+}
+
+.ai-badge-text {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* Generic Micro-Popover */
+.inline-widget-popover {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #18181b;
+  color: #ffffff;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 11px;
+  white-space: normal;
+  width: 240px;
+  line-height: 1.4;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: left;
+  animation: figmaTooltipIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.inline-widget-popover strong {
+  font-size: 11.5px;
+  color: #60a5fa;
+  font-weight: 600;
+}
+
+.inline-widget-popover span {
+  font-size: 10.5px;
+  color: #d1d5db;
+}
+
+/* 6. Kinetic Interactive Words (interaction, motion, feel) */
+.inline-kinetic-word {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-weight: 600;
+  color: #111827;
+  cursor: pointer;
+  user-select: none;
+  padding: 0 3px;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+  transition: border-color 0.2s ease;
+}
+
+.inline-kinetic-word:hover {
+  border-color: #2563eb;
+}
+
+.kinetic-glyph {
+  font-size: 12px;
+  display: inline-block;
+}
+
+.motion-letter {
+  display: inline-block;
+}
+
+/* 7. Inline Metric Pill */
+.inline-metric-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #ecfdf5;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-family: var(--font-mono, monospace);
+  font-weight: 600;
+  color: #065f46;
+  margin: 0 3px;
+  vertical-align: middle;
+}
+
+.metric-pill-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  animation: ledPulse 2s infinite ease-in-out;
+}
+
+.metric-pill-sub {
+  color: #047857;
+  opacity: 0.75;
+  font-size: 11px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   RETRO TV STYLES (Interactive CRT Broadcast)
+   ═══════════════════════════════════════════════════════════════════ */
+.retro-tv-section {
+  padding: 60px 0 80px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.retro-tv-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.retro-tv-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #111113;
+  color: #4ade80;
+  border-radius: 999px;
+  padding: 5px 14px;
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.retro-tv-title {
+  font-family: var(--font-heading, 'Elms Sans', sans-serif);
+  font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+  font-weight: 500;
+  color: #1e1e1e;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  margin: 0 0 8px 0;
+  line-height: 1.05;
+}
+
+.retro-tv-subtitle {
+  font-family: var(--font-body, 'Elms Sans', sans-serif);
+  font-size: 15px;
+  color: #6b7280;
+  margin: 0;
+  font-weight: 350;
+}
+
+/* TV Housing / Chassis */
+.retro-tv-chassis {
+  position: relative;
+  width: 100%;
+  max-width: 820px;
+  background: linear-gradient(145deg, #2b2724 0%, #1c1917 100%);
+  border-radius: 28px;
+  border: 4px solid #141210;
+  box-shadow: 
+    0 24px 60px rgba(0, 0, 0, 0.35),
+    0 4px 16px rgba(0, 0, 0, 0.2),
+    inset 0 2px 4px rgba(255, 255, 255, 0.1);
+  padding: 24px;
+  display: grid;
+  grid-template-columns: 1fr 140px;
+  gap: 20px;
+  align-items: center;
+}
+
+/* Antenna rods */
+.retro-tv-antenna-wrapper {
+  position: absolute;
+  top: -46px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 180px;
+  height: 50px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.retro-tv-antenna-left {
+  position: absolute;
+  bottom: 0;
+  left: 70px;
+  width: 4px;
+  height: 54px;
+  background: linear-gradient(to top, #666, #ccc);
+  border-radius: 3px;
+  transform: rotate(-32deg);
+  transform-origin: bottom center;
+}
+
+.retro-tv-antenna-right {
+  position: absolute;
+  bottom: 0;
+  right: 70px;
+  width: 4px;
+  height: 54px;
+  background: linear-gradient(to top, #666, #ccc);
+  border-radius: 3px;
+  transform: rotate(32deg);
+  transform-origin: bottom center;
+}
+
+.retro-tv-antenna-ball {
+  position: absolute;
+  top: -6px;
+  left: -4px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fff, #999);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+
+/* CRT Screen Frame */
+.retro-tv-screen-bezel {
+  position: relative;
+  background: #09090b;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 
+    inset 0 0 24px rgba(0, 0, 0, 0.9),
+    inset 0 0 0 2px rgba(255, 255, 255, 0.08);
+  aspect-ratio: 4 / 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.retro-tv-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: filter 0.2s ease;
+}
+
+/* CRT Scanline & Glare Overlay */
+.retro-tv-scanlines {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+  background-size: 100% 4px, 6px 100%;
+  pointer-events: none;
+  opacity: 0.65;
+}
+
+/* Real Animated CRT Static Noise Canvas */
+.retro-tv-static-layer {
+  position: absolute;
+  inset: 0;
+  background-image: repeating-radial-gradient(circle at 50% 50%, rgba(255,255,255,0.2) 0%, rgba(0,0,0,0.4) 100%);
+  opacity: 0;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.retro-tv-glare {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 45%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0) 100%);
+  pointer-events: none;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+.retro-tv-channel-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: rgba(0, 0, 0, 0.75);
+  color: #4ade80;
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 6px;
+  letter-spacing: 0.1em;
+  border: 1px solid rgba(74, 222, 128, 0.4);
+  pointer-events: none;
+  z-index: 5;
+}
+
+.retro-tv-unmute-btn {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-family: var(--font-body, 'Elms Sans', sans-serif);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  z-index: 5;
+  transition: all 0.2s ease;
+}
+
+.retro-tv-unmute-btn:hover {
+  background: #ffffff;
+  color: #000000;
+}
+
+/* Control Panel with knobs & speaker */
+.retro-tv-control-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  padding: 18px 8px;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.retro-tv-knob {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #4a4845, #161514);
+  border: 2px solid #5a5754;
+  box-shadow: 
+    0 6px 14px rgba(0, 0, 0, 0.6),
+    inset 0 1px 2px rgba(255, 255, 255, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: ns-resize;
+  position: relative;
+  transition: transform 0.15s ease-out, box-shadow 0.2s ease;
+  user-select: none;
+  touch-action: none;
+}
+
+.retro-tv-knob:hover {
+  border-color: #888;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.75), 0 0 12px rgba(255, 255, 255, 0.1);
+}
+
+.retro-tv-knob:active {
+  cursor: grabbing;
+  transform: scale(0.97);
+}
+
+.retro-tv-knob-indicator {
+  width: 3px;
+  height: 16px;
+  background: #ffffff;
+  border-radius: 2px;
+  position: absolute;
+  top: 5px;
+}
+
+.retro-tv-knob-label {
+  font-family: var(--font-mono, monospace);
+  font-size: 9px;
+  font-weight: 700;
+  color: #9ca3af;
+  margin-top: 6px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.retro-tv-speaker-grille {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 70%;
+  margin: 10px 0;
+}
+
+.retro-tv-speaker-slot {
+  height: 4px;
+  background: #0d0c0b;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.8), 0 1px 1px rgba(255,255,255,0.06);
+}
+
+.retro-tv-power-light {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono, monospace);
+  font-size: 9px;
+  color: #9ca3af;
+  font-weight: 700;
+}
+
+.retro-tv-led {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ef4444;
+  box-shadow: 0 0 8px #ef4444;
+  animation: ledPulse 2s infinite ease-in-out;
+}
+
+@keyframes ledPulse {
+  0%, 100% { opacity: 1; filter: drop-shadow(0 0 6px #ef4444); }
+  50% { opacity: 0.4; filter: none; }
+}
+
+/* ── 04. What I Enjoy Section (GSAP Interactive Photography Mosaic) ── */
+/* ═══════════════════════════════════════════════════════════════════
+   HERO POLAROID STACK (Under "Sauveer Sinha")
+   Authentic Polaroid Paper Framing, Micro-Spring Swapping, Fan Out
+   ═══════════════════════════════════════════════════════════════════ */
+
+.hero-polaroid-stack-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 36px auto 28px;
+  position: relative;
+  user-select: none;
+  cursor: pointer;
+}
+
+.hero-polaroid-stack-container {
+  position: relative;
+  width: 100%;
+  max-width: 580px;
+  height: 360px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-polaroid-card {
+  position: absolute;
+  background: #ffffff;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  cursor: pointer;
+  transition: box-shadow 0.3s ease, filter 0.3s ease;
+  width: 270px;
+  will-change: transform, box-shadow;
+}
+
+.hero-polaroid-card:hover {
+  box-shadow: 0 28px 58px rgba(0, 0, 0, 0.2), 0 4px 14px rgba(0, 0, 0, 0.08);
+  filter: brightness(1.02);
+}
+
+.hero-polaroid-card.is-active-top {
+  box-shadow: 0 30px 62px rgba(0, 0, 0, 0.22), 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.hero-polaroid-img-wrapper {
+  width: 100%;
+  height: 290px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #f1f1f1;
+}
+
+.hero-polaroid-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hero-polaroid-hint {
+  margin-top: 14px;
+  font-family: var(--font-mono, monospace);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #9ca3af;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0.75;
+}
+
+.hero-polaroid-hint::before,
+.hero-polaroid-hint::after {
+  content: '·';
+  font-weight: 700;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   AWARD-WINNING KINETIC PHOTOGRAPHY GALLERY ("What I Enjoy")
+   Momentum Physics Drag, Velocity Skew, Magnetic Cursor, Lightbox
+   ═══════════════════════════════════════════════════════════════════ */
+
+.studio-enjoy-section {
+  padding: 60px 0 90px;
+  position: relative;
+  overflow: hidden;
+}
+
+.studio-enjoy-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.studio-enjoy-desc {
+  font-size: clamp(1.1rem, 1.45vw, 1.25rem);
+  line-height: 1.7;
+  color: #374151;
+  font-weight: 350;
+  max-width: 760px;
+  margin-bottom: 32px;
+  font-family: var(--font-body, 'Elms Sans', sans-serif);
+}
+
+.award-gallery-root {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  padding: 10px 0 30px;
+  user-select: none;
+  cursor: grab;
+}
+
+.award-gallery-root.is-grabbing {
+  cursor: grabbing;
+}
+
+/* Magnetic Follower Tag */
+.award-gallery-magnetic-cursor {
+  position: absolute;
+  pointer-events: none;
+  z-index: 60;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: rgba(17, 17, 19, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #ffffff;
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.25);
+  transition: transform 0.08s ease-out, background 0.2s ease, scale 0.2s ease;
+}
+
+.award-gallery-magnetic-cursor.is-active {
+  background: #0071e3;
+}
+
+/* Top bar navigation */
+.award-gallery-top-bar {
+  max-width: 1080px;
+  margin: 0 auto 20px;
+  padding: 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.award-gallery-meta-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono, monospace);
+  font-size: 11.5px;
+  color: #6b7280;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.award-pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 8px #10b981;
+  animation: awardPulse 2s infinite ease-in-out;
+}
+
+@keyframes awardPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+.award-gallery-nav-buttons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.award-nav-btn {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: #111827;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+.award-nav-btn:hover {
+  background: #111827;
+  color: #ffffff;
+  transform: scale(1.06);
+}
+
+.award-gallery-counter {
+  font-family: var(--font-mono, monospace);
+  font-size: 12px;
+  color: #374151;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.counter-divider {
+  color: #9ca3af;
+}
+
+/* Track & Viewport */
+.award-gallery-track-viewport {
+  width: 100%;
+  overflow: visible;
+  padding: 10px 0 20px;
+}
+
+.award-gallery-track {
+  display: flex;
+  gap: 22px;
+  width: max-content;
+  padding-left: max(24px, calc((100vw - 1080px) / 2 + 24px));
+  padding-right: 60px;
+  will-change: transform;
+}
+
+/* Photo Cards */
+.award-photo-card {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  cursor: pointer;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.award-photo-card.card-portrait {
+  width: 280px;
+}
+
+.award-photo-card.card-landscape {
+  width: 410px;
+}
+
+.award-photo-img-shell {
+  position: relative;
+  width: 100%;
+  height: 360px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #e5e7eb;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.award-photo-card:hover .award-photo-img-shell {
+  transform: translateY(-8px);
+  box-shadow: 0 22px 46px rgba(0, 0, 0, 0.16);
+}
+
+.award-photo-img-shell img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.award-photo-card:hover .award-photo-img-shell img {
+  transform: scale(1.05);
+}
+
+.award-photo-overlay-glass {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.award-photo-card:hover .award-photo-overlay-glass {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.overlay-pill {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(17, 17, 19, 0.78);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #ffffff;
+  font-family: var(--font-mono, monospace);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.award-photo-caption {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0 4px;
+}
+
+.photo-title {
+  font-family: var(--font-body, 'Elms Sans', sans-serif);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #1f2937;
+  letter-spacing: -0.01em;
+}
+
+.photo-year {
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  color: #9ca3af;
+  font-weight: 500;
+}
+
+/* Progress rail */
+.award-gallery-progress-rail {
+  max-width: 1080px;
+  margin: 16px auto 0;
+  padding: 0 24px;
+  height: 2px;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+}
+
+.award-gallery-progress-bar {
+  height: 100%;
+  background: #111827;
+  border-radius: 999px;
+  transition: width 0.15s ease-out;
+}
+
+/* Lightbox Modal */
+.award-lightbox-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 10, 12, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: awardFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes awardFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.award-lightbox-card {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: awardZoomIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes awardZoomIn {
+  from { opacity: 0; transform: scale(0.94); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.award-lightbox-close {
+  position: absolute;
+  top: -46px;
+  right: 0;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.award-lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.08);
+}
+
+.award-lightbox-media {
+  max-width: 100%;
+  max-height: 80vh;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+  background: #000000;
+}
+
+.award-lightbox-media img {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  display: block;
+}
+
+.award-lightbox-info {
+  width: 100%;
+  margin-top: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #ffffff;
+}
+
+.lightbox-title {
+  font-family: var(--font-body, 'Elms Sans', sans-serif);
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.lightbox-meta {
+  font-family: var(--font-mono, monospace);
+  font-size: 12px;
+  color: #9ca3af;
+  margin: 2px 0 0;
+}
+
+.lightbox-year {
+  font-family: var(--font-mono, monospace);
+  font-size: 12px;
+  color: #d1d5db;
+  font-weight: 500;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   MOBILE RESPONSIVENESS (375px - 768px Viewports)
+   ═══════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .studio-about-shell {
+    padding: 0 16px;
+  }
+
+  .hero-polaroid-stack-container {
+    height: 250px;
+    max-width: 340px;
+  }
+
+  .hero-polaroid-card {
+    width: 175px;
+    padding: 8px 8px 24px 8px;
+  }
+
+  .hero-polaroid-img-wrapper {
+    height: 155px;
+  }
+
+  .hero-polaroid-title {
+    font-size: 10.5px;
+  }
+
+  .hero-polaroid-sub {
+    font-size: 8.5px;
+  }
+
+  .studio-how-section {
+    padding: 50px 16px 40px !important;
+  }
+
+  .studio-how-inner .studio-section-title {
+    font-size: clamp(28px, 7.5vw, 40px) !important;
+    margin-bottom: 24px !important;
+  }
+
+  .studio-narrative-text,
+  .studio-narrative-prose {
+    font-size: 15.5px !important;
+    line-height: 1.85 !important;
+    margin-bottom: 24px !important;
+    padding: 0 4px !important;
+  }
+
+  .inline-figma-tooltip,
+  .inline-team-popover,
+  .inline-institution-popover,
+  .inline-widget-popover {
+    max-width: calc(100vw - 32px) !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    text-align: center !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+  }
+
+  .retro-tv-section {
+    padding: 40px 12px 60px !important;
+  }
+
+  .retro-tv-chassis {
+    max-width: 100% !important;
+    border-radius: 18px !important;
+    padding: 14px !important;
+  }
+
+  .studio-enjoy-section {
+    padding: 40px 0 50px !important;
+  }
+
+  .award-photo-card.card-portrait {
+    width: 230px;
+  }
+
+  .award-photo-card.card-landscape {
+    width: 310px;
+  }
+
+  .award-photo-img-shell {
+    height: 290px;
+  }
+
+  .scroll-container {
+    padding-bottom: 120px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-polaroid-stack-container {
+    height: 230px;
+    max-width: 300px;
+  }
+
+  .hero-polaroid-card {
+    width: 160px;
+    padding: 7px 7px 20px 7px;
+  }
+
+  .hero-polaroid-img-wrapper {
+    height: 140px;
+  }
+
+  .studio-section-title {
+    font-size: 26px !important;
+  }
+
+  .award-photo-card.card-portrait {
+    width: 200px;
+  }
+
+  .award-photo-card.card-landscape {
+    width: 270px;
+  }
+
+  .award-photo-img-shell {
+    height: 250px;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════
+   WHAT I ENJOY: BEHANCE-INSPIRED VERTICAL PARALLAX GALLERY
+   Resting: Exactly 3 photos displayed in 3 vertical columns
+   Hover: Columns glide vertically (Col 1 UP, Col 2 DOWN, Col 3 UP)
+   CTA: Pure vertical kinetic typography "hover me !" -> "yay" (no pill)
+   ═══════════════════════════════════════════════════════════════════ */
+.enjoy-behance-root {
+  position: relative;
+  width: 100%;
+  max-width: 1060px;
+  margin: 20px auto 40px;
+  user-select: none;
+  transition: max-width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.enjoy-behance-root.is-hovered {
+  max-width: 1140px;
+}
+
+/* Kinetic Vertical Typography Roller: "hover me !" -> "yay" (strictly no pill) */
+.enjoy-hover-cta-roller {
+  display: block;
+  margin: 0 auto 24px;
+  height: 24px;
+  width: fit-content;
+  overflow: hidden;
+  user-select: none;
+  cursor: pointer;
+  text-align: center;
+}
+
+.enjoy-hover-cta-track {
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.enjoy-hover-cta-track.rolled {
+  transform: translateY(-24px);
+}
+
+.enjoy-cta-word {
+  font-family: var(--font-body, 'Elms Sans', sans-serif);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  height: 24px;
+  line-height: 24px;
+  display: block;
+  text-align: center;
+  transition: color 0.25s ease, letter-spacing 0.25s ease;
+}
+
+.enjoy-cta-word.resting {
+  color: #71717a;
+  font-weight: 600;
+}
+
+.enjoy-cta-word.active {
+  color: #18181b;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+}
+
+/* 3-Column Vertical Parallax Stage */
+.enjoy-behance-stage {
+  position: relative;
+  width: 100%;
+  height: 420px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  overflow: hidden;
+  border-radius: 16px;
+  background: transparent;
+}
+
+.enjoy-behance-col-window {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.enjoy-behance-col-track {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  will-change: transform;
+}
+
+.enjoy-behance-card {
+  position: relative;
+  width: 100%;
+  height: 420px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f3f4f6;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.enjoy-behance-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.16);
+}
+
+.enjoy-behance-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.45s ease;
+}
+
+.enjoy-behance-card:hover img {
+  transform: scale(1.04);
+}
+
+.award-lightbox-card.clean {
+  max-width: 820px;
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(24, 24, 27, 0.94);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.award-lightbox-card.clean .award-lightbox-media {
+  height: 75vh;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .hero-polaroid-stack-container {
+    height: 280px;
+  }
+  .hero-polaroid-card {
+    width: 200px;
+    padding: 8px;
+  }
+  .hero-polaroid-img-wrapper {
+    height: 220px;
+  }
+  .enjoy-behance-stage {
+    height: 280px;
+    gap: 12px;
+  }
+  .enjoy-behance-card {
+    height: 280px;
+  }
+  .enjoy-behance-col-track {
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-polaroid-stack-container {
+    height: 250px;
+    max-width: 320px;
+  }
+  .hero-polaroid-card {
+    width: 175px;
+    padding: 8px;
+  }
+  .hero-polaroid-img-wrapper {
+    height: 190px;
+  }
+  .enjoy-behance-stage {
+    height: 230px;
+    gap: 8px;
+  }
+  .enjoy-behance-card {
+    height: 230px;
+  }
+  .enjoy-behance-col-track {
+    gap: 8px;
+  }
+}

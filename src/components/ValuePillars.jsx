@@ -1,268 +1,388 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 export default function ValuePillars({ theme }) {
-  const columnStyle = {
-    padding: '32px 28px',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    position: 'relative',
-    boxSizing: 'border-box'
-  };
-
-  const tagStyle = {
-    fontFamily: 'var(--font-heading)',
-    fontSize: '10px',
-    fontWeight: 700,
-    letterSpacing: '0.08em',
-    textTransform: 'uppercase',
-    padding: '5px 12px',
-    borderRadius: '4px',
-    backgroundColor: 'rgba(255,255,255,0.06)',
-    color: '#FCFAF2',
-    border: '1px solid rgba(255,255,255,0.12)'
-  };
+  const [activePillar, setActivePillar] = useState(null);
 
   return (
-    <div style={{ width: '100%', marginTop: '36px', marginBottom: '60px' }}>
+    <div style={{ width: '100%', marginTop: '32px', marginBottom: '48px' }}>
       
-      {/* ── Main Editorial Ledger ── */}
+      {/* ── Main Editorial Dossier Shell ── */}
       <div style={{
-        backgroundColor: '#111111',
-        borderRadius: '8px',
-        border: '1px solid rgba(255,255,255,0.1)',
-        overflow: 'hidden'
+        backgroundColor: '#0e0e10',
+        borderRadius: '12px',
+        border: '1px solid rgba(255, 255, 255, 0.1)',
+        overflow: 'hidden',
+        position: 'relative'
       }}>
-        
-        {/* Top Header Bar */}
+
+        {/* Section Header */}
         <div style={{
-          padding: '24px 32px',
-          borderBottom: '1px solid rgba(255,255,255,0.08)',
+          padding: '28px 36px',
+          borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'baseline',
           flexWrap: 'wrap',
-          gap: '12px'
+          gap: '16px'
         }}>
           <div>
             <div style={{
-              fontFamily: 'var(--font-heading)',
-              fontSize: '11px',
-              fontWeight: 800,
-              letterSpacing: '0.18em',
-              textTransform: 'uppercase',
-              color: '#4ade80',
-              marginBottom: '6px'
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              marginBottom: '8px'
             }}>
-              Product Designer • Craft & Philosophy
+              <span style={{
+                fontFamily: 'Space Mono, monospace',
+                fontSize: '10px',
+                fontWeight: 700,
+                letterSpacing: '0.18em',
+                textTransform: 'uppercase',
+                color: 'rgba(255, 255, 255, 0.5)'
+              }}>
+                [OPERATING PHILOSOPHY]
+              </span>
+              <span style={{ color: 'rgba(255,255,255,0.2)' }}>/</span>
+              <span style={{
+                fontFamily: 'Space Mono, monospace',
+                fontSize: '10px',
+                fontWeight: 700,
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                color: '#4ade80'
+              }}>
+                HOW I SHIP & COLLABORATE
+              </span>
             </div>
-            <div style={{
+
+            <h3 style={{
               fontFamily: 'var(--font-heading)',
-              fontSize: 'clamp(1.2rem, 2.5vw, 1.8rem)',
-              fontWeight: 700,
+              fontSize: 'clamp(1.35rem, 2.6vw, 2rem)',
+              fontWeight: 800,
               color: '#ffffff',
               letterSpacing: '-0.02em',
-              lineHeight: 1.2
+              lineHeight: 1.15,
+              margin: 0
             }}>
-              Designing human-centered consumer systems from zero-to-one.
-            </div>
+              Turning raw ambiguity into calm, scalable digital products.
+            </h3>
           </div>
 
           <div style={{
-            fontFamily: 'var(--font-body)',
-            fontSize: '12px',
-            color: 'rgba(252,250,242,0.5)',
-            letterSpacing: '0.04em'
+            fontFamily: 'Space Mono, monospace',
+            fontSize: '11px',
+            color: 'rgba(255, 255, 255, 0.4)',
+            letterSpacing: '0.06em',
+            textTransform: 'uppercase'
           }}>
-            Milan, Italy • Available for select roles
+            Milan, IT • B2C & SaaS
           </div>
         </div>
 
-        {/* 3-Column Editorial Grid */}
+        {/* 3 Creative Editorial Modules */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-          divideX: '1px solid rgba(255,255,255,0.08)'
+          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+          gap: '1px',
+          backgroundColor: 'rgba(255, 255, 255, 0.08)'
         }}>
-          
-          {/* Column 01: Role Focus & Problem Solving */}
-          <div style={{ ...columnStyle, borderRight: '1px solid rgba(255,255,255,0.08)' }}>
+
+          {/* Module 01: Zero-to-One Architecture */}
+          <div 
+            onMouseEnter={() => setActivePillar(0)}
+            onMouseLeave={() => setActivePillar(null)}
+            style={{
+              padding: '36px 32px',
+              backgroundColor: activePillar === 0 ? '#141416' : '#0e0e10',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              transition: 'background-color 0.3s ease',
+              position: 'relative'
+            }}
+          >
             <div>
+              {/* Monogram Index */}
               <div style={{
-                fontFamily: 'var(--font-heading)',
-                fontSize: '10px',
-                fontWeight: 800,
-                letterSpacing: '0.15em',
-                textTransform: 'uppercase',
-                color: 'rgba(255,255,255,0.4)',
-                marginBottom: '12px'
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: '20px'
               }}>
-                01 / Role Focus & Ambiguity
+                <span style={{
+                  fontFamily: 'Space Mono, monospace',
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  color: 'rgba(255, 255, 255, 0.4)',
+                  letterSpacing: '0.1em'
+                }}>
+                  SYS.01
+                </span>
+                <span style={{
+                  fontFamily: 'Space Mono, monospace',
+                  fontSize: '10px',
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  color: '#ffffff',
+                  padding: '2px 8px',
+                  background: 'rgba(255, 255, 255, 0.06)',
+                  border: '1px solid rgba(255, 255, 255, 0.12)'
+                }}>
+                  AMBIGUITY ➔ SYSTEMS
+                </span>
               </div>
 
               <h4 style={{
                 fontFamily: 'var(--font-heading)',
-                fontSize: '1.25rem',
-                fontWeight: 700,
+                fontSize: '1.4rem',
+                fontWeight: 800,
                 color: '#ffffff',
-                margin: '0 0 12px 0',
+                margin: '0 0 14px 0',
                 letterSpacing: '-0.02em',
-                lineHeight: 1.25
+                lineHeight: 1.15
               }}>
-                Navigating 0-to-1 Product Reality
+                0 → 1 Product Architecture
               </h4>
 
               <p style={{
                 fontFamily: 'var(--font-body)',
-                fontSize: '13.5px',
-                lineHeight: 1.65,
-                color: 'rgba(252,250,242,0.75)',
+                fontSize: '14px',
+                lineHeight: 1.6,
+                color: 'rgba(255, 255, 255, 0.75)',
                 margin: '0 0 24px 0'
               }}>
-                I take raw concepts and technical capabilities and structure them into calm, high-agency consumer applications. Whether architecting introvert-first habit loops (Olo), modernizing legacy Italian culinary commerce (Orco), or structuring co-living spatial UX (MICA), I eliminate friction without relying on toxic gamification.
+                I take undefined requirements and technical capabilities and structure them into focused, intuitive interfaces. Whether habit experiences (Olo) or generative installations (/trace at Milano Digital Week), I cut friction without toxic gamification.
               </p>
             </div>
 
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-              <span style={tagStyle}>B2C Consumer</span>
-              <span style={tagStyle}>Fintech Systems</span>
-              <span style={tagStyle}>Generative AI UX</span>
+            {/* Spec Footprint */}
+            <div>
+              <div style={{
+                fontFamily: 'Space Mono, monospace',
+                fontSize: '9px',
+                fontWeight: 700,
+                letterSpacing: '0.14em',
+                textTransform: 'uppercase',
+                color: 'rgba(255, 255, 255, 0.35)',
+                marginBottom: '8px'
+              }}>
+                CORE FOCUS
+              </div>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                {['AI-Native UX', 'Consumer Apps', 'Complex PIM Workflows'].map(t => (
+                  <span key={t} style={{
+                    fontFamily: 'var(--font-body)',
+                    fontSize: '11px',
+                    fontWeight: 600,
+                    color: '#ffffff',
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    padding: '4px 10px',
+                    borderRadius: '2px',
+                    border: '1px solid rgba(255, 255, 255, 0.08)'
+                  }}>
+                    {t}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* Column 02: Cross-Functional & Code Advantage */}
-          <div style={{ ...columnStyle, borderRight: '1px solid rgba(255,255,255,0.08)' }}>
+          {/* Module 02: Design x Engineering Reality */}
+          <div 
+            onMouseEnter={() => setActivePillar(1)}
+            onMouseLeave={() => setActivePillar(null)}
+            style={{
+              padding: '36px 32px',
+              backgroundColor: activePillar === 1 ? '#141416' : '#0e0e10',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              transition: 'background-color 0.3s ease',
+              position: 'relative'
+            }}
+          >
             <div>
               <div style={{
-                fontFamily: 'var(--font-heading)',
-                fontSize: '10px',
-                fontWeight: 800,
-                letterSpacing: '0.15em',
-                textTransform: 'uppercase',
-                color: 'rgba(255,255,255,0.4)',
-                marginBottom: '12px'
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: '20px'
               }}>
-                02 / Team Collaboration
+                <span style={{
+                  fontFamily: 'Space Mono, monospace',
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  color: 'rgba(255, 255, 255, 0.4)',
+                  letterSpacing: '0.1em'
+                }}>
+                  SYS.02
+                </span>
+                <span style={{
+                  fontFamily: 'Space Mono, monospace',
+                  fontSize: '10px',
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  color: '#4ade80',
+                  padding: '2px 8px',
+                  background: 'rgba(74, 222, 128, 0.08)',
+                  border: '1px solid rgba(74, 222, 128, 0.25)'
+                }}>
+                  CODE-LITERATE
+                </span>
               </div>
 
               <h4 style={{
                 fontFamily: 'var(--font-heading)',
-                fontSize: '1.25rem',
-                fontWeight: 700,
+                fontSize: '1.4rem',
+                fontWeight: 800,
                 color: '#ffffff',
-                margin: '0 0 12px 0',
+                margin: '0 0 14px 0',
                 letterSpacing: '-0.02em',
-                lineHeight: 1.25
+                lineHeight: 1.15
               }}>
-                Designing with Engineering Reality
+                Design × Engineering Bridge
               </h4>
 
               <p style={{
                 fontFamily: 'var(--font-body)',
-                fontSize: '13.5px',
-                lineHeight: 1.65,
-                color: 'rgba(252,250,242,0.75)',
+                fontSize: '14px',
+                lineHeight: 1.6,
+                color: 'rgba(255, 255, 255, 0.75)',
                 margin: '0 0 24px 0'
               }}>
-                Coming from an engineering background at MIT Manipal, I don't toss static Figma mockups over the wall. I prototype directly in React and GSAP, stress-testing animation physics, responsive layouts, and edge cases before engineering commits code. PMs get predictable scopes; developers get friction-free handoffs.
+                Trained in engineering at MIT Manipal and advanced UX at NABA Milan, I don't toss static Figma files over the fence. I build interactive prototypes in React & GSAP, stress-testing states and physics so developers commit code with zero friction.
               </p>
             </div>
 
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-              <span style={tagStyle}>React & GSAP</span>
-              <span style={tagStyle}>Dev Handoffs</span>
-              <span style={tagStyle}>Design Tokens</span>
+            <div>
+              <div style={{
+                fontFamily: 'Space Mono, monospace',
+                fontSize: '9px',
+                fontWeight: 700,
+                letterSpacing: '0.14em',
+                textTransform: 'uppercase',
+                color: 'rgba(255, 255, 255, 0.35)',
+                marginBottom: '8px'
+              }}>
+                COLLABORATION TOOLING
+              </div>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                {['React / Code Prototypes', 'Design Systems & Tokens', 'Zero-Friction Handoffs'].map(t => (
+                  <span key={t} style={{
+                    fontFamily: 'var(--font-body)',
+                    fontSize: '11px',
+                    fontWeight: 600,
+                    color: '#ffffff',
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    padding: '4px 10px',
+                    borderRadius: '2px',
+                    border: '1px solid rgba(255, 255, 255, 0.08)'
+                  }}>
+                    {t}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* Column 03: Outcomes & Philosophy */}
-          <div style={columnStyle}>
+          {/* Module 03: Measurable Retention & Outcomes */}
+          <div 
+            onMouseEnter={() => setActivePillar(2)}
+            onMouseLeave={() => setActivePillar(null)}
+            style={{
+              padding: '36px 32px',
+              backgroundColor: activePillar === 2 ? '#141416' : '#0e0e10',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              transition: 'background-color 0.3s ease',
+              position: 'relative'
+            }}
+          >
             <div>
               <div style={{
-                fontFamily: 'var(--font-heading)',
-                fontSize: '10px',
-                fontWeight: 800,
-                letterSpacing: '0.15em',
-                textTransform: 'uppercase',
-                color: 'rgba(255,255,255,0.4)',
-                marginBottom: '12px'
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: '20px'
               }}>
-                03 / Business Outcomes
+                <span style={{
+                  fontFamily: 'Space Mono, monospace',
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  color: 'rgba(255, 255, 255, 0.4)',
+                  letterSpacing: '0.1em'
+                }}>
+                  SYS.03
+                </span>
+                <span style={{
+                  fontFamily: 'Space Mono, monospace',
+                  fontSize: '10px',
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  color: '#ffffff',
+                  padding: '2px 8px',
+                  background: 'rgba(255, 255, 255, 0.06)',
+                  border: '1px solid rgba(255, 255, 255, 0.12)'
+                }}>
+                  METRICS THAT COMPOUND
+                </span>
               </div>
 
               <h4 style={{
                 fontFamily: 'var(--font-heading)',
-                fontSize: '1.25rem',
-                fontWeight: 700,
+                fontSize: '1.4rem',
+                fontWeight: 800,
                 color: '#ffffff',
-                margin: '0 0 12px 0',
+                margin: '0 0 14px 0',
                 letterSpacing: '-0.02em',
-                lineHeight: 1.25
+                lineHeight: 1.15
               }}>
-                Durable Retention Over Vanity Hype
+                Durable Impact Over Vanity
               </h4>
 
               <p style={{
                 fontFamily: 'var(--font-body)',
-                fontSize: '13.5px',
-                lineHeight: 1.65,
-                color: 'rgba(252,250,242,0.75)',
+                fontSize: '14px',
+                lineHeight: 1.6,
+                color: 'rgba(255, 255, 255, 0.75)',
                 margin: '0 0 24px 0'
               }}>
-                A design only works if it moves the company's core metrics: Day-30 retention, onboarding completion velocity, and user autonomy. I prioritize human focus and clarity over anxiety-inducing notification loops. Good design compounds value over years, not just Dribbble likes.
+                A design only succeeds when it moves real business needles: Day-30 retention, task velocity, and user confidence. Previous shipped work delivered 2.5× user growth and an 88% engagement uplift through research-led clarity.
               </p>
             </div>
 
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-              <span style={tagStyle}>Day-30 Retention</span>
-              <span style={tagStyle}>Low Cognitive Load</span>
-              <span style={tagStyle}>Task Velocity</span>
+            <div>
+              <div style={{
+                fontFamily: 'Space Mono, monospace',
+                fontSize: '9px',
+                fontWeight: 700,
+                letterSpacing: '0.14em',
+                textTransform: 'uppercase',
+                color: 'rgba(255, 255, 255, 0.35)',
+                marginBottom: '8px'
+              }}>
+                PROVEN SIGNALS
+              </div>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                {['2.5× User Growth', '+88% Engagement', 'Day-30 Retention'].map(t => (
+                  <span key={t} style={{
+                    fontFamily: 'var(--font-body)',
+                    fontSize: '11px',
+                    fontWeight: 600,
+                    color: '#ffffff',
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    padding: '4px 10px',
+                    borderRadius: '2px',
+                    border: '1px solid rgba(255, 255, 255, 0.08)'
+                  }}>
+                    {t}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
 
-        </div>
-
-        {/* Bottom Credibility Strip */}
-        <div style={{
-          padding: '20px 32px',
-          backgroundColor: 'rgba(255,255,255,0.02)',
-          borderTop: '1px solid rgba(255,255,255,0.08)',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          gap: '16px'
-        }}>
-          <div style={{
-            fontFamily: 'var(--font-heading)',
-            fontSize: '10px',
-            fontWeight: 800,
-            letterSpacing: '0.12em',
-            textTransform: 'uppercase',
-            color: 'rgba(255,255,255,0.5)'
-          }}>
-            Track Record & Credentials
-          </div>
-
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '18px',
-            flexWrap: 'wrap',
-            fontFamily: 'var(--font-body)',
-            fontSize: '12.5px',
-            color: '#FCFAF2'
-          }}>
-            <span><strong>4+ Years</strong> Shipping Software</span>
-            <span style={{ opacity: 0.3 }}>•</span>
-            <span><strong>foundit</strong> (Monster.com APAC)</span>
-            <span style={{ opacity: 0.3 }}>•</span>
-            <span><strong>B.Tech</strong> MIT Manipal</span>
-            <span style={{ opacity: 0.3 }}>•</span>
-            <span><strong>Master's in Design</strong> Milan</span>
-            <span style={{ opacity: 0.3 }}>•</span>
-            <span><strong>NCA Design Award</strong> 🥉</span>
-          </div>
         </div>
 
       </div>

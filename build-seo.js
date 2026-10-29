@@ -4,23 +4,24 @@ import path from 'path';
 // Core portfolio content to be injected for SEO
 const seoContent = `
 <noscript>
-  <h1>Sauveer Sinha - Product Designer</h1>
-  <p>I am a Product Designer with a focus on UI/UX, interaction design, and creating brutalist, modern web experiences.</p>
+  <h1>Sauveer Sinha - Product Designer • Milan, IT</h1>
+  <p>Sauveer Sinha is a Product Designer in Milan, IT with 1+ yr experience, designing human-centered interfaces and design systems for next-gen AI products and B2C consumer platforms.</p>
   
-  <h2>Work & Projects</h2>
+  <h2>Selected Case Studies & Work</h2>
   <ul>
-    <li>Krizia: A modern web experience. Case Study.</li>
-    <li>IkeaxPeanuts: A collaborative project showcase. Case Study.</li>
-    <li>Bips: Product Designer, 2024 - Present</li>
-    <li>BambooHR: UX Designer, 2023 - 2024</li>
+    <li>Redesigning Orco: Transforming a heritage Italian food brand into an interactive culinary experience.</li>
+    <li>OLO: Turning small hellos into meaningful growth through introverted emotional design.</li>
+    <li>/trace: A live generative artwork and data visualization turning Ethereum activity into an interactive sensory experience. Selected for Milano Digital Week 2026.</li>
+    <li>Krizia: Rebranding luxury fashion through structure and digital editorial design.</li>
+    <li>MICA: Designing belonging through emotionally intelligent co-living housing experiences.</li>
   </ul>
   
-  <h2>Skills</h2>
-  <p>UX Design, UI Design, Figma, React, Framer Motion, GSAP, Tailwind CSS, 3D/Spline</p>
+  <h2>Core Domains & Skills</h2>
+  <p>AI Product Design, Human-Centered AI, B2C Consumer, UX & Interaction Design, Data Viz, Design Systems, Creative Prototyping, GSAP, React, Three.js.</p>
   
-  <h2>Contact</h2>
+  <h2>Contact & Links</h2>
   <p>Email: sauveersinha@gmail.com</p>
-  <p>LinkedIn, Twitter/X, Dribbble</p>
+  <p>Location: Milan, Italy (Available for European & Global Opportunities)</p>
 </noscript>
 `;
 

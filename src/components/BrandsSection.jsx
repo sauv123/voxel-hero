@@ -5,7 +5,7 @@ import './brands.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function BrandsSection({ theme = { text: '#FCFAF2' } }) {
+export default function BrandsSection({ theme = { text: '#FCFAF2' }, isBlack = true }) {
   const sectionRef = useRef(null);
   const headerTextRef = useRef(null);
   const logoGridRef = useRef(null);
@@ -122,7 +122,7 @@ export default function BrandsSection({ theme = { text: '#FCFAF2' } }) {
   }, []);
 
   return (
-    <section ref={sectionRef} className="brands-section">
+    <section ref={sectionRef} className={`brands-section ${isBlack ? 'is-black' : ''}`}>
       <div className="deco-circle deco-circle-1" ref={circle1Ref} style={{ backgroundColor: `rgba(255,255,255,0.02)` }}></div>
       <div className="deco-circle deco-circle-2" ref={circle2Ref} style={{ backgroundColor: `rgba(255,255,255,0.02)` }}></div>
       

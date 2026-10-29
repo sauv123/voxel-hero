@@ -265,7 +265,7 @@ export default function Footer({ theme, activeChar = 'deer' }) {
 
   // Playful success stagger loop when puzzle is solved
   useEffect(() => {
-    if (isSolved) {
+    if (isSolved && document.querySelector('.puzzle-success-glow')) {
       gsap.fromTo('.puzzle-success-glow', 
         { scale: 0.95, opacity: 0.5 }, 
         { scale: 1.05, opacity: 1, duration: 0.4, repeat: 3, yoyo: true, ease: "power2.inOut" }
@@ -287,7 +287,7 @@ export default function Footer({ theme, activeChar = 'deer' }) {
         boxSizing: "border-box",
         overflow: "hidden", 
         borderTop: "1px solid rgba(255, 255, 255, 0.05)",
-        padding: isMobile ? "48px 24px 180px 24px" : "80px 6vw 160px 6vw",
+        padding: isMobile ? "48px 24px 60px 24px" : "64px 6vw 60px 6vw",
         zIndex: 20
       }}
     >
@@ -402,7 +402,7 @@ export default function Footer({ theme, activeChar = 'deer' }) {
               }}
             >
               <FooterTextLink href="mailto:sauveersinha@gmail.com" text="Gmail" brandColor={brandColor} />
-              <FooterTextLink href="https://sauveer.com/resume.pdf" text="Résumé" brandColor={brandColor} />
+              <FooterTextLink href="https://sauv123.github.io/paper-resume/" text="Résumé" brandColor={brandColor} />
               <FooterTextLink href="https://www.linkedin.com/in/sauveer-sinha-684409215/" text="LinkedIn" brandColor={brandColor} />
               <FooterTextLink href="https://wa.me/393508124320" text="WhatsApp" brandColor={brandColor} />
             </div>

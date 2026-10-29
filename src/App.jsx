@@ -152,7 +152,7 @@ export default function App() {
   
   const initialPage = (initialPath === '') ? 'home' : 
                       initialPath === 'work' ? 'work' :
-                      initialPath === 'about' ? 'about' :
+                      (initialPath === 'about' || initialPath === 'about-studio') ? 'about' :
                       initialPath === 'playground' ? 'playground' : 
                       (matchedProjectIndex !== -1) ? initialPath : '404';
 
@@ -194,36 +194,43 @@ export default function App() {
   // Entrance animation triggered when preloader transitions out
   useEffect(() => {
     if (!isHeroActive) {
-      gsap.set('.char', { y: '110%', opacity: 0 });
-      gsap.set('.eyebrow-text', { opacity: 0, y: 18 });
-      gsap.set(['.text-layer', '.canvas-layer'], { scale: 1.03, opacity: 0 });
+      if (document.querySelector('.char')) gsap.set('.char', { y: '110%', opacity: 0 });
+      if (document.querySelector('.eyebrow-text')) gsap.set('.eyebrow-text', { opacity: 0, y: 18 });
+      if (document.querySelector('.text-layer')) gsap.set(['.text-layer', '.canvas-layer'], { scale: 1.03, opacity: 0 });
       return;
     }
 
     const tl = gsap.timeline();
 
-    tl.to(['.text-layer', '.canvas-layer'], {
-      opacity: 1,
-      scale: 1,
-      duration: 0.6,
-      ease: "power3.out"
-    })
-    .to('.char', {
-      y: '0%', opacity: 1,
-      duration: 1.1, ease: 'power4.out',
-      stagger: 0.022
-    }, "-=0.2")
-    .to('.eyebrow-text', { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }, "-=1.0");
-    
+    if (document.querySelector('.text-layer')) {
+      tl.to(['.text-layer', '.canvas-layer'], {
+        opacity: 1,
+        scale: 1,
+        duration: 0.6,
+        ease: "power3.out"
+      });
+    }
+
+    if (document.querySelector('.char')) {
+      tl.to('.char', {
+        y: '0%', opacity: 1,
+        duration: 1.1, ease: 'power4.out',
+        stagger: 0.022
+      }, "-=0.2");
+    }
+
+    if (document.querySelector('.eyebrow-text')) {
+      tl.to('.eyebrow-text', { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }, "-=1.0");
+    }
   }, [isHeroActive]);
 
   // Smooth theme transition
   useEffect(() => {
     // We only animate the body here initially. The ScrollTrigger will handle the blend.
     gsap.to(document.body, { backgroundColor: theme.bg, duration: 0.65, ease: 'power2.inOut' });
-    gsap.to(rootRef.current, { backgroundColor: theme.bg, duration: 0.65, ease: 'power2.inOut' });
-    gsap.to('.hero-title .char', { color: theme.text, duration: 0.45, stagger: 0.008 });
-    gsap.to(['.eyebrow-text', '.meta-tag'], { color: `${theme.text}99`, duration: 0.45 });
+    if (rootRef.current) gsap.to(rootRef.current, { backgroundColor: theme.bg, duration: 0.65, ease: 'power2.inOut' });
+    if (document.querySelector('.hero-title .char')) gsap.to('.hero-title .char', { color: theme.text, duration: 0.45, stagger: 0.008 });
+    if (document.querySelector('.eyebrow-text')) gsap.to(['.eyebrow-text', '.meta-tag'], { color: `${theme.text}99`, duration: 0.45 });
   }, [theme]);
 
   // Premium GSAP scroll-driven background color scrub
@@ -274,7 +281,14 @@ export default function App() {
     switchTo(CHARS[(idx + 1) % CHARS.length]);
   }, [activeChar, switchTo]);
 
-  const navigateWithTransition = useCallback((targetPage) => {
+  const returnPageRef = useRef('home');
+
+  const navigateWithTransition = useCallback((targetPage, options = {}) => {
+    const isTargetCaseStudy = PROJECTS.some(p => p.slug === targetPage);
+    if (isTargetCaseStudy && activeCaseStudyIndex === null) {
+      returnPageRef.current = activePage === 'work' ? 'work' : 'home';
+    }
+
     // Force overlay visibility updates even if the activePage state is already equal to targetPage
     if (targetPage === 'work') {
       setIsGalleryOpen(true);
@@ -348,7 +362,9 @@ export default function App() {
           setIsAboutOpen(false);
           setIsPlaygroundOpen(false);
           setIs404Open(false);
-          window.scrollTo({ top: 0, behavior: 'auto' });
+          if (!options.preserveScroll) {
+            window.scrollTo({ top: 0, behavior: 'auto' });
+          }
         }
       }
       
@@ -364,7 +380,7 @@ export default function App() {
       ease: "power2.inOut"
     })
     .set(transitionRef.current, { y: "100%" });
-  }, [activePage, theme]);
+  }, [activePage, activeCaseStudyIndex, theme]);
 
   // Handle browser back/forward buttons
   useEffect(() => {
@@ -388,16 +404,16 @@ export default function App() {
 
   const pageTitle = activeCaseStudyIndex !== null 
     ? `${PROJECTS[activeCaseStudyIndex]?.title || 'Case Study'} - Sauveer Sinha`
-    : activePage === 'home' ? 'Sauveer Sinha - Product Designer'
+    : activePage === 'home' ? 'Sauveer Sinha - UX & Product Designer'
     : activePage === 'work' ? 'Work - Sauveer Sinha'
     : activePage === 'about' ? 'About - Sauveer Sinha'
     : activePage === 'playground' ? 'Playground - Sauveer Sinha'
     : 'Page Not Found - Sauveer Sinha';
 
   const pageDescription = activeCaseStudyIndex !== null 
-    ? (PROJECTS[activeCaseStudyIndex]?.roles?.join(', ') || 'A product design case study.')
-    : activePage === 'home' ? 'Portfolio of Sauveer Sinha, a Product Designer specializing in UI/UX, generative interfaces, and creative coding.'
-    : 'Explore the work, background, and experiments of Sauveer Sinha.';
+    ? (PROJECTS[activeCaseStudyIndex]?.cta || PROJECTS[activeCaseStudyIndex]?.role || 'A product design case study by Sauveer Sinha.')
+    : activePage === 'home' ? 'Sauveer Sinha is a Product Designer in Milan, IT with 1+ yr experience, designing human-centered interfaces for next-gen AI products and B2C consumer platforms. Explore selected case studies.'
+    : 'Explore the work, design background, and interactive experiments of Sauveer Sinha — Product Designer in Milan, IT.';
 
   return (
     <>
@@ -457,7 +473,7 @@ export default function App() {
               color: theme.text,
               opacity: 1
             }}>
-              SAUVEER SINHA • PRODUCT DESIGNER
+              SAUVEER SINHA • UX & PRODUCT DESIGNER
             </span>
             <span style={{ 
               fontFamily: "var(--font-body)",
@@ -468,7 +484,7 @@ export default function App() {
               opacity: 0.75,
               lineHeight: 1.4
             }}>
-              B2C Consumer • Fintech • Milan, IT
+              B2C Consumer • 1+ Yr Experience • Milan, IT
             </span>
           </div>
 
@@ -538,13 +554,13 @@ export default function App() {
 
       <Suspense fallback={null}>
         {/* ── Work Gallery Overlay ── */}
-        {isGalleryOpen && <WorkGallery theme={theme} onClose={() => navigateWithTransition('home')} navigate={navigateWithTransition} />}
+        {isGalleryOpen && <WorkGallery theme={theme} onClose={() => navigateWithTransition('home', { preserveScroll: true })} navigate={navigateWithTransition} />}
 
         {/* ── About Me Overlay ── */}
-        {isAboutOpen && <AboutMe theme={theme} onClose={() => navigateWithTransition('home')} />}
+        {isAboutOpen && <AboutMe theme={theme} onClose={() => navigateWithTransition('home', { preserveScroll: true })} />}
 
         {/* ── Playground Gallery Overlay ── */}
-        {isPlaygroundOpen && <PlaygroundGallery theme={theme} activeChar={activeChar} onSwitchChar={switchTo} onClose={() => navigateWithTransition('home')} />}
+        {isPlaygroundOpen && <PlaygroundGallery theme={theme} activeChar={activeChar} onSwitchChar={switchTo} onClose={() => navigateWithTransition('home', { preserveScroll: true })} />}
 
         {/* ── 404 Error Overlay ── */}
         {is404Open && <NotFound theme={theme} activeChar={activeChar} navigateWithTransition={navigateWithTransition} />}
@@ -553,7 +569,9 @@ export default function App() {
         {activeCaseStudyIndex !== null && (
           <CaseStudyViewer 
             startIndex={activeCaseStudyIndex} 
-            onClose={() => navigateWithTransition('work')} 
+            onClose={() => navigateWithTransition(returnPageRef.current || 'home', { preserveScroll: true })} 
+            onSelectProject={(slug) => navigateWithTransition(slug)}
+            returnLabel={returnPageRef.current === 'work' ? 'All Work' : 'Home'}
             theme={theme} 
           />
         )}

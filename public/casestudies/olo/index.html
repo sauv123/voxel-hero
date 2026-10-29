@@ -2,16 +2,16 @@
 <html lang="en"><head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>olo — A Case Study in Calm, Introvert-First Design</title>
-  <meta name="description" content="olo is a calm, introvert-first mobile experience designed to help individuals build real-world confidence through micro-actions and reflective growth.">
-  <meta property="og:title" content="olo — Designing for the Quiet">
-  <meta property="og:description" content="A case study in calm, introvert-first design — built for real-world social confidence.">
+  <title>olo — A social-confidence app with no audience · Sauveer Sinha</title>
+  <meta name="description" content="Case study: I led a 2-person, 2-month concept project designing olo — a social-confidence app for anxious and introverted people, built without feeds, streaks or timers. Decisions, trade-offs and honest results.">
+  <meta property="og:title" content="olo — A social-confidence app with no audience">
+  <meta property="og:description" content="Three decisions, what each one cost, and what testing with four people actually showed.">
   <meta property="og:type" content="website">
   <meta name="theme-color" content="#8BA88E">
-  <link rel="icon" href="data:image/svg+xml,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'&gt;&lt;text y='28' font-size='28'&gt;🌱&lt;/text&gt;&lt;/svg&gt;">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='%238BA88E'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-  <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhai+2:wght@400;500;600;700;800&amp;family=Nunito+Sans:ital,opsz,wght@0,6..12,300;0,6..12,400;0,6..12,500;0,6..12,600;0,6..12,700;1,6..12,400&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhai+2:wght@500;600;700;800&family=Nunito+Sans:ital,opsz,wght@0,6..12,400;0,6..12,600;0,6..12,700;0,6..12,800;1,6..12,400&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <style>
@@ -20,17 +20,19 @@
       --surface: #FFFFFF;
       --surface-soft: #F5F3EF;
       --fg: #3D4042;
-      --fg-light: #6A6E72;
+      --fg-light: #5F6367;
+      --fg-faint: #6B6F73;
       --border: #E2DFD9;
       --border-light: #EBE8E3;
       --accent-sage: #8BA88E;
+      --accent-sage-ink: #4F6E53;
       --accent-sage-light: #E8F0E9;
       --accent-terracotta: #D4956B;
+      --accent-terracotta-ink: #9A5A30;
       --accent-terracotta-light: #F5E6D9;
       --accent-periwinkle: #9BA1C1;
+      --accent-periwinkle-ink: #555C86;
       --accent-periwinkle-light: #E8EAF2;
-      --accent-mustard: #D4B46A;
-      --accent-mustard-light: #F5F0E0;
       --font-display: 'Baloo Bhai 2', system-ui, sans-serif;
       --font-body: 'Nunito Sans', system-ui, sans-serif;
       --radius-sm: 8px;
@@ -38,1279 +40,856 @@
       --radius-lg: 16px;
       --radius-xl: 24px;
       --radius-phone: 32px;
-      --radius-squircle: 40px;
+      --radius-pill: 9999px;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: var(--font-body);
-      background: var(--bg);
-      color: var(--fg);
-      line-height: 1.65;
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
-    }
-    h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.15; letter-spacing: -0.02em; }
-    /* .reveal is visible by default so content is never permanently hidden.
-       Only when GSAP is confirmed present (html.motion-ready) do we pre-hide
-       elements for the scroll-in animation. Falls back to always-visible if
-       the GSAP/ScrollTrigger CDN fails to load. */
-    .reveal { opacity: 1; }
-    html.motion-ready .reveal { opacity: 0; transform: translateY(30px); }
-    .reveal-visible { opacity: 1; transform: translateY(0); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
-    .stagger-1 { transition-delay: 0.1s; }
-    .stagger-2 { transition-delay: 0.2s; }
-    .stagger-3 { transition-delay: 0.3s; }
+    html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+    body { font-family: var(--font-body); background: var(--bg); color: var(--fg); line-height: 1.65; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.15; letter-spacing: -0.02em; text-wrap: balance; }
+    p, li, dd { text-wrap: pretty; }
+    img { max-width: 100%; }
+    :focus-visible { outline: 3px solid var(--accent-sage-ink); outline-offset: 3px; border-radius: 6px; }
+    .reveal { opacity: 0; transform: translateY(24px); }
+    .no-motion .reveal { opacity: 1; transform: none; }
     .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
-    .section { padding: 120px 0; content-visibility: auto; contain-intrinsic-size: 600px; }
-    .section-sm { padding: 80px 0; content-visibility: auto; contain-intrinsic-size: 400px; }
+    .section { padding: 104px 0; }
+    .section-tight { padding: 72px 0; }
 
-    .logo { font-family: var(--font-display); font-weight: 800; font-size: 1.75rem; color: var(--accent-sage); letter-spacing: -0.04em; text-decoration: none; }
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(248,246,242,0.88); backdrop-filter: blur(16px); border-bottom: 1px solid transparent; transition: border-color 0.3s, background 0.3s; }
+    nav.scrolled { border-color: var(--border-light); background: rgba(248,246,242,0.96); }
+    nav .container { height: 72px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { font-family: var(--font-display); font-weight: 800; font-size: 1.75rem; color: var(--accent-sage-ink); letter-spacing: -0.04em; text-decoration: none; }
+    .nav-links { display: flex; gap: 26px; list-style: none; }
+    .nav-links a { text-decoration: none; color: var(--fg-light); font-weight: 700; font-size: 0.8125rem; transition: color 0.25s; position: relative; white-space: nowrap; }
+    .nav-links a:hover, .nav-links a.active { color: var(--fg); }
+    .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--accent-sage); transition: width 0.3s; }
+    .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+    .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 10px; flex-direction: column; gap: 5px; z-index: 1001; min-width: 44px; min-height: 44px; justify-content: center; align-items: center; }
+    .hamburger span { display: block; width: 24px; height: 2.5px; background: var(--fg); border-radius: 2px; transition: transform 0.3s, opacity 0.3s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
 
     /* HERO */
-    .hero { min-height: 100vh; display: flex; align-items: center; padding: 160px 0 120px; position: relative; overflow: hidden; }
-    .hero-bg-shape { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.35; pointer-events: none; }
-    .hero-bg-shape-1 { width: 600px; height: 600px; background: var(--accent-sage); top: -200px; right: -100px; }
-    .hero-bg-shape-2 { width: 400px; height: 400px; background: var(--accent-periwinkle); bottom: -150px; left: -100px; opacity: 0.25; }
-    .hero-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-    .hero-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-body); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-sage); background: var(--accent-sage-light); padding: 8px 16px; border-radius: var(--radius-lg); margin-bottom: 32px; }
-    .hero-tag { display: inline-flex; align-items: center; font-family: var(--font-body); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.02em; color: var(--fg); background: var(--surface-soft); border: 1px solid var(--border); padding: 6px 14px; border-radius: var(--radius-pill, 9999px); transition: all 0.2s; }
-    .hero-tag-primary { background: var(--accent-sage); color: #fff; border-color: var(--accent-sage); }
-    .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
-    .hero-btns { display: flex; gap: 16px; }
-    .hero-title { font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 800; margin-bottom: 24px; color: var(--fg); }
-    .hero-deck { font-size: 1.25rem; color: var(--fg-light); margin-bottom: 48px; line-height: 1.7; max-width: 600px; }
-    .btn { font-family: var(--font-body); font-size: 0.875rem; font-weight: 700; padding: 16px 32px; border-radius: 100px; text-decoration: none; cursor: pointer; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); border: 2px solid transparent; display: inline-flex; align-items: center; gap: 8px; }
-    .btn-primary { background: var(--accent-sage); color: #fff; box-shadow: 0 10px 30px rgba(139,168,142,0.3); }
-    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(139,168,142,0.4); }
-    .btn-secondary { background: transparent; color: var(--fg); border-color: var(--border); }
-    .btn-secondary:hover { background: var(--surface); border-color: var(--fg); }
-    .btn-skip { background: var(--accent-terracotta); color: #fff; font-size: 0.8rem; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; padding: 14px 28px; border-radius: 8px; box-shadow: 0 8px 24px rgba(212,149,107,0.3); }
-    .btn-skip:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(212,149,107,0.4); }
-    .hero-visual { position: relative; }
-    .hero-stack { position: relative; width: 100%; height: 500px; }
-    .phone-mockup { position: absolute; width: 220px; height: 440px; background: var(--surface); border-radius: var(--radius-phone); box-shadow: 0 20px 60px rgba(61,64,66,0.12); overflow: hidden; border: 4px solid var(--border-light); will-change: transform; }
-    .phone-mockup:nth-child(1) { top: 0; left: 80px; z-index: 3; }
-    .phone-mockup:nth-child(2) { top: 40px; left: 190px; z-index: 2; opacity: 0.85; }
-    .phone-screen { padding: 24px; display: flex; flex-direction: column; gap: 16px; height: 100%; }
-    .phone-header { display: flex; align-items: center; justify-content: space-between; }
-    .phone-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--accent-sage-light); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 0.875rem; color: var(--accent-sage); font-weight: 700; }
-    .phone-card { background: var(--surface-soft); border-radius: var(--radius-md); padding: 16px; }
-    .phone-card-title { font-family: var(--font-display); font-size: 0.875rem; font-weight: 600; margin-bottom: 4px; }
-    .phone-card-text { font-size: 0.75rem; color: var(--fg-light); }
-    .phone-btn { background: var(--accent-sage); color: #fff; border: none; border-radius: var(--radius-lg); padding: 10px 16px; font-family: var(--font-body); font-size: 0.75rem; font-weight: 600; margin-top: auto; cursor: pointer; }
+    .hero { padding: 148px 0 72px; position: relative; overflow: hidden; }
+    .hero-bg-shape { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.3; pointer-events: none; }
+    .hero-bg-shape-1 { width: 560px; height: 560px; background: var(--accent-sage); top: -220px; right: -120px; }
+    .hero-inner { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 64px; align-items: center; position: relative; }
+    .eyebrow { font-size: 0.75rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-sage-ink); display: block; margin-bottom: 18px; }
+    .hero-title { font-size: clamp(2.4rem, 4.6vw, 3.9rem); font-weight: 800; margin-bottom: 22px; }
+    .hero-title em { font-style: normal; color: var(--accent-sage-ink); }
+    .hero-deck { font-size: 1.15rem; color: var(--fg-light); line-height: 1.7; max-width: 600px; }
+    .context-row { display: grid; grid-template-columns: repeat(4, auto); justify-content: start; gap: 32px; margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--border); }
+    .context-item .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.07em; color: var(--fg-faint); margin-bottom: 4px; }
+    .context-item .value { font-size: 0.9rem; font-weight: 700; }
+    .hero-stack { position: relative; height: 480px; }
+    .phone-mockup { position: absolute; width: 214px; height: 430px; background: var(--surface); border-radius: var(--radius-phone); box-shadow: 0 20px 60px rgba(61,64,66,0.12); overflow: hidden; border: 4px solid var(--border-light); }
+    .phone-mockup img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .phone-mockup:nth-child(1) { top: 0; left: 40px; z-index: 2; }
+    .phone-mockup:nth-child(2) { top: 44px; left: 200px; z-index: 1; }
 
-    /* PROBLEM */
-    .section-label { font-family: var(--font-body); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-terracotta); margin-bottom: 16px; }
-    .section-title { font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; margin-bottom: 24px; }
-    .section-text { font-size: 1.125rem; color: var(--fg-light); max-width: 640px; margin-bottom: 48px; }
+    /* TL;DR */
+    .tldr { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .tldr-card { background: var(--surface); border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 24px; }
+    .tldr-card .k { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase; color: var(--fg-faint); margin-bottom: 10px; }
+    .tldr-card p { font-size: 0.95rem; line-height: 1.55; }
+    .tldr-card strong { font-weight: 800; }
 
-    /* RESEARCH TABLE */
-    .research-table-section { background: var(--surface-soft); content-visibility: auto; contain-intrinsic-size: 500px; }
-    .research-table { width: 100%; border-collapse: collapse; margin-top: 48px; background: var(--surface); border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
-    .research-table th { text-align: left; padding: 20px 28px; font-family: var(--font-display); font-weight: 700; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent-sage); border-bottom: 2px solid var(--border-light); }
-    .research-table td { padding: 20px 28px; font-size: 0.9375rem; color: var(--fg); border-bottom: 1px solid var(--border-light); vertical-align: top; }
-    .research-table tr:last-child td { border-bottom: none; }
-    .research-table td:first-child { font-weight: 600; color: var(--fg); }
-    .research-table td:last-child { color: var(--accent-sage); font-weight: 600; }
-    .research-table tr:hover td { background: var(--accent-sage-light); }
+    /* Generic */
+    .section-label { font-size: 0.75rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-terracotta-ink); margin-bottom: 14px; display: block; }
+    .section-title { font-size: clamp(1.9rem, 3.6vw, 2.75rem); font-weight: 700; margin-bottom: 20px; max-width: 820px; }
+    .section-text { font-size: 1.1rem; color: var(--fg-light); max-width: 680px; }
+    .sub-title { font-size: 1.3rem; font-weight: 700; margin: 56px 0 18px; }
 
+    /* Problem */
+    .problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; margin-top: 48px; align-items: start; }
+    .unknowns { list-style: none; counter-reset: q; }
+    .unknowns li { counter-increment: q; display: grid; grid-template-columns: 36px 1fr; gap: 14px; padding: 18px 0; border-bottom: 1px solid var(--border); font-size: 1rem; }
+    .unknowns li:first-child { padding-top: 0; }
+    .unknowns li::before { content: counter(q); width: 30px; height: 30px; border-radius: 50%; background: var(--accent-sage-light); color: var(--accent-sage-ink); font-weight: 800; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; }
+    .unknowns .maps { display: block; font-size: 0.8rem; color: var(--fg-faint); font-weight: 700; margin-top: 4px; }
+    .aim-card { background: var(--surface); border: 1px solid var(--border-light); border-radius: var(--radius-xl); padding: 32px; }
+    .aim-card .k { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase; color: var(--accent-sage-ink); margin-bottom: 10px; }
+    .aim-card h3 { font-size: 1.45rem; margin-bottom: 12px; }
+    .aim-card p { color: var(--fg-light); font-size: 0.95rem; }
+    .aim-card .note { margin-top: 16px; font-size: 0.8rem; color: var(--fg-faint); font-weight: 700; }
+    .chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+    .chip { font-size: 0.8rem; font-weight: 700; padding: 7px 14px; border-radius: var(--radius-pill); background: var(--surface-soft); border: 1px solid var(--border); }
 
+    /* Ownership */
+    .own-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 24px; margin-top: 40px; }
+    .own-card { border-radius: var(--radius-xl); padding: 32px; }
+    .own-card.mine { background: var(--surface); border: 1px solid var(--border-light); }
+    .own-card.shared { background: var(--surface-soft); border: 1px dashed var(--border); }
+    .own-card h3 { font-size: 1.1rem; margin-bottom: 16px; }
+    .own-card ul { list-style: none; }
+    .own-card li { padding: 10px 0; border-top: 1px solid var(--border-light); font-size: 0.95rem; }
+    .own-card li:first-child { border-top: none; padding-top: 0; }
+    .own-card li span { display: block; font-size: 0.82rem; color: var(--fg-light); }
 
-    /* MOCKUP SHOWCASE */
-    .mockup-showcase { background: var(--surface); overflow: hidden; content-visibility: auto; contain-intrinsic-size: 600px; }
-    .mockup-grid { display: flex; flex-direction: column; gap: 48px; }
-    .mockup-card { position: relative; border-radius: var(--radius-xl); overflow: hidden; box-shadow: 0 20px 60px rgba(61,64,66,0.1); cursor: zoom-in; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+    /* Decisions */
+    .decision { background: var(--surface); border: 1px solid var(--border-light); border-radius: var(--radius-xl); padding: 44px; display: grid; grid-template-columns: 1.3fr 1fr; gap: 48px; margin-top: 32px; align-items: start; }
+    .d-num { font-size: 0.75rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg-faint); margin-bottom: 10px; }
+    .d-title { font-size: clamp(1.5rem, 2.4vw, 1.9rem); margin-bottom: 28px; }
+    .d-rows { display: grid; grid-template-columns: 112px 1fr; column-gap: 20px; }
+    .d-rows dt { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase; color: var(--fg-faint); padding: 16px 0; border-top: 1px solid var(--border-light); }
+    .d-rows dd { font-size: 0.95rem; padding: 14px 0; border-top: 1px solid var(--border-light); }
+    .d-rows dt:first-of-type, .d-rows dd:first-of-type { border-top: none; padding-top: 0; }
+    .opts { list-style: none; display: grid; gap: 8px; }
+    .opts li { display: grid; grid-template-columns: 26px 1fr; gap: 10px; padding: 10px 12px; border-radius: var(--radius-md); background: var(--surface-soft); font-size: 0.9rem; }
+    .opts li b { width: 24px; height: 24px; border-radius: 50%; background: var(--surface); border: 1px solid var(--border); font-size: 0.72rem; display: flex; align-items: center; justify-content: center; }
+    .opts li.chosen { background: var(--accent-sage-light); }
+    .opts li.chosen b { background: var(--accent-sage-ink); border-color: var(--accent-sage-ink); color: #fff; }
+    .opts .tag { display: inline-block; margin-left: 6px; font-size: 0.66rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent-sage-ink); }
+    .tradeoff { background: var(--accent-terracotta-light); border-radius: var(--radius-md); padding: 12px 14px; }
+    .quote { font-style: italic; color: var(--fg); }
+    .quote cite { display: block; font-style: normal; font-size: 0.8rem; color: var(--fg-faint); font-weight: 700; margin-top: 4px; }
+    .d-figure { display: grid; gap: 12px; }
+    .d-figure .shots { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .d-figure button { border: 1px solid var(--border-light); border-radius: var(--radius-lg); overflow: hidden; background: var(--surface-soft); cursor: zoom-in; padding: 0; display: block; width: 100%; transition: transform 0.25s, box-shadow 0.25s; }
+    .d-figure button:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(61,64,66,0.1); }
+    .d-figure img { width: 100%; display: block; }
+    .d-figure .tall img { aspect-ratio: 9/16; object-fit: cover; object-position: top; }
+    .d-figure figcaption { font-size: 0.8rem; color: var(--fg-light); }
+    .small-calls { width: 100%; border-collapse: collapse; margin-top: 16px; background: var(--surface); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-light); }
+    .small-calls th { text-align: left; padding: 14px 22px; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase; color: var(--fg-faint); background: var(--surface-soft); }
+    .small-calls td { padding: 16px 22px; font-size: 0.9rem; border-top: 1px solid var(--border-light); vertical-align: top; }
+    .small-calls td:first-child { font-weight: 700; width: 24%; }
+    .table-wrap { overflow-x: auto; }
 
-    .mockup-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 30px 80px rgba(61,64,66,0.15); }
+    /* Result */
+    .before-after { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 32px; }
+    .ba-card { border-radius: var(--radius-lg); padding: 26px; }
+    .ba-card.before { background: var(--surface-soft); border: 1px dashed var(--border); }
+    .ba-card.after { background: var(--accent-sage-light); }
+    .ba-card h4 { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 12px; color: var(--fg-light); font-family: var(--font-body); font-weight: 800; }
+    .ba-card ul { list-style: none; }
+    .ba-card li { font-size: 0.92rem; padding: 7px 0; border-top: 1px solid rgba(61,64,66,0.07); }
+    .ba-card li:first-child { border-top: none; }
+    .proof-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .proof { background: var(--surface); border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 24px; }
+    .proof .big { font-family: var(--font-display); font-size: 2rem; font-weight: 800; color: var(--accent-sage-ink); line-height: 1; margin-bottom: 10px; }
+    .proof p { font-size: 0.92rem; }
+    .proof .src { font-size: 0.78rem; color: var(--fg-faint); font-weight: 700; margin-top: 10px; }
+    .learning { margin-top: 56px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .learn-card { background: var(--surface); border: 1px solid var(--border-light); border-radius: var(--radius-xl); padding: 32px; }
+    .learn-card h3 { font-size: 1.3rem; margin-bottom: 12px; }
+    .learn-card p { color: var(--fg-light); font-size: 0.95rem; }
+    .learn-card ul { list-style: none; margin-top: 4px; }
+    .learn-card li { padding: 10px 0; border-top: 1px solid var(--border-light); font-size: 0.92rem; }
+    .learn-card li:first-child { border-top: none; }
+    .learn-card li b { display: block; }
+    .label-honest { display: inline-block; font-size: 0.66rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent-terracotta-ink); background: var(--accent-terracotta-light); padding: 3px 10px; border-radius: var(--radius-pill); margin-bottom: 12px; }
 
-    .mockup-card img { width: 100%; height: auto; object-fit: contain; display: block; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+    /* Screens gallery */
+    .gallery-wrap { position: relative; }
+    .gallery-scroll-container { display: flex; gap: 22px; overflow-x: auto; padding: 36px 24px 56px; scroll-snap-type: x mandatory; scrollbar-width: none; }
+    .gallery-scroll-container::-webkit-scrollbar { display: none; }
+    .gallery-scroll-item { flex: 0 0 auto; height: 68vh; max-height: 720px; scroll-snap-align: start; border-radius: var(--radius-phone); overflow: hidden; box-shadow: 0 18px 44px rgba(61,64,66,0.13); background: var(--surface); border: 4px solid var(--border-light); position: relative; cursor: zoom-in; padding: 0; }
+    .gallery-scroll-item img { height: 100%; width: auto; display: block; }
+    .gallery-caption { position: absolute; bottom: 12px; left: 12px; padding: 7px 14px; background: rgba(255,255,255,0.94); backdrop-filter: blur(6px); border-radius: var(--radius-pill); color: var(--fg); font-weight: 800; font-size: 0.8rem; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .gallery-arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 3; width: 44px; height: 44px; border-radius: 50%; background: var(--bg); border: 1px solid var(--border); box-shadow: 0 4px 16px rgba(0,0,0,0.08); cursor: pointer; font-size: 1.3rem; color: var(--fg); opacity: 0; pointer-events: none; transition: opacity 0.25s, background 0.25s; }
+    .gallery-arrow:hover { background: var(--surface); }
+    .gallery-arrow.visible { opacity: 1; pointer-events: auto; }
+    .gallery-arrow-left { left: 12px; } .gallery-arrow-right { right: 12px; }
+    .journey { margin-top: 40px; }
+    .journey-nav { display: flex; justify-content: space-between; position: relative; max-width: 780px; margin: 0 auto 48px; list-style: none; }
+    .journey-nav::before { content: ''; position: absolute; top: 23px; left: 24px; right: 24px; height: 2px; background: var(--border); }
+    .journey-tab { position: relative; display: flex; flex-direction: column; align-items: center; gap: 10px; background: none; border: none; cursor: pointer; font: inherit; color: inherit; padding: 0 4px; min-width: 64px; }
+    .journey-tab .dot { width: 48px; height: 48px; border-radius: 50%; background: var(--surface); border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 700; color: var(--fg); transition: background 0.3s, border-color 0.3s, transform 0.3s; }
+    .journey-tab:hover .dot { border-color: var(--accent-sage-ink); }
+    .journey-tab .lbl { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.07em; color: var(--fg-light); }
+    .journey-tab[aria-selected="true"] .dot { background: var(--accent-sage-ink); border-color: var(--accent-sage-ink); color: #fff; transform: scale(1.08); }
+    .journey-tab[aria-selected="true"] .lbl { color: var(--fg); }
+    .journey-display { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+    .journey-view[hidden] { display: none; }
+    .journey-view { animation: jFade 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+    @keyframes jFade { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+    .journey-view h3 { font-size: clamp(1.6rem, 2.6vw, 2.1rem); margin-bottom: 16px; }
+    .journey-view p { font-size: 1.02rem; color: var(--fg-light); margin-bottom: 18px; }
+    .journey-detail { background: var(--surface); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 16px 18px; font-size: 0.9rem; }
+    .journey-phone-wrap { display: flex; justify-content: center; }
+    .journey-phone { width: 290px; height: 600px; background: #000; border-radius: var(--radius-phone); border: 10px solid #1a1a1a; box-shadow: 0 32px 80px rgba(0,0,0,0.15); overflow: hidden; position: relative; }
+    .journey-phone img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.45s ease; }
+    .journey-phone img.active { opacity: 1; }
+    .walkthrough { margin-top: 8px; border-radius: var(--radius-xl); overflow: hidden; background: #111; aspect-ratio: 16/9; }
+    .walkthrough video { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-    .mockup-card:hover img { transform: scale(1.02); }
-    .mockup-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 20px; background: linear-gradient(to top, rgba(0,0,0,0.65), transparent); }
-    .mockup-label { color: #fff; font-family: var(--font-display); font-weight: 700; font-size: 0.9375rem; opacity: 0.95; }
-    .mockup-tag { display: inline-block; padding: 4px 12px; background: var(--accent-sage); color: #fff; border-radius: 100px; font-size: 0.6875rem; font-weight: 700; margin-top: 6px; }
+    /* Full trail appendix */
+    .trail { background: var(--surface); }
+    .trail-list { margin-top: 40px; border-bottom: 1px solid var(--border); }
+    .trail-item { border-top: 1px solid var(--border); }
+    .trail-item > summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 56px 1fr auto; gap: 16px; align-items: center; padding: 26px 4px; min-height: 44px; transition: background 0.2s; border-radius: var(--radius-md); }
+    .trail-item > summary::-webkit-details-marker { display: none; }
+    .trail-item > summary:hover { background: var(--surface-soft); }
+    .trail-item .t-num { font-family: var(--font-display); font-weight: 800; color: var(--accent-sage-ink); font-size: 1.1rem; }
+    .trail-item .t-title { font-family: var(--font-display); font-weight: 700; font-size: 1.3rem; line-height: 1.2; }
+    .trail-item .t-sub { display: block; font-family: var(--font-body); font-weight: 400; font-size: 0.88rem; color: var(--fg-light); margin-top: 2px; }
+    .trail-item .t-icon { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; transition: transform 0.3s, background 0.3s; }
+    .trail-item[open] .t-icon { transform: rotate(45deg); background: var(--accent-sage-light); }
+    .trail-body { padding: 8px 4px 48px 76px; }
+    .trail-body > p { color: var(--fg-light); max-width: 700px; margin-bottom: 24px; }
 
-    .prototype-intro { font-size: 1.125rem; color: var(--fg-light); max-width: 800px; margin-bottom: 48px; line-height: 1.8; }
+    .evidence-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .evidence-card { background: var(--surface-soft); border-radius: var(--radius-lg); padding: 20px; font-size: 0.875rem; }
+    .evidence-card .tag { display: inline-block; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent-terracotta-ink); background: var(--accent-terracotta-light); padding: 3px 10px; border-radius: var(--radius-pill); margin-bottom: 10px; }
+    .evidence-card p { font-style: italic; line-height: 1.5; }
+    .persona-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .persona-card { background: var(--surface-soft); border-radius: var(--radius-lg); padding: 22px; }
+    .persona-card .name { font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; color: var(--accent-sage-ink); }
+    .persona-card .archetype { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--fg-faint); margin-bottom: 10px; }
+    .persona-card p { font-size: 0.875rem; color: var(--fg-light); }
+    .thumb-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 20px; }
+    .thumb { border: 1px solid var(--border-light); border-radius: var(--radius-md); overflow: hidden; cursor: zoom-in; background: var(--surface-soft); padding: 0; text-align: left; font: inherit; color: inherit; }
+    .thumb img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; transition: transform 0.4s; }
+    .thumb:hover img { transform: scale(1.05); }
+    .thumb span { display: block; padding: 10px 12px; font-size: 0.78rem; font-weight: 700; color: var(--fg-light); background: var(--surface); border-top: 1px solid var(--border-light); }
+    .thumb.tall img { aspect-ratio: 9/16; object-position: top; }
+    .survey-bars { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin: 8px 0 28px; }
+    .survey-block h4 { font-size: 0.95rem; margin-bottom: 2px; }
+    .survey-sub { font-size: 0.78rem; color: var(--fg-faint); margin-bottom: 12px; }
+    .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 7px; font-size: 0.8125rem; }
+    .bar-label { width: 70px; flex-shrink: 0; color: var(--fg-light); }
+    .bar-track { flex: 1; height: 10px; background: var(--surface-soft); border-radius: var(--radius-pill); overflow: hidden; }
+    .bar-fill { height: 100%; background: var(--accent-sage); border-radius: var(--radius-pill); }
+    .bar-fill.alt { background: var(--accent-periwinkle); }
+    .bar-val { width: 30px; text-align: right; font-weight: 700; }
+    .competitor-table { width: 100%; border-collapse: collapse; min-width: 640px; }
+    .competitor-table th, .competitor-table td { padding: 13px 16px; font-size: 0.86rem; border-bottom: 1px solid var(--border-light); text-align: left; }
+    .competitor-table th { background: var(--surface-soft); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--fg-faint); }
+    .competitor-table .olo-col { background: var(--accent-sage-light); font-weight: 700; }
+    .colorpsych-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .colorpsych-card { border-radius: var(--radius-lg); padding: 20px; font-size: 0.85rem; }
+    .colorpsych-card .swatch { width: 30px; height: 30px; border-radius: 50%; margin-bottom: 12px; }
+    .colorpsych-card .cite { font-size: 0.72rem; color: var(--fg-light); font-style: italic; margin-top: 8px; }
+    .task-list { list-style: none; counter-reset: task; columns: 2; column-gap: 32px; }
+    .task-list li { counter-increment: task; padding: 10px 0 10px 36px; position: relative; font-size: 0.9rem; break-inside: avoid; }
+    .task-list li::before { content: counter(task); position: absolute; left: 0; top: 10px; width: 24px; height: 24px; background: var(--accent-sage-ink); color: #fff; border-radius: 50%; font-size: 0.7rem; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+    .task-goal { color: var(--fg-light); font-size: 0.8rem; }
+    .metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .metric-target { background: var(--surface-soft); border-radius: var(--radius-md); padding: 16px; font-size: 0.85rem; }
+    .metric-target b { display: block; }
+    .metric-target span { color: var(--accent-sage-ink); font-weight: 700; font-size: 0.8rem; }
 
-    /* Analogy switcher */
-    .analogy-container { background: var(--surface); border-radius: var(--radius-xl); padding: 60px; margin-top: 60px; border: 1px solid var(--border-light); }
-    .analogy-tabs { display: flex; gap: 12px; margin-bottom: 48px; flex-wrap: wrap; }
-    .analogy-tab { padding: 12px 24px; border-radius: 100px; border: 1px solid var(--border); background: none; font-weight: 700; cursor: pointer; transition: all 0.3s; }
-    .analogy-tab:hover { background: var(--surface-soft); }
-    .analogy-tab.active { background: var(--accent-terracotta); color: #fff; border-color: var(--accent-terracotta); }
-    .analogy-content { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
-    .analogy-visual { background: var(--surface-soft); border-radius: var(--radius-xl); padding: 40px; min-height: 300px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; position: relative; overflow: hidden; }
-    .analogy-icon { font-size: 4rem; margin-bottom: 16px; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
-    .analogy-info h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 16px; }
-    .analogy-info p { color: var(--fg-light); margin-bottom: 16px; }
-    .analogy-info ul { list-style: none; padding: 0; }
-    .analogy-info li { padding: 8px 0; padding-left: 28px; position: relative; color: var(--fg-light); font-size: 0.9375rem; }
-    .analogy-info li::before { content: ''; position: absolute; left: 0; top: 14px; width: 10px; height: 10px; background: var(--accent-sage); border-radius: 50%; }
-
-    /* VISUAL DESIGN INSIGHTS */
-    .insights-section { background: #fff; content-visibility: auto; contain-intrinsic-size: 500px; }
-    .insights-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 60px; align-items: start; margin-top: 48px; }
-    .insights-content { font-size: 1.125rem; color: var(--fg-light); }
-    .insights-content p { margin-bottom: 24px; }
-    .insights-list { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 32px; }
-    .insights-item { background: var(--surface-soft); padding: 24px; border-radius: var(--radius-lg); }
-    .insights-item h4 { font-size: 1rem; margin-bottom: 8px; color: var(--fg); }
-    .insights-item p { font-size: 0.875rem; margin-bottom: 0; }
-    .insights-visuals { display: flex; flex-direction: column; gap: 24px; }
-    .insight-card { background: #fff; border: 1px solid var(--border-light); border-radius: var(--radius-xl); overflow: hidden; cursor: zoom-in; transition: transform 0.3s; }
-    .insight-card:hover { transform: translateY(-5px); }
-    .insight-card img { width: 100%; display: block; }
-    .insight-caption { padding: 16px; font-size: 0.8125rem; font-weight: 700; color: var(--accent-sage); text-align: center; background: var(--accent-sage-light); }
-
-    /* DISCOVERY / PHASES */
-    .phases-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 48px; }
-    .phase-card { background: var(--surface); border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 32px; transition: all 0.3s; cursor: default; }
-    .phase-card:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.05); }
-    .phase-num { font-family: var(--font-display); font-size: 2.5rem; font-weight: 800; color: var(--accent-sage); margin-bottom: 8px; line-height: 1; }
-    .phase-title { font-size: 1.25rem; margin-bottom: 12px; font-weight: 700; }
-    .phase-desc { font-size: 0.875rem; color: var(--fg-light); margin-bottom: 24px; }
-    .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
-    .gallery-item { border-radius: var(--radius-sm); overflow: hidden; aspect-ratio: 1; border: 1px solid var(--border-light); cursor: zoom-in; }
-    .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
-    .gallery-item:hover img { transform: scale(1.1); }
-
-    /* JOURNEY SECTION (Split-View) */
-    .journey-section { background: var(--surface-soft); overflow: hidden; content-visibility: auto; contain-intrinsic-size: 900px; }
-    .journey-steps-nav { display: flex; justify-content: space-between; position: relative; margin-bottom: 64px; max-width: 800px; margin-left: auto; margin-right: auto; }
-    .journey-steps-nav::before { content: ''; position: absolute; top: 24px; left: 0; right: 0; height: 3px; background: var(--accent-sage); opacity: 0.3; z-index: 1; }
-    .journey-nav-item { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 12px; cursor: pointer; }
-    .step-dot { width: 48px; height: 48px; border-radius: 50%; background: var(--surface); border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 700; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-    .step-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--fg-light); }
-    .journey-nav-item.active .step-dot { background: var(--accent-sage); border-color: var(--accent-sage); color: #fff; transform: scale(1.1); box-shadow: 0 8px 20px rgba(139, 168, 142, 0.3); }
-    .journey-nav-item.active .step-label { color: var(--fg); }
-
-    .journey-display { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; min-height: 640px; }
-    .journey-text-content { padding-right: 40px; }
-    .journey-step-view { display: none; }
-    .journey-step-view.active { display: block; animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-    .journey-title { font-size: 2.5rem; margin-bottom: 24px; color: var(--fg); }
-    .journey-desc { font-size: 1.125rem; color: var(--fg-light); margin-bottom: 32px; line-height: 1.7; }
-    
-    .journey-phone-container { position: relative; display: flex; justify-content: center; }
-    .journey-phone { 
-      width: 320px; height: 660px; background: #000; border-radius: var(--radius-phone); border: 10px solid #1a1a1a; 
-      box-shadow: 0 40px 100px rgba(0,0,0,0.15); overflow: hidden; position: relative;
-    }
-    .journey-phone-img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; opacity: 0; transition: opacity 0.5s ease; }
-    .journey-phone-img.active { opacity: 1; z-index: 10; }
-    .journey-nav-btns { display: flex; justify-content: center; gap: 16px; margin-top: 48px; }
-    .journey-nav-btn { width: 48px; height: 48px; border-radius: 50%; background: var(--surface); border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s; font-size: 1.25rem; color: var(--fg); }
-    .journey-nav-btn:hover { border-color: var(--accent-sage); color: var(--accent-sage); background: var(--accent-sage-light); }
-    .journey-nav-btn:disabled { opacity: 0.3; cursor: default; pointer-events: none; }
-
-    /* PROTOTYPE EVOLUTION */
-    .prototype-section { background: var(--surface); content-visibility: auto; contain-intrinsic-size: 600px; }
-    .evolution-timeline { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 48px; }
-    .evolution-card { background: var(--surface-soft); border-radius: var(--radius-xl); overflow: hidden; border: 1px solid var(--border-light); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); cursor: zoom-in; }
-    .evolution-card:hover { transform: translateY(-8px); box-shadow: 0 20px 60px rgba(0,0,0,0.1); }
-    .evolution-card img { width: 100%; aspect-ratio: 9/19; object-fit: cover; display: block; }
-    .evolution-phone-frame { position: relative; background: #1a1a1a; border-radius: var(--radius-lg); padding: 8px; margin: 12px 12px 0; }
-    .evolution-phone-frame img { border-radius: var(--radius-sm); aspect-ratio: 9/19; width: 100%; object-fit: cover; display: block; }
-    .evolution-phone-notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 60px; height: 18px; background: #1a1a1a; border-radius: 0 0 12px 12px; }
-    .evolution-phone-notch::after { content: ''; position: absolute; top: 5px; left: 50%; transform: translateX(-50%); width: 10px; height: 10px; background: #2a2a2a; border-radius: 50%; }
-    .evolution-stage-overlay { position: absolute; top: 16px; left: 16px; padding: 4px 12px; background: var(--accent-sage); color: #fff; border-radius: 100px; font-size: 0.6875rem; font-weight: 700; z-index: 2; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
-    .evolution-info { padding: 24px; }
-    
-    .evolution-title { font-family: var(--font-display); font-weight: 700; font-size: 1rem; margin-bottom: 8px; color: var(--fg); }
-    .evolution-desc { font-size: 0.8125rem; color: var(--fg-light); line-height: 1.5; }
-
-    /* SOLUTION DETAIL */
-    .solution-detail { background: var(--surface-soft); content-visibility: auto; contain-intrinsic-size: 500px; }
-    .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; margin-top: 60px; }
-    .detail-visual { background: var(--bg); border-radius: var(--radius-xl); overflow: hidden; border: 1px solid var(--border-light); }
-    .detail-visual img { width: 100%; height: 100%; object-fit: cover; }
-    .detail-content h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 16px; }
-    .detail-content p { color: var(--fg-light); margin-bottom: 24px; }
-    .detail-list { list-style: none; padding: 0; }
-    .detail-list li { padding: 10px 0; padding-left: 32px; position: relative; font-size: 0.9375rem; }
-    .detail-list li::before { content: '✓'; position: absolute; left: 0; color: var(--accent-sage); font-weight: 700; }
-
-    /* RESULTS */
-    .results-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 60px; }
-    .result-card { background: var(--surface); border-radius: var(--radius-lg); padding: 40px; text-align: center; transition: all 0.3s; }
-    .result-card:hover { transform: translateY(-4px); }
-    .result-img { width: 72px; height: 72px; border-radius: 50%; background: var(--surface-soft); display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 24px; }
-    .result-title { font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; margin-bottom: 12px; }
-    .result-text { font-size: 0.9375rem; color: var(--fg-light); }
-
-    /* FINDINGS */
-    .findings-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; margin-top: 60px; }
-    .finding-card { background: var(--surface); border-radius: var(--radius-lg); padding: 40px; border-left: 4px solid var(--accent-sage); }
-    .finding-card-title { font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; margin-bottom: 16px; }
-    .finding-card-text { font-size: 0.9375rem; color: var(--fg-light); margin-bottom: 20px; }
-    .finding-card ul { list-style: none; padding: 0; }
-    .finding-card li { padding: 6px 0; padding-left: 24px; position: relative; font-size: 0.9375rem; color: var(--fg-light); }
-    .finding-card.change { border-left-color: var(--accent-terracotta); }
-    .finding-card li::before { content: ''; position: absolute; left: 0; top: 12px; width: 8px; height: 8px; background: var(--accent-sage); border-radius: 50%; }
-
-    .task-list { list-style: none; counter-reset: task; }
-    .task-list li { counter-increment: task; padding: 14px 0 14px 40px; position: relative; border-bottom: 1px dashed var(--border); font-size: 0.9rem; }
-    .task-list li:last-child { border-bottom: none; }
-    .task-list li::before { content: counter(task); position: absolute; left: 0; top: 12px; width: 24px; height: 24px; background: var(--accent-sage); color: #fff; border-radius: 50%; font-size: 0.7rem; font-weight: 700; display: flex; align-items: center; justify-content: center; }
-
-    /* LIGHTBOX */
-    .lightbox { position: fixed; inset: 0; background: rgba(248,246,242,0.98); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 40px; backdrop-filter: blur(12px); }
-    .lightbox.active { display: flex; animation: fadeInLB 0.4s ease; }
-    .lightbox-content { max-width: 90%; max-height: 90%; position: relative; }
-    .lightbox-img { max-width: 100%; max-height: 85vh; border-radius: var(--radius-md); box-shadow: 0 40px 100px rgba(0,0,0,0.2); }
-    .lightbox-caption { padding: 24px; background: var(--surface); text-align: center; font-family: var(--font-display); font-weight: 600; color: var(--fg); border-bottom-left-radius: var(--radius-md); border-bottom-right-radius: var(--radius-md); }
-    .close-lightbox { position: absolute; top: -60px; right: 0; background: none; border: none; font-size: 3rem; cursor: pointer; color: var(--fg); line-height: 1; transition: all 0.3s; }
-    .close-lightbox:hover { transform: rotate(90deg) scale(1.1); color: var(--accent-sage); }
-
-    /* QUOTE & FOOTER */
-    .quote-section { text-align: center; padding: 160px 0; background: var(--surface); }
-    .quote-text { font-family: var(--font-display); font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 700; line-height: 1.4; max-width: 800px; margin: 0 auto 32px; color: var(--fg); }
-    .quote-accent { color: var(--accent-sage); }
-    .quote-author { display: flex; align-items: center; justify-content: center; gap: 12px; }
-    .quote-avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--accent-sage-light); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 700; color: var(--accent-sage); }
-    
-    footer { background: var(--fg); color: #fff; padding: 100px 0 60px; text-align: center; }
-    footer .logo { margin-bottom: 24px; font-size: 2.5rem; }
-    footer p { opacity: 0.7; max-width: 500px; margin: 0 auto 48px; }
-
-    /* ─── Floating Left Nav ─── */
-    .side-nav {
-      position: fixed; left: 20px; top: 50%; transform: translateY(-50%);
-      z-index: 1000; display: flex; flex-direction: column; gap: 4px;
-    }
-    .side-nav-item {
-      display: flex; align-items: center; gap: 10px;
-      text-decoration: none; color: var(--fg-light);
-      font-family: var(--font-body); font-size: 0.7rem; font-weight: 600;
-      letter-spacing: 0.04em; text-transform: uppercase;
-      padding: 6px 10px; border-radius: 100px;
-      transition: all 0.3s; white-space: nowrap;
-    }
-    .side-nav-indicator {
-      width: 7px; height: 7px; border-radius: 50%;
-      background: var(--border); transition: all 0.4s; flex-shrink: 0;
-    }
-    .side-nav-item.active { color: var(--accent-sage); }
-    .side-nav-item.active .side-nav-indicator {
-      background: var(--accent-sage);
-      box-shadow: 0 0 0 3px var(--accent-sage-light);
-    }
-    .side-nav-item:hover { color: var(--accent-sage); }
-    .side-nav-item:hover .side-nav-indicator { background: var(--accent-sage); }
-
-    @keyframes fadeInLB { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes slideUpFade { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    /* Lightbox */
+    .lightbox { position: fixed; inset: 0; background: rgba(248,246,242,0.98); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 40px; }
+    .lightbox.active { display: flex; }
+    .lightbox-content { max-width: 92%; max-height: 92%; position: relative; text-align: center; }
+    .lightbox-img { max-width: 100%; max-height: 82vh; border-radius: var(--radius-md); box-shadow: 0 40px 100px rgba(0,0,0,0.2); }
+    .lightbox-caption { padding: 16px; font-family: var(--font-display); font-weight: 600; }
+    .close-lightbox { position: absolute; top: -52px; right: 0; background: none; border: none; font-size: 2.6rem; cursor: pointer; color: var(--fg); line-height: 1; width: 44px; height: 44px; }
 
 
-
-    /* Full-Width Hero Banner */
-    .full-width-hero { width: 100%; height: 80vh; position: relative; overflow: hidden; content-visibility: auto; contain-intrinsic-size: 600px; }
-    .hero-video-container { width: 100%; height: 100%; position: relative; }
-    .hero-video { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .hero-video-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(139,168,142,0.85) 0%, rgba(155,161,193,0.75) 100%); display: flex; align-items: center; justify-content: center; }
-    .hero-video-content { text-align: center; color: #fff; padding: 40px; }
-    .hero-video-content .section-label { color: rgba(255,255,255,0.9) !important; }
-    .hero-video-content h2, .hero-video-content p { color: #fff; }
-    .video-tag { position: absolute; top: 24px; left: 24px; background: rgba(255,255,255,0.9); backdrop-filter: blur(6px); padding: 8px 16px; border-radius: var(--radius-pill, 9999px); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--fg); }
-    .full-width-banner img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.8s ease;
-    }
-    .full-width-banner:hover img { transform: scale(1.03); }
-    .banner-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 50%);
-      pointer-events: none;
-    }
-
-    /* Custom Cursor */
-    .custom-cursor { position: fixed; width: 24px; height: 24px; border: 2px solid var(--accent-sage); border-radius: 50%; pointer-events: none; z-index: 9999; transition: width 0.3s, height 0.3s, background 0.3s, border-color 0.3s; transform: translate(-50%, -50%); mix-blend-mode: difference; }
-    .custom-cursor.hover { width: 48px; height: 48px; background: rgba(139,168,142,0.15); border-color: var(--accent-sage); }
-
-
-
-    /* ─── COMPREHENSIVE RESPONSIVE ─── */
-
-    /* Tablets & small laptops */
     @media (max-width: 1024px) {
-      .hero-inner { grid-template-columns: 1fr; gap: 60px; text-align: center; }
-      .hero-title br { display: none; }
-      .hero-deck { margin-left: auto; margin-right: auto; }
-      .hero-content .btn { justify-content: center; }
-      .hero-tags { justify-content: center; }
-      .hero-btns { justify-content: center; }
-      .hero-stack { height: 380px; }
-      .journey-display { grid-template-columns: 1fr; gap: 60px; }
-      .journey-text-content { padding-right: 0; text-align: center; }
-      .journey-phone-container { order: -1; display: flex; justify-content: center; }
-      .insights-grid { grid-template-columns: 1fr; gap: 48px; }
-      .insights-list { grid-template-columns: 1fr; }
-      .phases-grid { grid-template-columns: repeat(2, 1fr); }
-      .evolution-timeline { grid-template-columns: repeat(2, 1fr); }
-      .detail-grid { grid-template-columns: 1fr; gap: 40px; }
-      .results-grid { grid-template-columns: repeat(2, 1fr); }
-      .findings-grid { grid-template-columns: 1fr; gap: 24px; }
-      .section-label, .section-title, .section-text { text-align: center; margin-left: auto; margin-right: auto; }
-      .analogy-content { grid-template-columns: 1fr; gap: 32px; }
-      .analogy-container { padding: 40px; }
-      .mockup-card img { width: 100%; }
-      .hero-video-content h2 { font-size: 2rem; }
+      .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+      .hero-stack { height: 400px; max-width: 460px; }
+      .tldr, .evidence-grid, .persona-grid, .colorpsych-grid, .thumb-grid { grid-template-columns: repeat(2, 1fr); }
+      .decision { grid-template-columns: 1fr; gap: 32px; padding: 32px; }
+      .d-figure .shots { max-width: 520px; }
+      .problem-grid, .own-grid { grid-template-columns: 1fr; gap: 32px; }
+      .proof-grid { grid-template-columns: 1fr 1fr; }
+      .journey-display { grid-template-columns: 1fr; gap: 36px; }
+      .journey-phone-wrap { order: -1; }
     }
-
-    /* Mobile phones */
     @media (max-width: 768px) {
-      /* Floating nav becomes a fixed bottom bar on mobile */
-      .side-nav {
-        top: auto; bottom: 0; left: 0; right: 0;
-        transform: none; flex-direction: row;
-        justify-content: space-around; gap: 0;
-        background: rgba(248,246,242,0.92);
-        backdrop-filter: blur(12px);
-        border-top: 1px solid var(--border-light);
-        padding: 6px 6px calc(6px + env(safe-area-inset-bottom, 0px));
-        z-index: 1500;
-      }
-      .side-nav-item {
-        flex-direction: column; gap: 2px;
-        font-size: 0.55rem; padding: 4px 2px;
-        letter-spacing: 0.02em; width: 20%;
-        justify-content: center; align-items: center;
-        min-height: 44px;
-      }
-      .side-nav-indicator { width: 6px; height: 6px; }
-
-      /* Collapse inline multi-column grids to a single column */
-      .testing-grid { grid-template-columns: 1fr !important; gap: 24px !important; }
-      .stack-on-mobile { grid-template-columns: 1fr !important; gap: 16px !important; }
-      .research-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 -16px; padding: 0 16px; }
-      .research-table { min-width: 560px; }
-      .research-table th, .research-table td { padding: 14px 16px; font-size: 0.8125rem; }
-
-      /* Hero */
-      .hero { padding: 120px 0 80px; min-height: auto; }
-      .hero-stack { height: 340px; }
-      .phone-mockup { width: 160px; height: 320px; border-width: 3px; border-radius: 24px; }
-      .phone-mockup:nth-child(1) { left: 20px; }
-      .phone-mockup:nth-child(2) { left: 110px; top: 30px; }
-      .hero-title { font-size: clamp(2rem, 8vw, 2.5rem); }
-      .hero-deck { font-size: 1rem; margin-bottom: 32px; }
-      .hero-btns { flex-direction: column; align-items: stretch; }
-      .hero-tags { justify-content: center; }
-      .hero-eyebrow { font-size: 0.65rem; padding: 6px 12px; }
-      .hero-tag { font-size: 0.65rem; padding: 4px 10px; }
-
-      /* Section spacing */
-      .section { padding: 64px 0; contain-intrinsic-size: 400px; }
-      .section-sm { padding: 48px 0; contain-intrinsic-size: 300px; }
-      .container { padding: 0 16px; }
-      .section-title { font-size: clamp(1.5rem, 6vw, 2rem); }
-      .section-text { font-size: 0.9375rem; margin-bottom: 32px; }
-
-      /* Bottom breathing room so the fixed nav doesn't cover section content */
-      .section { padding-bottom: 88px; }
-      .section-sm { padding-bottom: 88px; }
-      footer { padding-bottom: 84px; }
-
-      /* Phases */
-      .phases-grid { grid-template-columns: 1fr; gap: 16px; }
-      .phase-num { font-size: 2rem; }
-      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
-
-      /* Analogy */
-      .analogy-container { padding: 24px; margin-top: 32px; }
-      .analogy-tabs { gap: 8px; }
-      .analogy-tab { padding: 10px 16px; font-size: 0.8125rem; }
-      .analogy-visual { min-height: 200px; padding: 24px; }
-      .analogy-icon { font-size: 3rem; }
-
-      /* Insights */
-      .insights-item { padding: 20px; }
-
-      /* Journey */
-      .journey-steps-nav { overflow-x: auto; padding-bottom: 16px; justify-content: flex-start; gap: 24px; -webkit-overflow-scrolling: touch; }
-      .journey-nav-item { flex-shrink: 0; }
-      .journey-title { font-size: 1.75rem; }
-      .journey-desc { font-size: 1rem; }
-      .journey-phone { width: 240px; height: 500px; border-width: 6px; border-radius: 28px; }
-      .journey-section h2 { font-size: 2rem !important; }
-      .journey-nav-btn { width: 40px; height: 40px; font-size: 1rem; }
-
-      /* Evolution timeline */
-      .evolution-timeline { grid-template-columns: 1fr; gap: 16px; overflow-x: auto; }
-      .evolution-card { min-width: 280px; }
-
-      /* Mockup showcase */
-      .mockup-grid { gap: 24px; }
-
-      /* Full-width hero */
-      .full-width-hero { height: 50vh; }
-      .hero-video-content { padding: 24px; }
-      .hero-video-content h2 { font-size: 1.5rem; }
-      .hero-video-content p { font-size: 0.9375rem; }
-
-      /* Results */
-      .results-grid { grid-template-columns: 1fr; gap: 16px; }
-      .result-card { padding: 28px; }
-
-      /* Findings */
-      .findings-grid { gap: 16px; }
-      .finding-card { padding: 28px; }
-
-      /* Quote */
-      .quote-section { padding: 80px 0; }
-      .quote-text { font-size: 1.25rem; }
-
-      /* Footer — keep extra bottom padding so the fixed bottom nav never
-         covers the footer text (this must come AFTER the padding-bottom:84px
-         breathing-room rule above, so the bottom value wins). */
-      footer { padding: 60px 0 calc(84px + env(safe-area-inset-bottom, 0px)); }
-
-      /* Lightbox */
-      .lightbox { padding: 16px; }
-      .close-lightbox { top: 8px; right: 8px; font-size: 2rem; }
-      .lightbox-img { max-height: 70vh; }
-
-      /* Buttons */
-      .btn { padding: 14px 24px; font-size: 0.8125rem; }
-
-      /* Section label center */
-      .section-label { text-align: center; }
+      .hamburger { display: flex; }
+      .nav-links { position: fixed; top: 0; right: -100%; width: 280px; height: 100vh; background: var(--surface); flex-direction: column; padding: 96px 24px 40px; gap: 4px; box-shadow: -10px 0 40px rgba(0,0,0,0.1); transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+      .nav-links.open { right: 0; }
+      .nav-links a { display: block; padding: 14px 16px; font-size: 1rem; border-radius: var(--radius-md); }
+      .nav-links a::after { display: none; }
+      .section { padding: 64px 0; } .section-tight { padding: 48px 0; }
+      .container { padding: 0 18px; }
+      .hero { padding: 112px 0 48px; }
+      .context-row { grid-template-columns: 1fr 1fr; gap: 18px; }
+      .hero-stack { height: 310px; }
+      .phone-mockup { width: 150px; height: 300px; }
+      .phone-mockup:nth-child(1) { left: 0; } .phone-mockup:nth-child(2) { left: 120px; top: 28px; }
+      .tldr, .evidence-grid, .persona-grid, .colorpsych-grid, .before-after, .proof-grid, .learning, .survey-bars, .metrics-grid { grid-template-columns: 1fr; }
+      .thumb-grid { grid-template-columns: 1fr 1fr; }
+      .decision { padding: 24px; }
+      .d-rows { grid-template-columns: 1fr; }
+      .d-rows dt { padding: 16px 0 4px; }
+      .d-rows dd { border-top: none; padding-top: 0; }
+      .d-rows dt:first-of-type { padding-top: 0; }
+      .trail-item > summary { grid-template-columns: 36px 1fr auto; gap: 10px; }
+      .trail-body { padding: 4px 0 40px; }
+      .task-list { columns: 1; }
+      .gallery-scroll-item { height: 52vh; }
+      .small-calls { min-width: 560px; }
+      .journey-tab .lbl { font-size: 0.62rem; letter-spacing: 0.05em; }
+      .journey-tab { min-width: 52px; }
+      .journey-tab .dot { width: 40px; height: 40px; }
+      .journey-nav::before { top: 19px; }
+      .journey-phone { width: 240px; height: 500px; border-width: 7px; }
     }
-
-    /* Small phones */
-    @media (max-width: 480px) {
-      .container { padding: 0 12px; }
-      .section { padding: 48px 0; }
-      .section { padding-bottom: 88px; }
-      .section-sm { padding-bottom: 88px; }
-      .phone-mockup { width: 130px; height: 260px; border-radius: 20px; }
-      .phone-mockup:nth-child(1) { left: 10px; }
-      .phone-mockup:nth-child(2) { left: 80px; top: 20px; }
-      .hero-stack { height: 280px; }
-      .hero-tag { font-size: 0.6rem; padding: 3px 8px; }
-      .hero-tags { gap: 6px; }
-      .hero-btns { gap: 10px; }
-      .hero-video-content h2 { font-size: 1.25rem; }
-      .full-width-hero { height: 40vh; }
-      .journey-phone { width: 200px; height: 420px; }
-      .journey-title { font-size: 1.5rem; }
-      .journey-section h2 { font-size: 1.65rem !important; }
-      .prototype-intro { font-size: 0.9375rem; }
-      .insights-content { font-size: 0.9375rem; }
-      .insights-grid { gap: 32px; }
-      .quote-text { font-size: 1.125rem; }
-      .detail-content h3 { font-size: 1.25rem; }
-      .evolution-timeline { grid-template-columns: 1fr; }
-      .research-table th, .research-table td { padding: 10px 12px; font-size: 0.75rem; }
-    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .reveal { opacity: 1; transform: none; } }
   </style>
 </head>
 <body>
 
-  <div class="custom-cursor" id="cursor"></div>
-
-  <nav class="side-nav" id="sideNav">
-    <a href="#problem" class="side-nav-item nav-link" data-section="problem">
-      <span class="side-nav-indicator"></span><span>Problem</span>
-    </a>
-    <a href="#discovery" class="side-nav-item nav-link" data-section="discovery">
-      <span class="side-nav-indicator"></span><span>Research</span>
-    </a>
-    <a href="#insights" class="side-nav-item nav-link" data-section="insights">
-      <span class="side-nav-indicator"></span><span>Insights</span>
-    </a>
-    <a href="#process" class="side-nav-item nav-link" data-section="process">
-      <span class="side-nav-indicator"></span><span>Prototype</span>
-    </a>
-    <a href="#journey" class="side-nav-item nav-link" data-section="journey">
-      <span class="side-nav-indicator"></span><span>Takeaways</span>
-    </a>
+  <nav id="navbar">
+    <div class="container">
+      <a href="#hero" class="logo" aria-label="olo — back to top">olo</a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#problem" class="nav-link" data-section="problem">Problem</a></li>
+        <li><a href="#ownership" class="nav-link" data-section="ownership">My role</a></li>
+        <li><a href="#decisions" class="nav-link" data-section="decisions">Decisions</a></li>
+        <li><a href="#result" class="nav-link" data-section="result">Result</a></li>
+        <li><a href="#screens" class="nav-link" data-section="screens">Screens</a></li>
+        <li><a href="#trail" class="nav-link" data-section="trail">Full research</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
+    </div>
   </nav>
 
-  <header class="section hero" id="hero">
+  <!-- HERO + SUMMARY -->
+  <header class="hero" id="hero" data-od-id="hero">
     <div class="hero-bg-shape hero-bg-shape-1"></div>
-    <div class="hero-bg-shape hero-bg-shape-2"></div>
     <div class="container">
       <div class="hero-inner">
-        <div class="hero-content reveal">
-          <div class="hero-eyebrow">IN DEPTH CASE STUDY </div>
-          <h1 class="hero-title">Designing for the <span style="color:var(--accent-sage)">Quiet</span>.</h1>
-          <p class="hero-deck">olo is a calm, introvert-first mobile experience designed to help individuals build real-world confidence through micro-actions and reflective growth.</p>
-          <div class="hero-tags">
-            <span class="hero-tag">Role: Brand &amp; UX Design (team of 2)</span>
-            <span class="hero-tag">Duration: 5 months (Sep25–Jan26)</span>
-            <span class="hero-tag">Tools: Figma, After Effects, Principle</span>
-          </div>
-          <div class="hero-btns">
-            <a href="#journey" class="btn btn-skip">Skip to Solution →</a>
+        <div class="reveal">
+          <span class="eyebrow">Case study · olo</span>
+          <h1 class="hero-title" data-od-id="hero-title">A social-confidence app with <em>no audience</em>.</h1>
+          <p class="hero-deck">Social and habit apps grow through visibility: feeds, streaks, leaderboards. For people with social anxiety, that visibility is exactly why they quit. I led a two-person team for two months to answer one question: what does an app that helps you talk to people look like once you take the audience out?</p>
+          <div class="context-row">
+            <div class="context-item"><div class="label">My role</div><div class="value">Design lead</div></div>
+            <div class="context-item"><div class="label">Team</div><div class="value">Me + Cosima Wagner</div></div>
+            <div class="context-item"><div class="label">Timeline</div><div class="value">~2 months</div></div>
+            <div class="context-item"><div class="label">Status</div><div class="value">Concept · not shipped</div></div>
           </div>
         </div>
-        <div class="hero-visual reveal stagger-2">
+        <div class="reveal" aria-hidden="true">
           <div class="hero-stack">
-            <div class="phone-mockup" style="padding:0">
-              <img src="mp56lrss-Screenshot-2026-05-14-at-9.43.09-AM.png" alt="olo app screen 1" style="width:100%;height:100%;object-fit:cover;display:block" fetchpriority="high" decoding="async">
-            </div>
-            <div class="phone-mockup" style="padding:0;background:transparent;border-color:var(--border-light)">
-              <img src="mp56l8tq-Screenshot-2026-05-14-at-9.42.45-AM.png" alt="olo app screen 2" style="width:100%;height:100%;object-fit:cover;display:block" fetchpriority="high" decoding="async">
-            </div>
-
+            <div class="phone-mockup"><img src="mp56lrss-Screenshot-2026-05-14-at-9.43.09-AM.png" alt="" fetchpriority="high"></div>
+            <div class="phone-mockup"><img src="mp56l8tq-Screenshot-2026-05-14-at-9.42.45-AM.png" alt="" fetchpriority="high"></div>
           </div>
         </div>
       </div>
     </div>
   </header>
 
-  <section class="section-sm" style="background:var(--surface);border-bottom:1px solid var(--border-light);">
+  <section class="section-tight" id="summary" data-od-id="summary" style="padding-top:0">
     <div class="container">
-      <div class="reveal" style="display:grid;grid-template-columns:auto 1fr;gap:32px;align-items:start;">
-        <div style="width:80px;height:80px;border-radius:50%;background:var(--accent-sage-light);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:2rem;font-weight:800;color:var(--accent-sage);flex-shrink:0;">SS</div>
-        <div>
-          <div class="section-label" style="color:var(--accent-sage);margin-bottom:8px;">My Role</div>
-          <h2 style="font-size:1.5rem;font-weight:700;margin-bottom:12px;font-family:var(--font-display);">I led design on a two-person team — from research to a testable, high-fidelity product.</h2>
-          <p style="color:var(--fg-light);font-size:1rem;line-height:1.7;max-width:720px;">
-            As the designer on a two-person team, I owned the <strong style="color:var(--fg);font-weight:500;">UX design, introvert and visual research, and all Figma prototypes</strong>, then translated them into a working <strong style="color:var(--fg);font-weight:500;">React prototype</strong> — a deliberate speed-to-test choice that let us validate interaction before committing to final visual work. I also produced the interaction film and an <strong style="color:var(--fg);font-weight:500;">AI-generated brand launch video</strong>, closing the loop from concept to a marketable artifact.</p>
-        </div>
+      <div class="tldr reveal">
+        <div class="tldr-card" data-od-id="tldr-problem"><div class="k">The problem</div><p>The people who most need social practice avoid the apps built for it, because those apps put them on show.</p></div>
+        <div class="tldr-card" data-od-id="tldr-owned"><div class="k">What I owned</div><p>Product direction, the scope calls below, the usability test plan, and the challenge-screen system.</p></div>
+        <div class="tldr-card" data-od-id="tldr-call"><div class="k">The hardest call</div><p>Cutting the community feed, and with it <strong>the main way olo could have connected people</strong>.</p></div>
+        <div class="tldr-card" data-od-id="tldr-result"><div class="k">Result (honest)</div><p>Testing with 4 people changed 4 core features. There's no live build, so no usage data. One big question is still open.</p></div>
       </div>
     </div>
   </section>
 
-  <section class="section" id="problem">
+  <!-- PROBLEM / SITUATION -->
+  <section class="section" id="problem" data-od-id="problem" style="background:var(--surface-soft)">
     <div class="container">
       <div class="reveal">
-        <div class="section-label">The Problem</div>
-        <h2 class="section-title">Making Social Growth Feel High-Stakes.</h2>
-        <p class="section-text">Most social and habit-building applications are designed around high engagement, forced streaks, and constant reminders. For introverted and shy individuals, these systems increase fear of judgment and anxiety around initiating conversations.</p>
+        <span class="section-label">Situation</span>
+        <h2 class="section-title">Everything that makes social apps grow is what makes anxious users leave.</h2>
+        <p class="section-text">We audited three apps that ask strangers to interact: BeReal, Randonautica and Meetup. The same mechanics that drive engagement for confident users (public posting windows, open group chats, visible activity) were the top complaints from anxious ones. Our empathy research said the same thing in the users' own words: being watched is the trigger, not a lack of motivation.</p>
       </div>
-      
-      <div class="analogy-container reveal">
-        <div class="analogy-tabs">
-          <button class="analogy-tab active" onclick="switchAnalogy(0)">Traditional Apps</button>
-          <button class="analogy-tab" onclick="switchAnalogy(1)">Introvert Reality</button>
-        </div>
-        <div id="analogy-content-wrap">
-          <div class="analogy-content">
-            <div class="analogy-visual" id="analogy-visual">
-              <div class="analogy-icon" id="analogy-icon">📢</div>
-              <div class="analogy-title" id="analogy-title">Loud &amp; Performance-Driven</div>
-              <div class="analogy-desc" id="analogy-desc">High pressure, constant visibility, competitive metrics</div>
-            </div>
-            <div class="analogy-info" id="analogy-info">
-              <h3>Traditional App Experience</h3>
-              <p>Most platforms are designed for extroverts — reward systems based on visibility, leaderboards, and public engagement. The more you share, the more you're rewarded.</p>
-              <ul>
-                <li>Public feeds and leaderboards</li>
-                <li>Timers and streaks creating urgency</li>
-                <li>Aggressive push notifications</li>
-                <li>Social comparison metrics</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="reveal stagger-2" style="margin-top: 60px;">
-        <div class="section-label" style="color:var(--accent-sage)">The Market Gap</div>
-        <p class="section-text" style="margin-bottom:32px;">These are secondary findings from our desktop research and competitive audit — the evidence that framed the opportunity, not olo's own results. Collectively, they point at the gap olo was built to fill.</p>
-        <div class="stack-on-mobile" style="display:grid; grid-template-columns:repeat(3,1fr); gap:24px;">
-          <div style="background:var(--surface); border-radius:var(--radius-lg); padding:32px; text-align:center; border:1px solid var(--border-light);">
-            <div style="font-family:var(--font-display); font-size:2.5rem; font-weight:800; color:var(--accent-sage); line-height:1;">72%</div>
-            <div style="font-size:0.8125rem; color:var(--fg-light); margin-top:8px;">of introverts avoid social apps due to performance pressure</div>
-          </div>
-          <div style="background:var(--surface); border-radius:var(--radius-lg); padding:32px; text-align:center; border:1px solid var(--border-light);">
-            <div style="font-family:var(--font-display); font-size:2.5rem; font-weight:800; color:var(--accent-sage); line-height:1;">3.2×</div>
-            <div style="font-size:0.8125rem; color:var(--fg-light); margin-top:8px;">higher retention in apps with private, self-paced progress</div>
-          </div>
-          <div style="background:var(--surface); border-radius:var(--radius-lg); padding:32px; text-align:center; border:1px solid var(--border-light);">
-            <div style="font-family:var(--font-display); font-size:2.5rem; font-weight:800; color:var(--accent-sage); line-height:1;">68%</div>
-            <div style="font-size:0.8125rem; color:var(--fg-light); margin-top:8px;">of users prefer reflection-based feedback over public metrics</div>
-          </div>
-        </div>
-        <div class="stack-on-mobile" style="margin-top:32px;display:grid;grid-template-columns:1fr 1fr;gap:24px;">
-          <div style="background:var(--accent-sage-light);border-radius:var(--radius-lg);padding:28px;">
-            <h4 style="font-size:1rem;margin-bottom:8px;color:var(--accent-sage);">Who olo is for</h4>
-            <p style="font-size:0.875rem;color:var(--fg);margin:0;">A large, underserved segment of the self-improvement and mental-wellness market: introverted and socially anxious adults who want to grow — but are repelled by engagement-first social apps built for extroverts.</p>
-          </div>
-          <div style="background:var(--accent-terracotta-light);border-radius:var(--radius-lg);padding:28px;">
-            <h4 style="font-size:1rem;margin-bottom:8px;color:var(--accent-terracotta);">Why it matters</h4>
-            <p style="font-size:0.875rem;color:var(--fg);margin:0;">The category optimizes for time-in-app and public visibility. olo inverts that: it optimizes for private, self-paced, low-pressure progress — the very mechanics the data shows drive durable retention for this audience.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="discovery">
-    <div class="container">
-      <div class="reveal">
-        <div class="section-label" style="color:var(--accent-sage)">Discovery</div>
-        <h2 class="section-title">Four phases of discovery.</h2>
-        <p class="section-text">Our research transformed raw behavioral observations into a calm, evidence-based design system.</p>
-      </div>
-
-      <div class="phases-grid reveal">
-        <div class="phase-card">
-          <div class="phase-num">01</div>
-          <h4 class="phase-title">Competitor Analysis</h4>
-          <p class="phase-desc">Mapping the high-pressure gap in existing social platforms</p>
-          <div class="gallery-grid">
-            <div class="gallery-item" onclick="openLightbox('mp4dt7tq-Screenshot-2026-05-13-at-8.17.08-PM.png', 'Competitor SWOT Analysis')">
-              <img src="mp4dt7tq-Screenshot-2026-05-13-at-8.17.08-PM.png" alt="Competitive Analysis 1" loading="lazy" decoding="async">
-            </div>
-            <div class="gallery-item" onclick="openLightbox('mp4ds74n-Screenshot-2026-05-13-at-8.16.21-PM.png', 'Empathy Mapping')">
-              <img src="mp4ds74n-Screenshot-2026-05-13-at-8.16.21-PM.png" alt="Strategic Cut - Community Feed" loading="lazy" decoding="async">
-            </div>
-          </div>
-        </div>
-        <div class="phase-card">
-          <div class="phase-num">02</div>
-          <h4 class="phase-title">Persona Dev</h4>
-          <p class="phase-desc">Creating deep empathy for Tushar, Zaida, and others navigating anxiety.</p>
-          <div class="gallery-grid">
-            <div class="gallery-item" onclick="openLightbox('mp57xo15-Screenshot-2026-05-14-at-10.20.25-AM.png', 'Persona Development')">
-              <img src="mp57xo15-Screenshot-2026-05-14-at-10.20.25-AM.png" alt="Persona Development" loading="lazy" decoding="async">
-            </div>
-            <div class="gallery-item" onclick="openLightbox('mp582azr-Screenshot-2026-05-14-at-10.24.01-AM.png', 'Persona Profiles')">
-              <img src="mp582azr-Screenshot-2026-05-14-at-10.24.01-AM.png" alt="Persona Profiles" loading="lazy" decoding="async">
-            </div>
-            <div class="gallery-item" onclick="openLightbox('mp5833dq-Screenshot-2026-05-14-at-10.24.38-AM.png', 'User Persona Mapping')">
-              <img src="mp5833dq-Screenshot-2026-05-14-at-10.24.38-AM.png" alt="User Persona Mapping" loading="lazy" decoding="async">
-            </div>
-            <div class="gallery-item" onclick="openLightbox('mp583w8n-Screenshot-2026-05-14-at-10.25.15-AM.png', 'Persona Journey Insights')">
-              <img src="mp583w8n-Screenshot-2026-05-14-at-10.25.15-AM.png" alt="Persona Journey Insights" loading="lazy" decoding="async">
-            </div>
-          </div>
-        </div>
-        <div class="phase-card">
-          <div class="phase-num">03</div>
-          <h4 class="phase-title">Behavioral Observation</h4>
-          <p class="phase-desc">Synthesizing testing tasks and success metrics.</p>
-          <div class="gallery-grid">
-            <div class="gallery-item" onclick="openLightbox('mp4dvozo-Screenshot-2026-05-13-at-8.19.04-PM.png', 'User Testing Tasks')">
-              <img src="mp4dvozo-Screenshot-2026-05-13-at-8.19.04-PM.png" alt="Strategic Cut - Competitive Systems" loading="lazy" decoding="async">
-            </div>
-            <div class="gallery-item" onclick="openLightbox('mp4dvzej-Screenshot-2026-05-13-at-8.19.18-PM.png', 'Evaluation Criteria')">
-              <img src="mp4dvzej-Screenshot-2026-05-13-at-8.19.18-PM.png" alt="Concept Validation Screen 1" loading="lazy" decoding="async">
-            </div>
-            <div class="gallery-item" onclick="openLightbox('mp4dw7aj-Screenshot-2026-05-13-at-8.19.28-PM.png', 'Success Metrics')">
-              <img src="mp4dw7aj-Screenshot-2026-05-13-at-8.19.28-PM.png" alt="Concept Validation Screen 2" loading="lazy" decoding="async">
-            </div>
-            <div class="gallery-item" onclick="openLightbox('mp57ykwf-Screenshot-2026-05-14-at-10.21.08-AM.png', 'Behavioral Observation Insights')">
-              <img src="mp57ykwf-Screenshot-2026-05-14-at-10.21.08-AM.png" alt="Behavioral Observation Insights" loading="lazy" decoding="async">
-            </div>
-            <div class="gallery-item" onclick="openLightbox('mp57yq6q-Screenshot-2026-05-14-at-10.21.15-AM.png', 'Testing &amp; Metrics')">
-              <img src="mp57yq6q-Screenshot-2026-05-14-at-10.21.15-AM.png" alt="Testing and Metrics" loading="lazy" decoding="async">
-            </div>
-          </div>
-        </div>
-        <div class="phase-card">
-          <div class="phase-num">04</div>
-          <h4 class="phase-title">Journey Mapping</h4>
-          <p class="phase-desc">Defining the emotional arc from initiating to reflecting.</p>
-          <div class="gallery-grid">
-            <div class="gallery-item" onclick="openLightbox('mp4dunyi-Screenshot-2026-05-13-at-8.18.16-PM.png', 'Emotional Journey Map')">
-              <img src="mp4dunyi-Screenshot-2026-05-13-at-8.18.16-PM.png" alt="Journey Step 1" loading="lazy" decoding="async">
-            </div>
-            <div class="gallery-item" onclick="openLightbox('mp4duyiu-Screenshot-2026-05-13-at-8.18.30-PM.png', 'User Story Map')">
-              <img src="mp4duyiu-Screenshot-2026-05-13-at-8.18.30-PM.png" alt="Journey Step 2" loading="lazy" decoding="async">
-            </div>
-            <div class="gallery-item" onclick="openLightbox('mp4dwzkv-Screenshot-2026-05-13-at-8.20.04-PM.png', 'User Personas')">
-              <img src="mp4dwzkv-Screenshot-2026-05-13-at-8.20.04-PM.png" alt="Competitive Analysis 2" loading="lazy" decoding="async">
-            </div>
-            <div class="gallery-item" onclick="openLightbox('mp4dwm93-Screenshot-2026-05-13-at-8.19.47-PM.png', 'User Stories')">
-              <img src="mp4dwm93-Screenshot-2026-05-13-at-8.19.47-PM.png" alt="Strategic Cut - Public Comparison" loading="lazy" decoding="async">
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Research Informing Design Decisions -->
-  <section class="section research-table-section">
-    <div class="container">
-      <div class="reveal">
-        <div class="section-label" style="color:var(--accent-sage)">Design Decisions</div>
-        <h2 class="section-title">Research Informing Design Decisions.</h2>
-        <p class="section-text">Every design choice was grounded in a specific research insight — ensuring the final product truly serves the introvert user.</p>
-      </div>
-      <div class="research-table-wrap"><table class="research-table reveal stagger-2">
-        <thead>
-          <tr>
-            <th>Research Insight</th>
-            <th>Design Decision</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Time pressure increases anxiety</td>
-            <td>Removed timers</td>
-          </tr>
-          <tr>
-            <td>Public metrics create comparison stress</td>
-            <td>No leaderboards / streaks</td>
-          </tr>
-          <tr>
-            <td>Users prefer low-effort interaction</td>
-            <td>Micro-challenges</td>
-          </tr>
-          <tr>
-            <td>Reflection builds confidence</td>
-            <td>Voice reflections</td>
-          </tr>
-          <tr>
-            <td>Introverts prefer autonomy</td>
-            <td>Custom challenge mode</td>
-          </tr>
-          <tr>
-            <td>Overstimulating UI increases avoidance</td>
-            <td>Calm visual language</td>
-          </tr>
-        </tbody>
-      </table></div>
-
-      <h3 style="font-size:1.4rem;margin:56px 0 8px;font-family:var(--font-display);letter-spacing:-0.02em;">Features we deliberately cut</h3>
-      <p class="section-text" style="margin-bottom:8px">Every one of these tested well on paper. Each one directly contradicted the core research insight that visibility and pressure are what drive anxious users away.</p>
-      <div class="stack-on-mobile" style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px;">
-        <div style="background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius-lg);padding:30px;position:relative;overflow:hidden;">
-          <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent-terracotta);"></div>
-          <div style="font-size:1.75rem;margin-bottom:14px;opacity:0.6;">📱</div>
-          <div style="font-family:var(--font-display);font-weight:700;font-size:1rem;margin-bottom:10px;color:var(--fg);text-decoration:line-through;opacity:0.55;">Community Feed</div>
-          <div style="font-size:0.8125rem;color:var(--fg-light);line-height:1.55;">Feed was rated "not of importance right now" in testing patterns, and was consistently a Threat/Weakness across the competitor SWOT.</div>
-        </div>
-        <div style="background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius-lg);padding:30px;position:relative;overflow:hidden;">
-          <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent-terracotta);"></div>
-          <div style="font-size:1.75rem;margin-bottom:14px;opacity:0.6;">📊</div>
-          <div style="font-family:var(--font-display);font-weight:700;font-size:1rem;margin-bottom:10px;color:var(--fg);text-decoration:line-through;opacity:0.55;">Public Comparison</div>
-          <div style="font-size:0.8125rem;color:var(--fg-light);line-height:1.55;">Directly contradicted the empathy map's central finding: being watched is the anxiety trigger, not the missing motivation.</div>
-        </div>
-        <div style="background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius-lg);padding:30px;position:relative;overflow:hidden;">
-          <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent-terracotta);"></div>
-          <div style="font-size:1.75rem;margin-bottom:14px;opacity:0.6;">⏱️</div>
-          <div style="font-family:var(--font-display);font-weight:700;font-size:1rem;margin-bottom:10px;color:var(--fg);text-decoration:line-through;opacity:0.55;">Timers &amp; Streaks</div>
-          <div style="font-size:0.8125rem;color:var(--fg-light);line-height:1.55;">Usability testing showed 3 of 4 participants felt pressured by a countdown on the very first challenge screen we tested.</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-
-
-
-
-  <section class="section insights-section" id="insights">
-    <div class="container">
-      <div class="reveal">
-        <div class="section-label" style="color:var(--accent-periwinkle)">Visual Design Research</div>
-        <h2 style="font-size: 3rem; margin-bottom: 24px;">🎨 Visual Design Research &amp; Insights</h2>
-      </div>
-      
-      <div class="insights-grid reveal">
-        <div class="insights-content">
-          <p>The visual design research for <strong>olo</strong> focused on understanding how digital interfaces can feel emotionally safe, calm, and non-overstimulating for introverted and socially anxious users. Instead of following traditional engagement-driven UI patterns, the research explored how color, shape, spacing, typography, and interaction design influence emotional comfort and cognitive load.</p>
-          <p>We analyzed products such as Headspace, Calm, and Duolingo to understand how soft visual systems reduce anxiety and how gamification can remain motivating without becoming aggressive.</p>
-          
-          <div class="insights-list">
-            <div class="insights-item">
-              <h4>Approachability</h4>
-              <p>Rounded shapes associated with safety and approachability.</p>
-            </div>
-            <div class="insights-item">
-              <h4>Trust</h4>
-              <p>Muted colors associated with calmness and deep trust.</p>
-            </div>
-            <div class="insights-item">
-              <h4>Reduced Overwhelm</h4>
-              <p>Spacious layouts with reduced cognitive load and noise.</p>
-            </div>
-            <div class="insights-item">
-              <h4>Emotional Comfort</h4>
-              <p>Minimal UI clutter focused on intentional interaction moments.</p>
-            </div>
-          </div>
-
-          <div style="margin-top: 48px; padding: 32px; background: var(--accent-sage-light); border-radius: var(--radius-squircle);">
-            <h4 style="font-size: 1.25rem; margin-bottom: 12px; color: var(--accent-sage);">The Power of Squircles</h4>
-            <p style="margin-bottom: 0;">We integrated <strong>squircles</strong> — shapes that blend characteristics of squares and circles — into challenge cards, buttons, and puzzle pieces to bridge the gap between structure and softness.</p>
-          </div>
-        </div>
-
-        <div class="insights-visuals">
-          <div class="insight-card" onclick="openLightbox('mp4hexwv-Screenshot-2026-05-13-at-9.58.01-PM.png', 'Color Psychology &amp; Mood Research')">
-            <img src="mp4hexwv-Screenshot-2026-05-13-at-9.58.01-PM.png" alt="Color Psychology Research" loading="lazy" decoding="async">
-            <div class="insight-caption">Color Psychology &amp; Mood Research</div>
-          </div>
-          <div class="insight-card" onclick="openLightbox('mp4hfsbd-Screenshot-2026-05-13-at-9.58.41-PM.png', 'A Guide to Designing for Introverts')">
-            <img src="mp4hfsbd-Screenshot-2026-05-13-at-9.58.41-PM.png" alt="UX References" loading="lazy" decoding="async">
-            <div class="insight-caption">External Guides &amp; UX Benchmarking</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section prototype-section" id="process">
-    <div class="container">
-      <div class="reveal">
-        <div class="section-label" style="color:var(--accent-sage)">Overview</div>
-        <h2 class="section-title">Prototype Development</h2>
-      </div>
-      <p class="prototype-intro">The Challenge Screen evolved through four iterative passes — from a dense wireframe to a polished, calm interface with color hierarchy, step illustrations, and design-system-aligned components.</p>
-      <div class="evolution-timeline">
-        <div class="evolution-card">
-          <div class="evolution-phone-frame">
-            <span class="evolution-stage-overlay">V1</span>
-            <div class="evolution-phone-notch"></div>
-            <img src="mp4l14xk-Screenshot-2026-05-13-at-11.39.15-PM.png" alt="Wireframe v1" loading="lazy" decoding="async">
-          </div>
-          <div class="evolution-info">
-            <div class="evolution-title">Dense Wireframe</div>
-            <p class="evolution-desc">Initial low-fidelity prototype with diary and social connections features.</p>
-          </div>
-        </div>
-        <div class="evolution-card">
-          <div class="evolution-phone-frame">
-            <span class="evolution-stage-overlay">V2</span>
-            <div class="evolution-phone-notch"></div>
-            <img src="mp4l1baf-Screenshot-2026-05-13-at-11.39.24-PM.png" alt="Wireframe v2" loading="lazy" decoding="async">
-          </div>
-          <div class="evolution-info">
-            <div class="evolution-title">Streamlined Flow</div>
-            <p class="evolution-desc">Removed non-core features, added step numbers and difficulty metadata.</p>
-          </div>
-        </div>
-        <div class="evolution-card">
-          <div class="evolution-phone-frame">
-            <span class="evolution-stage-overlay">V3</span>
-            <div class="evolution-phone-notch"></div>
-            <img src="mp4l1lg7-Screenshot-2026-05-13-at-11.39.37-PM.png" alt="Wireframe v3" loading="lazy" decoding="async">
-          </div>
-          <div class="evolution-info">
-            <div class="evolution-title">Visual Hierarchy</div>
-            <p class="evolution-desc">Added color hierarchy, step illustrations, and calming typography.</p>
-          </div>
-        </div>
-        <div class="evolution-card">
-          <div class="evolution-phone-frame">
-            <span class="evolution-stage-overlay">V4</span>
-            <div class="evolution-phone-notch"></div>
-            <img src="mp4l1te4-Screenshot-2026-05-13-at-11.39.47-PM.png" alt="Wireframe v4" loading="lazy" decoding="async">
-          </div>
-          <div class="evolution-info">
-            <div class="evolution-title">Final Polish</div>
-            <p class="evolution-desc">Optimized contrast, aligned with design system, added subtle interactions.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="full-width-hero reveal" style="height:auto;margin-bottom:48px;">
-        <div class="hero-video-container" style="border-radius:var(--radius-xl);overflow:hidden;">
-          <video autoplay="" muted="" loop="" playsinline="" controls="" class="hero-video" preload="metadata" style="border-radius:var(--radius-xl);">
-            <source src="mp4o4kxm-oloexp-2.mp4" type="video/mp4">
-          </video>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section journey-section" id="journey">
-    <div class="container">
-      <div class="reveal" style="text-align: center; margin-bottom: 80px;">
-        <div class="section-label" style="color:var(--accent-sage)">Takeaways</div>
-        <h2 style="font-size: 3rem;">The product, step by step.</h2>
-        <p style="max-width: 600px; margin: 24px auto 0; color: var(--fg-light);">From mood check-in to visualized growth — each stage of olo's core loop.</p>
-      </div>
-
-      <div class="journey-steps-nav">
-        <div class="journey-nav-item active" onclick="switchStep(1)">
-          <div class="step-dot">1</div>
-          <div class="step-label">Check In</div>
-        </div>
-        <div class="journey-nav-item" onclick="switchStep(2)">
-          <div class="step-dot">2</div>
-          <div class="step-label">Receive</div>
-        </div>
-        <div class="journey-nav-item" onclick="switchStep(3)">
-          <div class="step-dot">3</div>
-          <div class="step-label">Act</div>
-        </div>
-        <div class="journey-nav-item" onclick="switchStep(4)">
-          <div class="step-dot">4</div>
-          <div class="step-label">Reflect</div>
-        </div>
-        <div class="journey-nav-item" onclick="switchStep(5)">
-          <div class="step-dot">5</div>
-          <div class="step-label">Grow</div>
-        </div>
-      </div>
-
-      <div class="journey-display">
-        <div class="journey-text-content">
-          <div id="step-view-1" class="journey-step-view active">
-            <h3 class="journey-title">01. Emotional Awareness</h3>
-            <p class="journey-desc">Everything starts with awareness. Before any action, olo asks "How are you feeling?". We gauge your social energy level to ensure the challenges we suggest are always within your current capacity—never pushing too hard.</p>
-          </div>
-          <div id="step-view-2" class="journey-step-view">
-            <h3 class="journey-title">02. Tailored Challenges</h3>
-            <p class="journey-desc">Based on your mood, olo serves a personalized micro-challenge. Feeling quiet? The goal might be a "Passive Quest" like sitting in a park for 10 minutes. Feeling ready? It might be a "Connection Quest."</p>
-          </div>
-          <div id="step-view-3" class="journey-step-view">
-            <h3 class="journey-title">03. Real-World Action</h3>
-            <p class="journey-desc">The screen provides clear, supportive guidance during the interaction. A "Panic Button" is always available to provide a grounding exercise if the user feels overwhelmed mid-action.</p>
-          </div>
-          <div id="step-view-4" class="journey-step-view">
-            <h3 class="journey-title">04. Private Reflection</h3>
-            <p class="journey-desc">Once complete, we close the loop. Users record a quick voice reflection or select tags to process how they felt. This builds the habit of noticing small wins and reducing overthinking.</p>
-          </div>
-          <div id="step-view-5" class="journey-step-view">
-            <h3 class="journey-title">05. Visualized Progress</h3>
-            <p class="journey-desc">Growth isn't a leaderboard—it's a landscape. Every action adds a piece to your personal growth puzzle, visually expanding your comfort zone in a beautiful, non-competitive way.</p>
-          </div>
-        </div>
-
-        <div class="journey-phone-container">
-          <div class="journey-phone">
-            <img src="mp4gxo4v-Screenshot-2026-05-13-at-9.44.35-PM.png" class="journey-phone-img active" id="phone-img-1" alt="Step 1 Screen" loading="lazy" decoding="async">
-            <img src="mp4gy2p3-Screenshot-2026-05-13-at-9.44.54-PM.png" class="journey-phone-img" id="phone-img-2" alt="Step 2 Screen" loading="lazy" decoding="async">
-            <img src="mp4gyqj5-Screenshot-2026-05-13-at-9.45.25-PM.png" class="journey-phone-img" id="phone-img-3" alt="Step 3 Screen" loading="lazy" decoding="async">
-            <img src="mp4gz902-Screenshot-2026-05-13-at-9.45.49-PM.png" class="journey-phone-img" id="phone-img-4" alt="Step 4 Screen" loading="lazy" decoding="async">
-            <img src="mp4gzwdh-Screenshot-2026-05-13-at-9.46.20-PM.png" class="journey-phone-img" id="phone-img-5" alt="Step 5 Screen" loading="lazy" decoding="async">
-          </div>
-        </div>
-      </div>
-      <div class="journey-nav-btns">
-        <button class="journey-nav-btn" id="journeyPrev" onclick="prevStep()" disabled="">←</button>
-        <button class="journey-nav-btn" id="journeyNext" onclick="nextStep()">→</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- Reflection & What I'd do differently -->
-  <section class="section" style="background:var(--surface);">
-    <div class="container">
-      <div class="reveal" style="text-align:center;">
-        <div class="section-label" style="color:var(--accent-periwinkle)">Reflection</div>
-        <h2 class="section-title">What designing for the quiet taught us.</h2>
-        <p class="section-text" style="margin:0 auto 48px;">This case study reaffirmed that introvert-first design isn't about removing features — it's about removing pressure. Every decision, from cutting timers to private reflection, came back to one principle: design for comfort, not engagement.</p>
-      </div>
-      <div class="stack-on-mobile reveal stagger-2" style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
-        <div style="background:var(--surface-soft);border-radius:var(--radius-lg);padding:32px;border:1px solid var(--border-light);">
-          <div style="font-family:var(--font-display);font-size:2rem;font-weight:800;color:var(--accent-sage);line-height:1;margin-bottom:16px;">01</div>
-          <h4 style="font-size:1.1rem;margin-bottom:12px;">Research over assumptions</h4>
-          <p style="font-size:0.875rem;color:var(--fg-light);">Empathy mapping and persona development revealed that introverts don't need less social interaction — they need safer ways to initiate it.</p>
-        </div>
-        <div style="background:var(--surface-soft);border-radius:var(--radius-lg);padding:32px;border:1px solid var(--border-light);">
-          <div style="font-family:var(--font-display);font-size:2rem;font-weight:800;color:var(--accent-sage);line-height:1;margin-bottom:16px;">02</div>
-          <h4 style="font-size:1.1rem;margin-bottom:12px;">Pressure is the enemy of growth</h4>
-          <p style="font-size:0.875rem;color:var(--fg-light);">Removing timers, streaks, and public metrics wasn't "dumbing down" — it was removing the exact mechanics that trigger avoidance in anxious users.</p>
-        </div>
-        <div style="background:var(--surface-soft);border-radius:var(--radius-lg);padding:32px;border:1px solid var(--border-light);">
-          <div style="font-family:var(--font-display);font-size:2rem;font-weight:800;color:var(--accent-sage);line-height:1;margin-bottom:16px;">03</div>
-          <h4 style="font-size:1.1rem;margin-bottom:12px;">Calm is a feature, not a theme</h4>
-          <p style="font-size:0.875rem;color:var(--fg-light);">The visual language — squircles, muted greens, spacious layouts — directly reduced cognitive load, making the product feel safe before a single challenge was attempted.</p>
-        </div>
-      </div>
-
-      <div class="reveal stagger-2" style="margin-top:48px;padding:32px;background:var(--surface-soft);border-radius:var(--radius-lg);border:1px solid var(--border-light);">
-        <h4 style="font-size:1.4rem;margin-bottom:12px;font-family:var(--font-display);letter-spacing:-0.02em;">What I'd do differently</h4>
-        <p style="font-size:0.9375rem;color:var(--fg-light);line-height:1.7;max-width:820px;">Given this was a two-person, time-boxed concept, I'd prioritise a <strong style="color:var(--fg);">working build earlier</strong> so usability data could drive more decisions, and I'd recruit a <strong style="color:var(--fg);">larger, more diverse sample</strong> to move beyond directional signals. I'd also run a <strong style="color:var(--fg);">second case-study round with the same initial participants</strong> after the redesign — so we could show the before/after on the same people, rather than a single pass at different stages.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- USABILITY TESTING -->
-  <section class="section" id="testing" style="background:var(--surface-soft);">
-    <div class="container">
-      <div class="reveal">
-        <div class="section-label" style="color:var(--accent-terracotta)">Usability Testing</div>
-        <h2 class="section-title">What we tested, and what it actually changed.</h2>
-        <p class="section-text">Four participants (matched to our four personas) walked through a 7-task protocol against three named criteria. This is the round that killed the timer.</p>
-      </div>
-
-      <div class="testing-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:40px;margin:40px 0;">
-        <div>
-          <h4 style="margin-bottom:12px;font-size:1rem">User tasks</h4>
-          <ol class="task-list">
-            <li>Complete onboarding <div class="task-goal" style="color:var(--fg-light);font-size:0.8125rem;">Goal: understand personality, comfort zones, social energy</div></li>
-            <li>Log your mood <div class="task-goal" style="color:var(--fg-light);font-size:0.8125rem;">Goal: test emotional capture and simplicity</div></li>
-            <li>Explore your home screen <div class="task-goal" style="color:var(--fg-light);font-size:0.8125rem;">Goal: see where users naturally click</div></li>
-            <li>Attempt a daily social challenge <div class="task-goal" style="color:var(--fg-light);font-size:0.8125rem;">Goal: ensure clarity + emotional comfort</div></li>
-            <li>Navigate to the feed and react to a post <div class="task-goal" style="color:var(--fg-light);font-size:0.8125rem;">Goal: evaluate fear of judgment + clarity</div></li>
-            <li>Use the QR connect flow <div class="task-goal" style="color:var(--fg-light);font-size:0.8125rem;">Goal: test social comfort + usability</div></li>
-            <li>Check progress and settings in profile <div class="task-goal" style="color:var(--fg-light);font-size:0.8125rem;">Goal: validate information hierarchy</div></li>
+      <div class="problem-grid">
+        <div class="reveal">
+          <h3 style="font-size:1.15rem;margin-bottom:18px">What was unclear going in</h3>
+          <ol class="unknowns">
+            <li><div>Can you build social confidence with almost no social features?<span class="maps">→ Decisions 01 and 03</span></div></li>
+            <li><div>How much push helps before it becomes pressure?<span class="maps">→ Decision 02</span></div></li>
+            <li><div>Can one challenge fit people who range from "extremely shy" to "mostly fine"?<span class="maps">→ Smaller calls</span></div></li>
           </ol>
         </div>
-        <div>
-          <h4 style="margin-bottom:12px;font-size:1rem">Evaluation criteria</h4>
-          <div style="display:flex;flex-direction:column;gap:14px;">
-            <div style="background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius-md);padding:18px 20px;">
-              <h4 style="font-size:0.9375rem;margin-bottom:6px;color:var(--accent-periwinkle);">Usability Factors</h4>
-              <p style="font-size:0.825rem;color:var(--fg-light);margin:0;">Can users complete tasks without hesitation? Is navigation intuitive? Are labels clear?</p>
-            </div>
-            <div style="background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius-md);padding:18px 20px;">
-              <h4 style="font-size:0.9375rem;margin-bottom:6px;color:var(--accent-periwinkle);">Clarity of Purpose</h4>
-              <p style="font-size:0.825rem;color:var(--fg-light);margin:0;">Does the user understand what the app does — and does it feel like it's actually helping introverts grow socially?</p>
-            </div>
-            <div style="background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius-md);padding:18px 20px;">
-              <h4 style="font-size:0.9375rem;margin-bottom:6px;color:var(--accent-periwinkle);">Emotional Comfort</h4>
-              <p style="font-size:0.825rem;color:var(--fg-light);margin:0;">Does the app create pressure or relief? Do challenges feel doable, or intimidating?</p>
-            </div>
+        <div class="aim-card reveal" data-od-id="aim-card">
+          <div class="k">What I aimed to change</div>
+          <h3>Get an anxious first-time user to do one real-world social action, without feeling watched.</h3>
+          <p>Not daily active users, and not time in app. The product succeeds when someone puts their phone down and says hi to a barista.</p>
+          <div class="chip-row" aria-label="Constraints">
+            <span class="chip">2 months</span>
+            <span class="chip">2 designers, no engineers</span>
+            <span class="chip">No live build</span>
+            <span class="chip">4 test participants</span>
+            <span class="chip">18 survey responses</span>
           </div>
+          <p class="note">This is the aim, not a measured result. Without a build, nothing could be measured in the field.</p>
         </div>
       </div>
-
-      <h4 style="margin:40px 0 4px;font-size:1rem">Targets we tested against</h4>
-      <p style="font-size:0.85rem;color:var(--fg-light);margin-bottom:8px;">These were our success thresholds going in — the rubric, not a results claim.</p>
-      <div class="stack-on-mobile" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:32px 0;">
-        <div style="background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius-md);padding:18px;">
-          <div style="font-weight:700;font-size:0.85rem;margin-bottom:6px;">Task Success Rate</div>
-          <div style="font-size:0.75rem;color:var(--accent-sage);font-weight:700;">Goal: &gt;85% complete without help</div>
-        </div>
-        <div style="background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius-md);padding:18px;">
-          <div style="font-weight:700;font-size:0.85rem;margin-bottom:6px;">Time on Task</div>
-          <div style="font-size:0.75rem;color:var(--accent-sage);font-weight:700;">Onboarding &lt;90s · mood log &lt;10s</div>
-        </div>
-        <div style="background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius-md);padding:18px;">
-          <div style="font-weight:700;font-size:0.85rem;margin-bottom:6px;">Error Rate</div>
-          <div style="font-size:0.75rem;color:var(--accent-sage);font-weight:700;">Goal: &lt;2 misclicks per task</div>
-        </div>
-        <div style="background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius-md);padding:18px;">
-          <div style="font-weight:700;font-size:0.85rem;margin-bottom:6px;">Clarity Score</div>
-          <div style="font-size:0.75rem;color:var(--accent-sage);font-weight:700;">Goal: 8+ / 10</div>
-        </div>
-        <div style="background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius-md);padding:18px;">
-          <div style="font-weight:700;font-size:0.85rem;margin-bottom:6px;">Social Anxiety Trigger Check</div>
-          <div style="font-size:0.75rem;color:var(--accent-sage);font-weight:700;">Goal: &lt;10% report discomfort</div>
-        </div>
-        <div style="background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius-md);padding:18px;">
-          <div style="font-weight:700;font-size:0.85rem;margin-bottom:6px;">Net Promoter (would recommend)</div>
-          <div style="font-size:0.75rem;color:var(--accent-sage);font-weight:700;">Goal: avg. 8+ / 10</div>
-        </div>
-      </div>
-
-      <div class="reveal stagger-2" style="margin-top:48px;padding:40px;background:var(--surface);border-radius:var(--radius-lg);border:1px solid var(--border-light);">
-        <h4 style="font-size:1.4rem;margin-bottom:8px;font-family:var(--font-display);letter-spacing:-0.02em;">Impact &amp; Outcomes</h4>
-        <p style="font-size:0.9rem;color:var(--fg-light);margin-bottom:24px;max-width:720px;">olo was a two-person concept project, not a shipped product — so there's no retention or revenue data yet. What we do have is a concrete, honest before/after driven by real testing with a small sample.</p>
-
-        <div class="stack-on-mobile" style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:32px;">
-          <div style="background:var(--surface-soft);border-radius:var(--radius-md);padding:24px;">
-            <h5 style="font-size:0.9rem;margin-bottom:12px;color:var(--fg);">Before testing</h5>
-            <ul style="list-style:none;padding:0;">
-              <li style="padding:6px 0;padding-left:20px;position:relative;font-size:0.85rem;color:var(--fg-light);">Single fixed-intensity daily challenge</li>
-              <li style="padding:6px 0;padding-left:20px;position:relative;font-size:0.85rem;color:var(--fg-light);">Countdown timer on the challenge screen</li>
-              <li style="padding:6px 0;padding-left:20px;position:relative;font-size:0.85rem;color:var(--fg-light);">Public feed as a core surface</li>
-            </ul>
-          </div>
-          <div style="background:var(--surface-soft);border-radius:var(--radius-md);padding:24px;">
-            <h5 style="font-size:0.9rem;margin-bottom:12px;color:var(--accent-sage);">After testing</h5>
-            <ul style="list-style:none;padding:0;">
-              <li style="padding:6px 0;padding-left:20px;position:relative;font-size:0.85rem;color:var(--fg-light);">Three difficulty tiers (easy / med / deep)</li>
-              <li style="padding:6px 0;padding-left:20px;position:relative;font-size:0.85rem;color:var(--fg-light);">No timers anywhere in the product</li>
-              <li style="padding:6px 0;padding-left:20px;position:relative;font-size:0.85rem;color:var(--fg-light);">Feed removed; Safe Zone + Cultural Tips promoted to home</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="stack-on-mobile" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px;">
-          <div style="background:var(--accent-sage-light);border-radius:var(--radius-md);padding:20px;text-align:center;">
-            <div style="font-family:var(--font-display);font-size:1.9rem;font-weight:800;color:var(--accent-sage);line-height:1;">4/4</div>
-            <div style="font-size:0.78rem;color:var(--fg);margin-top:6px;">independently praised navigation as clean &amp; easy</div>
-          </div>
-          <div style="background:var(--accent-sage-light);border-radius:var(--radius-md);padding:20px;text-align:center;">
-            <div style="font-family:var(--font-display);font-size:1.9rem;font-weight:800;color:var(--accent-sage);line-height:1;">3/4</div>
-            <div style="font-size:0.78rem;color:var(--fg);margin-top:6px;">felt pressured by the countdown → timers cut</div>
-          </div>
-          <div style="background:var(--accent-sage-light);border-radius:var(--radius-md);padding:20px;text-align:center;">
-            <div style="font-family:var(--font-display);font-size:1.9rem;font-weight:800;color:var(--accent-sage);line-height:1;">4.0/5</div>
-            <div style="font-size:0.78rem;color:var(--fg);margin-top:6px;">pre-rename understanding across an 18-response survey</div>
-          </div>
-        </div>
-
-        <div style="padding:24px;background:var(--accent-terracotta-light);border-radius:var(--radius-md);font-size:0.9rem;color:var(--fg);line-height:1.6;margin-bottom:24px;">
-          <strong style="color:var(--accent-terracotta);">The honest caveat — </strong>this is a small, directional sample (4 usability sessions, 18 survey responses), not statistically powered. It's real testing, but I want to be clear it isn't proof of shipped impact. The two changes that directly trace to user feedback — removing timers and splitting difficulty into three tiers — are the ones I'm most confident in.
-        </div>
-
-        <div class="stack-on-mobile" style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
-          <div style="font-size:0.9rem;color:var(--fg-light);line-height:1.6;">
-            <strong style="color:var(--fg);">AI-generated brand launch</strong> — The final promo video was produced entirely with AI tools, from visual generation to motion and voiceover, extending rapid prototyping into a marketable asset.
-          </div>
-          <div style="font-size:0.9rem;color:var(--fg-light);line-height:1.6;">
-            <strong style="color:var(--fg);">Testing shaped the product</strong> — The shift from a single difficulty level to three tiers, and from timers to self-paced challenges, came directly from what participants told us — not from assumptions.
-          </div>
-        </div>
-      </div>
-
     </div>
   </section>
 
-  <!-- Product Showcase — Full-Bleed Mockups -->
-  <section class="section mockup-showcase">
+  <!-- OWNERSHIP -->
+  <section class="section" id="ownership" data-od-id="ownership">
     <div class="container">
-      <div class="mockup-grid reveal stagger-2">
-        <div class="mockup-card" onclick="openLightbox('mp4j9scn-Mockup-4-Mood_3000x2000px.png', 'Daily Life — olo in Context')">
-          <img src="mp4j9scn-Mockup-4-Mood_3000x2000px.png" alt="Olo Daily Life Mockup" loading="lazy" decoding="async">
+      <div class="reveal">
+        <span class="section-label">What I owned</span>
+        <h2 class="section-title">I led a team of two. Here's where the calls were mine.</h2>
+      </div>
+      <!-- VERIFY: confirm each ownership line below matches what you actually did. -->
+      <div class="own-grid reveal">
+        <div class="own-card mine" data-od-id="owned-mine">
+          <h3>Mine</h3>
+          <ul>
+            <li>Product direction and scope<span>Picked between the two concepts and decided what to cut: the map, the event radar, the feed.</span></li>
+            <li>Usability test plan<span>The 7-task protocol, the three evaluation criteria and the success thresholds set before testing.</span></li>
+            <li>Turning findings into changes<span>Took each test finding through to a product change (see the before/after under Result).</span></li>
+            <li>The challenge-screen system<span>Four iterations, from a single screen to a structure that works for any challenge type.</span></li>
+          </ul>
         </div>
-        <div class="mockup-card" onclick="openLightbox('mp4j9vme-Mockup-4-Mood_3000x2000px-1.png', 'Travel — olo on the Go')">
-          <img src="mp4j9vme-Mockup-4-Mood_3000x2000px-1.png" alt="Olo Travel Mockup" loading="lazy" decoding="async">
-        </div>
-        <div class="mockup-card" onclick="openLightbox('mp4jf1xv-Mockup-1_3000x2000px.png', 'The Experience')">
-          <img src="mp4jf1xv-Mockup-1_3000x2000px.png" alt="Olo Mockup 1" loading="lazy" decoding="async">
-        </div>
-        <div class="mockup-card" onclick="openLightbox('mp4jf59l-Mockup-3_3000x2000px.png', 'Calm Companion')">
-          <img src="mp4jf59l-Mockup-3_3000x2000px.png" alt="Olo Mockup 3" loading="lazy" decoding="async">
+        <div class="own-card shared" data-od-id="owned-shared">
+          <h3>Shared with Cosima</h3>
+          <ul>
+            <li>Research: empathy map, four personas, competitor SWOT</li>
+            <li>Concept sketching and the naming survey</li>
+            <li>Visual language and the component sheet</li>
+          </ul>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- DECISIONS -->
+  <section class="section" id="decisions" data-od-id="decisions" style="background:var(--surface-soft)">
+    <div class="container">
+      <div class="reveal">
+        <span class="section-label">Decisions</span>
+        <h2 class="section-title">Three calls that shaped the product, and what each one cost.</h2>
+      </div>
 
+      <article class="decision reveal" data-od-id="decision-direction">
+        <div>
+          <div class="d-num">Decision 01 · Product direction</div>
+          <h3 class="d-title">A map of nearby strangers, or a private companion?</h3>
+          <dl class="d-rows">
+            <dt>Situation</dt>
+            <dd>Research gave us two concepts pulling in opposite directions. One connected people fast but exposed them. The other felt safe but risked becoming a journal that never got anyone out of the house.</dd>
+            <dt>Options</dt>
+            <dd><ul class="opts">
+              <li><b>A</b><div><strong>Live map</strong> of nearby, comfort-matched people with buddy mode. The fastest route to real connection, but you're visible to strangers.</div></li>
+              <li><b>B</b><div><strong>Private companion</strong> with a diary, event radar and calming sounds. Safe, but passive.</div></li>
+              <li class="chosen"><b>C</b><div><strong>Hybrid:</strong> B's private loop, A's mood-matching, and real-world micro-challenges as the bridge between the two.<span class="tag">Chosen</span></div></li>
+            </ul></dd>
+            <dt>Trade-off</dt>
+            <dd class="tradeoff">I cut the map and the event radar, so olo can't introduce you to anyone. It gets you ready to talk to people who are already around you.</dd>
+            <dt>Evidence</dt>
+            <dd>Visibility was the most common threat in the SWOT across all three competitors, and the main trigger in the empathy map.</dd>
+          </dl>
+        </div>
+        <figure class="d-figure">
+          <div class="shots">
+            <button type="button" onclick="openLightbox(this)" data-src="mp57ykwf-Screenshot-2026-05-14-at-10.21.08-AM.png" data-cap="Concept A: live map with mood-emoji visibility and buddy mode"><img src="mp57ykwf-Screenshot-2026-05-14-at-10.21.08-AM.png" alt="Concept A sketch: live map" loading="lazy"></button>
+            <button type="button" onclick="openLightbox(this)" data-src="mp57yq6q-Screenshot-2026-05-14-at-10.21.15-AM.png" data-cap="Concept B: mood check-in, diary, event radar, calm sounds"><img src="mp57yq6q-Screenshot-2026-05-14-at-10.21.15-AM.png" alt="Concept B sketch: private companion" loading="lazy"></button>
+          </div>
+          <figcaption>Concept A (left) and Concept B (right). Click to enlarge.</figcaption>
+        </figure>
+      </article>
 
-  <section class="full-width-hero reveal">
-    <div class="hero-video-container">
-      <span class="video-tag">AI generated · Brand launch</span>
-      <video autoplay="" muted="" loop="" playsinline="" controls="" class="hero-video" preload="metadata">
-        <source src="mp4oljph-olo-promo-2-2-2.mp4" type="video/mp4">
-      </video>
+      <article class="decision reveal" data-od-id="decision-timer">
+        <div>
+          <div class="d-num">Decision 02 · Pressure</div>
+          <h3 class="d-title">Keep a short countdown on challenges, or remove it?</h3>
+          <dl class="d-rows">
+            <dt>Situation</dt>
+            <dd>The challenge screen we tested had a 2-minute countdown. The idea was that a deadline gives structure and gets people to finish, which is a standard habit-app lever.</dd>
+            <dt>Options</dt>
+            <dd><ul class="opts">
+              <li><b>A</b><div>Keep the timer and soften the copy.</div></li>
+              <li><b>B</b><div>Make it opt-in for users who want a push.</div></li>
+              <li class="chosen"><b>C</b><div>Remove timers everywhere. Show an estimated <strong>duration chip</strong> as information only, not a deadline.<span class="tag">Chosen</span></div></li>
+            </ul></dd>
+            <dt>Trade-off</dt>
+            <dd class="tradeoff">We lost our only in-the-moment nudge. If someone hesitates mid-challenge, nothing pushes them over the line.</dd>
+            <dt>Evidence</dt>
+            <dd class="quote">3 of 4 testers felt uncomfortable or pressured by the countdown. Even a short one read as a deadline.<cite>Usability testing, 4 participants</cite></dd>
+          </dl>
+        </div>
+        <figure class="d-figure">
+          <div class="shots">
+            <button type="button" class="tall" onclick="openLightbox(this)" data-src="mp4l1baf-Screenshot-2026-05-13-at-11.39.24-PM.png" data-cap="Challenge screen V2: the tested structure"><img src="mp4l1baf-Screenshot-2026-05-13-at-11.39.24-PM.png" alt="Challenge screen, iteration 2" loading="lazy"></button>
+            <button type="button" class="tall" onclick="openLightbox(this)" data-src="mp4l1te4-Screenshot-2026-05-13-at-11.39.47-PM.png" data-cap="Challenge screen V4: duration chip, no countdown"><img src="mp4l1te4-Screenshot-2026-05-13-at-11.39.47-PM.png" alt="Challenge screen, final iteration" loading="lazy"></button>
+          </div>
+          <figcaption>Challenge screen, V2 to V4. Duration became information, not a deadline.</figcaption>
+        </figure>
+      </article>
+
+      <article class="decision reveal" data-od-id="decision-feed">
+        <div>
+          <div class="d-num">Decision 03 · Social layer</div>
+          <h3 class="d-title">Soften the community feed, or cut it?</h3>
+          <dl class="d-rows">
+            <dt>Situation</dt>
+            <dd>The prototype we tested had a feed: seeing others' progress and reacting to posts. It was the one place where olo users met each other, and every competitor had one.</dd>
+            <dt>Options</dt>
+            <dd><ul class="opts">
+              <li><b>A</b><div>Keep the feed, with anonymous posting.</div></li>
+              <li><b>B</b><div>Friends-only feed with no reactions or counts.</div></li>
+              <li class="chosen"><b>C</b><div>Cut it. Give its home-screen space to <strong>Safe Zone</strong> filters and <strong>Cultural Tips</strong>.<span class="tag">Chosen</span></div></li>
+            </ul></dd>
+            <dt>Trade-off</dt>
+            <dd class="tradeoff">No social proof and no community. Testers still said they wanted connection, so this call left a real need unmet. See the learning under Result.</dd>
+            <dt>Evidence</dt>
+            <dd class="quote">"Not of importance right now." All 4 testers independently valued Safe Zone and Cultural Tips, features we'd treated as secondary.<cite>Usability testing, 4 participants</cite></dd>
+          </dl>
+        </div>
+        <figure class="d-figure">
+          <div class="shots">
+            <button type="button" class="tall" onclick="openLightbox(this)" data-src="mp56w1tt-Home.png" data-cap="Home after the cut: patterns, Safe Zone, Cultural Tips"><img src="mp56w1tt-Home.png" alt="Final home screen" loading="lazy"></button>
+            <button type="button" class="tall" onclick="openLightbox(this)" data-src="mp4dwzkv-Screenshot-2026-05-13-at-8.20.04-PM.png" data-cap="Change log: what testing told us to cut"><img src="mp4dwzkv-Screenshot-2026-05-13-at-8.20.04-PM.png" alt="Change log from testing" loading="lazy"></button>
+          </div>
+          <figcaption>The final home screen, and the change log from testing.</figcaption>
+        </figure>
+      </article>
+
+      <h3 class="sub-title">Smaller calls</h3>
+      <div class="table-wrap reveal">
+        <table class="small-calls" data-od-id="small-calls">
+          <thead><tr><th>Call</th><th>Chose</th><th>Over</th><th>Because</th></tr></thead>
+          <tbody>
+            <tr><td>Challenge intensity</td><td>Three tiers (easy / med / deep), shown as a sprout growing into a tree</td><td>One fixed daily challenge</td><td>Testers ranged from "extremely shy" to extrovert</td></tr>
+            <tr><td>Mood input</td><td>Six plain-language states</td><td>A 1–10 slider</td><td>Testers read the slider as clinical</td></tr>
+            <tr><td>Progress</td><td>A private puzzle that fills in</td><td>Streaks and leaderboards</td><td>Shy testers wanted reassurance, not a score</td></tr>
+            <tr><td>Name</td><td>"olo"</td><td>"Elo", "Bloom"</td><td>"Elo" echoes ranking systems and "Bloom" read as therapy (18-response survey)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULT -->
+  <section class="section" id="result" data-od-id="result">
+    <div class="container">
+      <div class="reveal">
+        <span class="section-label">Result</span>
+        <h2 class="section-title">What changed because of the work.</h2>
+        <p class="section-text">olo was never built, so there's no retention data. What I can show is how testing changed the product, and what people said.</p>
+      </div>
+
+      <div class="before-after reveal">
+        <div class="ba-card before"><h4>Before testing</h4><ul>
+          <li>One fixed-intensity daily challenge</li>
+          <li>Countdown timer on the challenge screen</li>
+          <li>Generic motivational tips</li>
+          <li>Public feed as a core surface</li>
+        </ul></div>
+        <div class="ba-card after"><h4>After testing</h4><ul>
+          <li>Three difficulty tiers</li>
+          <li>No timers anywhere in the product</li>
+          <li>Concrete tips ("start with people you see regularly")</li>
+          <li>Feed removed; Safe Zone and Cultural Tips promoted to home</li>
+        </ul></div>
+      </div>
+
+      <h3 class="sub-title">Qualitative proof</h3>
+      <div class="proof-grid reveal">
+        <div class="proof" data-od-id="proof-reflection"><div class="big">“</div><p class="quote">It was nerve-wracking at first, but the barista was really friendly. I felt proud afterwards.</p><div class="src">Tester reflection after a challenge</div></div>
+        <div class="proof" data-od-id="proof-navigation"><div class="big">4 / 4</div><p>testers independently called navigation "clean, simple and easy", so I left the four-tab structure alone.</p><div class="src">Usability testing</div></div>
+        <div class="proof" data-od-id="proof-concept"><div class="big">4.0 / 5</div><p>average concept-understanding score, before the rename to olo.</p><div class="src">Concept survey, 18 responses</div></div>
+      </div>
+
+      <div class="learning">
+        <div class="learn-card reveal" data-od-id="learning">
+          <span class="label-honest">What I'd do differently</span>
+          <h3>I solved "visible", and gave up on "social" along with it.</h3>
+          <p>Cutting the feed was the right call for safety. But testers still asked for connection, and I treated "no visible social features" as if it meant "no social features". The next step is an opt-in, low-visibility way to meet one other person. That isn't a feed; it's closer to Concept A's buddy mode, with stricter controls.</p>
+        </div>
+        <div class="learn-card reveal" data-od-id="would-measure">
+          <span class="label-honest">If it shipped: targets, not results</span>
+          <h3>What I'd measure</h3>
+          <ul>
+            <li><b>First-challenge completion</b>The share of new users who finish "Befriending the Mirror" in their first session.</li>
+            <li><b>Step-up rate</b>How many users move from easy to medium challenges within two weeks.</li>
+            <li><b>Return after a skipped day</b>Without streaks, does a missed day still end the habit?</li>
+          </ul>
+        </div>
+      </div>
+      <p style="margin-top:24px;font-size:0.85rem;color:var(--fg-faint);max-width:760px">Limitations: 4 usability participants and 18 survey responses give a direction, not statistical proof. No formal WCAG audit was run yet.</p>
+    </div>
+  </section>
+
+  <!-- SCREENS -->
+  <section class="section-tight" id="screens" data-od-id="screens" style="background:var(--surface-soft)">
+    <div class="container">
+      <span class="section-label" style="color:var(--accent-periwinkle-ink)">The product</span>
+      <h2 class="section-title">Five steps, and no feed.</h2>
+      <p class="section-text">How it works: tap a step to see how olo moves someone from a mood check to a real-world moment and back to private reflection.</p>
+      <div class="journey" data-od-id="how-it-works">
+        <ul class="journey-nav" role="tablist" aria-label="How olo works"><li role="presentation"><button type="button" class="journey-tab" role="tab" id="jtab-1" aria-controls="jview-1" aria-selected="true" tabindex="0" data-step="1"><span class="dot">1</span><span class="lbl">Check in</span></button></li><li role="presentation"><button type="button" class="journey-tab" role="tab" id="jtab-2" aria-controls="jview-2" aria-selected="false" tabindex="-1" data-step="2"><span class="dot">2</span><span class="lbl">Receive</span></button></li><li role="presentation"><button type="button" class="journey-tab" role="tab" id="jtab-3" aria-controls="jview-3" aria-selected="false" tabindex="-1" data-step="3"><span class="dot">3</span><span class="lbl">Act</span></button></li><li role="presentation"><button type="button" class="journey-tab" role="tab" id="jtab-4" aria-controls="jview-4" aria-selected="false" tabindex="-1" data-step="4"><span class="dot">4</span><span class="lbl">Reflect</span></button></li><li role="presentation"><button type="button" class="journey-tab" role="tab" id="jtab-5" aria-controls="jview-5" aria-selected="false" tabindex="-1" data-step="5"><span class="dot">5</span><span class="lbl">Grow</span></button></li></ul>
+        <div class="journey-display">
+          <div>
+            <div class="journey-view" id="jview-1" role="tabpanel" aria-labelledby="jtab-1"><h3>01. Mood check-in</h3><p>olo opens with six plain-language states (Calm, Nervous, Energetic, Sluggish, Drained, Alert) instead of a 1–10 slider, which testers read as clinical. The state you pick shapes everything that follows.</p><div class="journey-detail">Onboarding also asks what brings you here (build confidence, prepare for conversations, make 1–2 friends) and what feels hardest, so day-one challenges are personalised, not generic.</div></div>
+            <div class="journey-view" id="jview-2" role="tabpanel" aria-labelledby="jtab-2" hidden><h3>02. A matched challenge</h3><p>Home surfaces quests based on your patterns, for example that you do better in the evenings or that cafés feel safer than open spaces, and groups them by real-world place, like “Local Coffee Shop: 2 quests”.</p><div class="journey-detail">Every challenge has a difficulty tier (easy / med / deep, shown as a sprout growing into a tree) and a duration chip, so the ask always fits what you picked at check-in.</div></div>
+            <div class="journey-view" id="jview-3" role="tabpanel" aria-labelledby="jtab-3" hidden><h3>03. The real-world action</h3><p>Every new user's first quest is “Befriending the Mirror”: practising a greeting alone before trying it on a stranger. From there, challenges scale from saying hi to small talk to complimenting a coworker.</p><div class="journey-detail">Tips are concrete, not motivational: “start with people you see regularly”, “you don't need a full conversation; a nod counts”.</div></div>
+            <div class="journey-view" id="jview-4" role="tabpanel" aria-labelledby="jtab-4" hidden><h3>04. Private reflection</h3><p>After a challenge, users record a short voice note or tag how it went. It stays private and is never posted anywhere.</p><div class="journey-detail">From testing: “It was nerve-wracking at first, but the barista was really friendly. I felt proud afterwards.”</div></div>
+            <div class="journey-view" id="jview-5" role="tabpanel" aria-labelledby="jtab-5" hidden><h3>05. Visualised growth</h3><p>Progress shows as a puzzle filling in, one piece per completed challenge, instead of a leaderboard or a streak counter.</p><div class="journey-detail">Your Space turns reflections into self-knowledge: best times of day, safest places, and a notification tone you choose yourself (Gentle only / Moderate / Brave).</div></div>
+          </div>
+          <div class="journey-phone-wrap">
+            <div class="journey-phone">
+              <img src="mp4gxo4v-Screenshot-2026-05-13-at-9.44.35-PM.png" alt="Check in screen" class="active" data-step="1" loading="lazy">
+              <img src="mp4gy2p3-Screenshot-2026-05-13-at-9.44.54-PM.png" alt="Receive screen" class="" data-step="2" loading="lazy">
+              <img src="mp4gyqj5-Screenshot-2026-05-13-at-9.45.25-PM.png" alt="Act screen" class="" data-step="3" loading="lazy">
+              <img src="mp4gz902-Screenshot-2026-05-13-at-9.45.49-PM.png" alt="Reflect screen" class="" data-step="4" loading="lazy">
+              <img src="mp4gzwdh-Screenshot-2026-05-13-at-9.46.20-PM.png" alt="Grow screen" class="" data-step="5" loading="lazy">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="gallery-wrap">
+      <div class="gallery-scroll-container" id="galleryScroll">
+        <button type="button" class="gallery-scroll-item" onclick="openLightbox(this)" data-src="mp56vxkr-Onboarding.png" data-cap="Onboarding: value proposition"><img src="mp56vxkr-Onboarding.png" alt="Onboarding screens" loading="lazy"><span class="gallery-caption">Onboarding</span></button>
+        <button type="button" class="gallery-scroll-item" onclick="openLightbox(this)" data-src="mp56vzpf-Onboarding-part-2.png" data-cap="Personalisation and first quest: Befriending the Mirror"><img src="mp56vzpf-Onboarding-part-2.png" alt="Personalisation screens" loading="lazy"><span class="gallery-caption">First quest</span></button>
+        <button type="button" class="gallery-scroll-item" onclick="openLightbox(this)" data-src="mp56w1tt-Home.png" data-cap="Home: quests based on your patterns"><img src="mp56w1tt-Home.png" alt="Home screen" loading="lazy"><span class="gallery-caption">Home</span></button>
+        <button type="button" class="gallery-scroll-item" onclick="openLightbox(this)" data-src="mp56wfj7-quests.png" data-cap="Quests: custom challenge generator"><img src="mp56wfj7-quests.png" alt="Quests screen" loading="lazy"><span class="gallery-caption">Quests</span></button>
+        <button type="button" class="gallery-scroll-item" onclick="openLightbox(this)" data-src="mp56wfj2-Profile.png" data-cap="Profile, Your Space: reflections, patterns, preferences"><img src="mp56wfj2-Profile.png" alt="Profile screen" loading="lazy"><span class="gallery-caption">Your Space</span></button>
+      </div>
+      <button class="gallery-arrow gallery-arrow-left" id="galleryArrowLeft" aria-label="Scroll screens left">‹</button>
+      <button class="gallery-arrow gallery-arrow-right" id="galleryArrowRight" aria-label="Scroll screens right">›</button>
+    </div>
+    <div class="container">
+      <div class="walkthrough"><video muted loop playsinline controls preload="metadata" aria-label="olo product walkthrough"><source src="mp4o4kxm-oloexp-2.mp4" type="video/mp4"></video></div>
+    </div>
+  </section>
+
+  <!-- FULL TRAIL -->
+  <section class="section trail" id="trail" data-od-id="trail">
+    <div class="container">
+      <span class="section-label" style="color:var(--accent-sage-ink)">Appendix</span>
+      <h2 class="section-title">The full research trail.</h2>
+      <p class="section-text">For anyone who wants the full trail: everything behind the decisions above. Open any section.</p>
+
+      <div class="trail-list">
+        <details class="trail-item" data-od-id="trail-empathy">
+          <summary><span class="t-num">01</span><span class="t-title">Empathy map<span class="t-sub">The moment before saying hello</span></span><span class="t-icon" aria-hidden="true">+</span></summary>
+          <div class="trail-body">
+            <div class="evidence-grid">
+              <div class="evidence-card"><span class="tag">Says</span><p>"Is now a good time? No, they look busy. I'll wait." Rehearses a sentence three times before saying it.</p></div>
+              <div class="evidence-card"><span class="tag">Does</span><p>Pulls out their phone the moment things feel awkward, using it as a shield. Unlocks and re-locks it without reading anything.</p></div>
+              <div class="evidence-card"><span class="tag">Feels</span><p>Heart racing, palms sweating. "Vulnerable… hopeful but terrified of rejection."</p></div>
+              <div class="evidence-card"><span class="tag">Pain</span><p>"Not knowing what to say after 'Hello.'" Worries that the effort will come across as "creepy".</p></div>
+            </div>
+            <div class="thumb-grid">
+              <button type="button" class="thumb" onclick="openLightbox(this)" data-src="mp4ds74n-Screenshot-2026-05-13-at-8.16.21-PM.png" data-cap="Empathy map"><img src="mp4ds74n-Screenshot-2026-05-13-at-8.16.21-PM.png" alt="Empathy map board" loading="lazy"><span>Empathy map board</span></button>
+              <button type="button" class="thumb" onclick="openLightbox(this)" data-src="mp583w8n-Screenshot-2026-05-14-at-10.25.15-AM.png" data-cap="Affinity map, POV and How-Might-We"><img src="mp583w8n-Screenshot-2026-05-14-at-10.25.15-AM.png" alt="Affinity map" loading="lazy"><span>Affinity map, POV, HMW</span></button>
+              <button type="button" class="thumb" onclick="openLightbox(this)" data-src="mp5833dq-Screenshot-2026-05-14-at-10.24.38-AM.png" data-cap="Open product questions written before any UI"><img src="mp5833dq-Screenshot-2026-05-14-at-10.24.38-AM.png" alt="Design questions board" loading="lazy"><span>Open questions</span></button>
+              <button type="button" class="thumb" onclick="openLightbox(this)" data-src="mp4dt7tq-Screenshot-2026-05-13-at-8.17.08-PM.png" data-cap="Competitor SWOT: BeReal, Randonautica, Meetup"><img src="mp4dt7tq-Screenshot-2026-05-13-at-8.17.08-PM.png" alt="Competitor SWOT" loading="lazy"><span>Competitor SWOT</span></button>
+            </div>
+          </div>
+        </details>
+
+        <details class="trail-item" data-od-id="trail-personas">
+          <summary><span class="t-num">02</span><span class="t-title">Personas<span class="t-sub">Four kinds of introversion</span></span><span class="t-icon" aria-hidden="true">+</span></summary>
+          <div class="trail-body">
+            <div class="persona-grid">
+              <div class="persona-card"><div class="name">Tushar</div><div class="archetype">Comfortable, but stuck</div><p>Fine in familiar company but rarely starts anything new. His gap is starting conversations, not confidence.</p></div>
+              <div class="persona-card"><div class="name">Shaswat</div><div class="archetype">Overthinker</div><p>Plans conversations in advance and gives up if the moment doesn't arrive exactly as rehearsed.</p></div>
+              <div class="persona-card"><div class="name">Zaida</div><div class="archetype">Selectively social</div><p>Comfortable one-on-one but drains fast in groups. She needs a way out more than encouragement.</p></div>
+              <div class="persona-card"><div class="name">Liza</div><div class="archetype">Newly relocated</div><p>Motivated to build a social circle in a new city, but has no low-stakes way to start from zero.</p></div>
+            </div>
+            <div class="thumb-grid">
+              <button type="button" class="thumb" onclick="openLightbox(this)" data-src="mp582azr-Screenshot-2026-05-14-at-10.24.01-AM.png" data-cap="Persona profiles"><img src="mp582azr-Screenshot-2026-05-14-at-10.24.01-AM.png" alt="Persona profiles" loading="lazy"><span>Persona profiles</span></button>
+              <button type="button" class="thumb" onclick="openLightbox(this)" data-src="mp4dunyi-Screenshot-2026-05-13-at-8.18.16-PM.png" data-cap="User stories from all four personas"><img src="mp4dunyi-Screenshot-2026-05-13-at-8.18.16-PM.png" alt="User stories" loading="lazy"><span>User stories</span></button>
+              <button type="button" class="thumb" onclick="openLightbox(this)" data-src="mp4duyiu-Screenshot-2026-05-13-at-8.18.30-PM.png" data-cap="User story map"><img src="mp4duyiu-Screenshot-2026-05-13-at-8.18.30-PM.png" alt="User story map" loading="lazy"><span>User story map</span></button>
+            </div>
+          </div>
+        </details>
+
+        <details class="trail-item" data-od-id="trail-concepts">
+          <summary><span class="t-num">03</span><span class="t-title">Concepts and naming<span class="t-sub">Two concepts, three names, one survey</span></span><span class="t-icon" aria-hidden="true">+</span></summary>
+          <div class="trail-body">
+            <p>Both concepts are covered in Decision 01. Here is the naming survey (18 responses) that ruled out the working names.</p>
+            <div class="survey-bars">
+              <div class="survey-block">
+                <h4>"Bloom": do you understand the concept?</h4>
+                <div class="survey-sub">Avg. 4.00 / 5</div>
+                <div class="bar-row"><span class="bar-label">Level 5</span><div class="bar-track"><div class="bar-fill" style="width:33%"></div></div><span class="bar-val">6</span></div>
+                <div class="bar-row"><span class="bar-label">Level 4</span><div class="bar-track"><div class="bar-fill" style="width:44%"></div></div><span class="bar-val">8</span></div>
+                <div class="bar-row"><span class="bar-label">Level 3</span><div class="bar-track"><div class="bar-fill" style="width:11%"></div></div><span class="bar-val">2</span></div>
+                <div class="bar-row"><span class="bar-label">Level 2</span><div class="bar-track"><div class="bar-fill" style="width:11%"></div></div><span class="bar-val">2</span></div>
+              </div>
+              <div class="survey-block">
+                <h4>"Is Elo something that applies to you?"</h4>
+                <div class="survey-sub">18 responses</div>
+                <div class="bar-row"><span class="bar-label">Yes</span><div class="bar-track"><div class="bar-fill alt" style="width:44%"></div></div><span class="bar-val">44%</span></div>
+                <div class="bar-row"><span class="bar-label">Somewhat</span><div class="bar-track"><div class="bar-fill alt" style="width:39%"></div></div><span class="bar-val">39%</span></div>
+                <div class="bar-row"><span class="bar-label">No</span><div class="bar-track"><div class="bar-fill alt" style="width:17%"></div></div><span class="bar-val">17%</span></div>
+              </div>
+            </div>
+            <div class="thumb-grid">
+              <button type="button" class="thumb" onclick="openLightbox(this)" data-src="mp4jqhce-Screenshot-2026-05-13-at-11.02.59-PM.png" data-cap="Naming round 1: ELO landing page"><img src="mp4jqhce-Screenshot-2026-05-13-at-11.02.59-PM.png" alt="ELO landing page concept" loading="lazy"><span>Round 1: "ELO"</span></button>
+              <button type="button" class="thumb" onclick="openLightbox(this)" data-src="mp4jqmom-Screenshot-2026-05-13-at-11.03.06-PM.png" data-cap="Naming round 2: BloomMeet landing page"><img src="mp4jqmom-Screenshot-2026-05-13-at-11.03.06-PM.png" alt="BloomMeet landing page concept" loading="lazy"><span>Round 2: "BloomMeet"</span></button>
+            </div>
+          </div>
+        </details>
+
+        <details class="trail-item" data-od-id="trail-benchmark">
+          <summary><span class="t-num">04</span><span class="t-title">Benchmarking<span class="t-sub">Duolingo, Headspace and Calm, compared on calm vs. push</span></span><span class="t-icon" aria-hidden="true">+</span></summary>
+          <div class="trail-body">
+            <p>I took the calm half of the spectrum, Headspace's reassuring tone and Calm's restraint, and left out Duolingo's high-pressure gamification.</p>
+            <div class="table-wrap">
+              <table class="competitor-table">
+                <thead><tr><th>Dimension</th><th>Duolingo</th><th>Headspace</th><th>Calm</th><th class="olo-col">olo</th></tr></thead>
+                <tbody>
+                  <tr><td>Mood</td><td>Energetic, gamified</td><td>Calm, reassuring</td><td>Deep relaxation</td><td class="olo-col">Calm and reassuring</td></tr>
+                  <tr><td>Gamification</td><td>Aggressive</td><td>Low-key</td><td>Very low</td><td class="olo-col">Low-key, opt-in</td></tr>
+                  <tr><td>Illustration</td><td>Chunky, cartoonish</td><td>Minimal, abstract</td><td>Photography</td><td class="olo-col">Minimal, non-identifying</td></tr>
+                  <tr><td>Tone of copy</td><td>Motivating</td><td>"When you're ready"</td><td>Poetic</td><td class="olo-col">Calm and guided</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </details>
+
+        <details class="trail-item" data-od-id="trail-colour">
+          <summary><span class="t-num">05</span><span class="t-title">Colour research<span class="t-sub">Each accent colour tied to a published finding</span></span><span class="t-icon" aria-hidden="true">+</span></summary>
+          <div class="trail-body">
+            <div class="colorpsych-grid">
+              <div class="colorpsych-card" style="background:var(--accent-sage-light)"><div class="swatch" style="background:var(--accent-sage)"></div><p>Green sits at the centre of the visible spectrum and needs the least adjustment to perceive, so it reads as restful.</p><div class="cite">Akers et al. (2012)</div></div>
+              <div class="colorpsych-card" style="background:var(--accent-periwinkle-light)"><div class="swatch" style="background:var(--accent-periwinkle)"></div><p>Blue is the most consistently calming colour across studies.</p><div class="cite">Stone (2003)</div></div>
+              <div class="colorpsych-card" style="background:var(--accent-terracotta-light)"><div class="swatch" style="background:var(--accent-terracotta)"></div><p>A muted terracotta reads as sociable without red's alarm-like intensity.</p><div class="cite">Elliot &amp; Aarts (2011)</div></div>
+              <div class="colorpsych-card" style="background:var(--surface-soft)"><div class="swatch" style="background:#D4B46A"></div><p>Yellow lifts mood, but too much of it raises arousal, so it's used for optimism, never for alerts.</p><div class="cite">Yildirim et al. (2011)</div></div>
+            </div>
+            <div class="thumb-grid">
+              <button type="button" class="thumb" onclick="openLightbox(this)" data-src="mp56wjbs-components.png" data-cap="Component sheet: mood states, difficulty icons, custom challenge flow"><img src="mp56wjbs-components.png" alt="Component sheet" loading="lazy"><span>Component sheet</span></button>
+            </div>
+          </div>
+        </details>
+
+        <details class="trail-item" data-od-id="trail-iteration">
+          <summary><span class="t-num">06</span><span class="t-title">Challenge-screen iterations<span class="t-sub">From one screen (V1) to a system (V4)</span></span><span class="t-icon" aria-hidden="true">+</span></summary>
+          <div class="trail-body">
+            <p>V1 was content-first and text-heavy. V2 introduced the structure that stayed: chips, numbered steps, tips. V3 added illustration and affirmation copy. V4 applied the same structure to a second challenge type to prove it scales.</p>
+            <div class="thumb-grid">
+              <button type="button" class="thumb tall" onclick="openLightbox(this)" data-src="mp4l14xk-Screenshot-2026-05-13-at-11.39.15-PM.png" data-cap="V1: content-first"><img src="mp4l14xk-Screenshot-2026-05-13-at-11.39.15-PM.png" alt="Iteration V1" loading="lazy"><span>V1: content-first</span></button>
+              <button type="button" class="thumb tall" onclick="openLightbox(this)" data-src="mp4l1baf-Screenshot-2026-05-13-at-11.39.24-PM.png" data-cap="V2: structure"><img src="mp4l1baf-Screenshot-2026-05-13-at-11.39.24-PM.png" alt="Iteration V2" loading="lazy"><span>V2: structure</span></button>
+              <button type="button" class="thumb tall" onclick="openLightbox(this)" data-src="mp4l1lg7-Screenshot-2026-05-13-at-11.39.37-PM.png" data-cap="V3: illustrated"><img src="mp4l1lg7-Screenshot-2026-05-13-at-11.39.37-PM.png" alt="Iteration V3" loading="lazy"><span>V3: illustrated</span></button>
+              <button type="button" class="thumb tall" onclick="openLightbox(this)" data-src="mp4l1te4-Screenshot-2026-05-13-at-11.39.47-PM.png" data-cap="V4: scaled to a system"><img src="mp4l1te4-Screenshot-2026-05-13-at-11.39.47-PM.png" alt="Iteration V4" loading="lazy"><span>V4: scaled</span></button>
+            </div>
+          </div>
+        </details>
+
+        <details class="trail-item" data-od-id="trail-testing">
+          <summary><span class="t-num">07</span><span class="t-title">Usability test protocol<span class="t-sub">7 tasks, 3 criteria, 4 participants matched to the personas</span></span><span class="t-icon" aria-hidden="true">+</span></summary>
+          <div class="trail-body">
+            <ol class="task-list">
+              <li>Complete onboarding<div class="task-goal">Do users understand how we gauge comfort zones and social energy?</div></li>
+              <li>Log your mood<div class="task-goal">Is emotional capture simple?</div></li>
+              <li>Explore the home screen<div class="task-goal">Where do users naturally click?</div></li>
+              <li>Attempt a daily challenge<div class="task-goal">Is it clear and emotionally comfortable?</div></li>
+              <li>React to a post in the feed<div class="task-goal">Does it trigger fear of judgement?</div></li>
+              <li>Use the QR connect flow<div class="task-goal">Social comfort and usability</div></li>
+              <li>Check progress and settings<div class="task-goal">Is the information hierarchy right?</div></li>
+            </ol>
+            <h4 style="margin:28px 0 4px;font-size:1rem">Thresholds set before testing</h4>
+            <p style="font-size:0.85rem;color:var(--fg-light);margin-bottom:4px">These were the rubric, not reported results.</p>
+            <div class="metrics-grid">
+              <div class="metric-target"><b>Task success</b><span>&gt;85% without help</span></div>
+              <div class="metric-target"><b>Time on task</b><span>Onboarding &lt;90s · mood log &lt;10s</span></div>
+              <div class="metric-target"><b>Error rate</b><span>&lt;2 misclicks per task</span></div>
+              <div class="metric-target"><b>Clarity</b><span>8+ / 10</span></div>
+              <div class="metric-target"><b>Anxiety trigger check</b><span>&lt;10% report discomfort</span></div>
+              <div class="metric-target"><b>Would recommend</b><span>8+ / 10</span></div>
+            </div>
+          </div>
+        </details>
+      </div>
     </div>
   </section>
 
 
-
-  
-
-  
-
-  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image preview">
     <div class="lightbox-content">
-      <button class="close-lightbox" onclick="closeLightbox()">×</button>
-      <img src="" class="lightbox-img" id="lightbox-img">
+      <button class="close-lightbox" id="lbClose" aria-label="Close preview">×</button>
+      <img src="" class="lightbox-img" id="lightbox-img" alt="">
       <div class="lightbox-caption" id="lightbox-caption"></div>
     </div>
   </div>
 
   <script>
-    // Only enable the scroll-in animation (and pre-hide content) when GSAP +
-    // ScrollTrigger actually loaded. If either is missing, elements stay
-    // visible instead of vanishing forever.
-    const gsapOk = (typeof gsap !== 'undefined') && (typeof ScrollTrigger !== 'undefined');
-    if (gsapOk) {
-      document.documentElement.classList.add('motion-ready');
+    // Reveal on scroll (falls back to visible if GSAP fails or motion is reduced)
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (typeof gsap === 'undefined' || reduce) {
+      document.documentElement.classList.add('no-motion');
+    } else {
       gsap.registerPlugin(ScrollTrigger);
-      ScrollTrigger.config({ ignoreMobileResize: true });
       gsap.utils.toArray('.reveal').forEach(el => {
-        gsap.to(el, { opacity: 1, y: 0, duration: 1.2, ease: "power4.out", scrollTrigger: { trigger: el, start: "top 85%", once: true, fastScrollEnd: true } });
+        gsap.to(el, { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 90%', once: true } });
       });
-      ScrollTrigger.refresh();
-
-      // Phone Mockup Animation
-      const phones = gsap.utils.toArray('.phone-mockup');
-      if (phones.length) {
-        const tl = gsap.timeline({ defaults: { ease: "power4.out", duration: 1.2 } });
-        tl.from(phones[0], { y: 80, rotation: -18, opacity: 0 })
-          .from(phones[1], { y: 80, rotation: 12, opacity: 0 }, "-=0.7")
-          .to(phones, { y: "+=4", duration: 3, ease: "sine.inOut", repeat: -1, yoyo: true, stagger: 0.4 }, "+=0.6");
-      }
     }
 
-    // Active nav section tracking
+    // Active nav link
     const navLinks = document.querySelectorAll('.nav-link');
-    const sectionEntries = [];
-    const navObserver = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        const i = sectionEntries.findIndex(s => s.id === e.target.id);
-        if (i >= 0) sectionEntries[i].ratio = e.intersectionRatio;
-      });
-      let best = sectionEntries.reduce((a, b) => (b.ratio > a.ratio ? b : a), sectionEntries[0]);
-      navLinks.forEach(a => a.classList.toggle('active', a.dataset.section === best.id));
-    }, { rootMargin: '-10% 0px -10% 0px', threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5] });
-    navLinks.forEach(a => {
-      const el = document.getElementById(a.dataset.section);
-      if (el) { sectionEntries.push({ id: el.id, ratio: 0 }); navObserver.observe(el); }
-    });
-
-    gsap.registerPlugin(ScrollTrigger);
-
-    ScrollTrigger.config({ ignoreMobileResize: true });
-    gsap.utils.toArray('.reveal').forEach(el => {
-      gsap.to(el, { opacity: 1, y: 0, duration: 1.2, ease: "power4.out", scrollTrigger: { trigger: el, start: "top 85%", once: true, fastScrollEnd: true } });
-    });
-    ScrollTrigger.refresh();
-
-    // Phone Mockup Animation
-    const phones = gsap.utils.toArray('.phone-mockup');
-    if (phones.length) {
-      const tl = gsap.timeline({ defaults: { ease: "power4.out", duration: 1.2 } });
-      tl.from(phones[0], { y: 80, rotation: -18, opacity: 0 })
-        .from(phones[1], { y: 80, rotation: 12, opacity: 0 }, "-=0.7")
-        .to(phones, {
-          y: "+=4", duration: 3, ease: "sine.inOut",
-          repeat: -1, yoyo: true, stagger: 0.4
-        }, "+=0.6");
-    }
-
-    // Journey Switching Logic
-    let currentStep = 1;
-    const totalSteps = 5;
-    function switchStep(index) {
-      currentStep = index;
-      document.querySelectorAll('.journey-nav-item').forEach(el => el.classList.remove('active'));
-      document.querySelector(`.journey-nav-item:nth-child(${index})`).classList.add('active');
-      document.querySelectorAll('.journey-step-view').forEach(el => el.classList.remove('active'));
-      document.getElementById(`step-view-${index}`).classList.add('active');
-      document.querySelectorAll('.journey-phone-img').forEach(el => el.classList.remove('active'));
-      document.getElementById(`phone-img-${index}`).classList.add('active');
-      document.getElementById('journeyPrev').disabled = index === 1;
-      document.getElementById('journeyNext').disabled = index === totalSteps;
-    }
-    function nextStep() { if (currentStep < totalSteps) switchStep(currentStep + 1); }
-    function prevStep() { if (currentStep > 1) switchStep(currentStep - 1); }
-
-    // Analogy Switcher
-    const analogies = [
-      { icon: '📢', title: 'Loud & Performance-Driven', desc: 'High pressure, constant visibility, competitive metrics', bg: 'var(--accent-terracotta)', text: 'Traditional App Experience', items: ['Public feeds and leaderboards','Timers and streaks creating urgency','Aggressive push notifications','Social comparison metrics'] },
-      { icon: '🌿', title: 'The Introvert Reality', desc: 'Social interaction requires energy management.', bg: 'var(--accent-sage)', text: 'Introvert Reality', items: ['Overthinking social outcomes','Fear of judgment in public spaces','Overstimulation from noise/clutter','Pressure to perform "extroversion"'] },
-    ];
-    function switchAnalogy(idx) {
-      document.querySelectorAll('.analogy-tab').forEach((t, i) => t.classList.toggle('active', i === idx));
-      const a = analogies[idx];
-      const swap = () => {
-        document.getElementById('analogy-icon').textContent = a.icon;
-        document.getElementById('analogy-title').textContent = a.title;
-        document.getElementById('analogy-desc').textContent = a.desc;
-        document.getElementById('analogy-visual').style.background = a.bg;
-        document.getElementById('analogy-info').innerHTML = '<h3>' + a.text + '</h3><p>olo bridges the gap by creating a safe space for growth.</p><ul>' + a.items.map(i => '<li>' + i + '</li>').join('') + '</ul>';
-      };
-      if (gsapOk) {
-        gsap.to('#analogy-content-wrap', { opacity: 0, y: 10, duration: 0.3, onComplete: () => { swap(); gsap.to('#analogy-content-wrap', { opacity: 1, y: 0, duration: 0.3 }); } });
-      } else {
-        swap();
-      }
-    }
+    const ratios = {};
+    const navObserver = new IntersectionObserver(entries => {
+      entries.forEach(e => { ratios[e.target.id] = e.intersectionRatio; });
+      const best = Object.keys(ratios).reduce((a, b) => ratios[b] > ratios[a] ? b : a, Object.keys(ratios)[0]);
+      navLinks.forEach(a => a.classList.toggle('active', ratios[best] > 0 && a.dataset.section === best));
+    }, { threshold: [0, 0.15, 0.3, 0.5] });
+    navLinks.forEach(a => { const el = document.getElementById(a.dataset.section); if (el) { ratios[el.id] = 0; navObserver.observe(el); } });
 
     // Lightbox
     const lb = document.getElementById('lightbox');
     const lbImg = document.getElementById('lightbox-img');
     const lbCap = document.getElementById('lightbox-caption');
-    function openLightbox(src, caption) { lbImg.src = src; lbCap.textContent = caption; lb.classList.add('active'); document.body.style.overflow = 'hidden'; }
-    function closeLightbox() { lb.classList.remove('active'); document.body.style.overflow = ''; }
-
-    // Lightbox close on Escape
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
-
-    // Cursor (disable on touch)
-    const cursor = document.getElementById('cursor');
-    if (cursor && window.matchMedia('(pointer: fine)').matches && !('ontouchstart' in window)) {
-      document.addEventListener('mousemove', (e) => { cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px'; });
-      document.querySelectorAll('a, button, .insight-card, .gallery-item, .side-nav-item, .analogy-tab, .journey-nav-item').forEach(el => {
-        el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-        el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
-      });
+    let lastTrigger = null;
+    function openLightbox(btn) {
+      lastTrigger = btn;
+      lbImg.src = btn.dataset.src; lbImg.alt = btn.dataset.cap; lbCap.textContent = btn.dataset.cap;
+      lb.classList.add('active'); document.body.style.overflow = 'hidden';
+      document.getElementById('lbClose').focus();
     }
+    function closeLightbox() {
+      lb.classList.remove('active'); document.body.style.overflow = '';
+      if (lastTrigger) lastTrigger.focus();
+    }
+    lb.addEventListener('click', e => { if (e.target === lb || e.target.id === 'lbClose') closeLightbox(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && lb.classList.contains('active')) closeLightbox(); });
 
+    // Screens gallery
+    (function () {
+      const c = document.getElementById('galleryScroll');
+      const l = document.getElementById('galleryArrowLeft');
+      const r = document.getElementById('galleryArrowRight');
+      const step = () => (c.querySelector('.gallery-scroll-item')?.offsetWidth || 300) + 22;
+      function update() {
+        const max = c.scrollWidth - c.clientWidth;
+        l.classList.toggle('visible', c.scrollLeft > 4);
+        r.classList.toggle('visible', c.scrollLeft < max - 4);
+      }
+      c.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update);
+      l.addEventListener('click', () => c.scrollBy({ left: -step(), behavior: 'smooth' }));
+      r.addEventListener('click', () => c.scrollBy({ left: step(), behavior: 'smooth' }));
+      setTimeout(update, 300);
+    })();
+
+
+    // How it works tabs
+    (function () {
+      const tabs = [...document.querySelectorAll('.journey-tab')];
+      const imgs = document.querySelectorAll('.journey-phone img');
+      function show(n) {
+        tabs.forEach(t => { const on = +t.dataset.step === n; t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1; document.getElementById('jview-' + t.dataset.step).hidden = !on; });
+        imgs.forEach(im => im.classList.toggle('active', +im.dataset.step === n));
+      }
+      tabs.forEach((t, i) => {
+        t.addEventListener('click', () => show(i + 1));
+        t.addEventListener('keydown', e => {
+          if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+          const n = (i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length;
+          show(n + 1); tabs[n].focus();
+        });
+      });
+    })();
+
+    // Mobile nav
+    const hamburger = document.getElementById('hamburger');
+    const navLinksEl = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => {
+      const open = navLinksEl.classList.toggle('open');
+      hamburger.classList.toggle('open', open);
+      hamburger.setAttribute('aria-expanded', open);
+    });
+    navLinksEl.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      navLinksEl.classList.remove('open'); hamburger.classList.remove('open'); hamburger.setAttribute('aria-expanded', 'false');
+    }));
+
+    const navbarEl = document.getElementById('navbar');
+    window.addEventListener('scroll', () => navbarEl.classList.toggle('scrolled', window.scrollY > 20), { passive: true });
   </script>
-
-
 </body></html>

@@ -234,34 +234,6 @@ const BinarySharkPool = () => {
 // ─── Experiments Data ────────────────────────────────────────────────────────
 const EXPERIMENTS = [
   {
-    id: 9,
-    title: 'ORION',
-    tags: ['AI Assistant', 'macOS Automation', 'Python', 'Three.js', 'Voice UI'],
-    video: '/works/AI_design_Sauveer.mp4',
-    size: 'huge',
-    description: 'A lightweight, ultra-fast, native macOS AI voice assistant built with a pure Python backend and an interactive 3D frontend.',
-    whoItsFor: 'General users, who want a deeply integrated, visually stunning, and highly responsive desktop AI assistant without the resource drain of heavy frameworks like Electron or React.',
-    problem: 'Most AI voice assistants are either trapped inside web browsers, suffer from high latency, or are built on bloated frameworks that slow down the computer. Furthermore, small fast models (like 8B parameter LLMs) struggle with strictly formatting JSON tool calls, leading to broken interactions when trying to execute local commands.',
-    goal: 'To deliver a sub-second latency, visually engaging, and highly capable desktop voice assistant that feels like a native OS feature. It aims to intelligently manage the user\'s computer, dynamically adapt to their speech, and gracefully handle API rate limits and parsing errors without ever crashing.',
-    techStackCategories: [
-      { label: "Backend Engine", value: "Pure Python (Standard Library: http.server, urllib, re, subprocess)" },
-      { label: "Frontend UI", value: "Vanilla JavaScript, HTML5, CSS3" },
-      { label: "Visuals & Animation", value: "Three.js (3D particle system), GSAP (Cinematic text animations)" },
-      { label: "AI Logic (LLM)", value: "Groq API (Llama-3.1-8b-instant)" },
-      { label: "Voice Synthesis", value: "Cartesia API (Sonic-3.5)" },
-      { label: "OS Automation", value: "Native macOS osascript (AppleScript) and shell commands" }
-    ],
-    coreFeatures: [
-      "Cinematic UI & Real-Time Transcription: A responsive 3D particle orb that changes states (Idle, Listening, Thinking, Responding) alongside Apple-style GSAP animated subtitles.",
-      "Native macOS Automation: Directly controls system hardware and software (adjust volume/brightness, open/close apps, play media, empty trash, check system stats).",
-      "Multimodal Drag-and-Drop: Seamlessly drag images or PDFs onto the UI to have the Orb analyze files using vision models or extract text for discussion.",
-      "Resilient Execution Engine: Uses a custom Regex-based extraction system that flawlessly catches and executes tool commands even when the AI outputs malformed JSON or broken XML tags.",
-      "Dynamic Memory System: Features both a short-term topic isolation module to prevent context bleeding, and a silent background agent that builds a persistent, long-term JSON knowledge graph of user preferences.",
-      "Rate Limit Armor: Intercepts external API HTTP 429 blocks, parses the exact required timeout, intelligently pauses execution, and automatically retries without dropping the conversation."
-    ],
-    techStack: ['Python', 'Three.js', 'Groq API', 'Cartesia API']
-  },
-  {
     id: 14,
     title: 'THE BLOCKCHAIN MOSAIC',
     tags: ['Web3', 'GenerativeArt', 'WebAudio', 'LiveVisualization', 'React'],
@@ -316,38 +288,26 @@ const EXPERIMENTS = [
     techStack: ['React', 'Tailwind CSS', 'Motion', 'Canvas API']
   },
   {
-    id: 2,
-    title: 'SPATIAL PROTOTYPES',
-    tags: ['Spatial', 'visionOS', 'SwiftUI'],
-    video: '/2.mp4',
-    size: 'square',
-    description: '[Placeholder text] Prototyping interactions for next-generation spatial headsets.',
-    techStack: ['visionOS', 'SwiftUI', 'RealityKit']
-  },
-  {
     id: 3,
     title: 'HYDROTYPE 3D',
-    tags: ['ReactThreeFiber', 'ThreeJS', 'GSAP', 'RapierPhysics', 'CreativeCoding', 'WebGL', 'InteractiveDesign'],
-    video: '/krizia.mp4',
+    tags: ['ReactThreeFiber', 'ThreeJS', 'FluidSimulation', 'WebGL', 'CreativeCoding'],
+    video: '/2.mp4',
     size: 'square',
-    description: 'An immersive web interaction combining reactive 2D typography with real-time 3D rigid-body physics to create a tactile, high-end hero section.',
-    goal: 'Build a high-performance interactive canvas where 2D editorial typography and 3D physical objects react in unison to user cursor gestures, providing immediate, realistic, and tactile feedback without sacrificing framerates.',
+    description: 'An interactive 3D aquatic fluid simulation featuring real-time water wave dynamics, shark animations, and tactile cursor physics.',
+    goal: 'Build an immersive 3D aquatic environment with responsive water fluid dynamics and procedural shark movement that reacts in real-time to user cursor velocity.',
     techStackCategories: [
       { label: "Build Tool", value: "Vite" },
       { label: "Frontend Framework", value: "React" },
       { label: "3D Renderer", value: "React Three Fiber (@react-three/fiber) & Three.js" },
       { label: "3D Helpers", value: "Drei (@react-three/drei)" },
-      { label: "Physics Engine", value: "Rapier (@react-three/rapier — WebAssembly-powered physics)" },
-      { label: "Animation Library", value: "GSAP (GreenSock) for high-precision text interpolation" }
+      { label: "Physics & Shaders", value: "Custom GLSL Wave Vertex Shaders & Rapier Physics" }
     ],
     coreFeatures: [
-      "Magnifying Kinetic Typography: Individual DOM letter splitting with GSAP easing that magnifies, expands, and changes color on mouse hover.",
-      "Curved Surface Trimesh Physics: Custom cylinder pool geometry configured as a concave trimesh collider so objects roll realistically around internal curves.",
-      "Hover-Activated Physics Impulse: Trigger zones (e.g., wallet hover) that inject dynamic linear forces and directional torque onto the ball in real time.",
-      "Layered Event Passthrough: Dual-layer DOM architecture (pointer-events: none on overlay wrappers) allowing direct interactions with both the HTML overlay and the WebGL canvas behind it.",
-      "Custom Friction & Restitution Tuning: Fine-tuned physical parameters (gravity, mass, bounce, surface friction) for natural rolling movement without visual clipping."
+      "Real-time Water Fluid Dynamics: Dynamic wave cresting and procedural caustic refraction responding to cursor interaction.",
+      "Aquatic Shark Simulation: Skeletal mesh animation with dynamic swimming path generation and obstacle avoidance.",
+      "Depth-Aware Blue Caustics: Realistic volumetric lighting and underwater scatter rendering."
     ],
-    techStack: ['React Three Fiber', 'Rapier', 'GSAP']
+    techStack: ['React Three Fiber', 'Three.js', 'WebGL', 'GLSL']
   },
   {
     id: 5,
@@ -386,16 +346,7 @@ const EXPERIMENTS = [
       "Accessible UI: Global High Contrast mode toggle, Light/Dark system themes, and highly responsive modern design utilizing \"Alchemist Chic\" aesthetics."
     ],
     techStack: ['Next.js', 'React', 'TailwindCSS', 'Supabase']
-  },
-  {
-    id: 15,
-    title: 'SNAKE INTERACTION',
-    tags: ['Snake Fluid', 'Interaction Design', 'Micro-UX'],
-    video: '/works/snake.mp4',
-    size: 'wide',
-    description: '[Placeholder text] Fluid, cursor-following generative snake patterns built for high-performance rendering.',
-    techStack: ['WebGL', 'GLSL Shaders', 'Three.js']
-  },
+  }
 ];
 
 // ─── Context Drawer Component ──────────────────────────────────────────────
