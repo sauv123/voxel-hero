@@ -2460,26 +2460,34 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-/* ── Hero Section Mobile Fixes ── */
+/* ── Hero Section Mobile: Unified & Fluid Scroll Track ── */
 @media (max-width: 768px) {
   .hero-container {
-    display: flex !important;
-    flex-direction: column !important;
-    height: auto !important;
-    min-height: 100vh !important;
+    height: 220vh !important;
+    min-height: 220vh !important;
+    position: relative !important;
+    display: block !important;
+    overflow: visible !important;
   }
   .text-layer {
-    position: relative !important;
-    padding-top: 148px !important;
-    flex-shrink: 0;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100vh !important;
+    padding-top: 84px !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+    z-index: 12 !important;
+    pointer-events: none !important;
   }
   .canvas-layer {
-    position: relative !important;
-    height: 50vh !important;
-    width: 100vw !important;
-    left: 0 !important;
-    margin: 0 !important;
-    transform: none !important;
+    display: none !important;
   }
   .switcher-lever {
     bottom: 20px !important;
@@ -2569,27 +2577,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media (max-width: 768px) {
-  /* Re-overriding earlier mobile fixes to use dvh */
-  .hero-container {
-    height: 100dvh !important;
-    min-height: 100dvh !important;
-    justify-content: flex-start !important;
-    overflow: hidden;
-  }
-  
-  .text-layer {
-    padding-top: calc(var(--safe-top) + 120px) !important;
-    padding-left: 20px !important;
-    padding-right: 20px !important;
-    text-align: left;
-    align-items: flex-start;
-  }
-  
-  .canvas-layer {
-    height: 55dvh !important;
-    transform: scale(0.85) translateY(5vh) !important;
-  }
-  
   /* Native-like full-width CTA */
   .explore-pill {
     position: fixed !important;
@@ -2822,44 +2809,17 @@ h1, h2, h3, h4, h5, h6 {
         background: #111 !important;
     }
     
-    /* ----- HERO SECTION REDESIGN ----- */
-    .hero-container {
-        display: flex !important;
-        flex-direction: column !important;
-        justify-content: flex-start !important;
-        overflow-x: hidden !important;
-    }
-    .text-layer {
-        position: relative !important;
-        inset: auto !important;
-        padding-top: 100px !important;
-        padding-left: 20px !important;
-        padding-right: 20px !important;
-        align-items: flex-start !important;
-        text-align: left !important;
-        height: auto !important;
-        z-index: 10 !important;
-    }
     .hero-text-header {
         align-items: flex-start !important;
         margin-top: 0 !important;
-        margin-bottom: 1.5rem !important;
+        margin-bottom: 1.2rem !important;
     }
     .hero-title { 
-        font-size: clamp(1.5rem, 7.5vw, 2.5rem) !important; 
+        font-size: clamp(1.4rem, 6.2vw, 2.2rem) !important; 
         max-width: 100% !important; 
         white-space: normal !important; 
         word-wrap: break-word; 
-        line-height: 1.1 !important;
-    }
-    .canvas-layer {
-        position: relative !important;
-        height: 55vh !important;
-        width: 100% !important;
-        transform: none !important;
-        margin-top: auto !important;
-        bottom: 0 !important;
-        top: auto !important;
+        line-height: 1.15 !important;
     }
     .char-picker {
         bottom: 20px !important;

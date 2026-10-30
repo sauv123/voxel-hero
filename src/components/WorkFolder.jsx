@@ -39,20 +39,24 @@ export default function WorkFolder({ theme, onOpen }) {
     checkMobile();
     window.addEventListener('resize', checkMobile);
 
+    let triggerInstance = null;
     if (sectionRef.current) {
-      ScrollTrigger.create({
+      triggerInstance = ScrollTrigger.create({
         trigger: sectionRef.current,
         start: "top 90%",
         end: "top 20%",
         scrub: 1.2,
         onUpdate: (self) => {
           const blendedColor = gsap.utils.interpolate('#000000', '#FFFFFF', self.progress);
-          gsap.set([document.documentElement, document.body], { backgroundColor: blendedColor });
+          document.body.style.backgroundColor = blendedColor;
         }
       });
     }
 
-    return () => window.removeEventListener('resize', checkMobile);
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      if (triggerInstance) triggerInstance.kill();
+    };
   }, []);
 
   // Magnetic button physics
@@ -134,24 +138,27 @@ export default function WorkFolder({ theme, onOpen }) {
           return (
             <div
               key={proj.id}
-              data-cursor-text="VIEW CASE STUDY"
+              role="button"
+              tabIndex={0}
+              aria-label={`View case study: ${proj.displayName}`}
               onMouseEnter={() => !isMobile && setActiveCard(idx)}
               onClick={() => onOpen(proj.slug)}
               style={{
                 flex: flexValue,
-                height: isMobile ? '380px' : '100%',
-                borderRadius: '16px',
+                height: isMobile ? '490px' : '100%',
+                minHeight: isMobile ? '490px' : 'auto',
+                borderRadius: isMobile ? '20px' : '16px',
                 overflow: 'hidden',
                 position: 'relative',
                 cursor: 'pointer',
                 backgroundColor: '#111111',
-                border: 'none',       // No stroke as requested
-                boxShadow: 'none',    // No shadow as requested
+                border: 'none',
+                boxShadow: isMobile ? '0 12px 32px rgba(0,0,0,0.25)' : 'none',
                 transition: 'all 0.55s cubic-bezier(0.16, 1, 0.3, 1)',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'flex-end',
-                padding: isMobile ? '28px 24px' : '36px 32px'
+                padding: isMobile ? '24px 20px' : '36px 32px'
               }}
             >
               {/* Background Media — Crisp & Vibrant */}
@@ -177,7 +184,7 @@ export default function WorkFolder({ theme, onOpen }) {
                 ) : (
                   <img 
                     src={proj.img} 
-                    alt={proj.name} 
+                    alt={proj.displayName} 
                     loading="lazy" 
                     style={{ 
                       width: '100%', 
@@ -195,20 +202,20 @@ export default function WorkFolder({ theme, onOpen }) {
                 <div style={{
                   position: 'absolute',
                   inset: 0,
-                  background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 45%, transparent 70%)'
+                  background: 'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.4) 45%, transparent 75%)'
                 }}></div>
               </div>
 
-              {/* ── Content Layer: Name, Tags on hover, Description ── */}
+              {/* ── Content Layer: Tags, Title, White Arrow Mark ── */}
               <div style={{ position: 'relative', zIndex: 2 }}>
                 
-                {/* Project Tags — ONLY REVEAL ON HOVER / ACTIVE */}
+                {/* Project Tags */}
                 <div style={{
                   display: 'flex',
                   flexWrap: 'wrap',
                   alignItems: 'center',
                   gap: '6px',
-                  marginBottom: '12px',
+                  marginBottom: '10px',
                   opacity: (isActive || isMobile) ? 1 : 0,
                   transform: (isActive || isMobile) ? 'translateY(0)' : 'translateY(12px)',
                   transition: 'all 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -246,9 +253,9 @@ export default function WorkFolder({ theme, onOpen }) {
                           letterSpacing: '0.06em',
                           textTransform: 'uppercase',
                           color: 'rgba(255,255,255,0.95)',
-                          backgroundColor: 'rgba(0,0,0,0.5)',
+                          backgroundColor: 'rgba(0,0,0,0.55)',
                           backdropFilter: 'blur(8px)',
-                          padding: '4px 10px',
+                          padding: '5px 11px',
                           borderRadius: '4px',
                           border: '1px solid rgba(255,255,255,0.2)'
                         }}
@@ -259,54 +266,64 @@ export default function WorkFolder({ theme, onOpen }) {
                   })}
                 </div>
 
-                {/* Project Name */}
-                <h3 style={{
-                  fontFamily: 'var(--font-heading)',
-                  fontSize: isMobile ? '2.1rem' : (isActive ? 'clamp(2.4rem, 4vw, 3.6rem)' : 'clamp(1.35rem, 2.2vw, 1.85rem)'),
-                  fontWeight: 900,
-                  color: '#ffffff',
-                  margin: '0 0 8px 0',
-                  lineHeight: 1.05,
-                  letterSpacing: '-0.03em',
-                  transition: 'font-size 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                  textShadow: '0 2px 10px rgba(0,0,0,0.6)'
+                {/* Project Title & White Arrow Mark Row */}
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'flex-end',
+                  gap: '16px'
                 }}>
-                  {proj.displayName}
-                </h3>
+                  <h3 style={{
+                    fontFamily: 'var(--font-heading)',
+                    fontSize: isMobile ? '2.1rem' : (isActive ? 'clamp(2.4rem, 4vw, 3.6rem)' : 'clamp(1.35rem, 2.2vw, 1.85rem)'),
+                    fontWeight: 900,
+                    color: '#ffffff',
+                    margin: 0,
+                    lineHeight: 1.05,
+                    letterSpacing: '-0.03em',
+                    textShadow: '0 2px 10px rgba(0,0,0,0.6)',
+                    flex: 1
+                  }}>
+                    {proj.displayName}
+                  </h3>
 
-                {/* Project Description — Visible on active/hovered card */}
-                <p style={{
-                  fontFamily: 'var(--font-body)',
-                  fontSize: '13px',
-                  lineHeight: 1.5,
-                  color: 'rgba(255,255,255,0.85)',
-                  margin: 0,
-                  maxWidth: '520px',
-                  opacity: (isActive || isMobile) ? 1 : 0,
-                  maxHeight: (isActive || isMobile) ? '80px' : '0px',
-                  overflow: 'hidden',
-                  transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
-                }}>
-                  {proj.description}
-                </p>
-
-                {/* Mobile 1-Tap Affordance Pill */}
-                {isMobile && (
+                  {/* Clean White Arrow Mark */}
                   <div style={{
-                    marginTop: '14px',
                     display: 'inline-flex',
                     alignItems: 'center',
-                    gap: '6px',
-                    fontFamily: 'var(--font-heading)',
-                    fontSize: '11px',
-                    fontWeight: 800,
-                    letterSpacing: '0.08em',
-                    textTransform: 'uppercase',
-                    color: '#2ECC40'
+                    justifyContent: 'center',
+                    width: isMobile ? '38px' : '44px',
+                    height: isMobile ? '38px' : '44px',
+                    borderRadius: '50%',
+                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                    backdropFilter: 'blur(10px)',
+                    border: '1.5px solid rgba(255, 255, 255, 0.65)',
+                    color: '#ffffff',
+                    fontSize: isMobile ? '16px' : '18px',
+                    flexShrink: 0,
+                    boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
+                    transition: 'transform 0.3s ease, background-color 0.3s ease'
                   }}>
-                    <span>View Case Study</span>
-                    <span>➔</span>
+                    <span style={{ color: '#ffffff', lineHeight: 1 }}>➔</span>
                   </div>
+                </div>
+
+                {/* Desktop-only Description */}
+                {!isMobile && (
+                  <p style={{
+                    fontFamily: 'var(--font-body)',
+                    fontSize: '13px',
+                    lineHeight: 1.5,
+                    color: 'rgba(255,255,255,0.85)',
+                    margin: '10px 0 0 0',
+                    maxWidth: '520px',
+                    opacity: isActive ? 1 : 0,
+                    maxHeight: isActive ? '80px' : '0px',
+                    overflow: 'hidden',
+                    transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
+                  }}>
+                    {proj.description}
+                  </p>
                 )}
 
               </div>

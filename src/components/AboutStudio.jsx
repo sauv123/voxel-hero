@@ -533,39 +533,53 @@ function HeroPolaroidStack() {
     {
       id: 0,
       src: "/hero_polaroids/speaking.webp",
-      restAngle: -6,
-      fanAngle: -13,
+      alt: "Sauveer speaking at tech conference",
+      restAngle: -8,
+      fanAngle: -16,
       restX: -85,
-      fanX: -155,
+      fanX: -175,
       restY: 6,
-      fanY: 4
+      fanY: 6
     },
     {
       id: 1,
       src: "/hero_polaroids/portrait.webp",
-      restAngle: 1,
-      fanAngle: 0,
-      restX: 0,
-      fanX: 0,
-      restY: -6,
-      fanY: -14
+      alt: "Sauveer Sinha portrait",
+      restAngle: -2,
+      fanAngle: -5,
+      restX: -26,
+      fanX: -55,
+      restY: -4,
+      fanY: -10
     },
     {
       id: 2,
+      src: "/hero_polaroids/mountain.webp",
+      alt: "Sauveer on alpine mountain peak",
+      restAngle: 3,
+      fanAngle: 6,
+      restX: 26,
+      fanX: 55,
+      restY: -2,
+      fanY: -8
+    },
+    {
+      id: 3,
       src: "/hero_polaroids/childhood.webp",
-      restAngle: 7,
-      fanAngle: 13,
+      alt: "Sauveer childhood memory",
+      restAngle: 9,
+      fanAngle: 17,
       restX: 85,
-      fanX: 155,
+      fanX: 175,
       restY: 8,
-      fanY: 6
+      fanY: 8
     }
   ];
 
   // Responsive scaling
   const getCoords = (p, fanned) => {
     const isMobile = typeof window !== 'undefined' && window.innerWidth <= 600;
-    const factor = isMobile ? 0.5 : 1;
+    const factor = isMobile ? 0.42 : 1;
     const xBase = fanned ? p.fanX : p.restX;
     const angleBase = fanned ? p.fanAngle : p.restAngle;
     const yBase = fanned ? p.fanY : p.restY;
@@ -622,7 +636,7 @@ function HeroPolaroidStack() {
         {polaroids.map((p, idx) => {
           const coords = getCoords(p, isFanned);
           const isTop = activeCard === idx;
-          const zIndex = isTop ? 30 : (idx === 1 ? 20 : 10);
+          const zIndex = isTop ? 40 : (idx === 1 ? 30 : (idx === 2 ? 25 : 10));
           return (
             <div
               key={p.id}
@@ -636,7 +650,7 @@ function HeroPolaroidStack() {
               title="Click to bring to front"
             >
               <div className="hero-polaroid-img-wrapper">
-                <img src={p.src} alt="Sauveer" draggable={false} />
+                <img src={p.src} alt={p.alt || "Sauveer"} draggable={false} />
               </div>
             </div>
           );

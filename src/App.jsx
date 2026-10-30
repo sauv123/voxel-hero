@@ -457,13 +457,13 @@ export default function App() {
       )}
       
       {isPreloaderDone && activePage !== '404' && <HeaderCTA theme={theme} />}      
-      <div ref={rootRef} className="hero-container" style={{ backgroundColor: theme.bg, height: '250vh', position: 'relative', overflow: 'visible' }}>
+      <div ref={rootRef} className="hero-container" style={{ backgroundColor: theme.bg, height: '220vh', position: 'relative', overflow: 'visible' }}>
         <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100vh', zIndex: 2 }}>
 
         {/* ── Background text layer (behind canvas) ── */}
-        <div className="text-layer" style={{ paddingTop: "26vh", zIndex: 12, pointerEvents: "none" }} aria-hidden="true">
+        <div className="text-layer" style={{ zIndex: 12, pointerEvents: "none" }} aria-hidden="true">
           {/* Eyebrow with optimized visual hierarchy and enhanced readability */}
-          <div className="hero-text-header" style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '3rem' }}>
+          <div className="hero-text-header" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <span style={{ 
               fontFamily: "var(--font-body)",
               fontSize: "clamp(12px, 2vw, 16px)", 
@@ -477,7 +477,7 @@ export default function App() {
             </span>
             <span style={{ 
               fontFamily: "var(--font-body)",
-              fontSize: "clamp(14px, 2.5vw, 18px)", 
+              fontSize: "clamp(13px, 2.5vw, 18px)", 
               fontWeight: 500, 
               letterSpacing: "0.02em", 
               color: theme.text,

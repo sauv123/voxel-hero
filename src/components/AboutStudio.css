@@ -1763,6 +1763,132 @@
   .enjoy-behance-col-track {
     gap: 12px;
   }
+
+  .inline-institution-popover,
+  .inline-widget-popover {
+    max-width: calc(100vw - 32px) !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    text-align: center !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+  }
+
+  /* ── Mobile Retro TV: Large Cinematic CRT Screen & Sleek Horizontal Controls ── */
+  .retro-tv-section {
+    padding: 40px 16px 60px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .retro-tv-header {
+    margin-bottom: 24px !important;
+    padding: 0 8px !important;
+  }
+
+  .retro-tv-title {
+    font-size: 2rem !important;
+  }
+
+  .retro-tv-subtitle {
+    font-size: 13px !important;
+    line-height: 1.4 !important;
+  }
+
+  .retro-tv-antenna-wrapper {
+    top: -36px !important;
+    height: 40px !important;
+    width: 140px !important;
+  }
+
+  .retro-tv-antenna-left {
+    height: 40px !important;
+    left: 50px !important;
+  }
+
+  .retro-tv-antenna-right {
+    height: 40px !important;
+    right: 50px !important;
+  }
+
+  .retro-tv-chassis {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    max-width: 420px !important;
+    border-radius: 22px !important;
+    padding: 16px !important;
+    box-sizing: border-box !important;
+    gap: 14px !important;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45) !important;
+  }
+
+  .retro-tv-screen-bezel {
+    width: 100% !important;
+    aspect-ratio: 4 / 3 !important;
+    border-radius: 16px !important;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.9), inset 0 0 0 2px rgba(255,255,255,0.08) !important;
+  }
+
+  .retro-tv-video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+
+  .retro-tv-control-panel {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-around !important;
+    width: 100% !important;
+    height: auto !important;
+    padding: 12px 14px !important;
+    border-radius: 14px !important;
+    box-sizing: border-box !important;
+    gap: 10px !important;
+  }
+
+  .retro-tv-knob {
+    width: 44px !important;
+    height: 44px !important;
+  }
+
+  .retro-tv-knob-indicator {
+    height: 13px !important;
+    top: 4px !important;
+  }
+
+  .retro-tv-knob-label {
+    font-size: 8px !important;
+    margin-top: 4px !important;
+  }
+
+  .retro-tv-speaker-grille {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 4px !important;
+    width: 50px !important;
+    margin: 0 4px !important;
+  }
+
+  .retro-tv-speaker-slot {
+    height: 3px !important;
+  }
+
+  .retro-tv-channel-badge {
+    top: 10px !important;
+    left: 10px !important;
+    font-size: 9px !important;
+    padding: 3px 8px !important;
+  }
+
+  .retro-tv-unmute-btn {
+    bottom: 10px !important;
+    right: 10px !important;
+    font-size: 10px !important;
+    padding: 6px 12px !important;
+  }
 }
 
 @media (max-width: 480px) {

@@ -92,15 +92,17 @@ export default function BrutalistCube({ inFooter = false }) {
             .to(cubeRef.current, { rotateX: -78, rotateY: -350, duration: 1, ease: rubikEase })                 
             .to(cubeRef.current, { rotateX: 78, rotateY: -355, duration: 1, ease: rubikEase });                 
               
-          // 5. Parallax Background Animation
-          ScrollTrigger.create({
-              trigger: containerRef.current,
-              start: "top top",
-              end: "bottom bottom",
-              onUpdate: (self) => {
-                  gsap.to('.bg-stream', { y: self.progress * 500, duration: 0.5, stagger: 0.01, overwrite: true });
-              }
-          });
+          // 5. Parallax Background Animation (Desktop only to prevent mobile touch scroll lag & jitter)
+          if (window.innerWidth >= 768) {
+            ScrollTrigger.create({
+                trigger: containerRef.current,
+                start: "top top",
+                end: "bottom bottom",
+                onUpdate: (self) => {
+                    gsap.to('.bg-stream', { y: self.progress * 500, duration: 0.5, stagger: 0.01, overwrite: true });
+                }
+            });
+          }
       } else {
           // Continuous rotation for footer
           gsap.to(cubeRef.current, {

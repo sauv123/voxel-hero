@@ -121,7 +121,10 @@
 }
 
 @media (max-width: 768px) {
-  .bc-container { --cube-size: 85vmin; }
+  .bc-container { 
+    --cube-size: 78vmin; 
+    height: 240vh; /* Reduced from 600vh on mobile to eliminate sluggish scroll drag & jitter */
+  }
   .bc-face-body { font-size: 0.95rem; padding: 0.8rem; box-shadow: 4px 4px 0px #000; word-break: break-word; }
   .bc-content { padding: 0.8rem; }
 }

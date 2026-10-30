@@ -18,7 +18,7 @@ export default function WorkGallery({ onClose, navigate }) {
   const currentX = useRef(0);
   const isDragging = useRef(false);
   const startX = useRef(0);
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const progressBarRef = useRef(null);
 
   const handleClose = () => {
     gsap.to(containerRef.current, {
@@ -115,10 +115,11 @@ export default function WorkGallery({ onClose, navigate }) {
       
       // If mobile, read native scroll position to sync progress bar
       if (isMob) {
-        if (containerRef.current) {
+        if (containerRef.current && progressBarRef.current) {
           const sLeft = containerRef.current.scrollLeft;
           const sWidth = containerRef.current.scrollWidth - containerRef.current.clientWidth;
-          setScrollProgress(sWidth > 0 ? sLeft / sWidth : 0);
+          const pct = sWidth > 0 ? (sLeft / sWidth) * 100 : 0;
+          progressBarRef.current.style.width = `${Math.min(100, Math.max(0, pct))}%`;
         }
         return;
       }
@@ -140,9 +141,12 @@ export default function WorkGallery({ onClose, navigate }) {
         gsap.set(trackRef.current, { x: currentX.current });
       }
 
-      // Sync progress
-      const progress = minScroll !== 0 ? currentX.current / minScroll : 0;
-      setScrollProgress(Math.min(1, Math.max(0, progress)));
+      // Sync progress directly without React re-render thrash
+      if (progressBarRef.current) {
+        const progress = minScroll !== 0 ? currentX.current / minScroll : 0;
+        const pct = Math.min(1, Math.max(0, progress)) * 100;
+        progressBarRef.current.style.width = `${pct}%`;
+      }
 
       cardsRef.current.forEach((card, i) => {
         if (!card) return;
@@ -230,7 +234,7 @@ export default function WorkGallery({ onClose, navigate }) {
             {/* Relocated Scroll Progress & Navigation Cue */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               <div style={{ width: '80px', height: '2px', background: 'rgba(255,255,255,0.15)', borderRadius: '2px', overflow: 'hidden' }}>
-                <div style={{ width: `${scrollProgress * 100}%`, height: '100%', background: '#ffffff', transition: 'width 0.1s ease-out' }}></div>
+                <div ref={progressBarRef} style={{ width: '0%', height: '100%', background: '#ffffff', transition: 'width 0.1s ease-out' }}></div>
               </div>
               <div style={{
                 display: 'flex',
@@ -296,9 +300,10 @@ export default function WorkGallery({ onClose, navigate }) {
               }}
               className="work-gallery-card"
               style={{
-                height: isMobile ? '65vh' : '72vh',
-                width: isMobile ? 'calc(100vw - 48px)' : '60vw',
-                minWidth: isMobile ? 'calc(100vw - 48px)' : '60vw',
+                height: isMobile ? '74vh' : '72vh',
+                minHeight: isMobile ? '500px' : 'auto',
+                width: isMobile ? 'calc(100vw - 44px)' : '60vw',
+                minWidth: isMobile ? 'calc(100vw - 44px)' : '60vw',
                 display: 'flex',
                 flexDirection: 'column',
                 position: 'relative',
@@ -306,7 +311,7 @@ export default function WorkGallery({ onClose, navigate }) {
                 color: proj.textColor,
                 cursor: 'pointer',
                 flexShrink: 0,
-                borderRadius: '8px',
+                borderRadius: '12px',
                 border: 'none',
                 overflow: 'hidden',
                 scrollSnapAlign: isMobile ? 'center' : 'none',
@@ -334,48 +339,50 @@ export default function WorkGallery({ onClose, navigate }) {
               <div style={{
                 position: 'absolute',
                 bottom: 0, left: 0, right: 0,
-                padding: isMobile ? '32px 24px 24px' : '48px 40px 40px',
-                background: `linear-gradient(to top, ${proj.bgColor}f2 30%, ${proj.bgColor}99 75%, transparent)`,
+                padding: isMobile ? '28px 20px 22px' : '48px 40px 40px',
+                background: `linear-gradient(to top, ${proj.bgColor}f2 35%, ${proj.bgColor}99 75%, transparent)`,
                 display: 'flex',
                 flexDirection: isMobile ? 'column' : 'row',
                 justifyContent: 'space-between',
                 alignItems: isMobile ? 'flex-start' : 'flex-end',
-                gap: isMobile ? '24px' : '40px',
+                gap: isMobile ? '16px' : '40px',
                 pointerEvents: 'none'
               }}>
                 {/* Left Side: Title & Info */}
                 <div style={{ pointerEvents: 'auto', flex: 1, maxWidth: isMobile ? '100%' : '60%' }}>
-                  <h2 style={{ fontFamily: "var(--font-heading)", fontSize: 'clamp(32px, 4vw, 64px)', fontWeight: 500, margin: '0 0 16px 0', letterSpacing: '-0.02em', lineHeight: 0.9 }}>
+                  <h2 style={{ fontFamily: "var(--font-heading)", fontSize: 'clamp(28px, 4vw, 64px)', fontWeight: 500, margin: '0 0 10px 0', letterSpacing: '-0.02em', lineHeight: 0.95 }}>
                     {proj.title}
                   </h2>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                     {proj.role && (
-                      <p style={{ fontFamily: "var(--font-body)", fontSize: isMobile ? '12px' : '13px', margin: 0, opacity: 0.65, fontWeight: 500, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+                      <p style={{ fontFamily: "var(--font-body)", fontSize: isMobile ? '11px' : '13px', margin: 0, opacity: 0.65, fontWeight: 500, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
                         {proj.role}
                       </p>
                     )}
-                    {proj.cta && (
-                      <p style={{ fontFamily: "var(--font-body)", fontSize: isMobile ? '14px' : '16px', margin: 0, opacity: 0.9, lineHeight: 1.5, fontWeight: 400 }}>
+                    {!isMobile && proj.cta && (
+                      <p style={{ fontFamily: "var(--font-body)", fontSize: '16px', margin: 0, opacity: 0.9, lineHeight: 1.5, fontWeight: 400 }}>
                         {proj.cta}
                       </p>
                     )}
                   </div>
                 </div>
 
-                {/* Right Side: Tags */}
+                {/* Right Side: Tags + Mobile Arrow Badge */}
                 <div style={{ 
                   pointerEvents: 'auto', 
                   display: 'flex', 
                   gap: 8, 
                   flexWrap: 'wrap', 
-                  justifyContent: isMobile ? 'flex-start' : 'flex-end',
+                  justifyContent: isMobile ? 'space-between' : 'flex-end',
                   alignItems: 'center',
+                  width: isMobile ? '100%' : 'auto',
                   maxWidth: isMobile ? '100%' : '40%'
                 }}>
+                  <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', alignItems: 'center' }}>
                   {proj.tags.map(tag => {
                     if (tag === 'SELECTED FOR MILANO DIGITAL WEEK 2026') {
                       return (
-                        <div key={tag} className="mdw-case-study-tag" style={{ transform: 'rotate(-2deg) scale(0.92)' }}>
+                        <div key={tag} className="mdw-case-study-tag" style={{ transform: isMobile ? 'scale(0.85)' : 'rotate(-2deg) scale(0.92)', transformOrigin: 'left center' }}>
                           <img src="/mdw-logo.jpg" alt="Milano Digital Week logo" />
                           <span className="mdw-tag-text">
                             <span className="mdw-tag-eyebrow">Selected for</span>
@@ -386,8 +393,8 @@ export default function WorkGallery({ onClose, navigate }) {
                     }
                     return (
                       <span key={tag} style={{
-                        fontSize: '10px', fontWeight: 600, fontFamily: "var(--font-body)",
-                        padding: '6px 14px', border: `1px solid ${proj.textColor}30`, borderRadius: 100,
+                        fontSize: isMobile ? '9px' : '10px', fontWeight: 600, fontFamily: "var(--font-body)",
+                        padding: isMobile ? '5px 10px' : '6px 14px', border: `1px solid ${proj.textColor}30`, borderRadius: 100,
                         letterSpacing: '0.05em', textTransform: 'uppercase', background: `${proj.bgColor}80`, backdropFilter: 'blur(8px)',
                         color: proj.textColor
                       }}>
@@ -395,6 +402,27 @@ export default function WorkGallery({ onClose, navigate }) {
                       </span>
                     );
                   })}
+                  </div>
+
+                  {/* Clean White Arrow Badge on Mobile */}
+                  {isMobile && (
+                    <div style={{
+                      width: '38px',
+                      height: '38px',
+                      borderRadius: '50%',
+                      border: '1.5px solid rgba(255, 255, 255, 0.6)',
+                      background: 'rgba(0, 0, 0, 0.3)',
+                      backdropFilter: 'blur(8px)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#ffffff',
+                      fontSize: '15px',
+                      flexShrink: 0
+                    }}>
+                      ➔
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
