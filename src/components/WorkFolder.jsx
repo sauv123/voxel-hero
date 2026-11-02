@@ -327,6 +327,25 @@ export default function WorkFolder({ theme, onOpen }) {
                 )}
 
               </div>
+
+              {/* Semantic crawlable link for search engines & AI bots */}
+              <a 
+                href={proj.link || `/${proj.slug}`}
+                aria-label={`Open case study: ${proj.displayName}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  onOpen(proj.slug);
+                }}
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  zIndex: 10,
+                  opacity: 0,
+                  cursor: 'pointer'
+                }}
+              >
+                {proj.displayName} Case Study
+              </a>
             </div>
           );
         })}

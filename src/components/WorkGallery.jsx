@@ -425,6 +425,25 @@ export default function WorkGallery({ onClose, navigate }) {
                   )}
                 </div>
               </div>
+
+              {/* Semantic crawlable link for search engines & AI bots */}
+              <a 
+                href={proj.link || `/${proj.slug}`}
+                aria-label={`Open case study: ${proj.title}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  onSelectCaseStudy ? onSelectCaseStudy(proj.slug) : setSelectedCaseStudy(proj);
+                }}
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  zIndex: 10,
+                  opacity: 0,
+                  cursor: 'pointer'
+                }}
+              >
+                {proj.title} Case Study
+              </a>
             </div>
           ))}
         </div>
